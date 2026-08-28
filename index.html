@@ -10,27 +10,60 @@
         body { background-color: #f4f6f9; color: #333; line-height: 1.6; }
 
         header { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; padding: 20px 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .header-container { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .header-container { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .brand { display: flex; align-items: center; gap: 15px; }
         .logo-circle { background: #ff9800; color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px; }
         .brand-text h1 { font-size: 26px; letter-spacing: 1px; }
         .brand-text p { font-size: 14px; color: #e0e0e0; }
-        .contact-header { display: flex; gap: 15px; margin-top: 5px; flex-wrap: wrap; justify-content: center; }
+        .contact-header { display: flex; gap: 12px; margin-top: 5px; flex-wrap: wrap; justify-content: center; }
         .contact-header a { color: #fff; background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; }
 
-        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
-        .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border-left: 5px solid #2a5298; }
-        .card h2, .card h3 { color: #1e3c72; margin-bottom: 15px; font-size: 18px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
+        .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
 
-        .form-group { margin-bottom: 15px; }
+        /* Customer Details Box */
+        .cust-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border-top: 4px solid #ff9800; }
+        .cust-card h2 { color: #1e3c72; margin-bottom: 15px; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+        .form-row { display: flex; gap: 15px; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 250px; margin-bottom: 10px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
         .form-control { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; outline: none; }
         .form-control:focus { border-color: #2a5298; }
 
-        .seat-section { background: #fff8e1; border: 1px solid #ffe082; padding: 15px; border-radius: 8px; margin-top: 10px; }
-        .seat-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-        .seat-btn { padding: 8px 15px; background: #e0e0e0; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .seat-btn.selected { background: #27ae60; color: white; }
+        /* Navigation Buttons Grid / Tabs */
+        .portal-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        .tab-btn { background: white; border: 2px solid #2a5298; color: #2a5298; padding: 12px 8px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 14px; text-align: center; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .tab-btn i { display: block; font-size: 20px; margin-bottom: 5px; }
+        .tab-btn:hover, .tab-btn.active { background: #2a5298; color: white; }
+
+        /* Tab Content Cards */
+        .tab-content { display: none; background: white; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border-left: 6px solid #2a5298; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .tab-content h3 { color: #1e3c72; margin-bottom: 15px; font-size: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+
+        /* Car Toggle inside Sharing */
+        .car-toggle { display: flex; gap: 15px; margin: 15px 0; }
+        .car-btn { flex: 1; padding: 12px; text-align: center; border: 2px solid #ccc; border-radius: 8px; cursor: pointer; font-weight: bold; background: #fafafa; }
+        .car-btn.active { border-color: #e67e22; background: #fff3e0; color: #d35400; }
+
+        /* Seat Layout Styling */
+        .car-container { display: none; margin-top: 15px; background: #f8f9fa; padding: 20px; border-radius: 10px; border: 1px solid #e0e0e0; }
+        .car-container.active { display: block; }
+        
+        .car-layout { max-width: 320px; margin: 0 auto; background: #ffffff; border: 2px solid #333; border-radius: 20px; padding: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .dashboard { text-align: center; background: #333; color: white; padding: 5px; border-radius: 8px; font-size: 12px; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px; }
+
+        .seat-row { display: flex; justify-content: space-around; margin-bottom: 12px; align-items: center; }
+        .seat-row-label { font-size: 12px; font-weight: bold; color: #666; width: 100%; text-align: center; margin-bottom: 5px; border-bottom: 1px dashed #ccc; padding-bottom: 3px; }
+
+        .seat { width: 85px; height: 55px; border: 2px solid #27ae60; background: #e8f8f5; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-size: 11px; text-align: center; padding: 2px; }
+        .seat i { font-size: 14px; margin-bottom: 2px; color: #27ae60; }
+        .seat .price { font-weight: bold; color: #c0392b; font-size: 11px; }
+        .seat.selected { background: #27ae60; color: white; }
+        .seat.selected i, .seat.selected .price { color: white; }
+
+        .driver { width: 85px; height: 55px; border: 2px solid #7f8c8d; background: #bdc3c7; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #333; font-size: 11px; font-weight: bold; }
 
         .sightseeing-list { background: #eef7ff; padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; line-height: 1.8; border-left: 4px solid #1e3c72; }
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 15px; }
@@ -61,39 +94,154 @@
 
     <div class="container">
         
-        <!-- पोर्टल १: शेअरिंग कॅब आणि सीट बुकिंग (Sharing Service) -->
-        <div class="card">
-            <h2><i class="fa fa-users"></i> १. शेअरिंग कॅब बुकिंग (Sharing Cab / Seat Booking)</h2>
-            <div class="form-group">
-                <label>शेअरिंग रूट निवडा (Sharing Route):</label>
-                <select class="form-control">
-                    <option value="Nashik to Pune Sharing">नाशिक ते पुणे (शेअरिंग)</option>
-                    <option value="Pune to Nashik Sharing">पुणे ते नाशिक (शेअरिंग)</option>
-                    <option value="Nashik to Mumbai Sharing">नाशिक ते मुंबई (शेअरिंग)</option>
-                    <option value="Mumbai to Nashik Sharing">मुंबई ते नाशिक (शेअरिंग)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>गाडीचा प्रकार (Vehicle Type):</label>
-                <select class="form-control">
-                    <option value="Ertiga 6 Seater">Ertiga (6 Seater)</option>
-                    <option value="Ciaz / Sedan 4 Seater">Ciaz / Dzire (4 Seater)</option>
-                </select>
-            </div>
-            <div class="seat-section">
-                <label>सीट निवडा (Select Seat):</label>
-                <div class="seat-grid">
-                    <button type="button" class="seat-btn">Front (ड्रायव्हर शेजारी)</button>
-                    <button type="button" class="seat-btn">Middle Row 1</button>
-                    <button type="button" class="seat-btn">Middle Row 2</button>
-                    <button type="button" class="seat-btn">Back Row 1</button>
-                    <button type="button" class="seat-btn">Back Row 2</button>
+        <!-- ग्राहक माहिती -->
+        <div class="cust-card">
+            <h2><i class="fa fa-user-circle"></i> ग्राहक माहिती (Customer Details)</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>ग्राहकाचे नाव (Full Name):</label>
+                    <input type="text" class="form-control" placeholder="तुमचे नाव टाका">
+                </div>
+                <div class="form-group">
+                    <label>मोबाईल नंबर (Mobile No):</label>
+                    <input type="tel" class="form-control" placeholder="मोबाईल नंबर टाका">
                 </div>
             </div>
         </div>
 
-        <!-- पोर्टल २: वन-वे टॅक्सी (Personal / Special Taxi) -->
-        <div class="card">
+        <!-- ६ पोर्टल्सचे टॅब बटन्स -->
+        <div class="portal-tabs">
+            <button class="tab-btn active" onclick="openPortal('sharing', event)">
+                <i class="fa fa-users"></i> १. शेअरिंग टॅक्सी
+            </button>
+            <button class="tab-btn" onclick="openPortal('oneway', event)">
+                <i class="fa fa-taxi"></i> २. वन-वे टॅक्सी
+            </button>
+            <button class="tab-btn" onclick="openPortal('airport', event)">
+                <i class="fa fa-plane-departure"></i> ३. एअरपोर्ट सर्व्हिस
+            </button>
+            <button class="tab-btn" onclick="openPortal('kmrates', event)">
+                <i class="fa fa-road"></i> ४. KM रेट्स
+            </button>
+            <button class="tab-btn" onclick="openPortal('sightseeing', event)">
+                <i class="fa fa-map-marked-alt"></i> ५. नाशिक दर्शन
+            </button>
+            <button class="tab-btn" onclick="openPortal('bus', event)">
+                <i class="fa fa-bus"></i> ६. बस इन्क्वायरी
+            </button>
+        </div>
+
+        <!-- ================= पोर्टल १: शेअरिंग टॅक्सी ================= -->
+        <div id="sharing" class="tab-content active">
+            <h3><i class="fa fa-users"></i> १. शेअरिंग टॅक्सी आणि सीट सिलेक्शन</h3>
+            
+            <div class="form-group">
+                <label>शेअरिंग रूट निवडा (Sharing Route):</label>
+                <select class="form-control">
+                    <option value="Nashik to Pune">नाशिक ते पुणे (शेअरिंग)</option>
+                    <option value="Pune to Nashik">पुणे ते नाशिक (शेअरिंग)</option>
+                    <option value="Nashik to Mumbai">नाशिक ते मुंबई (शेअरिंग)</option>
+                    <option value="Mumbai to Nashik">मुंबई ते नाशिक (शेअरिंग)</option>
+                </select>
+            </div>
+
+            <!-- कार प्रकार निवड (Ertiga / Ciaz) -->
+            <label style="font-weight: 600; font-size: 14px;">गाडीचा प्रकार निवडा (Select Car):</label>
+            <div class="car-toggle">
+                <div class="car-btn active" onclick="switchCar('ertiga')">
+                    <i class="fa fa-car"></i> ERTIGA (6 Seater)
+                </div>
+                <div class="car-btn" onclick="switchCar('ciaz')">
+                    <i class="fa fa-car-side"></i> CIAZ (4 Seater)
+                </div>
+            </div>
+
+            <!-- Ertiga Seat Layout (Front 1, Middle 3, Back 2) -->
+            <div id="ertiga-layout" class="car-container active">
+                <h4 style="text-align: center; margin-bottom: 10px; color: #d35400;">ERTIGA सीट लेआउट (Front 1, Middle 3, Back 2)</h4>
+                <div class="car-layout">
+                    <div class="dashboard">STEERING / FRONT SIDE</div>
+                    
+                    <!-- Front Row (Driver + 1 Seat) -->
+                    <div class="seat-row-label">FRONT ROW</div>
+                    <div class="seat-row">
+                        <div class="driver"><i class="fa fa-user"></i> Driver</div>
+                        <div class="seat" onclick="toggleSeat(this)">
+                            <i class="fa fa-chair"></i> Front Seat
+                            <div class="price">₹500</div>
+                        </div>
+                    </div>
+
+                    <!-- Middle Row (3 Seats) -->
+                    <div class="seat-row-label">MIDDLE ROW</div>
+                    <div class="seat-row">
+                        <div class="seat" onclick="toggleSeat(this)">
+                            <i class="fa fa-chair"></i> Mid Window
+                            <div class="price">₹450</div>
+                        </div>
+                        <div class="seat" onclick="toggleSeat(this)">
+                            <i class="fa fa-chair"></i> Mid Center
+                            <div class="price">₹400</div>
+                        </div>
+                        <div class="seat" onclick="toggleSeat(this)">
+                            <i class="fa fa-chair"></i> Mid Window
+                            <div class="price">₹450</div>
+                        </div>
+                    </div>
+
+                    <!-- Back Row (2 Seats) -->
+                    <div class="seat-row-label">BACK ROW</div>
+                    <div class="seat-row">
+                        <div class="seat" onclick="toggleSeat(this)">
+                            <i class="fa fa-chair"></i> Back Seat 1
+                            <div class="price">₹400</div>
+                        </div>
+                        <div class="seat" onclick="toggleSeat(this)">
+                            <i class="fa fa-chair"></i> Back Seat 2
+                            <div class="price">₹400</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ciaz Seat Layout (Front 1, Back 3) -->
+            <div id="ciaz-layout" class="car-container">
+                <h4 style="text-align: center; margin-bottom: 10px; color: #d35400;">CIAZ सीट लेआउट (Front 1, Back 3)</h4>
+                <div class="car-layout">
+                    <div class="dashboard">STEERING / FRONT SIDE</div>
+
+                    <!-- Front Row (Driver + 1 Seat) -->
+                    <div class="seat-row-label">FRONT ROW</div>
+                    <div class="seat-row">
+                        <div class="driver"><i class="fa fa-user"></i> Driver</div>
+                        <div class="seat" onclick="toggleSeat(this)">
+                            <i class="fa fa-chair"></i> Front Seat
+                            <div class="price">₹600</div>
+                        </div>
+                    </div>
+
+                    <!-- Back Row (3 Seats) -->
+                    <div class="seat-row-label">BACK ROW</div>
+                    <div class="seat-row">
+                        <div class="seat" onclick="toggleSeat(this)">
+                            <i class="fa fa-chair"></i> Back Window
+                            <div class="price">₹500</div>
+                        </div>
+                        <div class="seat" onclick="toggleSeat(this)">
+                            <i class="fa fa-chair"></i> Back Center
+                            <div class="price">₹450</div>
+                        </div>
+                        <div class="seat" onclick="toggleSeat(this)">
+                            <i class="fa fa-chair"></i> Back Window
+                            <div class="price">₹500</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= पोर्टल २: वन-वे टॅक्सी ================= -->
+        <div id="oneway" class="tab-content">
             <h3><i class="fa fa-taxi"></i> २. वन-वे टॅक्सी (Full Booking / Toll Included)</h3>
             <div class="form-group">
                 <label>रूट निवडा:</label>
@@ -102,6 +250,8 @@
                     <option value="Pune to Nashik">पुणे ते नाशिक</option>
                     <option value="Nashik to Mumbai">नाशिक ते मुंबई</option>
                     <option value="Mumbai to Nashik">मुंबई ते नाशिक</option>
+                    <option value="Pune to Mumbai">पुणे ते मुंबई</option>
+                    <option value="Mumbai to Pune">मुंबई ते पुणे</option>
                     <option value="Nashik to Sambhajinagar">नाशिक ते संभाजीनगर</option>
                     <option value="Sambhajinagar to Nashik">संभाजीनगर ते नाशिक</option>
                 </select>
@@ -116,8 +266,8 @@
             </div>
         </div>
 
-        <!-- पोर्टल ३: मुंबई एअरपोर्ट पिकअप / ड्रॉप -->
-        <div class="card">
+        <!-- ================= पोर्टल ३: एअरपोर्ट सर्व्हिस ================= -->
+        <div id="airport" class="tab-content">
             <h3><i class="fa fa-plane-departure"></i> ३. मुंबई एअरपोर्ट पिकअप / ड्रॉप सर्व्हिस</h3>
             <div class="form-group">
                 <label>एअरपोर्ट रूट निवडा:</label>
@@ -125,6 +275,7 @@
                     <option value="Nashik to Mumbai Airport Drop">NASHIK TO MUMBAI AIRPORT DROP</option>
                     <option value="Mumbai Airport to Nashik Drop">MUMBAI AIRPORT TO NASHIK DROP</option>
                     <option value="Pune to Mumbai Airport Drop">PUNE TO MUMBAI AIRPORT DROP</option>
+                    <option value="Mumbai Airport to Pune Drop">MUMBAI AIRPORT TO PUNE DROP</option>
                 </select>
             </div>
             <div class="form-group">
@@ -132,33 +283,38 @@
                 <select class="form-control">
                     <option value="SEDAN (Dzire) - ₹3200">SEDAN (Dzire) - ₹3200</option>
                     <option value="SUV (Ertiga / XL6) - ₹4000">SUV (Ertiga / XL6) - ₹4000</option>
+                    <option value="KIA (Carens) - ₹5500">KIA (Carens) - ₹5500</option>
                     <option value="INNOVA (Crysta) - ₹6500">INNOVA (Crysta) - ₹6500</option>
                 </select>
             </div>
         </div>
 
-        <!-- पोर्टल ४: किलोमीटर रेट्स -->
-        <div class="card">
+        <!-- ================= पोर्टल ४: KM रेट्स ================= -->
+        <div id="kmrates" class="tab-content">
             <h3><i class="fa fa-road"></i> ४. किलोमीटर रेट्स (Per KM Rates)</h3>
             <div class="form-group">
+                <label>गाडी आणि रेट निवडा:</label>
                 <select class="form-control">
                     <option value="Maruti Dzire - ₹12/- Per KM">MARUTI DZIRE - ₹12/- PER KM</option>
                     <option value="Maruti Ciaz - ₹13/- Per KM">MARUTI CIAZ - ₹13/- PER KM</option>
                     <option value="Maruti Ertiga - ₹15/- Per KM">MARUTI ERTIGA - ₹15/- PER KM</option>
+                    <option value="Maruti Excel 6 - ₹15/- Per KM">MARUTI EXCEL 6 - ₹15/- PER KM</option>
                     <option value="Kia Carens - ₹16/- Per KM">KIA CARENS - ₹16/- PER KM</option>
                     <option value="Innova Crysta - ₹20/- Per KM">INNOVA CRYSTA - ₹20/- PER KM</option>
+                    <option value="Force Urbania - ₹35/- Per KM">FORCE URBANIA - ₹35/- PER KM</option>
                 </select>
             </div>
         </div>
 
-        <!-- पोर्टल ५: नाशिक दर्शन -->
-        <div class="card">
+        <!-- ================= पोर्टल ५: नाशिक दर्शन ================= -->
+        <div id="sightseeing" class="tab-content">
             <h3><i class="fa fa-map-marked-alt"></i> ५. नाशिक दर्शन सिटी पॉईंट (Sightseeing)</h3>
             <div class="sightseeing-list">
                 <strong>📍 समाविष्ट प्रेक्षणीय स्थळे:</strong><br>
-                • त्र्यंबकेश्वर ज्योतिर्लिंग • श्री स्वामी समर्थ गुरुपीठ • अंजनेरी हनुमानजी टेम्पल • सोमेश्वर • पंचवटी • तपोवन • मुक्तिधाम
+                • त्र्यंबकेश्वर ज्योतिर्लिंग • श्री स्वामी समर्थ गुरुपीठ • अंजनेरी हनुमानजी टेम्पल • सोमेश्वर • साधना मिसळ / ग्रेप ॲंबेसि • पंचवटी • तपोवन • स्वामी नारायण टेम्पल • अण्णा गणपती • मुक्तिधाम
             </div>
             <div class="form-group">
+                <label>गाडी निवडा:</label>
                 <select class="form-control">
                     <option value="सिडान कार (4+1) - ₹3600">सिडान कार (4+1 Seater) - ₹3600</option>
                     <option value="ईरटीका (6+1) - ₹4500">ईरटीका (6+1 Seater) - ₹4500</option>
@@ -167,26 +323,30 @@
             </div>
         </div>
 
-        <!-- पोर्टल ६: बस इन्क्वायरी -->
-        <div class="card">
+        <!-- ================= पोर्टल ६: बस इन्क्वायरी ================= -->
+        <div id="bus" class="tab-content">
             <h3><i class="fa fa-bus"></i> ६. बस इन्क्वायरी (Bus Inquiry)</h3>
             <div class="form-group">
+                <label>बस क्षमतेनुसार निवडा:</label>
                 <select class="form-control">
                     <option value="17 Seater Urbania">17 Seater Urbania</option>
                     <option value="20 Seater Mini Bus">20 Seater Mini Bus</option>
+                    <option value="27 Seater Bus">27 Seater Bus</option>
                     <option value="32 Seater Bus">32 Seater Bus</option>
                     <option value="50 Seater Luxury Bus">50 Seater Luxury Bus</option>
                 </select>
             </div>
         </div>
 
-        <!-- वैशिष्ठ्ये -->
-        <div class="card">
-            <h3>⭐ आमच्या ट्रॅव्हल्सची वैशिष्ट्ये ⭐</h3>
+        <!-- वैशिष्ठ्ये (नेहमी शेवटी दिसेल) -->
+        <div class="cust-card" style="border-top: 4px solid #27ae60; margin-top: 20px;">
+            <h3 style="color: #1e3c72; margin-bottom: 10px;">⭐ आमच्या ट्रॅव्हल्सची वैशिष्ट्ये ⭐</h3>
             <div class="features-grid">
                 <div class="feature-item"><i class="fa fa-check-circle"></i> महिला स्पेशल शेअरिंग कॅब</div>
                 <div class="feature-item"><i class="fa fa-check-circle"></i> १०+ वर्षे अनुभव असणारे ड्रायव्हर</div>
-                <div class="feature-item"><i class="fa fa-check-circle"></i> स्वच्छ व A/C वाहने</div>
+                <div class="feature-item"><i class="fa fa-check-circle"></i> रस्त्याची संपूर्ण माहिती</div>
+                <div class="feature-item"><i class="fa fa-check-circle"></i> स्वच्छ व अपग्रेड A/C वाहने</div>
+                <div class="feature-item"><i class="fa fa-check-circle"></i> दिलेल्या वेळेच्या १० मिनिटे हजर</div>
                 <div class="feature-item"><i class="fa fa-check-circle"></i> जी पी एस (GPS) ट्रॅकिंग</div>
             </div>
         </div>
@@ -198,6 +358,45 @@
         <p>प्रवास तुमचा, जबाबदारी आमची</p>
         <p style="margin-top: 5px; font-size: 12px; opacity: 0.8;">📍 B2 शितल रेसिडेन्सी, नाशिक केसर फ्री टाऊन, मोशी / भारत माता चौक, मोशी</p>
     </footer>
+
+    <!-- Tab Switching & Seat Selection JavaScript -->
+    <script>
+        // पोर्टल्स स्विच करण्यासाठी फंक्शन
+        function openPortal(portalId, evt) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(portalId).classList.add('active');
+            if (evt) {
+                evt.currentTarget.classList.add('active');
+            }
+        }
+
+        // शेअरिंगमध्ये Ertiga आणि Ciaz स्विच करण्यासाठी
+        function switchCar(carType) {
+            const carBtns = document.querySelectorAll('.car-btn');
+            carBtns.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById('ertiga-layout').classList.remove('active');
+            document.getElementById('ciaz-layout').classList.remove('active');
+
+            if(carType === 'ertiga') {
+                carBtns[0].classList.add('active');
+                document.getElementById('ertiga-layout').classList.add('active');
+            } else {
+                carBtns[1].classList.add('active');
+                document.getElementById('ciaz-layout').classList.add('active');
+            }
+        }
+
+        // सीट सिलेक्ट/अनसिलेक्ट करण्यासाठी
+        function toggleSeat(seatElement) {
+            seatElement.classList.toggle('selected');
+        }
+    </script>
 
 </body>
 </html>
