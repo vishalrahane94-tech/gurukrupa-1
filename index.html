@@ -1,235 +1,266 @@
-<!DOCTYPE html>
-<html lang="mr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gurukrupa Tours & Travels</title>
-    <style>
-        :root {
-            --primary: #1a365d;
-            --secondary: #c59b27;
-            --danger: #d9534f;
-            --light: #f8f9fa;
-            --dark: #212529;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f6f9; color: var(--dark); line-height: 1.6; }
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Linking,
+  SafeAreaView,
+  StatusBar
+} from 'react-native';
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState('sharing');
+
+  const makeCall = (number) => {
+    Linking.openURL(`tel:${number}`);
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="#1a365d" barStyle="light-content" />
+      
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>गुरुकृपा टुर्स अँड ट्रॅव्हल्स</Text>
+        <Text style={styles.headerSubtitle}>प्रवास तुमचा, जबाबदारी आमची!</Text>
+      </View>
+
+      {/* Navigation Tabs (redBus Style Horizontal Scroll) */}
+      <View style={styles.navWrapper}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.navScroll}>
+          <TouchableOpacity 
+            style={[styles.tab, activeTab === 'sharing' && styles.activeTab]} 
+            onPress={() => setActiveTab('sharing')}>
+            <Text style={[styles.tabText, activeTab === 'sharing' && styles.activeTabText]}>शेअरींग कॅब</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={[styles.tab, activeTab === 'oneway' && styles.activeTab]} 
+            onPress={() => setActiveTab('oneway')}>
+            <Text style={[styles.tabText, activeTab === 'oneway' && styles.activeTabText]}>वन वे कॅब</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.tab, activeTab === 'airport' && styles.activeTab]} 
+            onPress={() => setActiveTab('airport')}>
+            <Text style={[styles.tabText, activeTab === 'airport' && styles.activeTabText]}>एअरपोर्ट ड्रॉप</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.tab, activeTab === 'fleet' && styles.activeTab]} 
+            onPress={() => setActiveTab('fleet')}>
+            <Text style={[styles.tabText, activeTab === 'fleet' && styles.activeTabText]}>अवर फ्लीट</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.tab, activeTab === 'darshan' && styles.activeTab]} 
+            onPress={() => setActiveTab('darshan')}>
+            <Text style={[styles.tabText, activeTab === 'darshan' && styles.activeTabText]}>नाशिक दर्शन</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.tab, activeTab === 'features' && styles.activeTab]} 
+            onPress={() => setActiveTab('features')}>
+            <Text style={[styles.tabText, activeTab === 'features' && styles.activeTabText]}>वैशिष्ट्ये</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+
+      {/* Main Content Area */}
+      <ScrollView style={styles.content}>
         
-        header { background: var(--primary); color: white; padding: 20px 0; text-align: center; border-bottom: 4px solid var(--secondary); }
-        header h1 { font-size: 2.2rem; margin-bottom: 5px; color: var(--secondary); }
-        header p { font-size: 1.1rem; }
-        
-        nav { background: #0f2544; display: flex; justify-content: center; flex-wrap: wrap; }
-        nav a { color: white; padding: 12px 20px; text-decoration: none; font-weight: bold; }
-        nav a:hover { background: var(--secondary); color: var(--dark); }
-        
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
-        .section-title { text-align: center; margin: 30px 0 15px; font-size: 1.8rem; color: var(--primary); border-bottom: 2px solid var(--secondary); display: inline-block; padding-bottom: 5px; }
-        .center-wrap { text-align: center; }
+        {/* 1. Sharing Cab */}
+        {activeTab === 'sharing' && (
+          <View style={styles.card}>
+            <View style={styles.banner}>
+              <Text style={styles.bannerTitle}>महिलांसाठी विशेष डेली शेअरींग कॅब</Text>
+              <Text style={styles.bannerSub}>सुरक्षित • आरामदायक • वेळेवर सेवा</Text>
+            </View>
 
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 25px; }
-        
-        /* 1. Sharing Cab */
-        .sharing-banner { background: linear-gradient(135deg, #1a365d, #0f2544); color: white; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .time-box { background: #eef2f7; padding: 15px; border-radius: 6px; text-align: center; }
-        .time-box h4 { color: var(--primary); margin-bottom: 10px; }
-        .badge { background: var(--secondary); color: var(--dark); padding: 4px 8px; border-radius: 4px; font-weight: bold; margin: 3px; display: inline-block; }
-        .price-tag { font-size: 1.3rem; font-weight: bold; color: green; }
-
-        /* Tables */
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        table th, table td { border: 1px solid #ddd; padding: 12px; text-align: center; }
-        table th { background-color: var(--primary); color: white; }
-        table tr:nth-child(even) { background-color: #f9f9f9; }
-
-        /* Fleet Cards */
-        .fleet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .fleet-card { background: #fff; border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; text-align: center; }
-        .fleet-card h3 { font-size: 1.1rem; color: var(--primary); }
-        .fleet-card .rate { font-size: 1.2rem; color: var(--danger); font-weight: bold; margin-top: 5px; }
-
-        /* Features & Darshan */
-        .list-style { list-style: none; }
-        .list-style li { padding: 8px 0; border-bottom: 1px dashed #ccc; }
-        .list-style li::before { content: "✔ "; color: var(--secondary); font-weight: bold; }
-
-        footer { background: var(--primary); color: white; text-align: center; padding: 25px 10px; margin-top: 40px; }
-        footer p { margin-bottom: 8px; }
-        .contact-num { font-size: 1.3rem; color: var(--secondary); font-weight: bold; }
-        
-        @media (max-width: 768px) {
-            .grid-2 { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>गुरुकृपा टुर्स अँड ट्रॅव्हल्स</h1>
-        <p>प्रवास तुमचा, जबाबदारी आमची!</p>
-    </header>
-
-    <nav>
-        <a href="#sharing">शेअरींग कॅब</a>
-        <a href="#oneway">वन वे कॅब</a>
-        <a href="#airport">एअरपोर्ट ड्रॉप</a>
-        <a href="#fleet">अवर फ्लीट</a>
-        <a href="#darshan">नाशिक दर्शन</a>
-        <a href="#features">वैशिष्ट्ये</a>
-    </nav>
-
-    <div class="container">
-
-        <!-- 1. Sharing Cab -->
-        <div id="sharing" class="card">
-            <div class="sharing-banner">
-                <h2>महिलांसाठी विशेष डेली शेअरींग कॅब सर्व्हिस</h2>
-                <p>सुरक्षित | आरामदायक | वेळेवर सेवा</p>
-            </div>
+            <Text style={styles.sectionHeading}>NASHIK ↔ PUNE (प्रवासाच्या वेळा)</Text>
             
-            <div class="center-wrap"><h3 class="section-title">NASHIK ↔ PUNE (प्रवासाच्या वेळा)</h3></div>
-            <div class="grid-2">
-                <div class="time-box">
-                    <h4>नाशिक → पुणे</h4>
-                    <p><b>सकाळी:</b> <span class="badge">04:00</span> <span class="badge">04:30</span> <span class="badge">05:00</span></p>
-                    <p style="margin-top:5px;"><b>दुपारी:</b> <span class="badge">01:00</span> <span class="badge">01:15</span> <span class="badge">01:30</span></p>
-                </div>
-                <div class="time-box">
-                    <h4>पुणे → नाशिक</h4>
-                    <p><b>सकाळी:</b> <span class="badge">08:00</span> <span class="badge">08:30</span> <span class="badge">09:00</span></p>
-                    <p style="margin-top:5px;"><b>संध्याकाळी:</b> <span class="badge">06:00</span> <span class="badge">06:15</span> <span class="badge">06:30</span></p>
-                </div>
-            </div>
+            <View style={styles.timeBox}>
+              <Text style={styles.routeTitle}>नाशिक → पुणे</Text>
+              <Text style={styles.timeLabel}>सकाळी: 04:00 | 04:30 | 05:00</Text>
+              <Text style={styles.timeLabel}>दुपारी: 01:00 | 01:15 | 01:30</Text>
+            </View>
 
-            <div class="grid-2" style="margin-top: 20px;">
-                <div class="time-box">
-                    <h4>फ्रंट सीट भाडे</h4>
-                    <p class="price-tag">₹ 750 / सीट</p>
-                </div>
-                <div class="time-box">
-                    <h4>मागील सर्व सीट भाडे</h4>
-                    <p class="price-tag">₹ 550 / सीट</p>
-                </div>
-            </div>
-        </div>
+            <View style={styles.timeBox}>
+              <Text style={styles.routeTitle}>पुणे → नाशिक</Text>
+              <Text style={styles.timeLabel}>सकाळी: 08:00 | 08:30 | 09:00</Text>
+              <Text style={styles.timeLabel}>संध्याकाळी: 06:00 | 06:15 | 06:30</Text>
+            </View>
 
-        <!-- 2. One Way Cab -->
-        <div id="oneway" class="card">
-            <div class="center-wrap"><h3 class="section-title">डेली वन वे कॅब दराचा तक्ता (Toll Included)</h3></div>
-            <div style="overflow-x:auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>रूट (ROUTE)</th>
-                            <th>SEDAN (Dzire, Aura)</th>
-                            <th>SUV (Ertiga)</th>
-                            <th>DIESEL (Kia Carens, Crysta)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>नाशिक ते पुणे / पुणे ते नाशिक</td><td>₹ 3000</td><td>₹ 4000</td><td>₹ 5500</td></tr>
-                        <tr><td>नाशिक ते मुंबई / मुंबई ते नाशिक</td><td>₹ 3000</td><td>₹ 4000</td><td>₹ 5500</td></tr>
-                        <tr><td>पुणे ते मुंबई / मुंबई ते पुणे</td><td>₹ 3000</td><td>₹ 4000</td><td>₹ 5500</td></tr>
-                        <tr><td>नाशिक ते संभाजीनगर / संभाजीनगर ते नाशिक</td><td>₹ 3500</td><td>₹ 4500</td><td>₹ 5500</td></tr>
-                        <tr><td>पुणे ते संभाजीनगर / संभाजीनगर ते पुणे</td><td>₹ 3500</td><td>₹ 4500</td><td>₹ 5500</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            <Text style={styles.sectionHeading}>प्रवास भाडे</Text>
+            <View style={styles.priceRow}>
+              <View style={styles.priceCard}>
+                <Text style={styles.priceTitle}>फ्रंट सीट</Text>
+                <Text style={styles.priceVal}>₹ 750</Text>
+              </View>
+              <View style={styles.priceCard}>
+                <Text style={styles.priceTitle}>मागील सर्व सीट</Text>
+                <Text style={styles.priceVal}>₹ 550</Text>
+              </View>
+            </View>
+          </View>
+        )}
 
-        <!-- 3. Airport Pickup Drop -->
-        <div id="airport" class="card">
-            <div class="center-wrap"><h3 class="section-title">मुंबई एअरपोर्ट पिकअप & ड्रॉप सर्व्हिस</h3></div>
-            <div style="overflow-x:auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>रूट (ONE WAY)</th>
-                            <th>SEDAN (Dzire)</th>
-                            <th>SUV (Ertiga)</th>
-                            <th>KIA (Carens)</th>
-                            <th>INNOVA (Crysta)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>नाशिक ते मुंबई एअरपोर्ट ड्रॉप</td><td>₹ 3200</td><td>₹ 4000</td><td>₹ 5500</td><td>₹ 6500</td></tr>
-                        <tr><td>मुंबई एअरपोर्ट ते नाशिक ड्रॉप</td><td>₹ 3200</td><td>₹ 4000</td><td>₹ 5500</td><td>₹ 6500</td></tr>
-                        <tr><td>पुणे ते मुंबई एअरपोर्ट ड्रॉप</td><td>₹ 3200</td><td>₹ 4000</td><td>₹ 5500</td><td>₹ 6500</td></tr>
-                        <tr><td>मुंबई एअरपोर्ट ते पुणे ड्रॉप</td><td>₹ 3200</td><td>₹ 4000</td><td>₹ 5500</td><td>₹ 6500</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        {/* 2. One Way Cab */}
+        {activeTab === 'oneway' && (
+          <View style={styles.card}>
+            <Text style={styles.sectionHeading}>डेली वन वे कॅब (Toll Included)</Text>
 
-        <!-- 4. Our Fleet & Bus Rates -->
-        <div id="fleet" class="card">
-            <div class="center-wrap"><h3 class="section-title">आमचा ताफा (Our Fleet - Per KM Rates)</h3></div>
-            <div class="fleet-grid">
-                <div class="fleet-card"><h3>Maruti Dzire</h3><p class="rate">₹ 12 / KM</p></div>
-                <div class="fleet-card"><h3>Maruti Ciaz</h3><p class="rate">₹ 13 / KM</p></div>
-                <div class="fleet-card"><h3>Maruti Ertiga / Excel 6</h3><p class="rate">₹ 15 / KM</p></div>
-                <div class="fleet-card"><h3>Innova</h3><p class="rate">₹ 16 / KM</p></div>
-                <div class="fleet-card"><h3>Kia Carens</h3><p class="rate">₹ 16 / KM</p></div>
-                <div class="fleet-card"><h3>Innova Crysta</h3><p class="rate">₹ 18 - 20 / KM</p></div>
-                <div class="fleet-card"><h3>Traveler (बसेस)</h3><p class="rate">₹ 23 / KM</p></div>
-                <div class="fleet-card"><h3>Force Urbania</h3><p class="rate">₹ 35 / KM</p></div>
-            </div>
-        </div>
+            <View style={styles.tableItem}>
+              <Text style={styles.itemTitle}>नाशिक ↔ पुणे / नाशिक ↔ मुंबई</Text>
+              <Text style={styles.itemDetail}>• Sedan (Dzire, Aura): ₹ 3000</Text>
+              <Text style={styles.itemDetail}>• SUV (Ertiga): ₹ 4000</Text>
+              <Text style={styles.itemDetail}>• Diesel (Kia Carens, Crysta): ₹ 5500</Text>
+            </View>
 
-        <!-- 5. Nashik Darshan -->
-        <div id="darshan" class="card">
-            <div class="center-wrap"><h3 class="section-title">नाशिक दर्शन सिटी पॉईंट्स & दर</h3></div>
-            <div class="grid-2">
-                <div>
-                    <h4>प्रेक्षणीय स्थळे:</h4>
-                    <ul class="list-style" style="margin-top: 10px;">
-                        <li>त्र्यंबकेश्वर ज्योतिर्लिंग</li>
-                        <li>श्री स्वामी समर्थ गुरुपीठ</li>
-                        <li>अंजनेरी हनुमानजी टेम्पल</li>
-                        <li>सोमेश्वर</li>
-                        <li>साधना मिसळ / ग्रेप अँबेसि</li>
-                        <li>पंचवटी & तपोवन</li>
-                        <li>स्वामीनाा नारायण टेम्पल</li>
-                        <li>अण्णा गणपती & मुक्तिधाम</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>पॅकेज दर:</h4>
-                    <table>
-                        <tr><th>गाडी प्रकार</th><th>दर</th></tr>
-                        <tr><td>सिडान (4+1)</td><td>₹ 3600</td></tr>
-                        <tr><td>ईरटीका (6+1)</td><td>₹ 4500</td></tr>
-                        <tr><td>इनोव्हा / किया करेन्स (7+1)</td><td>₹ 5500</td></tr>
-                    </table>
-                </div>
-            </div>
-        </div>
+            <View style={styles.tableItem}>
+              <Text style={styles.itemTitle}>पुणे ↔ मुंबई</Text>
+              <Text style={styles.itemDetail}>• Sedan: ₹ 3000 | SUV: ₹ 4000 | Diesel: ₹ 5500</Text>
+            </View>
 
-        <!-- 6. Features -->
-        <div id="features" class="card">
-            <div class="center-wrap"><h3 class="section-title">आमच्या ट्रॅव्हल्सचे वैशिष्ट्य</h3></div>
-            <ul class="list-style" style="max-width: 600px; margin: 0 auto;">
-                <li>सर्व १० वर्षे पुढील अनुभव असणारे ड्रायव्हर</li>
-                <li>रस्त्याची संपूर्ण माहिती</li>
-                <li>स्वच्छ व अपग्रेड ए सी वाहणे</li>
-                <li>दिलेल्या वेळेच्या १० मिनिटे हजर</li>
-                <li>जी पी एस ट्रॅकींग सुविधा</li>
-                <li>महिला स्पेशल शेअरींग कॅब</li>
-                <li>पार्सल सुविधा</li>
-                <li>गेली दोन पिढ्या सेवेत (२४x७ ग्राहक सेवा)</li>
-            </ul>
-        </div>
+            <View style={styles.tableItem}>
+              <Text style={styles.itemTitle}>नाशिक / पुणे ↔ संभाजीनगर</Text>
+              <Text style={styles.itemDetail}>• Sedan: ₹ 3500 | SUV: ₹ 4500 | Diesel: ₹ 5500</Text>
+            </View>
+          </View>
+        )}
 
-    </div>
+        {/* 3. Airport Drop */}
+        {activeTab === 'airport' && (
+          <View style={styles.card}>
+            <Text style={styles.sectionHeading}>मुंबई एअरपोर्ट पिकअप & ड्रॉप सर्व्हिस</Text>
+            <Text style={{textAlign:'center', color: '#27ae60', fontWeight:'bold', marginBottom:10}}>
+              NOTE: TOLL INCLUDED IN ALL TRIPS
+            </Text>
 
-    <footer>
-        <p><b>संपर्क:</b> प्रो. प्रा. शशी राहाणे</p>
-        <p class="contact-num">📞 9890896040 / 9922862007</p>
-        <p style="margin-top: 10px; font-size: 0.9rem;">
-            <b>पत्ता:</b> B-2, शितल रेसिडेन्सी, फुलेनगर, पळसे, नाशिक | केसरा फ्री टाऊन / भारत माता चौक, मोशी, पुणे
-        </p>
-    </footer>
+            <View style={styles.tableItem}>
+              <Text style={styles.itemTitle}>नाशिक / पुणे ↔ मुंबई एअरपोर्ट</Text>
+              <Text style={styles.itemDetail}>• Sedan (Dzire): ₹ 3200</Text>
+              <Text style={styles.itemDetail}>• SUV (Ertiga / Excel 6): ₹ 4000</Text>
+              <Text style={styles.itemDetail}>• KIA (Carens): ₹ 5500</Text>
+              <Text style={styles.itemDetail}>• Innova Crysta: ₹ 6500</Text>
+            </View>
+          </View>
+        )}
 
-</body>
-</html>
+        {/* 4. Our Fleet */}
+        {activeTab === 'fleet' && (
+          <View style={styles.card}>
+            <Text style={styles.sectionHeading}>आमचा ताफा (Per KM Rates)</Text>
+            <View style={styles.fleetGrid}>
+              <View style={styles.fleetBox}><Text style={styles.fleetName}>Dzire</Text><Text style={styles.fleetRate}>₹ 12 / KM</Text></View>
+              <View style={styles.fleetBox}><Text style={styles.fleetName}>Ciaz</Text><Text style={styles.fleetRate}>₹ 13 / KM</Text></View>
+              <View style={styles.fleetBox}><Text style={styles.fleetName}>Ertiga</Text><Text style={styles.fleetRate}>₹ 15 / KM</Text></View>
+              <View style={styles.fleetBox}><Text style={styles.fleetName}>Innova</Text><Text style={styles.fleetRate}>₹ 16 / KM</Text></View>
+              <View style={styles.fleetBox}><Text style={styles.fleetName}>Carens</Text><Text style={styles.fleetRate}>₹ 16 / KM</Text></View>
+              <View style={styles.fleetBox}><Text style={styles.fleetName}>Crysta</Text><Text style={styles.fleetRate}>₹ 18 - 20 / KM</Text></View>
+              <View style={styles.fleetBox}><Text style={styles.fleetName}>Traveler (बस)</Text><Text style={styles.fleetRate}>₹ 23 / KM</Text></View>
+              <View style={styles.fleetBox}><Text style={styles.fleetName}>Urbania</Text><Text style={styles.fleetRate}>₹ 35 / KM</Text></View>
+            </View>
+          </View>
+        )}
+
+        {/* 5. Nashik Darshan */}
+        {activeTab === 'darshan' && (
+          <View style={styles.card}>
+            <Text style={styles.sectionHeading}>नाशिक दर्शन सिटी पॉईंट्स</Text>
+            <Text style={styles.bulletPoint}>• त्र्यंबकेश्वर ज्योतिर्लिंग</Text>
+            <Text style={styles.bulletPoint}>• श्री स्वामी समर्थ गुरुपीठ</Text>
+            <Text style={styles.bulletPoint}>• अंजनेरी हनुमानजी टेम्पल • सोमेश्वर</Text>
+            <Text style={styles.bulletPoint}>• साधना मिसळ / ग्रेप अँबेसि</Text>
+            <Text style={styles.bulletPoint}>• पंचवटी • तपोवन</Text>
+            <Text style={styles.bulletPoint}>• स्वामीनाा नारायण टेम्पल</Text>
+            <Text style={styles.bulletPoint}>• अण्णा गणपती • मुक्तिधाम</Text>
+
+            <Text style={[styles.sectionHeading, {marginTop: 15}]}>दर्शन पॅकेज दर</Text>
+            <Text style={styles.itemDetail}>• सिडान (4+1): ₹ 3600</Text>
+            <Text style={styles.itemDetail}>• ईरटीका (6+1): ₹ 4500</Text>
+            <Text style={styles.itemDetail}>• इनोव्हा / करेन्स (7+1): ₹ 5500</Text>
+          </View>
+        )}
+
+        {/* 6. Features */}
+        {activeTab === 'features' && (
+          <View style={styles.card}>
+            <Text style={styles.sectionHeading}>आमच्या ट्रॅव्हल्सचे वैशिष्ट्य</Text>
+            <Text style={styles.bulletPoint}>✔ सर्व १० वर्षे पुढील अनुभव असणारे ड्रायव्हर</Text>
+            <Text style={styles.bulletPoint}>✔ रस्त्याची संपूर्ण माहिती</Text>
+            <Text style={styles.bulletPoint}>✔ स्वच्छ व अपग्रेड ए सी वाहणे</Text>
+            <Text style={styles.bulletPoint}>✔ दिलेल्या वेळेच्या १० मिनिटे हजर</Text>
+            <Text style={styles.bulletPoint}>✔ जी पी एस ट्रॅकींग सुविधा</Text>
+            <Text style={styles.bulletPoint}>✔ महिला स्पेशल शेअरींग कॅब</Text>
+            <Text style={styles.bulletPoint}>✔ पार्सल सुविधा</Text>
+            <Text style={styles.bulletPoint}>✔ गेली दोन पिढ्या सेवेत (२४x७ सेवा)</Text>
+          </View>
+        )}
+
+        <View style={{height: 100}} /> 
+      </ScrollView>
+
+      {/* redBus Style Bottom Booking Bar */}
+      <View style={styles.bottomBar}>
+        <View>
+          <Text style={{color: '#fff', fontSize: 12}}>बुकिंग & चौकशीसाठी</Text>
+          <Text style={{color: '#c59b27', fontWeight: 'bold', fontSize: 16}}>शशी राहाणे</Text>
+        </View>
+        <TouchableOpacity style={styles.callBtn} onPress={() => makeCall('9890896040')}>
+          <Text style={styles.callBtnText}>📞 कॉल करा</Text>
+        </TouchableOpacity>
+      </View>
+
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#f4f6f9' },
+  header: { backgroundColor: '#1a365d', padding: 15, alignItems: 'center' },
+  headerTitle: { color: '#c59b27', fontSize: 20, fontWeight: 'bold' },
+  headerSubtitle: { color: '#fff', fontSize: 12 },
+  
+  navWrapper: { backgroundColor: '#0f2544', paddingVertical: 10 },
+  navScroll: { flexDirection: 'row', paddingHorizontal: 5 },
+  tab: { paddingVertical: 8, paddingHorizontal: 16, borderRadius: 20, marginRight: 8, backgroundColor: '#1a365d' },
+  activeTab: { backgroundColor: '#c59b27' },
+  tabText: { color: '#fff', fontWeight: 'bold', fontSize: 13 },
+  activeTabText: { color: '#000' },
+
+  content: { padding: 15 },
+  card: { backgroundColor: '#fff', padding: 15, borderRadius: 10, elevation: 3, marginBottom: 15 },
+  
+  banner: { backgroundColor: '#1a365d', padding: 12, borderRadius: 8, alignItems: 'center', marginBottom: 15 },
+  bannerTitle: { color: '#c59b27', fontWeight: 'bold', fontSize: 15 },
+  bannerSub: { color: '#fff', fontSize: 11, marginTop: 3 },
+
+  sectionHeading: { fontSize: 16, fontWeight: 'bold', color: '#1a365d', marginBottom: 10, borderBottomWidth: 1, borderBottomColor: '#eee', paddingBottom: 5 },
+  
+  timeBox: { backgroundColor: '#eef2f7', padding: 10, borderRadius: 6, marginBottom: 10 },
+  routeTitle: { fontWeight: 'bold', color: '#1a365d', fontSize: 14 },
+  timeLabel: { fontSize: 12, color: '#333', marginTop: 3 },
+
+  priceRow: { flexDirection: 'row', justifyContent: 'space-between' },
+  priceCard: { backgroundColor: '#f9f9f9', padding: 10, borderRadius: 6, width: '48%', alignItems: 'center', borderWidth: 1, borderColor: '#ddd' },
+  priceTitle: { fontSize: 12, color: '#555' },
+  priceVal: { fontSize: 16, fontWeight: 'bold', color: '#27ae60', marginTop: 3 },
+
+  tableItem: { backgroundColor: '#f8f9fa', padding: 10, borderRadius: 6, marginBottom: 10, borderWidth: 1, borderColor: '#eee' },
+  itemTitle: { fontWeight: 'bold', color: '#1a365d', fontSize: 14, marginBottom: 5 },
+  itemDetail: { fontSize: 13, color: '#444', marginVertical: 2 },
+
+  fleetGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
+  fleetBox: { width: '48%', backgroundColor: '#f8f9fa', padding: 10, borderRadius: 6, marginBottom: 10, alignItems: 'center', borderWidth: 1, borderColor: '#ddd' },
+  fleetName: { fontWeight: 'bold', color: '#1a365d' },
+  fleetRate: { color: '#d9534f', fontWeight: 'bold', marginTop: 3 },
+
+  bulletPoint: { fontSize: 13, color: '#333', marginVertical: 4 },
+
+  bottomBar: { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#1a365d', padding: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderTopWidth: 2, borderTopColor: '#c59b27' },
+  callBtn: { backgroundColor: '#27ae60', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 25 },
+  callBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 14 }
+});
