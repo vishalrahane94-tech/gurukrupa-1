@@ -1,89 +1,377 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GURUKRUPA 6 IN 1</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial}
-body{background:#000;color:#fff;padding:12px}
-.header{border:3px solid #FFD700;border-radius:15px;padding:14px;text-align:center;color:#FFD700}
-.header h1{font-size:16px}
-.header p{font-size:11px;margin-top:5px;color:#fff}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0}
-.tab{background:#fff;color:#000;padding:10px;border-radius:10px;text-align:center;font-weight:900;font-size:10px}
-.tab.active{background:#FFD700}
-.card{background:#fff;color:#000;border-radius:16px;padding:14px;margin-bottom:12px}
-.card h3{background:#000;color:#FFD700;padding:8px;border-radius:8px;text-align:center;font-size:13px;margin-bottom:8px}
-table{width:100%;border-collapse:collapse;font-size:11px;margin:8px 0}
-th,td{border:1.5px solid #000;padding:7px;text-align:center}
-th{background:#000;color:#FFD700}
-.btn{width:100%;background:#FFD700;color:#000;border:none;padding:13px;border-radius:10px;font-weight:900;margin-top:8px}
-.seats{background:#FFF9C4;border:2px solid #000;border-radius:12px;padding:10px;max-width:360px;margin:10px auto}
-.row{display:flex;gap:6px;margin:6px 0}
-.s{flex:1;background:#fff;border:2px solid #000;padding:12px;border-radius:8px;text-align:center;font-weight:900;font-size:11px}
-.s.sel{background:#000;color:#FFD700}
-.hide{display:none}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gurukrupa Tours - Booking</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .tab-btn.active {
+            background-color: #2563eb;
+            color: white;
+        }
+        .time-btn.selected {
+            background-color: #16a34a;
+            color: white;
+            border-color: #16a34a;
+        }
+    </style>
 </head>
-<body>
-<div class="header"><h1>🚕 GURUKRUPA TOURS - 9890896040</h1><p>6 IN 1 - SHARING | ONE WAY | AIRPORT | FLEET | DARSHAN | BUS</p></div>
+<body class="bg-gray-100 font-sans">
 
-<div class="tabs">
-<div class="tab active" id="t1" onclick="op('p1')">1 SHARING</div>
-<div class="tab" id="t2" onclick="op('p2')">2 ONE WAY</div>
-<div class="tab" id="t3" onclick="op('p3')">3 AIRPORT</div>
-<div class="tab" id="t4" onclick="op('p4')">4 FLEET</div>
-<div class="tab" id="t5" onclick="op('p5')">5 DARSHAN</div>
-<div class="tab" id="t6" onclick="op('p6')">6 BUSES</div>
-</div>
+    <!-- Header -->
+    <header class="bg-blue-900 text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold flex items-center gap-2">
+                <i class="fa-solid font-bold fa-taxi text-yellow-400"></i> GURUKRUPA TOURS
+            </h1>
+            <a href="tel:9890896040" class="bg-green-600 px-3 py-1.5 rounded-full text-sm font-semibold flex items-center gap-1 hover:bg-green-700">
+                <i class="fa-solid fa-phone"></i> 9890896040
+            </a>
+        </div>
+    </header>
 
-<div id="p1" class="card">
-<h3>1. NASHIK-PUNE SHARING</h3>
-<p style="font-size:11px;text-align:center"><b>Time:</b> 04:00,04:30,05:00 | 08:00,08:30,09:00<br><b>Pickup:</b> Thakkar Bazar, Dwarka, Mumbai Naka, Govind Nagar, Tunnel, Wakdewadi, Nashik Phata, Bhosri, Moshi, Chakan<br><b>Fare:</b> Front 750 / Back 550</p>
-<div class="seats">
-<div class="row"><div class="s" onclick="this.classList.toggle('sel')">F1-750</div><div class="s" style="background:#ddd">DRIVER</div></div>
-<div class="row"><div class="s" onclick="this.classList.toggle('sel')">R1-550</div><div class="s" onclick="this.classList.toggle('sel')">R2-550</div><div class="s" onclick="this.classList.toggle('sel')">R3-550</div></div>
-<div class="row"><div class="s" onclick="this.classList.toggle('sel')">B1-550</div><div class="s" onclick="this.classList.toggle('sel')">B2-550</div><div class="s" onclick="this.classList.toggle('sel')">B3-550</div></div>
-</div>
-<button class="btn" onclick="wa('SHARING')">BOOK ON WHATSAPP</button>
-</div>
+    <div class="container mx-auto p-4 max-w-2xl">
+        
+        <!-- Service Tabs -->
+        <div class="grid grid-cols-3 gap-2 mb-6 text-sm font-semibold">
+            <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2.5 rounded-lg border bg-white shadow-sm transition">1. Sharing</button>
+            <button onclick="switchTab('oneway')" id="tab-oneway" class="tab-btn p-2.5 rounded-lg border bg-white shadow-sm transition">2. One Way</button>
+            <button onclick="switchTab('airport')" id="tab-airport" class="tab-btn p-2.5 rounded-lg border bg-white shadow-sm transition">3. Airport</button>
+            <button onclick="switchTab('fleet')" id="tab-fleet" class="tab-btn p-2.5 rounded-lg border bg-white shadow-sm transition">4. Fleet</button>
+            <button onclick="switchTab('darshan')" id="tab-darshan" class="tab-btn p-2.5 rounded-lg border bg-white shadow-sm transition">5. Darshan</button>
+            <button onclick="switchTab('bus')" id="tab-bus" class="tab-btn p-2.5 rounded-lg border bg-white shadow-sm transition">6. Bus Inquiry</button>
+        </div>
 
-<div id="p2" class="card hide"><h3>2. ONE WAY - TOLL INCLUDED</h3>
-<table><tr><th>ROUTE</th><th>SEDAN</th><th>SUV</th><th>DIESEL</th></tr><tr><td>Nashik-Pune</td><td>3000</td><td>4000</td><td>5500</td></tr><tr><td>Nashik-Mumbai</td><td>3000</td><td>4000</td><td>5500</td></tr><tr><td>Pune-Mumbai</td><td>3000</td><td>4000</td><td>5500</td></tr></table>
-<button class="btn" onclick="wa('ONE WAY')">BOOK ONE WAY</button></div>
+        <!-- Form Container -->
+        <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+            
+            <!-- Customer Details (Common) -->
+            <div class="mb-5 border-b pb-4">
+                <h2 class="text-lg font-bold text-gray-800 mb-3"><i class="fa-solid fa-user text-blue-600"></i> ग्राहक माहिती (Customer Details)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">पूर्ण नाव (Full Name) *</label>
+                        <input type="text" id="cust-name" placeholder="उदा. राहुल पाटील" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">मोबाईल नंबर (Mobile No) *</label>
+                        <input type="tel" id="cust-phone" placeholder="उदा. 98xxxxxxxx" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    </div>
+                </div>
+            </div>
 
-<div id="p3" class="card hide"><h3>3. AIRPORT 3200/4000/5500/6500</h3>
-<table><tr><th>ROUTE</th><th>SEDAN</th><th>SUV</th><th>KIA</th><th>CRYSTA</th></tr><tr><td>Nashik-Mumbai Airport</td><td>3200</td><td>4000</td><td>5500</td><td>6500</td></tr><tr><td>Pune-Mumbai Airport</td><td>3200</td><td>4000</td><td>5500</td><td>6500</td></tr></table>
-<button class="btn" onclick="wa('AIRPORT')">BOOK AIRPORT</button></div>
+            <!-- 1. SHARING SECTION -->
+            <div id="section-sharing" class="booking-section">
+                <h3 class="font-bold text-blue-900 mb-3 text-md">१. शेअरिंग टॅक्सी बुकिंग (Sharing Taxi)</h3>
+                
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">गाडीचा प्रकार (Select Vehicle) *</label>
+                    <select id="sharing-vehicle" class="w-full p-2 border rounded-lg">
+                        <option value="Ertiga (एर्टिगा)">Ertiga (एर्टिगा)</option>
+                        <option value="Ciaz (सियाज)">Ciaz (सियाज)</option>
+                    </select>
+                </div>
 
-<div id="p4" class="card hide"><h3>4. FLEET PER KM RATE</h3>
-<table><tr><th>CAR</th><th>PER KM</th></tr><tr><td>DZIRE 4+1</td><td>12</td></tr><tr><td>CIAZ 4+1</td><td>13</td></tr><tr><td>ERTIGA 6+1</td><td>15</td></tr><tr><td>KIA CARENS 6+1</td><td>16</td></tr><tr><td>CRYSTA 7+1</td><td>20</td></tr><tr><td>URBANIA 17</td><td>35</td></tr></table>
-<button class="btn" onclick="wa('FLEET')">FLEET ENQUIRY</button></div>
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">प्रवासाची तारीख (Date) *</label>
+                    <input type="date" id="sharing-date" class="w-full p-2 border rounded-lg">
+                </div>
 
-<div id="p5" class="card hide"><h3>5. NASHIK DARSHAN</h3>
-<p style="font-size:11px">Trimbakeshwar, Anjaneri, Panchavati, Muktidham, Someshwar</p>
-<table><tr><th>CAR</th><th>RATE</th></tr><tr><td>SEDAN</td><td>3600</td></tr><tr><td>ERTIGA</td><td>4500</td></tr><tr><td>CRYSTA</td><td>5500</td></tr></table>
-<button class="btn" onclick="wa('DARSHAN')">BOOK DARSHAN</button></div>
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">वेळ निवडा (Select Fixed Time) *</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button type="button" onclick="selectTime('04:00 AM')" class="time-btn p-2 text-xs border rounded-lg hover:bg-gray-100">04:00 AM</button>
+                        <button type="button" onclick="selectTime('04:30 AM')" class="time-btn p-2 text-xs border rounded-lg hover:bg-gray-100">04:30 AM</button>
+                        <button type="button" onclick="selectTime('05:00 AM')" class="time-btn p-2 text-xs border rounded-lg hover:bg-gray-100">05:00 AM</button>
+                        <button type="button" onclick="selectTime('08:00 AM')" class="time-btn p-2 text-xs border rounded-lg hover:bg-gray-100">08:00 AM</button>
+                        <button type="button" onclick="selectTime('08:30 AM')" class="time-btn p-2 text-xs border rounded-lg hover:bg-gray-100">08:30 AM</button>
+                        <button type="button" onclick="selectTime('09:00 AM')" class="time-btn p-2 text-xs border rounded-lg hover:bg-gray-100">09:00 AM</button>
+                    </div>
+                    <input type="hidden" id="sharing-time">
+                </div>
 
-<div id="p6" class="card hide"><h3>6. BUSES 17/20/22/27/32/40/50</h3>
-<button class="btn" onclick="wa('BUS 17')">17 SEATER BUS</button>
-<button class="btn" onclick="wa('BUS 20')">20 SEATER BUS</button>
-<button class="btn" onclick="wa('BUS 22')">22 SEATER BUS</button>
-<button class="btn" onclick="wa('BUS 27')">27 SEATER BUS</button>
-<button class="btn" onclick="wa('BUS 32')">32 SEATER BUS</button>
-<button class="btn" onclick="wa('BUS 40')">40 SEATER BUS</button>
-<button class="btn" onclick="wa('BUS 50')">50 SEATER BUS</button>
-</div>
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">सीट निवडा (Seat Preference)</label>
+                    <select id="sharing-seat" class="w-full p-2 border rounded-lg">
+                        <option value="Front Seat (₹750)">Front Seat - ₹750</option>
+                        <option value="Back Seat (₹550)">Back Seat - ₹550</option>
+                    </select>
+                </div>
+            </div>
 
-<script>
-function op(id){
- ['p1','p2','p3','p4','p5','p6'].forEach(a=>document.getElementById(a).classList.add('hide'));
- document.getElementById(id).classList.remove('hide');
- ['t1','t2','t3','t4','t5','t6'].forEach(a=>document.getElementById(a).classList.remove('active'));
- document.getElementById({p1:'t1',p2:'t2',p3:'t3',p4:'t4',p5:'t5',p6:'t6'}[id]).classList.add('active');
-}
-function wa(t){window.open('https://wa.me/919890896040?text='+encodeURIComponent(t+' BOOKING ENQUIRY - GURUKRUPA'),' _blank')}
-</script>
+            <!-- 2. ONE WAY SECTION -->
+            <div id="section-oneway" class="booking-section hidden">
+                <h3 class="font-bold text-blue-900 mb-3 text-md">२. वन-वे बुकिंग (One Way - Toll Included)</h3>
+                
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">रूट निवडा (Select Route) *</label>
+                    <select id="oneway-route" class="w-full p-2 border rounded-lg">
+                        <option value="Nashik to Pune">Nashik To Pune</option>
+                        <option value="Pune to Nashik">Pune To Nashik</option>
+                        <option value="Mumbai to Nashik">Mumbai To Nashik</option>
+                        <option value="Nashik to Mumbai">Nashik To Mumbai</option>
+                        <option value="Pune to Mumbai">Pune To Mumbai</option>
+                        <option value="Mumbai to Pune">Mumbai To Pune</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">प्रवासाची तारीख (Date) *</label>
+                    <input type="date" id="oneway-date" class="w-full p-2 border rounded-lg">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">गाडीचा प्रकार (Car Category)</label>
+                    <select id="oneway-car" class="w-full p-2 border rounded-lg">
+                        <option value="Sedan (₹3000)">Sedan (₹3000)</option>
+                        <option value="SUV (₹4000)">SUV (₹4000)</option>
+                        <option value="Diesel (₹5500)">Diesel (₹5500)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 3. AIRPORT SECTION -->
+            <div id="section-airport" class="booking-section hidden">
+                <h3 class="font-bold text-blue-900 mb-3 text-md">३. एअरपोर्ट बुकिंग (Airport Transfer)</h3>
+                
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">एअरपोर्ट रूट (Select Airport Route) *</label>
+                    <select id="airport-route" class="w-full p-2 border rounded-lg">
+                        <option value="Nashik to Mumbai Airport">Nashik To Mumbai Airport</option>
+                        <option value="Mumbai Airport to Nashik">Mumbai Airport To Nashik</option>
+                        <option value="Pune to Mumbai Airport">Pune To Mumbai Airport</option>
+                        <option value="Mumbai Airport to Pune">Mumbai Airport To Pune</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">प्रवासाची तारीख (Date) *</label>
+                    <input type="date" id="airport-date" class="w-full p-2 border rounded-lg">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">गाडीचा प्रकार (Car Category)</label>
+                    <select id="airport-car" class="w-full p-2 border rounded-lg">
+                        <option value="Sedan (₹3200)">Sedan (₹3200)</option>
+                        <option value="SUV (₹4000)">SUV (₹4000)</option>
+                        <option value="Kia Carens (₹5500)">Kia Carens (₹5500)</option>
+                        <option value="Innova Crysta (₹6500)">Innova Crysta (₹6500)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 4. FLEET SECTION -->
+            <div id="section-fleet" class="booking-section hidden">
+                <h3 class="font-bold text-blue-900 mb-3 text-md">४. फ्लीट बुकिंग (Per KM Fleet Rental)</h3>
+                
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">गाडी निवडा (Select Vehicle) *</label>
+                    <select id="fleet-car" class="w-full p-2 border rounded-lg">
+                        <option value="Dzire 4+1 (₹12/km)">Dzire 4+1 (₹12/km)</option>
+                        <option value="Ciaz 4+1 (₹13/km)">Ciaz 4+1 (₹13/km)</option>
+                        <option value="Ertiga 6+1 (₹15/km)">Ertiga 6+1 (₹15/km)</option>
+                        <option value="Kia Carens 6+1 (₹16/km)">Kia Carens 6+1 (₹16/km)</option>
+                        <option value="Innova Crysta 7+1 (₹20/km)">Innova Crysta 7+1 (₹20/km)</option>
+                        <option value="Force Urbania 17 Seater (₹35/km)">Force Urbania 17 Seater (₹35/km)</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">प्रवासाची तारीख (Date) *</label>
+                    <input type="date" id="fleet-date" class="w-full p-2 border rounded-lg">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">कुठे जायचे आहे? (Destination / Route Spot) *</label>
+                    <input type="text" id="fleet-spot" placeholder="उदा. नाशिक ते महाबळेश्वर" class="w-full p-2 border rounded-lg">
+                </div>
+            </div>
+
+            <!-- 5. DARSHAN SECTION -->
+            <div id="section-darshan" class="booking-section hidden">
+                <h3 class="font-bold text-blue-900 mb-3 text-md">५. नाशिक दर्शन (Nashik Darshan)</h3>
+                <p class="text-xs text-gray-500 mb-3">कव्हर होणारी ठिकाणे: त्र्यंबकेश्वर, अंंजनेरी, पंचवटी, मुक्तिधाम, सोमेश्वर.</p>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">गाडी निवडा (Select Vehicle) *</label>
+                    <select id="darshan-car" class="w-full p-2 border rounded-lg">
+                        <option value="Sedan (₹3600)">Sedan - ₹3600</option>
+                        <option value="Ertiga (₹4500)">Ertiga - ₹4500</option>
+                        <option value="Innova Crysta (₹5500)">Innova Crysta - ₹5500</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">प्रवासाची तारीख (Date) *</label>
+                    <input type="date" id="darshan-date" class="w-full p-2 border rounded-lg">
+                </div>
+            </div>
+
+            <!-- 6. BUS INQUIRY SECTION -->
+            <div id="section-bus" class="booking-section hidden">
+                <h3 class="font-bold text-blue-900 mb-3 text-md">६. बस इन्क्वायरी (Bus Rental Inquiry)</h3>
+                
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">बसची क्षमता निवडा (Seater Capacity) *</label>
+                    <select id="bus-capacity" class="w-full p-2 border rounded-lg">
+                        <option value="17 Seater Bus">17 Seater Bus</option>
+                        <option value="20 Seater Bus">20 Seater Bus</option>
+                        <option value="22 Seater Bus">22 Seater Bus</option>
+                        <option value="27 Seater Bus">27 Seater Bus</option>
+                        <option value="32 Seater Bus">32 Seater Bus</option>
+                        <option value="40 Seater Bus">40 Seater Bus</option>
+                        <option value="50 Seater Bus">50 Seater Bus</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">प्रवासाची तारीख (Travel Date)</label>
+                    <input type="date" id="bus-date" class="w-full p-2 border rounded-lg">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">अतिरिक्त माहिती / रूट (Message / Route Details)</label>
+                    <textarea id="bus-msg" rows="2" placeholder="उदा. नाशिक ते गोवा ३ दिवसांसाठी..." class="w-full p-2 border rounded-lg"></textarea>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button onclick="sendWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-md flex justify-center items-center gap-2 mt-4 transition">
+                <i class="fa-brands fa-whatsapp text-xl"></i> व्हॉट्सॲपवर बुकिंग पाठवा (Book On WhatsApp)
+            </button>
+
+        </div>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script>
+        let currentTab = 'sharing';
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.booking-section').forEach(sec => sec.classList.add('hidden'));
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+        }
+
+        function selectTime(timeStr) {
+            document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            document.getElementById('sharing-time').value = timeStr;
+        }
+
+        function sendWhatsApp() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+
+            if (!name || !phone) {
+                alert('कृपया तुमचे नाव आणि मोबाईल नंबर टाका!');
+                return;
+            }
+
+            let message = `*न्यू बुकिंग - गुरुकृपा टुअर्स*\n\n`;
+            message += `👤 *ग्राहकाचे नाव:* ${name}\n`;
+            message += `📞 *मोबाईल नंबर:* ${phone}\n`;
+            message += `----------------------------\n`;
+
+            if (currentTab === 'sharing') {
+                const vehicle = document.getElementById('sharing-vehicle').value;
+                const date = document.getElementById('sharing-date').value;
+                const time = document.getElementById('sharing-time').value;
+                const seat = document.getElementById('sharing-seat').value;
+
+                if (!date || !time) {
+                    alert('कृपया तारीख आणि वेळ निवडा!');
+                    return;
+                }
+
+                message += `🚕 *सेवा:* शेअरिंग टॅक्सी (Nashik-Pune)\n`;
+                message += `🚘 *गाडी:* ${vehicle}\n`;
+                message += `📅 *तारीख:* ${date}\n`;
+                message += `⏰ *वेळ:* ${time}\n`;
+                message += `💺 *सीट प्रकार:* ${seat}\n`;
+
+            } else if (currentTab === 'oneway') {
+                const route = document.getElementById('oneway-route').value;
+                const date = document.getElementById('oneway-date').value;
+                const car = document.getElementById('oneway-car').value;
+
+                if (!date) {
+                    alert('कृपया तारीख निवडा!');
+                    return;
+                }
+
+                message += `🚕 *सेवा:* वन-वे टॅक्सी\n`;
+                message += `📍 *रूट:* ${route}\n`;
+                message += `📅 *तारीख:* ${date}\n`;
+                message += `🚘 *गाडी:* ${car}\n`;
+
+            } else if (currentTab === 'airport') {
+                const route = document.getElementById('airport-route').value;
+                const date = document.getElementById('airport-date').value;
+                const car = document.getElementById('airport-car').value;
+
+                if (!date) {
+                    alert('कृपया तारीख निवडा!');
+                    return;
+                }
+
+                message += `✈️ *सेवा:* एअरपोर्ट ट्रान्सफर\n`;
+                message += `📍 *रूट:* ${route}\n`;
+                message += `📅 *तारीख:* ${date}\n`;
+                message += `🚘 *गाडी:* ${car}\n`;
+
+            } else if (currentTab === 'fleet') {
+                const car = document.getElementById('fleet-car').value;
+                const date = document.getElementById('fleet-date').value;
+                const spot = document.getElementById('fleet-spot').value.trim();
+
+                if (!date || !spot) {
+                    alert('कृपया तारीख आणि कुठे जायचे आहे तो स्पॉट टाका!');
+                    return;
+                }
+
+                message += `🚘 *सेवा:* फ्लीट (Per KM Rental)\n`;
+                message += `🚗 *गाडी:* ${car}\n`;
+                message += `📅 *तारीख:* ${date}\n`;
+                message += `📍 *जाण्याचे ठिकाण (Spot):* ${spot}\n`;
+
+            } else if (currentTab === 'darshan') {
+                const car = document.getElementById('darshan-car').value;
+                const date = document.getElementById('darshan-date').value;
+
+                if (!date) {
+                    alert('कृपया तारीख निवडा!');
+                    return;
+                }
+
+                message += `🛕 *सेवा:* नाशिक दर्शन\n`;
+                message += `🚘 *गाडी:* ${car}\n`;
+                message += `📅 *तारीख:* ${date}\n`;
+
+            } else if (currentTab === 'bus') {
+                const capacity = document.getElementById('bus-capacity').value;
+                const date = document.getElementById('bus-date').value;
+                const busMsg = document.getElementById('bus-msg').value.trim();
+
+                message += `🚌 *सेवा:* बस इन्क्वायरी\n`;
+                message += `💺 *बस क्षमता:* ${capacity}\n`;
+                if(date) message += `📅 *तारीख:* ${date}\n`;
+                if(busMsg) message += `📝 *इतर तपशील:* ${busMsg}\n`;
+            }
+
+            // WhatsApp Redirection
+            const myPhoneNumber = "919890896040";
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${myPhoneNumber}?text=${encodedMessage}`;
+
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
 </body>
 </html>
