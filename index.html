@@ -20,13 +20,6 @@
         }
     </script>
     <style>
-        .seat { transition: all 0.2s ease; }
-        .seat.selected {
-            background-color: #d84e55 !important;
-            color: white !important;
-            border-color: #b83238 !important;
-        }
-        .seat.selected .price-tag { color: white !important; }
         .tab-btn.active {
             background-color: #d84e55;
             color: white;
@@ -36,6 +29,54 @@
             background-color: #d84e55;
             color: white;
             border-color: #d84e55;
+        }
+
+        /* Photo UI Matching Visual Seat Styling */
+        .visual-seat {
+            position: relative;
+            width: 44px;
+            height: 64px;
+            border-radius: 12px 12px 8px 8px;
+            border: 2px solid #16a34a;
+            background-color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+        .visual-seat::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            width: 78%;
+            height: 14px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 8px 8px 4px 4px;
+        }
+        .visual-seat .price-tag {
+            position: absolute;
+            bottom: -20px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #111827;
+        }
+        .visual-seat.selected {
+            border-color: #2563eb !important;
+            background-color: #3b82f6 !important;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+        }
+        .visual-seat.selected::before {
+            background: rgba(255,255,255,0.4);
+        }
+        .visual-seat.selected .seat-icon {
+            color: white !important;
+        }
+        .visual-seat.selected .price-tag {
+            color: #2563eb !important;
         }
     </style>
 </head>
@@ -95,32 +136,27 @@
             <!-- 1. SHARING SECTION -->
             <div id="section-sharing" class="booking-section">
                 
-                <!-- Nashik to Pune Header Banner -->
-                <div class="bg-red-50 border border-red-200 text-redbus text-xs font-bold p-2 rounded-lg text-center mb-3 flex items-center justify-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-route"></i> नाशिक ते पुणे शेअरिंग टॅक्सी (Nashik to Pune Sharing)
+                <!-- Direction Selection -->
+                <div class="mb-3">
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची दिशा (Route Direction) *</label>
+                    <select id="sharing-direction" onchange="updateRouteDetails()" class="w-full p-2 border rounded text-xs font-bold text-redbus bg-red-50">
+                        <option value="N2P">नाशिक ते पुणे (Nashik To Pune)</option>
+                        <option value="P2N">पुणे ते नाशिक (Pune To Nashik)</option>
+                    </select>
                 </div>
 
                 <!-- Pickup & Drop Selection -->
                 <div class="grid grid-cols-2 gap-2 mb-3">
                     <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">नाशिक पिकअप पॉईंट *</label>
+                        <label id="lbl-pickup" class="block text-[11px] font-semibold text-gray-600 mb-1">नाशिक पिकअप पॉईंट *</label>
                         <select id="sharing-pickup" class="w-full p-1.5 border rounded text-xs font-semibold bg-white">
-                            <option value="ठक्कर बाजार">ठक्कर बाजार</option>
-                            <option value="द्वारका सर्कल">द्वारका सर्कल</option>
-                            <option value="मुंबई नाका">मुंबई नाका</option>
-                            <option value="गोविंद नगर">गोविंद नगर</option>
-                            <option value="टनेल (Tunnel)">टनेल (Tunnel)</option>
-                            <option value="पवन हॉटेल">पवन हॉटेल</option>
+                            <!-- Populated dynamically via JS -->
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पुणे ड्रॉप पॉईंट *</label>
+                        <label id="lbl-drop" class="block text-[11px] font-semibold text-gray-600 mb-1">पुणे ड्रॉप पॉईंट *</label>
                         <select id="sharing-drop" class="w-full p-1.5 border rounded text-xs font-semibold bg-white">
-                            <option value="चाकण">चाकण</option>
-                            <option value="मोशी">मोशी</option>
-                            <option value="भोसरी">भोसरी</option>
-                            <option value="नाशिक फाटा">नाशिक फाटा</option>
-                            <option value="वाकडेवाडी">वाकडेवाडी</option>
+                            <!-- Populated dynamically via JS -->
                         </select>
                     </div>
                 </div>
@@ -141,94 +177,87 @@
                     </div>
                 </div>
 
-                <!-- Timing Buttons -->
-                <div class="mb-3">
+                <!-- Timing Buttons (Dynamic according to route direction) -->
+                <div class="mb-5">
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची वेळ निवडा *</label>
-                    <div class="grid grid-cols-3 gap-1.5">
-                        <button type="button" onclick="selectTime(this, '04:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">04:00 AM</button>
-                        <button type="button" onclick="selectTime(this, '04:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">04:30 AM</button>
-                        <button type="button" onclick="selectTime(this, '05:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">05:00 AM</button>
-                        <button type="button" onclick="selectTime(this, '08:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">08:00 AM</button>
-                        <button type="button" onclick="selectTime(this, '08:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">08:30 AM</button>
-                        <button type="button" onclick="selectTime(this, '09:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">09:00 AM</button>
+                    <div id="time-container" class="grid grid-cols-3 gap-1.5">
+                        <!-- Dynamic Buttons -->
                     </div>
                     <input type="hidden" id="sharing-time">
                 </div>
 
-                <!-- Seat Layout Interior -->
-                <div class="bg-gray-50 p-3 rounded-lg border-2 border-gray-300">
-                    <div class="flex justify-between items-center mb-3 pb-2 border-b">
-                        <span class="text-[11px] font-bold text-gray-500 uppercase">समोरची बाजू (Front)</span>
-                        <div class="flex gap-2 text-[10px]">
-                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-white border border-gray-400 rounded"></span> उपलब्ध</span>
-                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-redbus rounded"></span> सिलेक्टेड</span>
+                <!-- Visual Seat Layout UI (Matches Photo Style) -->
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <div class="flex justify-between items-center mb-4 pb-2 border-b">
+                        <span class="text-xs font-bold text-gray-700 uppercase" id="car-title">Ertiga — 6 Seater</span>
+                        <div class="w-7 h-7 bg-gray-300 text-gray-700 rounded-full flex items-center justify-center text-xs shadow-inner">
+                            <i class="fa-solid fa-steering-wheel"></i> Driver
                         </div>
                     </div>
 
-                    <!-- ERTIGA SEAT LAYOUT -->
-                    <div id="layout-ertiga" class="space-y-3">
-                        <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
-                            <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
-                                <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
-                                <span class="text-xs font-black">F1 (Front)</span>
-                            </button>
-                            <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
-                                <i class="fa-solid fa-wheel"></i> Driver
+                    <!-- ERTIGA VISUAL LAYOUT -->
+                    <div id="layout-ertiga" class="space-y-8 py-2">
+                        <!-- Front Row -->
+                        <div class="flex justify-start pl-4">
+                            <div onclick="toggleSeat(this, 'Front Seat (F1) - ₹799')" class="visual-seat">
+                                <i class="fa-solid fa-user seat-icon text-gray-300 text-xs mb-1"></i>
+                                <span class="price-tag">₹799</span>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
-                            <button type="button" onclick="toggleSeat(this, 'Middle Left (M1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                <span class="text-xs font-bold">M1 (Left)</span>
-                            </button>
-                            <button type="button" onclick="toggleSeat(this, 'Middle Center (M2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                <span class="text-xs font-bold">M2 (Mid)</span>
-                            </button>
-                            <button type="button" onclick="toggleSeat(this, 'Middle Right (M3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                <span class="text-xs font-bold">M3 (Right)</span>
-                            </button>
+                        <!-- Middle Row -->
+                        <div class="flex justify-between px-2">
+                            <div onclick="toggleSeat(this, 'Middle Left (M1) - ₹799')" class="visual-seat">
+                                <i class="fa-solid fa-user seat-icon text-gray-300 text-xs mb-1"></i>
+                                <span class="price-tag">₹799</span>
+                            </div>
+                            <div onclick="toggleSeat(this, 'Middle Center (M2) - ₹799')" class="visual-seat">
+                                <i class="fa-solid fa-user seat-icon text-gray-300 text-xs mb-1"></i>
+                                <span class="price-tag">₹799</span>
+                            </div>
+                            <div onclick="toggleSeat(this, 'Middle Right (M3) - ₹799')" class="visual-seat">
+                                <i class="fa-solid fa-user seat-icon text-gray-300 text-xs mb-1"></i>
+                                <span class="price-tag">₹799</span>
+                            </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3 bg-gray-200 p-1.5 rounded-md">
-                            <button type="button" onclick="toggleSeat(this, 'Back Left (B1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                <span class="text-xs font-bold">B1 (Back L)</span>
-                            </button>
-                            <button type="button" onclick="toggleSeat(this, 'Back Right (B2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                <span class="text-xs font-bold">B2 (Back R)</span>
-                            </button>
+                        <!-- Back Row -->
+                        <div class="flex justify-around px-6">
+                            <div onclick="toggleSeat(this, 'Back Left (B1) - ₹799')" class="visual-seat">
+                                <i class="fa-solid fa-user seat-icon text-gray-300 text-xs mb-1"></i>
+                                <span class="price-tag">₹799</span>
+                            </div>
+                            <div onclick="toggleSeat(this, 'Back Right (B2) - ₹799')" class="visual-seat">
+                                <i class="fa-solid fa-user seat-icon text-gray-300 text-xs mb-1"></i>
+                                <span class="price-tag">₹799</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- CIAZ SEAT LAYOUT -->
-                    <div id="layout-ciaz" class="space-y-3 hidden">
-                        <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
-                            <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
-                                <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
-                                <span class="text-xs font-black">F1 (Front)</span>
-                            </button>
-                            <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
-                                <i class="fa-solid fa-wheel"></i> Driver
+                    <!-- CIAZ VISUAL LAYOUT -->
+                    <div id="layout-ciaz" class="space-y-8 py-2 hidden">
+                        <!-- Front Row -->
+                        <div class="flex justify-start pl-4">
+                            <div onclick="toggleSeat(this, 'Front Seat (F1) - ₹899')" class="visual-seat">
+                                <i class="fa-solid fa-user seat-icon text-gray-300 text-xs mb-1"></i>
+                                <span class="price-tag">₹899</span>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
-                            <button type="button" onclick="toggleSeat(this, 'Rear Left (R1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                <span class="text-xs font-bold">R1 (Left)</span>
-                            </button>
-                            <button type="button" onclick="toggleSeat(this, 'Rear Center (R2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                <span class="text-xs font-bold">R2 (Mid)</span>
-                            </button>
-                            <button type="button" onclick="toggleSeat(this, 'Rear Right (R3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                <span class="text-xs font-bold">R3 (Right)</span>
-                            </button>
+                        <!-- Rear Row -->
+                        <div class="flex justify-between px-2">
+                            <div onclick="toggleSeat(this, 'Rear Left (R1) - ₹899')" class="visual-seat">
+                                <i class="fa-solid fa-user seat-icon text-gray-300 text-xs mb-1"></i>
+                                <span class="price-tag">₹899</span>
+                            </div>
+                            <div onclick="toggleSeat(this, 'Rear Center (R2) - ₹899')" class="visual-seat">
+                                <i class="fa-solid fa-user seat-icon text-gray-300 text-xs mb-1"></i>
+                                <span class="price-tag">₹899</span>
+                            </div>
+                            <div onclick="toggleSeat(this, 'Rear Right (R3) - ₹899')" class="visual-seat">
+                                <i class="fa-solid fa-user seat-icon text-gray-300 text-xs mb-1"></i>
+                                <span class="price-tag">₹899</span>
+                            </div>
                         </div>
                     </div>
 
@@ -287,4 +316,31 @@
                 </div>
                 <div>
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी आणि रेट (Toll Included) *</label>
-                    <select id="airport-car" class="w-full p-2 border rounded text-xs font-bol
+                    <select id="airport-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
+                        <option value="SEDAN (S.V / Dzire) - ₹3200">SEDAN (Dzire) - ₹3200</option>
+                        <option value="SUV (Ertiga / XL6) - ₹4000">SUV (Ertiga / XL6) - ₹4000</option>
+                        <option value="KIA (Carens) - ₹5500">KIA (Carens) - ₹5500</option>
+                        <option value="INNOVA (Crysta) - ₹6500">INNOVA (Crysta) - ₹6500</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
+                        <input type="date" id="airport-date" class="w-full p-2 border rounded text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ (Clock) *</label>
+                        <input type="time" id="airport-time" class="w-full p-2 border rounded text-xs">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. FLEET SECTION (PER KM) -->
+            <div id="section-fleet" class="booking-section hidden space-y-3">
+                <h3 class="font-bold text-gray-800 text-xs border-b pb-1">आम्हाकडील गाड्यांचे किलोमीटर रेट्स (Per KM)</h3>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी निवडा *</label>
+                    <select id="fleet-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
+                        <option value="Maruti Dzire - ₹12/- Per KM">MARUTI DZIRE - ₹12/- PER KM</option>
+                        <option value="Maruti Ciaz - ₹13/- Per KM">MARUTI CIAZ - ₹13/- PER KM</option>
+                        <option value="Maruti Ertiga - ₹15/- Per KM">MARUTI ERTIGA - ₹15/- PER KM</option>
