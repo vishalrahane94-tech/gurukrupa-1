@@ -3,533 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gurukrupa Tours and Travels</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>GURUKRUPA TOURS AND TRAVELS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background-color: #f5f5f5; color: #333; }
+        header { background: #1a2a3a; color: white; padding: 15px; }
+        header .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .logo-box { display: flex; align-items: center; gap: 15px; }
+        .logo-box span.gk { background: #e67e22; color: white; padding: 10px 15px; border-radius: 50%; font-weight: bold; font-size: 24px; }
+        .logo-box h1 { font-size: 24px; color: #fff; }
+        .logo-box p { font-size: 12px; color: #bdc3c7; }
+        .contact-links a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; font-size: 16px; }
+        
+        .main-container { max-width: 1000px; margin: 20px auto; padding: 10px; }
+        .section-card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .section-card h2, .section-card h3 { color: #1a2a3a; margin-bottom: 15px; border-bottom: 2px solid #e67e22; padding-bottom: 5px; font-size: 18px; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        
+        .sightseeing-box { background: #eef7ff; padding: 15px; border-radius: 6px; margin-bottom: 15px; line-height: 1.8; }
+        
+        .features-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+        .feature-item { background: #f9f9f9; padding: 10px; border-radius: 5px; border-left: 4px solid #27ae60; font-size: 14px; }
+        
+        footer { background: #1a2a3a; color: white; text-align: center; padding: 20px; margin-top: 30px; }
 
-        body {
-            background-color: #f4f6f9;
-            color: #333;
-            line-height: 1.6;
-            padding-bottom: 40px;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            padding: 20px 15px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-
-        .header-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-circle {
-            background: #ff9800;
-            color: #fff;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 22px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-
-        .brand-text h1 {
-            font-size: 26px;
-            letter-spacing: 1px;
-        }
-
-        .brand-text p {
-            font-size: 14px;
-            color: #e0e0e0;
-        }
-
-        .contact-header {
-            display: flex;
-            gap: 15px;
-            margin-top: 5px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .contact-header a {
-            color: #fff;
-            background: rgba(255,255,255,0.2);
-            padding: 6px 14px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        /* Container & Cards */
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-            border-left: 5px solid #2a5298;
-        }
-
-        .card h2, .card h3 {
-            color: #1e3c72;
-            margin-bottom: 15px;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 15px;
-            outline: none;
-        }
-
-        .form-control:focus {
-            border-color: #2a5298;
-        }
-
-        .row {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .col {
-            flex: 1;
-            min-width: 250px;
-        }
-
-        /* Sightseeing List */
-        .sightseeing-list {
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            line-height: 1.8;
-        }
-
-        /* Payment Box */
-        .payment-box {
-            background: #eef7ff;
-            border: 2px dashed #2a5298;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 25px;
-        }
-
-        .btn-pay {
-            background-color: #5f6368;
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-
-        .btn-pay:hover {
-            background-color: #3c4043;
-        }
-
-        .btn-whatsapp {
-            background-color: #25D366;
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-
-        .btn-whatsapp:hover {
-            background-color: #1ebd56;
-        }
-
-        /* Features */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            margin-top: 15px;
-        }
-
-        .feature-item {
-            background: #f8f9fa;
-            padding: 10px 15px;
-            border-radius: 6px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .feature-item i {
-            color: #25D366;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #1e3c72;
-            color: white;
-            margin-top: 30px;
-            font-size: 14px;
-        }
+        /* Payment UI styling */
+        .pay-btn { background-color: #5f6368; color: white; border: none; padding: 12px 20px; border-radius: 5px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; margin-top: 10px; }
+        .wa-btn { background-color: #25D366; color: white; border: none; padding: 12px 20px; border-radius: 5px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
     <header>
         <div class="header-container">
-            <div class="brand">
-                <div class="logo-circle">GK</div>
-                <div class="brand-text">
+            <div class="logo-box">
+                <span class="gk">GK</span>
+                <div>
                     <h1>GURUKRUPA</h1>
                     <p>TOURS AND TRAVELS</p>
-                    <p style="font-size: 12px; color: #ffca28;">Prop: Shashi Rahane</p>
+                    <p>Prop: <span>Shashi Rahane</span></p>
                 </div>
             </div>
-            <div class="contact-header">
+            <div class="contact-links">
                 <a href="tel:9890896040"><i class="fa fa-phone"></i> 9890896040</a>
                 <a href="tel:9922862007"><i class="fa fa-phone"></i> 9922862007</a>
             </div>
         </div>
     </header>
 
-    <div class="container">
-        
-        <!-- Main Form -->
-        <form id="mainBookingForm">
+    <div class="main-container">
 
-            <!-- 1. Customer Details -->
-            <div class="card">
-                <h2><i class="fa fa-user"></i> ग्राहक माहिती (Customer Details)</h2>
-                <div class="row">
-                    <div class="col form-group">
-                        <label>पूर्ण नाव (Full Name):</label>
-                        <input type="text" id="custName" class="form-control" placeholder="तुमचे नाव टाका" required>
-                    </div>
-                    <div class="col form-group">
-                        <label>मोबाईल नंबर (Mobile No):</label>
-                        <input type="tel" id="custPhone" class="form-control" placeholder="१० अंकी नंबर टाका" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col form-group">
-                        <label>प्रवासाची तारीख (Travel Date):</label>
-                        <input type="date" id="travelDate" class="form-control" required>
-                    </div>
-                    <div class="col form-group">
-                        <label>पिकअप ठिकाण (Pickup Address):</label>
-                        <input type="text" id="pickupAddr" class="form-control" placeholder="पिकअप ॲड्रेस टाका" required>
-                    </div>
-                </div>
+        <!-- ग्राहक माहिती -->
+        <div class="section-card">
+            <h2><i class="fa fa-user"></i> ग्राहक माहिती (Customer Details)</h2>
+            <div class="form-group">
+                <label>ग्राहकाचे नाव:</label>
+                <input type="text" id="custName" placeholder="तुमचे पूर्ण नाव टाका">
             </div>
-
-            <!-- 2. Select Service Category -->
-            <div class="card">
-                <h2><i class="fa fa-taxi"></i> सेवा निवडा (Select Travel Service)</h2>
-                
-                <div class="form-group">
-                    <label>सर्व्हिस प्रकार (Service Type):</label>
-                    <select id="serviceType" class="form-control" onchange="toggleServiceOptions()">
-                        <option value="One-Way Taxi">वन-वे टॅक्सी (One Way Taxi - Toll Included)</option>
-                        <option value="Airport Transfer">मुंबई एअरपोर्ट पिकअप / ड्रॉप सर्व्हिस</option>
-                        <option value="Per KM Rates">किलोमीटर रेट्स (Per KM Taxi)</option>
-                        <option value="Nashik Darshan">नाशिक दर्शन सिटी पॉईंट</option>
-                        <option value="Bus Inquiry">बस इन्क्वायरी (Bus Booking)</option>
-                    </select>
-                </div>
-
-                <!-- Sub Options per Service -->
-                <div id="oneWayOptions" class="service-option">
-                    <div class="row">
-                        <div class="col form-group">
-                            <label>रूट निवडा:</label>
-                            <select id="oneWayRoute" class="form-control">
-                                <option value="Nashik to Pune">नाशिक ते पुणे</option>
-                                <option value="Pune to Nashik">पुणे ते नाशिक</option>
-                                <option value="Nashik to Mumbai">नाशिक ते मुंबई</option>
-                                <option value="Mumbai to Nashik">मुंबई ते नाशिक</option>
-                                <option value="Pune to Mumbai">पुणे ते मुंबई</option>
-                                <option value="Mumbai to Pune">मुंबई ते पुणे</option>
-                                <option value="Nashik to Sambhajinagar">नाशिक ते संभाजीनगर</option>
-                                <option value="Sambhajinagar to Nashik">संभाजीनगर ते नाशिक</option>
-                                <option value="Pune to Sambhajinagar">पुणे ते संभाजीनगर</option>
-                                <option value="Sambhajinagar to Pune">संभाजीनगर ते पुणे</option>
-                            </select>
-                        </div>
-                        <div class="col form-group">
-                            <label>गाडी निवडा:</label>
-                            <select id="oneWayVehicle" class="form-control">
-                                <option value="SEDAN (Dzire/Aura) - ₹3000">SEDAN (Dzire / Aura) - ₹3000</option>
-                                <option value="SUV (Ertiga) - ₹4000">SUV (Ertiga) - ₹4000</option>
-                                <option value="DIESEL (Kia Carens/Crysta) - ₹5500">DIESEL (Kia Carens / Crysta) - ₹5500</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="airportOptions" class="service-option" style="display:none;">
-                    <div class="row">
-                        <div class="col form-group">
-                            <label>एअरपोर्ट रूट:</label>
-                            <select id="airportRoute" class="form-control">
-                                <option value="Nashik to Mumbai Airport Drop">NASHIK TO MUMBAI AIRPORT DROP</option>
-                                <option value="Mumbai Airport to Nashik Drop">MUMBAI AIRPORT TO NASHIK DROP</option>
-                                <option value="Pune to Mumbai Airport Drop">PUNE TO MUMBAI AIRPORT DROP</option>
-                                <option value="Mumbai Airport to Pune Drop">MUMBAI AIRPORT TO PUNE DROP</option>
-                            </select>
-                        </div>
-                        <div class="col form-group">
-                            <label>गाडी निवडा:</label>
-                            <select id="airportVehicle" class="form-control">
-                                <option value="SEDAN (Dzire) - ₹3200">SEDAN (Dzire) - ₹3200</option>
-                                <option value="SUV (Ertiga / XL6) - ₹4000">SUV (Ertiga / XL6) - ₹4000</option>
-                                <option value="KIA (Carens) - ₹5500">KIA (Carens) - ₹5500</option>
-                                <option value="INNOVA (Crysta) - ₹6500">INNOVA (Crysta) - ₹6500</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="perKmOptions" class="service-option" style="display:none;">
-                    <div class="form-group">
-                        <label>गाडी आणि रेट (Per KM):</label>
-                        <select id="kmVehicle" class="form-control">
-                            <option value="Maruti Dzire - ₹12/- Per KM">MARUTI DZIRE - ₹12/- PER KM</option>
-                            <option value="Maruti Ciaz - ₹13/- Per KM">MARUTI CIAZ - ₹13/- PER KM</option>
-                            <option value="Maruti Ertiga - ₹15/- Per KM">MARUTI ERTIGA - ₹15/- PER KM</option>
-                            <option value="Maruti Excel 6 - ₹15/- Per KM">MARUTI EXCEL 6 - ₹15/- PER KM</option>
-                            <option value="Kia Carens - ₹16/- Per KM">KIA CARENS - ₹16/- PER KM</option>
-                            <option value="Innova Crysta - ₹20/- Per KM">INNOVA CRYSTA - ₹20/- PER KM</option>
-                            <option value="Force Urbania - ₹35/- Per KM">FORCE URBANIA - ₹35/- PER KM</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div id="darshanOptions" class="service-option" style="display:none;">
-                    <div class="sightseeing-list">
-                        <strong>📍 समाविष्ट प्रेक्षणीय स्थळे:</strong><br>
-                        • त्र्यंबकेश्वर ज्योतिर्लिंग • श्री स्वामी समर्थ गुरुपीठ • अंजनेरी हनुमानजी टेम्पल • सोमेश्वर • साधना मिसळ / ग्रेप ॲंबेसि • पंचवटी • तपोवन • स्वामी नारायण टेम्पल • अण्णा गणपती • मुक्तिधाम
-                    </div>
-                    <div class="form-group">
-                        <label>गाडी निवडा:</label>
-                        <select id="darshanVehicle" class="form-control">
-                            <option value="सिडान कार (4+1) - ₹3600">सिडान कार (4+1 Seater) - ₹3600</option>
-                            <option value="ईरटीका (6+1) - ₹4500">ईरटीका (6+1 Seater) - ₹4500</option>
-                            <option value="इनोव्हा / किया करेन्स (7+1) - ₹5500">इनोव्हा / किया करेन्स (7+1 Seater) - ₹5500</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div id="busOptions" class="service-option" style="display:none;">
-                    <div class="form-group">
-                        <label>बस सीटिंग क्षमता:</label>
-                        <select id="busVehicle" class="form-control">
-                            <option value="17 Seater Urbania">17 Seater Urbania</option>
-                            <option value="20 Seater Mini Bus">20 Seater Mini Bus</option>
-                            <option value="27 Seater Bus">27 Seater Bus</option>
-                            <option value="32 Seater Bus">32 Seater Bus</option>
-                            <option value="50 Seater Luxury Bus">50 Seater Luxury Bus</option>
-                        </select>
-                    </div>
-                </div>
-
+            <div class="form-group">
+                <label>मोबाईल नंबर:</label>
+                <input type="tel" id="custPhone" placeholder="मोबाईल नंबर टाका">
             </div>
+        </div>
 
-            <!-- 3. Payment & Confirmation Box -->
-            <div class="payment-box">
-                <h3 style="justify-content: center; color: #1e3c72;"><i class="fa fa-lock"></i> बुकिंग कन्फर्म करण्यासाठी अ‍ॅडव्हान्स पेमेंट</h3>
-                <p style="font-size: 15px; margin: 8px 0;">बुकिंग अ‍ॅडव्हान्स रक्कम: <strong>₹५००</strong></p>
-                <p style="font-size: 13px; color: #666; margin-bottom: 15px;">पहिले पेमेंट करा, पेमेंट झाल्यावर WhatsApp द्वारे बुकिंग पाठवण्याचा ऑप्शन येईल.</p>
+        <!-- वन-वे टॅक्सी -->
+        <div class="section-card">
+            <h3>वन-वे टॅक्सी (Toll Included)</h3>
+            <div class="form-group">
+                <select id="onewayRoute">
+                    <option value="Nashik to Pune">नाशिक ते पुणे</option>
+                    <option value="Pune to Nashik">पुणे ते नाशिक</option>
+                    <option value="Nashik to Mumbai">नाशिक ते मुंबई</option>
+                    <option value="Mumbai to Nashik">मुंबई ते नाशिक</option>
+                    <option value="Pune to Mumbai">पुणे ते मुंबई</option>
+                    <option value="Mumbai to Pune">मुंबई ते पुणे</option>
+                    <option value="Nashik to Sambhajinagar">नाशिक ते संभाजीनगर</option>
+                    <option value="Sambhajinagar to Nashik">संभाजीनगर ते नाशिक</option>
+                    <option value="Pune to Sambhajinagar">पुणे ते संभाजीनगर</option>
+                    <option value="Sambhajinagar to Pune">संभाजीनगर ते पुणे</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <select id="onewayVehicle">
+                    <option value="SEDAN (Dzire/Aura) - ₹3000">SEDAN (Dzire / Aura) - ₹3000</option>
+                    <option value="SUV (Ertiga) - ₹4000">SUV (Ertiga) - ₹4000</option>
+                    <option value="DIESEL (Kia Carens/Crysta) - ₹5500">DIESEL (Kia Carens / Crysta) - ₹5500</option>
+                </select>
+            </div>
+        </div>
 
-                <!-- Step 1: Pay Button -->
-                <button type="button" onclick="initiatePayment()" class="btn-pay">
-                    <i class="fa fa-mobile-alt"></i> PhonePe / Google Pay ने ₹५०० जमा करा
+        <!-- मुंबई एअरपोर्ट पिकअप / ड्रॉप -->
+        <div class="section-card">
+            <h3>मुंबई एअरपोर्ट पिकअप / ड्रॉप सर्व्हिस</h3>
+            <div class="form-group">
+                <select id="airportRoute">
+                    <option value="Nashik to Mumbai Airport Drop">NASHIK TO MUMBAI AIRPORT DROP</option>
+                    <option value="Mumbai Airport to Nashik Drop">MUMBAI AIRPORT TO NASHIK DROP</option>
+                    <option value="Pune to Mumbai Airport Drop">PUNE TO MUMBAI AIRPORT DROP</option>
+                    <option value="Mumbai Airport to Pune Drop">MUMBAI AIRPORT TO PUNE DROP</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <select id="airportVehicle">
+                    <option value="SEDAN (Dzire) - ₹3200">SEDAN (Dzire) - ₹3200</option>
+                    <option value="SUV (Ertiga / XL6) - ₹4000">SUV (Ertiga / XL6) - ₹4000</option>
+                    <option value="KIA (Carens) - ₹5500">KIA (Carens) - ₹5500</option>
+                    <option value="INNOVA (Crysta) - ₹6500">INNOVA (Crysta) - ₹6500</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- किलोमीटर रेट्स -->
+        <div class="section-card">
+            <h3>आम्हाकडील गाड्यांचे किलोमीटर रेट्स (Per KM)</h3>
+            <div class="form-group">
+                <select id="kmVehicle">
+                    <option value="Maruti Dzire - ₹12/- Per KM">MARUTI DZIRE - ₹12/- PER KM</option>
+                    <option value="Maruti Ciaz - ₹13/- Per KM">MARUTI CIAZ - ₹13/- PER KM</option>
+                    <option value="Maruti Ertiga - ₹15/- Per KM">MARUTI ERTIGA - ₹15/- PER KM</option>
+                    <option value="Maruti Excel 6 - ₹15/- Per KM">MARUTI EXCEL 6 - ₹15/- PER KM</option>
+                    <option value="Kia Carens - ₹16/- Per KM">KIA CARENS - ₹16/- PER KM</option>
+                    <option value="Innova Crysta - ₹20/- Per KM">INNOVA CRYSTA - ₹20/- PER KM</option>
+                    <option value="Force Urbania - ₹35/- Per KM">FORCE URBANIA - ₹35/- PER KM</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- नाशिक दर्शन -->
+        <div class="section-card">
+            <h3><i class="fa fa-map-marker-alt"></i> नाशिक दर्शन सिटी पॉईंट (प्रेक्षणीय स्थळे)</h3>
+            <div class="sightseeing-box">
+                <p>📍 समाविष्ट प्रेक्षणीय स्थळे:</p>
+                <p>• त्र्यंबकेश्वर ज्योतिर्लिंग • श्री स्वामी समर्थ गुरुपीठ • अंजनेरी हनुमानजी टेम्पल • सोमेश्वर • साधना मिसळ / ग्रेप ॲंबेसि • पंचवटी • तपोवन • स्वामी नारायण टेम्पल • अण्णा गणपती • मुक्तिधाम</p>
+            </div>
+            <div class="form-group">
+                <select id="darshanVehicle">
+                    <option value="सिडान कार (4+1) - ₹3600">सिडान कार (4+1 Seater) - ₹3600</option>
+                    <option value="ईरटीका (6+1) - ₹4500">ईरटीका (6+1 Seater) - ₹4500</option>
+                    <option value="इनोव्हा / किया करेन्स (7+1) - ₹5500">इनोव्हा / किया करेन्स (7+1 Seater) - ₹5500</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- बस इन्क्वायरी -->
+        <div class="section-card">
+            <h3>बस इन्क्वायरी</h3>
+            <div class="form-group">
+                <select id="busVehicle">
+                    <option value="17 Seater Urbania">17 Seater Urbania</option>
+                    <option value="20 Seater Mini Bus">20 Seater Mini Bus</option>
+                    <option value="27 Seater Bus">27 Seater Bus</option>
+                    <option value="32 Seater Bus">32 Seater Bus</option>
+                    <option value="50 Seater Luxury Bus">50 Seater Luxury Bus</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- ================= नवीन अ‍ॅडव्हान्स पेमेंट आणि बुकिंग सेक्शन ================= -->
+        <div class="section-card" style="border: 2px solid #27ae60; background: #fdfdfd; text-align: center;">
+            <h3 style="border-bottom: none; color: #27ae60;">बुकिंग कन्फर्म करण्यासाठी अ‍ॅडव्हान्स पेमेंट करा</h3>
+            <p style="margin: 10px 0; font-size: 15px;">अ‍ॅडव्हान्स रक्कम: <strong>₹५००</strong></p>
+
+            <!-- 1. GPay/PhonePe Pay Button -->
+            <button type="button" onclick="initiatePayment()" class="pay-btn">
+                💳 PhonePe / Google Pay ने ₹५०० जमा करा
+            </button>
+
+            <!-- 2. WhatsApp Send Option (पेमेंटवर क्लिक केल्यानंतरच उघडेल) -->
+            <div id="uploadSection" style="display: none; margin-top: 15px; background: #e8f5e9; padding: 15px; border-radius: 6px;">
+                <p style="color: #2e7d32; font-weight: bold; margin-bottom: 10px;">
+                    ✅ पेमेंट पूर्ण झाले असल्यास खालील बटणावर क्लिक करा आणि WhatsApp वर स्क्रीनशॉट व बुकिंग पाठवा:
+                </p>
+                <button type="button" onclick="sendToWhatsApp()" class="wa-btn">
+                    📲 WhatsApp वर स्क्रीनशॉट व बुकिंग पाठवा
                 </button>
-
-                <!-- Step 2: Upload / Send Screenshot (Initially Hidden) -->
-                <div id="uploadSection" style="display: none; margin-top: 20px; background: #ffffff; padding: 15px; border-radius: 8px; border: 1px solid #25D366;">
-                    <p style="color: #2e7d32; font-weight: bold; font-size: 15px; margin-bottom: 10px;">
-                        ✅ पेमेंट पूर्ण झाले असल्यास खालील बटणावर क्लिक करून WhatsApp वर स्क्रीनशॉट व बुकिंग डिटेल्स पाठवा:
-                    </p>
-                    <button type="button" onclick="sendToWhatsApp()" class="btn-whatsapp">
-                        <i class="fab fa-whatsapp"></i> WhatsApp वर स्क्रीनशॉट व बुकिंग पाठवा
-                    </button>
-                </div>
             </div>
+        </div>
+        <!-- ========================================================================= -->
 
-        </form>
-
-        <!-- Features Section -->
-        <div class="card" style="margin-top: 30px;">
+        <!-- वैशिष्ठ्ये -->
+        <div class="section-card">
             <h3>⭐ आमच्या ट्रॅव्हल्सची वैशिष्ट्ये (OUR FEATURES) ⭐</h3>
-            <div class="features-grid">
-                <div class="feature-item"><i class="fa fa-check-circle"></i> सर्व १०+ वर्षे अनुभव असणारे ड्रायव्हर</div>
-                <div class="feature-item"><i class="fa fa-check-circle"></i> रस्त्याची संपूर्ण माहिती</div>
-                <div class="feature-item"><i class="fa fa-check-circle"></i> स्वच्छ व अपग्रेड A/C वाहने</div>
-                <div class="feature-item"><i class="fa fa-check-circle"></i> दिलेल्या वेळेच्या १० मिनिटे हजर</div>
-                <div class="feature-item"><i class="fa fa-check-circle"></i> जी पी एस (GPS) ट्रॅकिंग</div>
-                <div class="feature-item"><i class="fa fa-check-circle"></i> महिला स्पेशल शेअरिंग कॅब</div>
-                <div class="feature-item"><i class="fa fa-check-circle"></i> पार्सल सुविधा उपलब्ध</div>
-                <div class="feature-item"><i class="fa fa-check-circle"></i> गेली दोन पिढ्या सेवेत</div>
+            <div class="features-list">
+                <div class="feature-item"><i class="fa fa-check"></i> सर्व १०+ वर्षे अनुभव असणारे ड्रायव्हर</div>
+                <div class="feature-item"><i class="fa fa-check"></i> रस्त्याची संपूर्ण माहिती</div>
+                <div class="feature-item"><i class="fa fa-check"></i> स्वच्छ व अपग्रेड A/C वाहने</div>
+                <div class="feature-item"><i class="fa fa-check"></i> दिलेल्या वेळेच्या १० मिनिटे हजर</div>
+                <div class="feature-item"><i class="fa fa-check"></i> जी पी एस (GPS) ट्रॅकिंग</div>
+                <div class="feature-item"><i class="fa fa-check"></i> महिला स्पेशल शेअरिंग कॅब</div>
+                <div class="feature-item"><i class="fa fa-check"></i> पार्सल सुविधा उपलब्ध</div>
+                <div class="feature-item"><i class="fa fa-check"></i> गेली दोन पिढ्या सेवेत</div>
             </div>
         </div>
 
     </div>
 
-    <!-- Footer -->
     <footer>
         <h4>GURUKRUPA TOURS AND TRAVELS</h4>
         <p>प्रवास तुमचा, जबाबदारी आमची</p>
-        <p style="margin-top: 5px; font-size: 12px; opacity: 0.8;">📍 B2 शितल रेसिडेन्सी, नाशिक केसर फ्री टाऊन, मोशी / भारत माता चौक, मोशी</p>
+        <p style="margin-top: 8px; font-size: 12px; opacity: 0.8;">📍 B2 शितल रेसिडेन्सी, नाशिक केसर फ्री टाऊन, मोशी / भारत माता चौक, मोशी</p>
     </footer>
 
-    <!-- JavaScript logic -->
+    <!-- JavaScript Script -->
     <script>
-        // Dropdown Toggle Logic
-        function toggleServiceOptions() {
-            let selectedService = document.getElementById("serviceType").value;
-            
-            document.getElementById("oneWayOptions").style.display = "none";
-            document.getElementById("airportOptions").style.display = "none";
-            document.getElementById("perKmOptions").style.display = "none";
-            document.getElementById("darshanOptions").style.display = "none";
-            document.getElementById("busOptions").style.display = "none";
-
-            if (selectedService === "One-Way Taxi") {
-                document.getElementById("oneWayOptions").style.display = "block";
-            } else if (selectedService === "Airport Transfer") {
-                document.getElementById("airportOptions").style.display = "block";
-            } else if (selectedService === "Per KM Rates") {
-                document.getElementById("perKmOptions").style.display = "block";
-            } else if (selectedService === "Nashik Darshan") {
-                document.getElementById("darshanOptions").style.display = "block";
-            } else if (selectedService === "Bus Inquiry") {
-                document.getElementById("busOptions").style.display = "block";
-            }
-        }
-
-        // 1. Payment Initiation Function
         function initiatePayment() {
             let custName = document.getElementById("custName").value.trim();
-            let custPhone = document.getElementById("custPhone").value.trim();
-
-            if (!custName || !custPhone) {
-                alert("कृपया पहिले तुमचे नाव आणि मोबाईल नंबर भरा!");
+            if (!custName) {
+                alert("कृपया पहिले तुमचे नाव टाका!");
                 return;
             }
 
-            const upiId = "9890896040@ybl"; // तुमचा UPI ID
-            const advanceAmount = 500; // अ‍ॅडव्हान्स रक्कम ₹500
+            // तुमचा UPI ID
+            const upiId = "9890896040@ybl"; 
+            const advanceAmount = 500; 
 
-            // UPI Intent Link
-            const upiUrl = `upi://pay?pa=${upiId}&pn=Gurukrupa%20Tours&am=${advanceAmount}&cu=INR&tn=Booking%20Advance%20by%20${encodeURIComponent(custName)}`;
+            // PhonePe/Google Pay ओपन करण्याची लिंक
+            const upiUrl = `upi://pay?pa=${upiId}&pn=Gurukrupa%20Tours&am=${advanceAmount}&cu=INR&tn=Advance%20Booking%20by%20${encodeURIComponent(custName)}`;
 
-            // Open GPay / PhonePe / Paytm
             window.location.href = upiUrl;
 
-            // Show Screenshot Upload / WhatsApp Send Section
+            // पेमेंट बटण दाबताच व्हॉट्सॲपचा ऑप्शन चालू होईल
             document.getElementById("uploadSection").style.display = "block";
         }
 
-        // 2. WhatsApp Data Send Function
         function sendToWhatsApp() {
-            let name = document.getElementById("custName").value.trim();
-            let phone = document.getElementById("custPhone").value.trim();
-            let date = document.getElementById("travelDate").value;
-            let pickup = document.getElementById("pickupAddr").value.trim();
-            let serviceType = document.getElementById("serviceType").value;
+            let name = document.getElementById("custName").value.trim() || "दिलेले नाही";
+            let phone = document.getElementById("custPhone").value.trim() || "दिलेले नाही";
             
-            let selectedDetails = "";
-
-            if (serviceType === "One-Way Taxi") {
-                selectedDetails = `रूट: ${document.getElementById("oneWayRoute").value} | गाडी: ${document.getElementById("oneWayVehicle").value}`;
-            } else if (serviceType === "Airport Transfer") {
-                selectedDetails = `एअरपोर्ट रूट: ${document.getElementById("airportRoute").value} | गाडी: ${document.getElementById("airportVehicle").value}`;
-            } else if (serviceType === "Per KM Rates") {
-                selectedDetails = `गाडी (Per KM): ${document.getElementById("kmVehicle").value}`;
-            } else if (serviceType === "Nashik Darshan") {
-                selectedDetails = `नाशिक दर्शन | गाडी: ${document.getElementById("darshanVehicle").value}`;
-            } else if (serviceType === "Bus Inquiry") {
-                selectedDetails = `बस इन्क्वायरी | प्रकार: ${document.getElementById("busVehicle").value}`;
-            }
-
+            let oneway = document.getElementById("onewayRoute").value + " (" + document.getElementById("onewayVehicle").value + ")";
+            
             const myWhatsAppNumber = "919890896040";
             
-            const message = `*गुरुकृपा ट्रॅव्हल्स - नवीन गाडी बुकिंग!*%0A%0A` +
+            const message = `*गुरुकृपा ट्रॅव्हल्स - नवीन बुकिंग!*%0A%0A` +
                             `👤 *नाव:* ${name}%0A` +
                             `📞 *मोबाईल:* ${phone}%0A` +
-                            `📅 *प्रवास तारीख:* ${date}%0A` +
-                            `📍 *पिकअप ॲड्रेस:* ${pickup}%0A` +
-                            `🚗 *सर्व्हिस प्रकार:* ${serviceType}%0A` +
-                            `ℹ️ *तपशील:* ${selectedDetails}%0A` +
+                            `🚗 *बुकिंग माहिती:* ${oneway}%0A` +
                             `💰 *पेमेंट केलेले अ‍ॅडव्हान्स:* ₹५००%0A%0A` +
-                            `_मी खाली पेमेंटचा स्क्रीनशॉट पाठवत आहे, कृपया बुकिंग कन्फर्म करा._`;
+                            `_मी खाली पेमेंटचा स्क्रीनशॉट पाठवत आहे._`;
 
             const whatsappUrl = `https://wa.me/${myWhatsAppNumber}?text=${message}`;
             
-            // Open WhatsApp
             window.open(whatsappUrl, '_blank');
         }
     </script>
