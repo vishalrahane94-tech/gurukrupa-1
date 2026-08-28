@@ -6,225 +6,109 @@
     <title>GURUKRUPA TOURS AND TRAVELS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; line-height: 1.6; }
 
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
+        header { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; padding: 20px 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .header-container { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .brand { display: flex; align-items: center; gap: 15px; }
+        .logo-circle { background: #ff9800; color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px; }
+        .brand-text h1 { font-size: 26px; letter-spacing: 1px; }
+        .brand-text p { font-size: 14px; color: #e0e0e0; }
+        .contact-header { display: flex; gap: 15px; margin-top: 5px; flex-wrap: wrap; justify-content: center; }
+        .contact-header a { color: #fff; background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: bold; }
 
-        header {
-            background: #1a2a3a;
-            color: white;
-            padding: 15px;
-        }
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+        .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border-left: 5px solid #2a5298; }
+        .card h2, .card h3 { color: #1e3c72; margin-bottom: 15px; font-size: 18px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
 
-        header .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
+        .form-control { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; outline: none; }
+        .form-control:focus { border-color: #2a5298; }
 
-        .logo-box {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .seat-section { background: #fff8e1; border: 1px solid #ffe082; padding: 15px; border-radius: 8px; margin-top: 10px; }
+        .seat-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .seat-btn { padding: 8px 15px; background: #e0e0e0; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .seat-btn.selected { background: #27ae60; color: white; }
 
-        .logo-box span.gk {
-            background: #e67e22;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 50%;
-            font-weight: bold;
-            font-size: 24px;
-        }
+        .sightseeing-list { background: #eef7ff; padding: 15px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; line-height: 1.8; border-left: 4px solid #1e3c72; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 15px; }
+        .feature-item { background: #f8f9fa; padding: 10px 15px; border-radius: 6px; font-size: 14px; display: flex; align-items: center; gap: 8px; border: 1px solid #eee; }
+        .feature-item i { color: #27ae60; }
 
-        .logo-box h1 {
-            font-size: 24px;
-            color: #fff;
-        }
-
-        .logo-box p {
-            font-size: 12px;
-            color: #bdc3c7;
-        }
-
-        .contact-links a {
-            color: white;
-            text-decoration: none;
-            margin-left: 15px;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .main-container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 10px;
-        }
-
-        .section-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .section-card h2, .section-card h3 {
-            color: #1a2a3a;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #e67e22;
-            padding-bottom: 5px;
-            font-size: 18px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .seat-layout {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 10px;
-        }
-
-        .driver-seat {
-            background: #ccc;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .sightseeing-box {
-            background: #eef7ff;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            line-height: 1.8;
-        }
-
-        .features-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 10px;
-        }
-
-        .feature-item {
-            background: #f9f9f9;
-            padding: 10px;
-            border-radius: 5px;
-            border-left: 4px solid #27ae60;
-            font-size: 14px;
-        }
-
-        footer {
-            background: #1a2a3a;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 30px;
-        }
+        footer { text-align: center; padding: 20px; background: #1e3c72; color: white; margin-top: 30px; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="header-container">
-            <div class="logo-box">
-                <span class="gk">GK</span>
-                <div>
+            <div class="brand">
+                <div class="logo-circle">GK</div>
+                <div class="brand-text">
                     <h1>GURUKRUPA</h1>
                     <p>TOURS AND TRAVELS</p>
-                    <p>Prop: <span>Shashi Rahane</span></p>
+                    <p style="font-size: 12px; color: #ffca28;">Prop: Shashi Rahane</p>
                 </div>
             </div>
-            <div class="contact-links">
+            <div class="contact-header">
                 <a href="tel:9890896040"><i class="fa fa-phone"></i> 9890896040</a>
                 <a href="tel:9922862007"><i class="fa fa-phone"></i> 9922862007</a>
             </div>
         </div>
     </header>
 
-    <div class="main-container">
-
-        <!-- ग्राहक माहिती -->
-        <div class="section-card">
-            <h2><i class="fa fa-user"></i> ग्राहक माहिती (Customer Details)</h2>
+    <div class="container">
+        
+        <!-- पोर्टल १: शेअरिंग कॅब आणि सीट बुकिंग (Sharing Service) -->
+        <div class="card">
+            <h2><i class="fa fa-users"></i> १. शेअरिंग कॅब बुकिंग (Sharing Cab / Seat Booking)</h2>
             <div class="form-group">
-                <label>ग्राहकाचे नाव:</label>
-                <input type="text" placeholder="तुमचे नाव टाका">
-            </div>
-            <div class="form-group">
-                <label>मोबाईल नंबर:</label>
-                <input type="tel" placeholder="मोबाईल नंबर टाका">
-            </div>
-        </div>
-
-        <!-- सीट निवडा -->
-        <div class="section-card">
-            <h3>गाडी व सीट निवडा</h3>
-            <div class="form-group">
-                <label>गाडीचा प्रकार:</label>
-                <select>
-                    <option value="ertiga">Ertiga (6 Seater)</option>
-                    <option value="ciaz">Ciaz (4 Seater)</option>
+                <label>शेअरिंग रूट निवडा (Sharing Route):</label>
+                <select class="form-control">
+                    <option value="Nashik to Pune Sharing">नाशिक ते पुणे (शेअरिंग)</option>
+                    <option value="Pune to Nashik Sharing">पुणे ते नाशिक (शेअरिंग)</option>
+                    <option value="Nashik to Mumbai Sharing">नाशिक ते मुंबई (शेअरिंग)</option>
+                    <option value="Mumbai to Nashik Sharing">मुंबई ते नाशिक (शेअरिंग)</option>
                 </select>
             </div>
-            <div class="seat-layout">
-                <span>समोरची बाजू (Front):</span>
-                <div class="driver-seat"><i class="fa fa-user"></i> Driver</div>
+            <div class="form-group">
+                <label>गाडीचा प्रकार (Vehicle Type):</label>
+                <select class="form-control">
+                    <option value="Ertiga 6 Seater">Ertiga (6 Seater)</option>
+                    <option value="Ciaz / Sedan 4 Seater">Ciaz / Dzire (4 Seater)</option>
+                </select>
+            </div>
+            <div class="seat-section">
+                <label>सीट निवडा (Select Seat):</label>
+                <div class="seat-grid">
+                    <button type="button" class="seat-btn">Front (ड्रायव्हर शेजारी)</button>
+                    <button type="button" class="seat-btn">Middle Row 1</button>
+                    <button type="button" class="seat-btn">Middle Row 2</button>
+                    <button type="button" class="seat-btn">Back Row 1</button>
+                    <button type="button" class="seat-btn">Back Row 2</button>
+                </div>
             </div>
         </div>
 
-        <!-- वन-वे टॅक्सी -->
-        <div class="section-card">
-            <h3>वन-वे टॅक्सी (Toll Included)</h3>
+        <!-- पोर्टल २: वन-वे टॅक्सी (Personal / Special Taxi) -->
+        <div class="card">
+            <h3><i class="fa fa-taxi"></i> २. वन-वे टॅक्सी (Full Booking / Toll Included)</h3>
             <div class="form-group">
-                <select>
+                <label>रूट निवडा:</label>
+                <select class="form-control">
                     <option value="Nashik to Pune">नाशिक ते पुणे</option>
                     <option value="Pune to Nashik">पुणे ते नाशिक</option>
                     <option value="Nashik to Mumbai">नाशिक ते मुंबई</option>
                     <option value="Mumbai to Nashik">मुंबई ते नाशिक</option>
-                    <option value="Pune to Mumbai">पुणे ते मुंबई</option>
-                    <option value="Mumbai to Pune">मुंबई ते पुणे</option>
                     <option value="Nashik to Sambhajinagar">नाशिक ते संभाजीनगर</option>
                     <option value="Sambhajinagar to Nashik">संभाजीनगर ते नाशिक</option>
-                    <option value="Pune to Sambhajinagar">पुणे ते संभाजीनगर</option>
-                    <option value="Sambhajinagar to Pune">संभाजीनगर ते पुणे</option>
                 </select>
             </div>
             <div class="form-group">
-                <select>
+                <label>गाडी निवडा:</label>
+                <select class="form-control">
                     <option value="SEDAN (Dzire/Aura) - ₹3000">SEDAN (Dzire / Aura) - ₹3000</option>
                     <option value="SUV (Ertiga) - ₹4000">SUV (Ertiga) - ₹4000</option>
                     <option value="DIESEL (Kia Carens/Crysta) - ₹5500">DIESEL (Kia Carens / Crysta) - ₹5500</option>
@@ -232,52 +116,50 @@
             </div>
         </div>
 
-        <!-- मुंबई एअरपोर्ट पिकअप / ड्रॉप -->
-        <div class="section-card">
-            <h3>मुंबई एअरपोर्ट पिकअप / ड्रॉप सर्व्हिस</h3>
+        <!-- पोर्टल ३: मुंबई एअरपोर्ट पिकअप / ड्रॉप -->
+        <div class="card">
+            <h3><i class="fa fa-plane-departure"></i> ३. मुंबई एअरपोर्ट पिकअप / ड्रॉप सर्व्हिस</h3>
             <div class="form-group">
-                <select>
+                <label>एअरपोर्ट रूट निवडा:</label>
+                <select class="form-control">
                     <option value="Nashik to Mumbai Airport Drop">NASHIK TO MUMBAI AIRPORT DROP</option>
                     <option value="Mumbai Airport to Nashik Drop">MUMBAI AIRPORT TO NASHIK DROP</option>
                     <option value="Pune to Mumbai Airport Drop">PUNE TO MUMBAI AIRPORT DROP</option>
-                    <option value="Mumbai Airport to Pune Drop">MUMBAI AIRPORT TO PUNE DROP</option>
                 </select>
             </div>
             <div class="form-group">
-                <select>
-                    <option value="SEDAN (S.V / Dzire) - ₹3200">SEDAN (Dzire) - ₹3200</option>
+                <label>गाडी निवडा:</label>
+                <select class="form-control">
+                    <option value="SEDAN (Dzire) - ₹3200">SEDAN (Dzire) - ₹3200</option>
                     <option value="SUV (Ertiga / XL6) - ₹4000">SUV (Ertiga / XL6) - ₹4000</option>
-                    <option value="KIA (Carens) - ₹5500">KIA (Carens) - ₹5500</option>
                     <option value="INNOVA (Crysta) - ₹6500">INNOVA (Crysta) - ₹6500</option>
                 </select>
             </div>
         </div>
 
-        <!-- किलोमीटर रेट्स -->
-        <div class="section-card">
-            <h3>आम्हाकडील गाड्यांचे किलोमीटर रेट्स (Per KM)</h3>
+        <!-- पोर्टल ४: किलोमीटर रेट्स -->
+        <div class="card">
+            <h3><i class="fa fa-road"></i> ४. किलोमीटर रेट्स (Per KM Rates)</h3>
             <div class="form-group">
-                <select>
+                <select class="form-control">
                     <option value="Maruti Dzire - ₹12/- Per KM">MARUTI DZIRE - ₹12/- PER KM</option>
                     <option value="Maruti Ciaz - ₹13/- Per KM">MARUTI CIAZ - ₹13/- PER KM</option>
                     <option value="Maruti Ertiga - ₹15/- Per KM">MARUTI ERTIGA - ₹15/- PER KM</option>
-                    <option value="Maruti Excel 6 - ₹15/- Per KM">MARUTI EXCEL 6 - ₹15/- PER KM</option>
                     <option value="Kia Carens - ₹16/- Per KM">KIA CARENS - ₹16/- PER KM</option>
                     <option value="Innova Crysta - ₹20/- Per KM">INNOVA CRYSTA - ₹20/- PER KM</option>
-                    <option value="Force Urbania - ₹35/- Per KM">FORCE URBANIA - ₹35/- PER KM</option>
                 </select>
             </div>
         </div>
 
-        <!-- नाशिक दर्शन -->
-        <div class="section-card">
-            <h3><i class="fa fa-map-marker-alt"></i> नाशिक दर्शन सिटी पॉईंट (प्रेक्षणीय स्थळे)</h3>
-            <div class="sightseeing-box">
-                <p>📍 समाविष्ट प्रेक्षणीय स्थळे:</p>
-                <p>• त्र्यंबकेश्वर ज्योतिर्लिंग • श्री स्वामी समर्थ गुरुपीठ • अंजनेरी हनुमानजी टेम्पल • सोमेश्वर • साधना मिसळ / ग्रेप ॲंबेसि • पंचवटी • तपोवन • स्वामी नारायण टेम्पल • अण्णा गणपती • मुक्तिधाम</p>
+        <!-- पोर्टल ५: नाशिक दर्शन -->
+        <div class="card">
+            <h3><i class="fa fa-map-marked-alt"></i> ५. नाशिक दर्शन सिटी पॉईंट (Sightseeing)</h3>
+            <div class="sightseeing-list">
+                <strong>📍 समाविष्ट प्रेक्षणीय स्थळे:</strong><br>
+                • त्र्यंबकेश्वर ज्योतिर्लिंग • श्री स्वामी समर्थ गुरुपीठ • अंजनेरी हनुमानजी टेम्पल • सोमेश्वर • पंचवटी • तपोवन • मुक्तिधाम
             </div>
             <div class="form-group">
-                <select>
+                <select class="form-control">
                     <option value="सिडान कार (4+1) - ₹3600">सिडान कार (4+1 Seater) - ₹3600</option>
                     <option value="ईरटीका (6+1) - ₹4500">ईरटीका (6+1 Seater) - ₹4500</option>
                     <option value="इनोव्हा / किया करेन्स (7+1) - ₹5500">इनोव्हा / किया करेन्स (7+1 Seater) - ₹5500</option>
@@ -285,14 +167,13 @@
             </div>
         </div>
 
-        <!-- बस इन्क्वायरी -->
-        <div class="section-card">
-            <h3>बस इन्क्वायरी</h3>
+        <!-- पोर्टल ६: बस इन्क्वायरी -->
+        <div class="card">
+            <h3><i class="fa fa-bus"></i> ६. बस इन्क्वायरी (Bus Inquiry)</h3>
             <div class="form-group">
-                <select>
+                <select class="form-control">
                     <option value="17 Seater Urbania">17 Seater Urbania</option>
                     <option value="20 Seater Mini Bus">20 Seater Mini Bus</option>
-                    <option value="27 Seater Bus">27 Seater Bus</option>
                     <option value="32 Seater Bus">32 Seater Bus</option>
                     <option value="50 Seater Luxury Bus">50 Seater Luxury Bus</option>
                 </select>
@@ -300,17 +181,13 @@
         </div>
 
         <!-- वैशिष्ठ्ये -->
-        <div class="section-card">
-            <h3>⭐ आमच्या ट्रॅव्हल्सची वैशिष्ट्ये (OUR FEATURES) ⭐</h3>
-            <div class="features-list">
-                <div class="feature-item"><i class="fa fa-check"></i> सर्व १०+ वर्षे अनुभव असणारे ड्रायव्हर</div>
-                <div class="feature-item"><i class="fa fa-check"></i> रस्त्याची संपूर्ण माहिती</div>
-                <div class="feature-item"><i class="fa fa-check"></i> स्वच्छ व अपग्रेड A/C वाहने</div>
-                <div class="feature-item"><i class="fa fa-check"></i> दिलेल्या वेळेच्या १० मिनिटे हजर</div>
-                <div class="feature-item"><i class="fa fa-check"></i> जी पी एस (GPS) ट्रॅकिंग</div>
-                <div class="feature-item"><i class="fa fa-check"></i> महिला स्पेशल शेअरिंग कॅब</div>
-                <div class="feature-item"><i class="fa fa-check"></i> पार्सल सुविधा उपलब्ध</div>
-                <div class="feature-item"><i class="fa fa-check"></i> गेली दोन पिढ्या सेवेत</div>
+        <div class="card">
+            <h3>⭐ आमच्या ट्रॅव्हल्सची वैशिष्ट्ये ⭐</h3>
+            <div class="features-grid">
+                <div class="feature-item"><i class="fa fa-check-circle"></i> महिला स्पेशल शेअरिंग कॅब</div>
+                <div class="feature-item"><i class="fa fa-check-circle"></i> १०+ वर्षे अनुभव असणारे ड्रायव्हर</div>
+                <div class="feature-item"><i class="fa fa-check-circle"></i> स्वच्छ व A/C वाहने</div>
+                <div class="feature-item"><i class="fa fa-check-circle"></i> जी पी एस (GPS) ट्रॅकिंग</div>
             </div>
         </div>
 
@@ -319,7 +196,7 @@
     <footer>
         <h4>GURUKRUPA TOURS AND TRAVELS</h4>
         <p>प्रवास तुमचा, जबाबदारी आमची</p>
-        <p style="margin-top: 8px; font-size: 12px; opacity: 0.8;">📍 B2 शितल रेसिडेन्सी, नाशिक केसर फ्री टाऊन, मोशी / भारत माता चौक, मोशी</p>
+        <p style="margin-top: 5px; font-size: 12px; opacity: 0.8;">📍 B2 शितल रेसिडेन्सी, नाशिक केसर फ्री टाऊन, मोशी / भारत माता चौक, मोशी</p>
     </footer>
 
 </body>
