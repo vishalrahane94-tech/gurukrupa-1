@@ -1,3 +1,235 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gurukrupa Tours & Travels - Official Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        redbus: '#d84e55',
+                        redbusDark: '#b83238'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .seat { transition: all 0.2s ease; }
+        .seat.selected {
+            background-color: #d84e55 !important;
+            color: white !important;
+            border-color: #b83238 !important;
+        }
+        .seat.selected .price-tag { color: white !important; }
+        .tab-btn.active {
+            background-color: #d84e55;
+            color: white;
+            border-color: #d84e55;
+        }
+        .time-btn.selected {
+            background-color: #d84e55;
+            color: white;
+            border-color: #d84e55;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans pb-10">
+
+    <header class="bg-redbus text-white p-3 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-black rounded-full border-2 border-yellow-500 flex items-center justify-center p-1 shadow-md shrink-0">
+                    <span class="text-yellow-500 font-black text-xl tracking-tighter">GK</span>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black tracking-wide text-yellow-300 uppercase leading-none">GURUKRUPA</h1>
+                    <p class="text-[10px] tracking-widest text-white uppercase font-bold">TOURS AND TRAVELS</p>
+                    <p class="text-xs text-gray-200 mt-0.5">Prop: <span class="font-semibold text-white">Shashi Rahane</span></p>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <a href="tel:9890896040" class="bg-white text-redbus px-2.5 py-1 rounded-full text-xs font-bold flex items-center gap-1 hover:bg-gray-100 shadow">
+                    <i class="fa-solid fa-phone"></i> 9890896040
+                </a>
+                <a href="tel:9922862007" class="bg-white text-redbus px-2.5 py-1 rounded-full text-xs font-bold flex items-center gap-1 hover:bg-gray-100 shadow">
+                    <i class="fa-solid fa-phone"></i> 9922862007
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto p-3 max-w-xl">
+        
+        <div class="grid grid-cols-3 gap-1.5 mb-4 text-xs font-semibold">
+            <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
+            <button onclick="switchTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>
+            <button onclick="switchTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport Drop</button>
+            <button onclick="switchTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet (Per KM)</button>
+            <button onclick="switchTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. नाशिक दर्शन</button>
+            <button onclick="switchTab('bus')" id="tab-bus" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Bus Inquiry</button>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
+            
+            <div class="mb-4 border-b pb-3">
+                <h2 class="text-xs font-bold text-gray-700 uppercase mb-2 flex items-center gap-1">
+                    <i class="fa-solid fa-user text-redbus"></i> ग्राहक माहिती (Customer Details)
+                </h2>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="cust-name" placeholder="पूर्ण नाव *" class="p-2 border rounded text-xs focus:ring-1 focus:ring-redbus outline-none" required>
+                    <input type="tel" id="cust-phone" placeholder="मोबाईल नंबर *" class="p-2 border rounded text-xs focus:ring-1 focus:ring-redbus outline-none" required>
+                </div>
+            </div>
+
+            <!-- Sharing Section -->
+            <div id="section-sharing" class="booking-section">
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची तारीख *</label>
+                        <input type="date" id="sharing-date" class="w-full p-1.5 border rounded text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी निवडा *</label>
+                        <select onchange="selectCar(this.value)" id="car-select" class="w-full p-1.5 border rounded text-xs font-bold text-redbus">
+                            <option value="ertiga">Ertiga (6 Seater)</option>
+                            <option value="ciaz">Ciaz (4 Seater)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची वेळ निवडा *</label>
+                    <div class="grid grid-cols-3 gap-1.5">
+                        <button type="button" onclick="selectTime(this, '04:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">04:00 AM</button>
+                        <button type="button" onclick="selectTime(this, '04:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">04:30 AM</button>
+                        <button type="button" onclick="selectTime(this, '05:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">05:00 AM</button>
+                        <button type="button" onclick="selectTime(this, '08:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">08:00 AM</button>
+                        <button type="button" onclick="selectTime(this, '08:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">08:30 AM</button>
+                        <button type="button" onclick="selectTime(this, '09:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">09:00 AM</button>
+                    </div>
+                    <input type="hidden" id="sharing-time">
+                </div>
+
+                <div class="bg-gray-50 p-3 rounded-lg border-2 border-gray-300">
+                    <div class="flex justify-between items-center mb-3 pb-2 border-b">
+                        <span class="text-[11px] font-bold text-gray-500 uppercase">समोरची बाजू (Front)</span>
+                        <div class="flex gap-2 text-[10px]">
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-white border border-gray-400 rounded"></span> उपलब्ध</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-redbus rounded"></span> सिलेक्टेड</span>
+                        </div>
+                    </div>
+
+                    <div id="layout-ertiga" class="space-y-3">
+                        <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Front Seat (F1)', 750)" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
+                                <span class="text-xs font-black">F1 (Front)</span>
+                            </button>
+                            <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
+                                <i class="fa-solid fa-wheel"></i> Driver
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Middle Left (M1)', 550)" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">M1 (Left)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Middle Center (M2)', 550)" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">M2 (Mid)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Middle Right (M3)', 550)" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">M3 (Right)</span>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Back Left (B1)', 550)" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">B1 (Back L)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Back Right (B2)', 550)" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">B2 (Back R)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="layout-ciaz" class="space-y-3 hidden">
+                        <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Front Seat (F1)', 750)" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
+                                <span class="text-xs font-black">F1 (Front)</span>
+                            </button>
+                            <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
+                                <i class="fa-solid fa-wheel"></i> Driver
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Rear Left (R1)', 550)" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">R1 (Left)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Rear Center (R2)', 550)" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">R2 (Mid)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Rear Right (R3)', 550)" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">R3 (Right)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary & WhatsApp Direct Booking Button -->
+            <div class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <div class="text-xs font-bold text-gray-700 flex justify-between">
+                    <span>सिलेक्टेड सीट: <span id="selected-seats-text" class="text-redbus">नाही</span></span>
+                    <span>एकूण रक्कम: <span id="total-amount-text" class="text-redbus font-black text-sm">₹0</span></span>
+                </div>
+                <button type="button" onclick="sendWhatsAppBooking()" class="w-full mt-3 bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg text-xs font-bold shadow transition duration-200 uppercase tracking-wider flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-base"></i> Confirm Booking on WhatsApp
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let selectedSeats = [];
+        let totalAmount = 0;
+        let selectedTimeValue = "";
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+            
+            if (tabName === 'sharing') {
+                document.getElementById('section-sharing').classList.remove('hidden');
+            } else {
+                document.getElementById('section-sharing').classList.add('hidden');
+            }
+        }
+
+        function selectCar(car) {
+            selectedSeats = [];
+            totalAmount = 0;
+            updateSummary();
+            document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
+            
+            if (car === 'ertiga') {
+                document.getElementById('layout-ertiga').classList.remove('hidden');
                 document.getElementById('layout-ciaz').classList.add('hidden');
             } else {
                 document.getElementById('layout-ciaz').classList.remove('hidden');
@@ -5,95 +237,70 @@
             }
         }
 
-        function toggleSeat(btn, seatInfo) {
-            if(btn.classList.contains('selected')) {
+        function selectTime(btn, time) {
+            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedTimeValue = time;
+            document.getElementById('sharing-time').value = time;
+        }
+
+        function toggleSeat(btn, seatName, price) {
+            const index = selectedSeats.findIndex(s => s.name === seatName);
+            if (index > -1) {
+                selectedSeats.splice(index, 1);
+                totalAmount -= price;
                 btn.classList.remove('selected');
-                selectedSeats = selectedSeats.filter(s => s !== seatInfo);
             } else {
+                selectedSeats.push({ name: seatName, price: price });
+                totalAmount += price;
                 btn.classList.add('selected');
-                selectedSeats.push(seatInfo);
             }
+            updateSummary();
         }
 
-        function updateOnewayCars() {
-            const route = document.getElementById('oneway-route').value;
-                const carSelect = document.getElementById('oneway-car');
-                
-                if (route.includes('Sambhajinagar')) {
-                    carSelect.innerHTML = `
-                        <option value="SEDAN (Dzire/Aura) - ₹3500">SEDAN (Dzire / Aura) - ₹3500</option>
-                        <option value="SUV (Ertiga) - ₹4500">SUV (Ertiga) - ₹4500</option>
-                        <option value="DIESEL (Kia Carens/Crysta) - ₹5500">DIESEL (Kia Carens / Crysta) - ₹5500</option>
-                    `;
-                } else {
-                    carSelect.innerHTML = `
-                        <option value="SEDAN (Dzire/Aura) - ₹3000">SEDAN (Dzire / Aura) - ₹3000</option>
-                        <option value="SUV (Ertiga) - ₹4000">SUV (Ertiga) - ₹4000</option>
-                        <option value="DIESEL (Kia Carens/Crysta) - ₹5500">DIESEL (Kia Carens / Crysta) - ₹5500</option>
-                    `;
-                }
+        function updateSummary() {
+            const seatNames = selectedSeats.map(s => s.name).join(', ');
+            document.getElementById('selected-seats-text').innerText = seatNames || 'नाही';
+            document.getElementById('total-amount-text').innerText = '₹' + totalAmount;
         }
 
-        function sendWhatsApp() {
-            const name = document.getElementById('cust-name').value.trim();
-            const phone = document.getElementById('cust-phone').value.trim();
+        function sendWhatsAppBooking() {
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const date = document.getElementById('sharing-date').value;
 
             if (!name || !phone) {
-                alert('कृपया तुमचे नाव आणि मोबाईल नंबर टाका.');
+                alert('कृपया आधी तुमचे नाव आणि मोबाईल नंबर टाका!');
+                return;
+            }
+            if (!date) {
+                alert('कृपया प्रवासाची तारीख निवडा!');
+                return;
+            }
+            if (!selectedTimeValue) {
+                alert('कृपया प्रवासाची वेळ निवडा!');
+                return;
+            }
+            if (selectedSeats.length === 0) {
+                alert('कृपया कमीत कमी एक सीट निवडा!');
                 return;
             }
 
-            // PAYMENT VALIDATION CHECK (Required for Sharing, OneWay, Airport, Darshan)
-            if (currentTab !== 'bus') {
-                const isPaid = document.getElementById('payment-confirm').checked;
-                const utr = document.getElementById('utr-number').value.trim();
+            const car = document.getElementById('car-select').value.toUpperCase();
+            const seats = selectedSeats.map(s => s.name).join(', ');
 
-                if (!isPaid) {
-                    alert('कृपया पेमेंट करून "मी ऑनलाइन पेमेंट पूर्ण केले आहे" वर टिक करा.');
-                    return;
-                }
-                if (!utr) {
-                    alert('कृपया पेमेंटचा Transaction / UTR ID प्रविष्ट करा.');
-                    return;
-                }
-            }
+            const message = `*नवीन बुकिंगची चौकशी!*%0A%0A` +
+                `*नाव:* ${name}%0A` +
+                `*फोन:* ${phone}%0A` +
+                `*तारीख:* ${date}%0A` +
+                `*वेळ:* ${selectedTimeValue}%0A` +
+                `*गाडी:* ${car}%0A` +
+                `*सीट क्र:* ${seats}%0A` +
+                `*एकूण रक्कम:* ₹${totalAmount}`;
 
-            let msg = `*Gurukrupa Tours & Travels Booking*\n\n`;
-            msg += `👤 *ग्राहक:* ${name}\n`;
-            msg += `📞 *मोबाईल:* ${phone}\n`;
-
-            if (currentTab === 'sharing') {
-                const date = document.getElementById('sharing-date').value;
-                const time = document.getElementById('sharing-time').value;
-                if (!date || !time || selectedSeats.length === 0) {
-                    alert('कृपया तारीख, वेळ आणि सीट निवडा.');
-                    return;
-                }
-                msg += `🚖 *प्रकार:* Sharing Cab (${selectedCar.toUpperCase()})\n`;
-                msg += `📅 *तारीख:* ${date}\n`;
-                msg += `⏰ *वेळ:* ${time}\n`;
-                msg += `💺 *सीट्स:* ${selectedSeats.join(', ')}\n`;
-            } else if (currentTab === 'oneway') {
-                const route = document.getElementById('oneway-route').value;
-                const car = document.getElementById('oneway-car').value;
-                const date = document.getElementById('oneway-date').value;
-                const time = document.getElementById('oneway-time').value;
-                msg += `🚖 *प्रकार:* One Way Taxi\n`;
-                msg += `📍 *रूट:* ${route}\n`;
-                msg += `🚘 *गाडी:* ${car}\n`;
-                msg += `📅 *तारीख:* ${date}\n`;
-                msg += `⏰ *वेळ:* ${time}\n`;
-            } else if (currentTab === 'airport') {
-                const route = document.getElementById('airport-route').value;
-                const car = document.getElementById('airport-car').value;
-                const date = document.getElementById('airport-date').value;
-                const time = document.getElementById('airport-time').value;
-                msg += `✈️ *प्रकार:* Airport Drop/Pickup\n`;
-                msg += `📍 *रूट:* ${route}\n`;
-                msg += `🚘 *गाडी:* ${car}\n`;
-                msg += `📅 *तारीख:* ${date}\n`;
-                msg += `⏰ *वेळ:* ${time}\n`;
-            } else if (currentTab === 'darshan') {
-                const car = document.getElementById('darshan-car').value;
-                const date = document.getElementById('darshan-date').value;
-                const time = document.getElementById('darshan-time').value
+            const ownerWhatsApp = "919890896040";
+            window.location.href = `https://wa.me/${ownerWhatsApp}?text=${message}`;
+        }
+    </script>
+</body>
+</html>
