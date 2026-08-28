@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GURUKRUPA 6 IN 1</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial}
+body{background:#000;color:#fff;padding:12px}
+.header{border:3px solid #FFD700;border-radius:15px;padding:14px;text-align:center;color:#FFD700}
+.header h1{font-size:16px}
+.header p{font-size:11px;margin-top:5px;color:#fff}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0}
+.tab{background:#fff;color:#000;padding:10px;border-radius:10px;text-align:center;font-weight:900;font-size:10px}
+.tab.active{background:#FFD700}
+.card{background:#fff;color:#000;border-radius:16px;padding:14px;margin-bottom:12px}
+.card h3{background:#000;color:#FFD700;padding:8px;border-radius:8px;text-align:center;font-size:13px;margin-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:11px;margin:8px 0}
+th,td{border:1.5px solid #000;padding:7px;text-align:center}
+th{background:#000;color:#FFD700}
+.btn{width:100%;background:#FFD700;color:#000;border:none;padding:13px;border-radius:10px;font-weight:900;margin-top:8px}
+.seats{background:#FFF9C4;border:2px solid #000;border-radius:12px;padding:10px;max-width:360px;margin:10px auto}
+.row{display:flex;gap:6px;margin:6px 0}
+.s{flex:1;background:#fff;border:2px solid #000;padding:12px;border-radius:8px;text-align:center;font-weight:900;font-size:11px}
+.s.sel{background:#000;color:#FFD700}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="header"><h1>🚕 GURUKRUPA TOURS - 9890896040</h1><p>6 IN 1 - SHARING | ONE WAY | AIRPORT | FLEET | DARSHAN | BUS</p></div>
+
+<div class="tabs">
+<div class="tab active" id="t1" onclick="op('p1')">1 SHARING</div>
+<div class="tab" id="t2" onclick="op('p2')">2 ONE WAY</div>
+<div class="tab" id="t3" onclick="op('p3')">3 AIRPORT</div>
+<div class="tab" id="t4" onclick="op('p4')">4 FLEET</div>
+<div class="tab" id="t5" onclick="op('p5')">5 DARSHAN</div>
+<div class="tab" id="t6" onclick="op('p6')">6 BUSES</div>
+</div>
+
+<div id="p1" class="card">
+<h3>1. NASHIK-PUNE SHARING</h3>
+<p style="font-size:11px;text-align:center"><b>Time:</b> 04:00,04:30,05:00 | 08:00,08:30,09:00<br><b>Pickup:</b> Thakkar Bazar, Dwarka, Mumbai Naka, Govind Nagar, Tunnel, Wakdewadi, Nashik Phata, Bhosri, Moshi, Chakan<br><b>Fare:</b> Front 750 / Back 550</p>
+<div class="seats">
+<div class="row"><div class="s" onclick="this.classList.toggle('sel')">F1-750</div><div class="s" style="background:#ddd">DRIVER</div></div>
+<div class="row"><div class="s" onclick="this.classList.toggle('sel')">R1-550</div><div class="s" onclick="this.classList.toggle('sel')">R2-550</div><div class="s" onclick="this.classList.toggle('sel')">R3-550</div></div>
+<div class="row"><div class="s" onclick="this.classList.toggle('sel')">B1-550</div><div class="s" onclick="this.classList.toggle('sel')">B2-550</div><div class="s" onclick="this.classList.toggle('sel')">B3-550</div></div>
+</div>
+<button class="btn" onclick="wa('SHARING')">BOOK ON WHATSAPP</button>
+</div>
+
+<div id="p2" class="card hide"><h3>2. ONE WAY - TOLL INCLUDED</h3>
+<table><tr><th>ROUTE</th><th>SEDAN</th><th>SUV</th><th>DIESEL</th></tr><tr><td>Nashik-Pune</td><td>3000</td><td>4000</td><td>5500</td></tr><tr><td>Nashik-Mumbai</td><td>3000</td><td>4000</td><td>5500</td></tr><tr><td>Pune-Mumbai</td><td>3000</td><td>4000</td><td>5500</td></tr></table>
+<button class="btn" onclick="wa('ONE WAY')">BOOK ONE WAY</button></div>
+
+<div id="p3" class="card hide"><h3>3. AIRPORT 3200/4000/5500/6500</h3>
+<table><tr><th>ROUTE</th><th>SEDAN</th><th>SUV</th><th>KIA</th><th>CRYSTA</th></tr><tr><td>Nashik-Mumbai Airport</td><td>3200</td><td>4000</td><td>5500</td><td>6500</td></tr><tr><td>Pune-Mumbai Airport</td><td>3200</td><td>4000</td><td>5500</td><td>6500</td></tr></table>
+<button class="btn" onclick="wa('AIRPORT')">BOOK AIRPORT</button></div>
+
+<div id="p4" class="card hide"><h3>4. FLEET PER KM RATE</h3>
+<table><tr><th>CAR</th><th>PER KM</th></tr><tr><td>DZIRE 4+1</td><td>12</td></tr><tr><td>CIAZ 4+1</td><td>13</td></tr><tr><td>ERTIGA 6+1</td><td>15</td></tr><tr><td>KIA CARENS 6+1</td><td>16</td></tr><tr><td>CRYSTA 7+1</td><td>20</td></tr><tr><td>URBANIA 17</td><td>35</td></tr></table>
+<button class="btn" onclick="wa('FLEET')">FLEET ENQUIRY</button></div>
+
+<div id="p5" class="card hide"><h3>5. NASHIK DARSHAN</h3>
+<p style="font-size:11px">Trimbakeshwar, Anjaneri, Panchavati, Muktidham, Someshwar</p>
+<table><tr><th>CAR</th><th>RATE</th></tr><tr><td>SEDAN</td><td>3600</td></tr><tr><td>ERTIGA</td><td>4500</td></tr><tr><td>CRYSTA</td><td>5500</td></tr></table>
+<button class="btn" onclick="wa('DARSHAN')">BOOK DARSHAN</button></div>
+
+<div id="p6" class="card hide"><h3>6. BUSES 17/20/22/27/32/40/50</h3>
+<button class="btn" onclick="wa('BUS 17')">17 SEATER BUS</button>
+<button class="btn" onclick="wa('BUS 20')">20 SEATER BUS</button>
+<button class="btn" onclick="wa('BUS 22')">22 SEATER BUS</button>
+<button class="btn" onclick="wa('BUS 27')">27 SEATER BUS</button>
+<button class="btn" onclick="wa('BUS 32')">32 SEATER BUS</button>
+<button class="btn" onclick="wa('BUS 40')">40 SEATER BUS</button>
+<button class="btn" onclick="wa('BUS 50')">50 SEATER BUS</button>
+</div>
+
+<script>
+function op(id){
+ ['p1','p2','p3','p4','p5','p6'].forEach(a=>document.getElementById(a).classList.add('hide'));
+ document.getElementById(id).classList.remove('hide');
+ ['t1','t2','t3','t4','t5','t6'].forEach(a=>document.getElementById(a).classList.remove('active'));
+ document.getElementById({p1:'t1',p2:'t2',p3:'t3',p4:'t4',p5:'t5',p6:'t6'}[id]).classList.add('active');
+}
+function wa(t){window.open('https://wa.me/919890896040?text='+encodeURIComponent(t+' BOOKING ENQUIRY - GURUKRUPA'),' _blank')}
+</script>
+</body>
+</html>
