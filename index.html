@@ -1,266 +1,541 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Linking,
-  SafeAreaView,
-  StatusBar
-} from 'react-native';
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gurukrupa Tours & Travels - Official Booking</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        redbus: '#d84e55',
+                        redbusDark: '#b83238'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .seat { transition: all 0.2s ease; }
+        .seat.selected {
+            background-color: #d84e55 !important;
+            color: white !important;
+            border-color: #b83238 !important;
+        }
+        .seat.selected .price-tag { color: white !important; }
+        .tab-btn.active {
+            background-color: #d84e55;
+            color: white;
+            border-color: #d84e55;
+        }
+        .time-btn.selected {
+            background-color: #d84e55;
+            color: white;
+            border-color: #d84e55;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans pb-10">
 
-export default function App() {
-  const [activeTab, setActiveTab] = useState('sharing');
-
-  const makeCall = (number) => {
-    Linking.openURL(`tel:${number}`);
-  };
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#1a365d" barStyle="light-content" />
-      
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>गुरुकृपा टुर्स अँड ट्रॅव्हल्स</Text>
-        <Text style={styles.headerSubtitle}>प्रवास तुमचा, जबाबदारी आमची!</Text>
-      </View>
-
-      {/* Navigation Tabs (redBus Style Horizontal Scroll) */}
-      <View style={styles.navWrapper}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.navScroll}>
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === 'sharing' && styles.activeTab]} 
-            onPress={() => setActiveTab('sharing')}>
-            <Text style={[styles.tabText, activeTab === 'sharing' && styles.activeTabText]}>शेअरींग कॅब</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === 'oneway' && styles.activeTab]} 
-            onPress={() => setActiveTab('oneway')}>
-            <Text style={[styles.tabText, activeTab === 'oneway' && styles.activeTabText]}>वन वे कॅब</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === 'airport' && styles.activeTab]} 
-            onPress={() => setActiveTab('airport')}>
-            <Text style={[styles.tabText, activeTab === 'airport' && styles.activeTabText]}>एअरपोर्ट ड्रॉप</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === 'fleet' && styles.activeTab]} 
-            onPress={() => setActiveTab('fleet')}>
-            <Text style={[styles.tabText, activeTab === 'fleet' && styles.activeTabText]}>अवर फ्लीट</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === 'darshan' && styles.activeTab]} 
-            onPress={() => setActiveTab('darshan')}>
-            <Text style={[styles.tabText, activeTab === 'darshan' && styles.activeTabText]}>नाशिक दर्शन</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === 'features' && styles.activeTab]} 
-            onPress={() => setActiveTab('features')}>
-            <Text style={[styles.tabText, activeTab === 'features' && styles.activeTabText]}>वैशिष्ट्ये</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
-
-      {/* Main Content Area */}
-      <ScrollView style={styles.content}>
-        
-        {/* 1. Sharing Cab */}
-        {activeTab === 'sharing' && (
-          <View style={styles.card}>
-            <View style={styles.banner}>
-              <Text style={styles.bannerTitle}>महिलांसाठी विशेष डेली शेअरींग कॅब</Text>
-              <Text style={styles.bannerSub}>सुरक्षित • आरामदायक • वेळेवर सेवा</Text>
-            </View>
-
-            <Text style={styles.sectionHeading}>NASHIK ↔ PUNE (प्रवासाच्या वेळा)</Text>
+    <!-- RedBus Style Header with Logo & Contacts -->
+    <header class="bg-redbus text-white p-3 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
             
-            <View style={styles.timeBox}>
-              <Text style={styles.routeTitle}>नाशिक → पुणे</Text>
-              <Text style={styles.timeLabel}>सकाळी: 04:00 | 04:30 | 05:00</Text>
-              <Text style={styles.timeLabel}>दुपारी: 01:00 | 01:15 | 01:30</Text>
-            </View>
+            <!-- Logo & Brand Name -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-black rounded-full border-2 border-yellow-500 flex items-center justify-center p-1 shadow-md shrink-0">
+                    <span class="text-yellow-500 font-black text-xl tracking-tighter">GK</span>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black tracking-wide text-yellow-300 uppercase leading-none">GURUKRUPA</h1>
+                    <p class="text-[10px] tracking-widest text-white uppercase font-bold">TOURS AND TRAVELS</p>
+                    <p class="text-xs text-gray-200 mt-0.5">Prop: <span class="font-semibold text-white">Shashi Rahane</span></p>
+                </div>
+            </div>
 
-            <View style={styles.timeBox}>
-              <Text style={styles.routeTitle}>पुणे → नाशिक</Text>
-              <Text style={styles.timeLabel}>सकाळी: 08:00 | 08:30 | 09:00</Text>
-              <Text style={styles.timeLabel}>संध्याकाळी: 06:00 | 06:15 | 06:30</Text>
-            </View>
+            <!-- Contact Numbers -->
+            <div class="flex gap-2">
+                <a href="tel:9890896040" class="bg-white text-redbus px-2.5 py-1 rounded-full text-xs font-bold flex items-center gap-1 hover:bg-gray-100 shadow">
+                    <i class="fa-solid fa-phone"></i> 9890896040
+                </a>
+                <a href="tel:9922862007" class="bg-white text-redbus px-2.5 py-1 rounded-full text-xs font-bold flex items-center gap-1 hover:bg-gray-100 shadow">
+                    <i class="fa-solid fa-phone"></i> 9922862007
+                </a>
+            </div>
 
-            <Text style={styles.sectionHeading}>प्रवास भाडे</Text>
-            <View style={styles.priceRow}>
-              <View style={styles.priceCard}>
-                <Text style={styles.priceTitle}>फ्रंट सीट</Text>
-                <Text style={styles.priceVal}>₹ 750</Text>
-              </View>
-              <View style={styles.priceCard}>
-                <Text style={styles.priceTitle}>मागील सर्व सीट</Text>
-                <Text style={styles.priceVal}>₹ 550</Text>
-              </View>
-            </View>
-          </View>
-        )}
+        </div>
+    </header>
 
-        {/* 2. One Way Cab */}
-        {activeTab === 'oneway' && (
-          <View style={styles.card}>
-            <Text style={styles.sectionHeading}>डेली वन वे कॅब (Toll Included)</Text>
+    <div class="container mx-auto p-3 max-w-xl">
+        
+        <!-- Navigation Tabs -->
+        <div class="grid grid-cols-3 gap-1.5 mb-4 text-xs font-semibold">
+            <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
+            <button onclick="switchTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>
+            <button onclick="switchTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport Drop</button>
+            <button onclick="switchTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet (Per KM)</button>
+            <button onclick="switchTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. नाशिक दर्शन</button>
+            <button onclick="switchTab('bus')" id="tab-bus" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Bus Inquiry</button>
+        </div>
 
-            <View style={styles.tableItem}>
-              <Text style={styles.itemTitle}>नाशिक ↔ पुणे / नाशिक ↔ मुंबई</Text>
-              <Text style={styles.itemDetail}>• Sedan (Dzire, Aura): ₹ 3000</Text>
-              <Text style={styles.itemDetail}>• SUV (Ertiga): ₹ 4000</Text>
-              <Text style={styles.itemDetail}>• Diesel (Kia Carens, Crysta): ₹ 5500</Text>
-            </View>
+        <!-- Main Card Container -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
+            
+            <!-- Customer Details Form -->
+            <div class="mb-4 border-b pb-3">
+                <h2 class="text-xs font-bold text-gray-700 uppercase mb-2 flex items-center gap-1">
+                    <i class="fa-solid fa-user text-redbus"></i> ग्राहक माहिती (Customer Details)
+                </h2>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="cust-name" placeholder="पूर्ण नाव *" class="p-2 border rounded text-xs focus:ring-1 focus:ring-redbus outline-none">
+                    <input type="tel" id="cust-phone" placeholder="मोबाईल नंबर *" class="p-2 border rounded text-xs focus:ring-1 focus:ring-redbus outline-none">
+                </div>
+            </div>
 
-            <View style={styles.tableItem}>
-              <Text style={styles.itemTitle}>पुणे ↔ मुंबई</Text>
-              <Text style={styles.itemDetail}>• Sedan: ₹ 3000 | SUV: ₹ 4000 | Diesel: ₹ 5500</Text>
-            </View>
+            <!-- 1. SHARING SECTION -->
+            <div id="section-sharing" class="booking-section">
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची तारीख *</label>
+                        <input type="date" id="sharing-date" class="w-full p-1.5 border rounded text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी निवडा *</label>
+                        <select onchange="selectCar(this.value)" id="car-select" class="w-full p-1.5 border rounded text-xs font-bold text-redbus">
+                            <option value="ertiga">Ertiga (6 Seater)</option>
+                            <option value="ciaz">Ciaz (4 Seater)</option>
+                        </select>
+                    </div>
+                </div>
 
-            <View style={styles.tableItem}>
-              <Text style={styles.itemTitle}>नाशिक / पुणे ↔ संभाजीनगर</Text>
-              <Text style={styles.itemDetail}>• Sedan: ₹ 3500 | SUV: ₹ 4500 | Diesel: ₹ 5500</Text>
-            </View>
-          </View>
-        )}
+                <!-- Timing Buttons -->
+                <div class="mb-3">
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची वेळ निवडा *</label>
+                    <div class="grid grid-cols-3 gap-1.5">
+                        <button type="button" onclick="selectTime(this, '04:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">04:00 AM</button>
+                        <button type="button" onclick="selectTime(this, '04:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">04:30 AM</button>
+                        <button type="button" onclick="selectTime(this, '05:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">05:00 AM</button>
+                        <button type="button" onclick="selectTime(this, '08:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">08:00 AM</button>
+                        <button type="button" onclick="selectTime(this, '08:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">08:30 AM</button>
+                        <button type="button" onclick="selectTime(this, '09:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">09:00 AM</button>
+                    </div>
+                    <input type="hidden" id="sharing-time">
+                </div>
 
-        {/* 3. Airport Drop */}
-        {activeTab === 'airport' && (
-          <View style={styles.card}>
-            <Text style={styles.sectionHeading}>मुंबई एअरपोर्ट पिकअप & ड्रॉप सर्व्हिस</Text>
-            <Text style={{textAlign:'center', color: '#27ae60', fontWeight:'bold', marginBottom:10}}>
-              NOTE: TOLL INCLUDED IN ALL TRIPS
-            </Text>
+                <!-- Seat Layout Interior -->
+                <div class="bg-gray-50 p-3 rounded-lg border-2 border-gray-300">
+                    <div class="flex justify-between items-center mb-3 pb-2 border-b">
+                        <span class="text-[11px] font-bold text-gray-500 uppercase">समोरची बाजू (Front)</span>
+                        <div class="flex gap-2 text-[10px]">
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-white border border-gray-400 rounded"></span> उपलब्ध</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-redbus rounded"></span> सिलेक्टेड</span>
+                        </div>
+                    </div>
 
-            <View style={styles.tableItem}>
-              <Text style={styles.itemTitle}>नाशिक / पुणे ↔ मुंबई एअरपोर्ट</Text>
-              <Text style={styles.itemDetail}>• Sedan (Dzire): ₹ 3200</Text>
-              <Text style={styles.itemDetail}>• SUV (Ertiga / Excel 6): ₹ 4000</Text>
-              <Text style={styles.itemDetail}>• KIA (Carens): ₹ 5500</Text>
-              <Text style={styles.itemDetail}>• Innova Crysta: ₹ 6500</Text>
-            </View>
-          </View>
-        )}
+                    <!-- ERTIGA SEAT LAYOUT (Driver Right, Passenger Left) -->
+                    <div id="layout-ertiga" class="space-y-3">
+                        <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
+                                <span class="text-xs font-black">F1 (Front)</span>
+                            </button>
+                            <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
+                                <i class="fa-solid fa-wheel"></i> Driver
+                            </div>
+                        </div>
 
-        {/* 4. Our Fleet */}
-        {activeTab === 'fleet' && (
-          <View style={styles.card}>
-            <Text style={styles.sectionHeading}>आमचा ताफा (Per KM Rates)</Text>
-            <View style={styles.fleetGrid}>
-              <View style={styles.fleetBox}><Text style={styles.fleetName}>Dzire</Text><Text style={styles.fleetRate}>₹ 12 / KM</Text></View>
-              <View style={styles.fleetBox}><Text style={styles.fleetName}>Ciaz</Text><Text style={styles.fleetRate}>₹ 13 / KM</Text></View>
-              <View style={styles.fleetBox}><Text style={styles.fleetName}>Ertiga</Text><Text style={styles.fleetRate}>₹ 15 / KM</Text></View>
-              <View style={styles.fleetBox}><Text style={styles.fleetName}>Innova</Text><Text style={styles.fleetRate}>₹ 16 / KM</Text></View>
-              <View style={styles.fleetBox}><Text style={styles.fleetName}>Carens</Text><Text style={styles.fleetRate}>₹ 16 / KM</Text></View>
-              <View style={styles.fleetBox}><Text style={styles.fleetName}>Crysta</Text><Text style={styles.fleetRate}>₹ 18 - 20 / KM</Text></View>
-              <View style={styles.fleetBox}><Text style={styles.fleetName}>Traveler (बस)</Text><Text style={styles.fleetRate}>₹ 23 / KM</Text></View>
-              <View style={styles.fleetBox}><Text style={styles.fleetName}>Urbania</Text><Text style={styles.fleetRate}>₹ 35 / KM</Text></View>
-            </View>
-          </View>
-        )}
+                        <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Middle Left (M1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">M1 (Left)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Middle Center (M2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">M2 (Mid)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Middle Right (M3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">M3 (Right)</span>
+                            </button>
+                        </div>
 
-        {/* 5. Nashik Darshan */}
-        {activeTab === 'darshan' && (
-          <View style={styles.card}>
-            <Text style={styles.sectionHeading}>नाशिक दर्शन सिटी पॉईंट्स</Text>
-            <Text style={styles.bulletPoint}>• त्र्यंबकेश्वर ज्योतिर्लिंग</Text>
-            <Text style={styles.bulletPoint}>• श्री स्वामी समर्थ गुरुपीठ</Text>
-            <Text style={styles.bulletPoint}>• अंजनेरी हनुमानजी टेम्पल • सोमेश्वर</Text>
-            <Text style={styles.bulletPoint}>• साधना मिसळ / ग्रेप अँबेसि</Text>
-            <Text style={styles.bulletPoint}>• पंचवटी • तपोवन</Text>
-            <Text style={styles.bulletPoint}>• स्वामीनाा नारायण टेम्पल</Text>
-            <Text style={styles.bulletPoint}>• अण्णा गणपती • मुक्तिधाम</Text>
+                        <div class="grid grid-cols-2 gap-3 bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Back Left (B1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">B1 (Back L)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Back Right (B2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">B2 (Back R)</span>
+                            </button>
+                        </div>
+                    </div>
 
-            <Text style={[styles.sectionHeading, {marginTop: 15}]}>दर्शन पॅकेज दर</Text>
-            <Text style={styles.itemDetail}>• सिडान (4+1): ₹ 3600</Text>
-            <Text style={styles.itemDetail}>• ईरटीका (6+1): ₹ 4500</Text>
-            <Text style={styles.itemDetail}>• इनोव्हा / करेन्स (7+1): ₹ 5500</Text>
-          </View>
-        )}
+                    <!-- CIAZ SEAT LAYOUT -->
+                    <div id="layout-ciaz" class="space-y-3 hidden">
+                        <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
+                                <span class="text-xs font-black">F1 (Front)</span>
+                            </button>
+                            <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
+                                <i class="fa-solid fa-wheel"></i> Driver
+                            </div>
+                        </div>
 
-        {/* 6. Features */}
-        {activeTab === 'features' && (
-          <View style={styles.card}>
-            <Text style={styles.sectionHeading}>आमच्या ट्रॅव्हल्सचे वैशिष्ट्य</Text>
-            <Text style={styles.bulletPoint}>✔ सर्व १० वर्षे पुढील अनुभव असणारे ड्रायव्हर</Text>
-            <Text style={styles.bulletPoint}>✔ रस्त्याची संपूर्ण माहिती</Text>
-            <Text style={styles.bulletPoint}>✔ स्वच्छ व अपग्रेड ए सी वाहणे</Text>
-            <Text style={styles.bulletPoint}>✔ दिलेल्या वेळेच्या १० मिनिटे हजर</Text>
-            <Text style={styles.bulletPoint}>✔ जी पी एस ट्रॅकींग सुविधा</Text>
-            <Text style={styles.bulletPoint}>✔ महिला स्पेशल शेअरींग कॅब</Text>
-            <Text style={styles.bulletPoint}>✔ पार्सल सुविधा</Text>
-            <Text style={styles.bulletPoint}>✔ गेली दोन पिढ्या सेवेत (२४x७ सेवा)</Text>
-          </View>
-        )}
+                        <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Rear Left (R1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">R1 (Left)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Rear Center (R2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">R2 (Mid)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Rear Right (R3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">R3 (Right)</span>
+                            </button>
+                        </div>
+                    </div>
 
-        <View style={{height: 100}} /> 
-      </ScrollView>
+                </div>
+            </div>
 
-      {/* redBus Style Bottom Booking Bar */}
-      <View style={styles.bottomBar}>
-        <View>
-          <Text style={{color: '#fff', fontSize: 12}}>बुकिंग & चौकशीसाठी</Text>
-          <Text style={{color: '#c59b27', fontWeight: 'bold', fontSize: 16}}>शशी राहाणे</Text>
-        </View>
-        <TouchableOpacity style={styles.callBtn} onPress={() => makeCall('9890896040')}>
-          <Text style={styles.callBtnText}>📞 कॉल करा</Text>
-        </TouchableOpacity>
-      </View>
+            <!-- 2. ONE WAY SECTION -->
+            <div id="section-oneway" class="booking-section hidden space-y-3">
+                <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included)</h3>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>
+                    <select id="oneway-route" onchange="updateOnewayCars()" class="w-full p-2 border rounded text-xs font-bold">
+                        <option value="Nashik to Pune">नाशिक ते पुणे</option>
+                        <option value="Pune to Nashik">पुणे ते नाशिक</option>
+                        <option value="Nashik to Mumbai">नाशिक ते मुंबई</option>
+                        <option value="Mumbai to Nashik">मुंबई ते नाशिक</option>
+                        <option value="Pune to Mumbai">पुणे ते मुंबई</option>
+                        <option value="Mumbai to Pune">मुंबई ते पुणे</option>
+                        <option value="Nashik to Sambhajinagar">नाशिक ते संभाजीनगर</option>
+                        <option value="Sambhajinagar to Nashik">संभाजीनगर ते नाशिक</option>
+                        <option value="Pune to Sambhajinagar">पुणे ते संभाजीनगर</option>
+                        <option value="Sambhajinagar to Pune">संभाजीनगर ते पुणे</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व प्राईस *</label>
+                    <select id="oneway-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
+                        <option value="SEDAN (Dzire/Aura) - ₹3000">SEDAN (Dzire / Aura) - ₹3000</option>
+                        <option value="SUV (Ertiga) - ₹4000">SUV (Ertiga) - ₹4000</option>
+                        <option value="DIESEL (Kia Carens/Crysta) - ₹5500">DIESEL (Kia Carens / Crysta) - ₹5500</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची तारीख *</label>
+                    <input type="date" id="oneway-date" class="w-full p-2 border rounded text-xs">
+                </div>
+            </div>
 
-    </SafeAreaView>
-  );
-}
+            <!-- 3. AIRPORT DROP SECTION -->
+            <div id="section-airport" class="booking-section hidden space-y-3">
+                <h3 class="font-bold text-gray-800 text-xs border-b pb-1">मुंबई एअरपोर्ट पिकअप / ड्रॉप सर्व्हिस</h3>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">एअरपोर्ट रूट निवडा *</label>
+                    <select id="airport-route" class="w-full p-2 border rounded text-xs font-bold">
+                        <option value="Nashik to Mumbai Airport Drop">NASHIK TO MUMBAI AIRPORT DROP</option>
+                        <option value="Mumbai Airport to Nashik Drop">MUMBAI AIRPORT TO NASHIK DROP</option>
+                        <option value="Pune to Mumbai Airport Drop">PUNE TO MUMBAI AIRPORT DROP</option>
+                        <option value="Mumbai Airport to Pune Drop">MUMBAI AIRPORT TO PUNE DROP</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी आणि रेट (Toll Included) *</label>
+                    <select id="airport-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
+                        <option value="SEDAN (S.V / Dzire) - ₹3200">SEDAN (Dzire) - ₹3200</option>
+                        <option value="SUV (Ertiga / XL6) - ₹4000">SUV (Ertiga / XL6) - ₹4000</option>
+                        <option value="KIA (Carens) - ₹5500">KIA (Carens) - ₹5500</option>
+                        <option value="INNOVA (Crysta) - ₹6500">INNOVA (Crysta) - ₹6500</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
+                    <input type="date" id="airport-date" class="w-full p-2 border rounded text-xs">
+                </div>
+            </div>
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f4f6f9' },
-  header: { backgroundColor: '#1a365d', padding: 15, alignItems: 'center' },
-  headerTitle: { color: '#c59b27', fontSize: 20, fontWeight: 'bold' },
-  headerSubtitle: { color: '#fff', fontSize: 12 },
-  
-  navWrapper: { backgroundColor: '#0f2544', paddingVertical: 10 },
-  navScroll: { flexDirection: 'row', paddingHorizontal: 5 },
-  tab: { paddingVertical: 8, paddingHorizontal: 16, borderRadius: 20, marginRight: 8, backgroundColor: '#1a365d' },
-  activeTab: { backgroundColor: '#c59b27' },
-  tabText: { color: '#fff', fontWeight: 'bold', fontSize: 13 },
-  activeTabText: { color: '#000' },
+            <!-- 4. FLEET SECTION (PER KM) -->
+            <div id="section-fleet" class="booking-section hidden space-y-3">
+                <h3 class="font-bold text-gray-800 text-xs border-b pb-1">आम्हाकडील गाड्यांचे किलोमीटर रेट्स (Per KM)</h3>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी निवडा *</label>
+                    <select id="fleet-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
+                        <option value="Maruti Dzire - ₹12/- Per KM">MARUTI DZIRE - ₹12/- PER KM</option>
+                        <option value="Maruti Ciaz - ₹13/- Per KM">MARUTI CIAZ - ₹13/- PER KM</option>
+                        <option value="Maruti Ertiga - ₹15/- Per KM">MARUTI ERTIGA - ₹15/- PER KM</option>
+                        <option value="Maruti Excel 6 - ₹15/- Per KM">MARUTI EXCEL 6 - ₹15/- PER KM</option>
+                        <option value="Kia Carens - ₹16/- Per KM">KIA CARENS - ₹16/- PER KM</option>
+                        <option value="Innova Crysta - ₹20/- Per KM">INNOVA CRYSTA - ₹20/- PER KM</option>
+                        <option value="Force Urbania - ₹35/- Per KM">FORCE URBANIA - ₹35/- PER KM</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाचे ठिकाण (Spot/Destination) *</label>
+                    <input type="text" id="fleet-spot" placeholder="उदा. नाशिक ते अष्टविनायक / गोवा" class="w-full p-2 border rounded text-xs">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
+                    <input type="date" id="fleet-date" class="w-full p-2 border rounded text-xs">
+                </div>
+            </div>
 
-  content: { padding: 15 },
-  card: { backgroundColor: '#fff', padding: 15, borderRadius: 10, elevation: 3, marginBottom: 15 },
-  
-  banner: { backgroundColor: '#1a365d', padding: 12, borderRadius: 8, alignItems: 'center', marginBottom: 15 },
-  bannerTitle: { color: '#c59b27', fontWeight: 'bold', fontSize: 15 },
-  bannerSub: { color: '#fff', fontSize: 11, marginTop: 3 },
+            <!-- 5. NASHIK DARSHAN SECTION -->
+            <div id="section-darshan" class="booking-section hidden space-y-3">
+                <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">
+                    <i class="fa-solid fa-om"></i> नाशिक दर्शन सिटी पॉईंट (प्रेक्षणीय स्थळे)
+                </h3>
+                
+                <div class="bg-red-50 p-2.5 rounded-lg border border-red-200 text-[11px] text-gray-700 space-y-1">
+                    <p class="font-bold text-redbus">📍 समाविष्ट प्रेक्षणीय स्थळे:</p>
+                    <p>• त्र्यंबकेश्वर ज्योतिर्लिंग • श्री स्वामी समर्थ गुरुपीठ</p>
+                    <p>• अंजनेरी हनुमानजी टेम्पल • सोमेश्वर</p>
+                    <p>• साधना मिसळ / ग्रेप ॲंबेसि • पंचवटी</p>
+                    <p>• तपोवन • स्वामी नारायण टेम्पल</p>
+                    <p>• अण्णा गणपती • मुक्तिधाम</p>
+                </div>
 
-  sectionHeading: { fontSize: 16, fontWeight: 'bold', color: '#1a365d', marginBottom: 10, borderBottomWidth: 1, borderBottomColor: '#eee', paddingBottom: 5 },
-  
-  timeBox: { backgroundColor: '#eef2f7', padding: 10, borderRadius: 6, marginBottom: 10 },
-  routeTitle: { fontWeight: 'bold', color: '#1a365d', fontSize: 14 },
-  timeLabel: { fontSize: 12, color: '#333', marginTop: 3 },
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी आणि पॅकेज *</label>
+                    <select id="darshan-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
+                        <option value="सिडान कार (4+1) - ₹3600">सिडान कार (4+1 Seater) - ₹3600</option>
+                        <option value="ईरटीका (6+1) - ₹4500">ईरटीका (6+1 Seater) - ₹4500</option>
+                        <option value="इनोव्हा / किया करेन्स (7+1) - ₹5500">इनोव्हा / किया करेन्स (7+1 Seater) - ₹5500</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
+                    <input type="date" id="darshan-date" class="w-full p-2 border rounded text-xs">
+                </div>
+            </div>
 
-  priceRow: { flexDirection: 'row', justifyContent: 'space-between' },
-  priceCard: { backgroundColor: '#f9f9f9', padding: 10, borderRadius: 6, width: '48%', alignItems: 'center', borderWidth: 1, borderColor: '#ddd' },
-  priceTitle: { fontSize: 12, color: '#555' },
-  priceVal: { fontSize: 16, fontWeight: 'bold', color: '#27ae60', marginTop: 3 },
+            <!-- 6. BUS SECTION -->
+            <div id="section-bus" class="booking-section hidden space-y-3">
+                <h3 class="font-bold text-gray-800 text-xs border-b pb-1">बस इन्क्वायरी</h3>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">बस क्षमता *</label>
+                    <select id="bus-capacity" class="w-full p-2 border rounded text-xs">
+                        <option value="17 Seater Urbania">17 Seater Urbania</option>
+                        <option value="20 Seater Mini Bus">20 Seater Mini Bus</option>
+                        <option value="27 Seater Bus">27 Seater Bus</option>
+                        <option value="32 Seater Bus">32 Seater Bus</option>
+                        <option value="50 Seater Luxury Bus">50 Seater Luxury Bus</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख</label>
+                    <input type="date" id="bus-date" class="w-full p-2 border rounded text-xs">
+                </div>
+                <div>
+                    <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती टाका..." class="w-full p-2 border rounded text-xs"></textarea>
+                </div>
+            </div>
 
-  tableItem: { backgroundColor: '#f8f9fa', padding: 10, borderRadius: 6, marginBottom: 10, borderWidth: 1, borderColor: '#eee' },
-  itemTitle: { fontWeight: 'bold', color: '#1a365d', fontSize: 14, marginBottom: 5 },
-  itemDetail: { fontSize: 13, color: '#444', marginVertical: 2 },
+            <!-- Submit Button -->
+            <button onclick="sendWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center gap-2 mt-4 text-sm">
+                <i class="fa-brands fa-whatsapp text-lg"></i> व्हॉट्सॲपवर बुकिंग पाठवा
+            </button>
 
-  fleetGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
-  fleetBox: { width: '48%', backgroundColor: '#f8f9fa', padding: 10, borderRadius: 6, marginBottom: 10, alignItems: 'center', borderWidth: 1, borderColor: '#ddd' },
-  fleetName: { fontWeight: 'bold', color: '#1a365d' },
-  fleetRate: { color: '#d9534f', fontWeight: 'bold', marginTop: 3 },
+        </div>
 
-  bulletPoint: { fontSize: 13, color: '#333', marginVertical: 4 },
+        <!-- TRAVEL FEATURES & LOGO FOOTER SECTION -->
+        <div class="mt-6 bg-white p-4 rounded-xl shadow-md border border-gray-200">
+            <h3 class="text-xs font-bold text-redbus uppercase tracking-wider text-center mb-3">
+                ⭐ आमच्या ट्रॅव्हल्सची वैशिष्ट्ये (OUR FEATURES) ⭐
+            </h3>
 
-  bottomBar: { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#1a365d', padding: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderTopWidth: 2, borderTopColor: '#c59b27' },
-  callBtn: { backgroundColor: '#27ae60', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 25 },
-  callBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 14 }
-});
+            <div class="grid grid-cols-2 gap-2 text-[11px] text-gray-700 mb-4">
+                <div class="flex items-center gap-2 p-1.5 bg-gray-50 rounded border">
+                    <i class="fa-solid fa-user-shield text-redbus"></i>
+                    <span>सर्व १०+ वर्षे अनुभव असणारे ड्रायव्हर</span>
+                </div>
+                <div class="flex items-center gap-2 p-1.5 bg-gray-50 rounded border">
+                    <i class="fa-solid fa-map-location-dot text-redbus"></i>
+                    <span>रस्त्याची संपूर्ण माहिती</span>
+                </div>
+                <div class="flex items-center gap-2 p-1.5 bg-gray-50 rounded border">
+                    <i class="fa-solid fa-wand-magic-sparkles text-redbus"></i>
+                    <span>स्वच्छ व अपग्रेड A/C वाहने</span>
+                </div>
+                <div class="flex items-center gap-2 p-1.5 bg-gray-50 rounded border">
+                    <i class="fa-solid fa-clock text-redbus"></i>
+                    <span>दिलेल्या वेळेच्या १० मिनिटे हजर</span>
+                </div>
+                <div class="flex items-center gap-2 p-1.5 bg-gray-50 rounded border">
+                    <i class="fa-solid fa-location-crosshairs text-redbus"></i>
+                    <span>जी पी एस (GPS) ट्रॅकिंग</span>
+                </div>
+                <div class="flex items-center gap-2 p-1.5 bg-gray-50 rounded border">
+                    <i class="fa-solid fa-person-dress text-redbus"></i>
+                    <span>महिला स्पेशल शेअरिंग कॅब</span>
+                </div>
+                <div class="flex items-center gap-2 p-1.5 bg-gray-50 rounded border">
+                    <i class="fa-solid fa-box text-redbus"></i>
+                    <span>पार्सल सुविधा उपलब्ध</span>
+                </div>
+                <div class="flex items-center gap-2 p-1.5 bg-gray-50 rounded border">
+                    <i class="fa-solid fa-award text-redbus"></i>
+                    <span>गेली दोन पिढ्या सेवेत</span>
+                </div>
+            </div>
+
+            <!-- Footer Logo & Address -->
+            <div class="text-center pt-3 border-t">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-black rounded-full border-2 border-yellow-500 mb-2 shadow">
+                    <span class="text-yellow-500 font-black text-2xl tracking-tighter">GK</span>
+                </div>
+                <h4 class="font-black text-sm text-gray-800">GURUKRUPA TOURS AND TRAVELS</h4>
+                <p class="text-[10px] text-gray-500 font-semibold">प्रवास तुमचा, जबाबदारी आमची</p>
+                <p class="text-[10px] text-gray-600 mt-1">
+                    📍 B2 शितल रेसिडेन्सी, नाशिक केसर फ्री टाऊन, मोशी / भारत माता चौक, मोशी
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentTab = 'sharing';
+        let selectedCar = 'ertiga';
+        let selectedSeats = [];
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.booking-section').forEach(sec => sec.classList.add('hidden'));
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+        }
+
+        function selectTime(element, timeStr) {
+            document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('sharing-time').value = timeStr;
+        }
+
+        function selectCar(carType) {
+            selectedCar = carType;
+            selectedSeats = [];
+            document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
+
+            if(carType === 'ertiga') {
+                document.getElementById('layout-ertiga').classList.remove('hidden');
+                document.getElementById('layout-ciaz').classList.add('hidden');
+            } else {
+                document.getElementById('layout-ciaz').classList.remove('hidden');
+                document.getElementById('layout-ertiga').classList.add('hidden');
+            }
+        }
+
+        function toggleSeat(btn, seatInfo) {
+            if(btn.classList.contains('selected')) {
+                btn.classList.remove('selected');
+                selectedSeats = selectedSeats.filter(s => s !== seatInfo);
+            } else {
+                btn.classList.add('selected');
+                selectedSeats.push(seatInfo);
+            }
+        }
+
+        function updateOnewayCars() {
+            const route = document.getElementById('oneway-route').value;
+            const carSelect = document.getElementById('oneway-car');
+            
+            if (route.includes('Sambhajinagar')) {
+                carSelect.innerHTML = `
+                    <option value="SEDAN (Dzire/Aura) - ₹3500">SEDAN (Dzire / Aura) - ₹3500</option>
+                    <option value="SUV (Ertiga) - ₹4500">SUV (Ertiga) - ₹4500</option>
+                    <option value="DIESEL (Kia Carens/Crysta) - ₹5500">DIESEL (Kia Carens / Crysta) - ₹5500</option>
+                `;
+            } else {
+                carSelect.innerHTML = `
+                    <option value="SEDAN (Dzire/Aura) - ₹3000">SEDAN (Dzire / Aura) - ₹3000</option>
+                    <option value="SUV (Ertiga) - ₹4000">SUV (Ertiga) - ₹4000</option>
+                    <option value="DIESEL (Kia Carens/Crysta) - ₹5500">DIESEL (Kia Carens / Crysta) - ₹5500</option>
+                `;
+            }
+        }
+
+        function sendWhatsApp() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+
+            if (!name || !phone) {
+                alert('कृपया नाव आणि मोबाईल नंबर टाका!');
+                return;
+            }
+
+            let message = `*न्यू बुकिंग - गुरुकृपा टूअर्स अँड ट्रॅव्हल्स*\n`;
+            message += `----------------------------\n`;
+            message += `👤 *ग्राहक:* ${name}\n`;
+            message += `📞 *मोबाईल:* ${phone}\n`;
+
+            if (currentTab === 'sharing') {
+                const date = document.getElementById('sharing-date').value;
+                const time = document.getElementById('sharing-time').value;
+
+                if (!date || !time) return alert('कृपया तारीख आणि वेळ निवडा!');
+                if (selectedSeats.length === 0) return alert('कृपया सीट निवडा!');
+
+                message += `🚕 *सेवा:* शेअरिंग टॅक्सी\n`;
+                message += `🚘 *गाडी:* ${selectedCar.toUpperCase()}\n`;
+                message += `📅 *तारीख:* ${date}\n`;
+                message += `⏰ *वेळ:* ${time}\n`;
+                message += `💺 *सिलेक्ट केलेल्या सीट:* \n - ${selectedSeats.join('\n - ')}\n`;
+
+            } else if (currentTab === 'oneway') {
+                const route = document.getElementById('oneway-route').value;
+                const date = document.getElementById('oneway-date').value;
+                const car = document.getElementById('oneway-car').value;
+                if(!date) return alert('कृपया तारीख निवडा!');
+
+                message += `🚕 *सेवा:* वन-वे टॅक्सी (Toll Included)\n📍 *रूट:* ${route}\n🚘 *गाडी:* ${car}\n📅 *तारीख:* ${date}\n`;
+
+            } else if (currentTab === 'airport') {
+                const route = document.getElementById('airport-route').value;
+                const date = document.getElementById('airport-date').value;
+                const car = document.getElementById('airport-car').value;
+                if(!date) return alert('कृपया तारीख निवडा!');
+
+                message += `✈️ *सेवा:* एअरपोर्ट ड्रॉप सर्व्हिस\n📍 *रूट:* ${route}\n🚘 *गाडी:* ${car}\n📅 *तारीख:* ${date}\n`;
+
+            } else if (currentTab === 'fleet') {
+                const car = document.getElementById('fleet-car').value;
+                const spot = document.getElementById('fleet-spot').value;
+                const date = document.getElementById('fleet-date').value;
+                if(!date || !spot) return alert('कृपया ठिकाण व तारीख टाका!');
+
+                message += `🚘 *सेवा:* फ्लीट बुकिंग (Per KM)\n🚗 *गाडी व रेट:* ${car}\n📍 *ठिकाण:* ${spot}\n📅 *तारीख:* ${date}\n`;
+
+            } else if (currentTab === 'darshan') {
+                const car = document.getElementById('darshan-car').value;
+                const date = document.getElementById('darshan-date').value;
+                if(!date) return alert('कृपया तारीख निवडा!');
+
+                message += `🛕 *सेवा:* नाशिक दर्शन\n🚘 *पॅकेज:* ${car}\n📅 *तारीख:* ${date}\n`;
+
+            } else if (currentTab === 'bus') {
+                const cap = document.getElementById('bus-capacity').value;
+                const date = document.getElementById('bus-date').value;
+                const msg = document.getElementById('bus-msg').value;
+
+                message += `🚌 *सेवा:* बस इन्क्वायरी\n💺 *बस:* ${cap}\n📅 *तारीख:* ${date}\n📝 *टीप:* ${msg}\n`;
+            }
+
+            const whatsappUrl = `https://wa.me/919890896040?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
