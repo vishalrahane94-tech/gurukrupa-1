@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gurukrupa Tours - Book Your Seat</title>
+    <title>Gurukrupa Tours & Travels - Seat Booking</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -28,9 +28,8 @@
             color: white !important;
             border-color: #b83238 !important;
         }
-        .seat.occupied {
-            background-color: #9ca3af !important;
-            cursor: not-allowed;
+        .seat.selected .price-tag {
+            color: white !important;
         }
         .tab-btn.active {
             background-color: #d84e55;
@@ -44,292 +43,238 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-gray-100 font-sans">
 
-    <!-- RedBus Style Header -->
-    <header class="bg-redbus text-white p-4 shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold flex items-center gap-2">
-                <i class="fa-solid fa-taxi text-yellow-300"></i> GURUKRUPA TOURS
-            </h1>
-            <a href="tel:9890896040" class="bg-white text-redbus px-3 py-1.5 rounded-full text-sm font-bold flex items-center gap-1 hover:bg-gray-100">
-                <i class="fa-solid fa-phone"></i> 9890896040
-            </a>
+    <!-- RedBus Style Header with Logo & Owner Details -->
+    <header class="bg-redbus text-white p-3 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            
+            <!-- Logo & Brand Name -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-black rounded-full border-2 border-yellow-500 flex items-center justify-center p-1 shadow-md">
+                    <!-- SVG representation of your logo -->
+                    <span class="text-yellow-500 font-black text-xl tracking-tighter">GK</span>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black tracking-wide text-yellow-300 uppercase leading-none">GURUKRUPA</h1>
+                    <p class="text-[10px] tracking-widest text-white uppercase font-bold">TOURS AND TRAVELS</p>
+                    <p class="text-xs text-gray-200 mt-0.5">Prop: <span class="font-semibold text-white">Shashi Rahane</span></p>
+                </div>
+            </div>
+
+            <!-- Contact Numbers -->
+            <div class="flex gap-2">
+                <a href="tel:9890896040" class="bg-white text-redbus px-2.5 py-1 rounded-full text-xs font-bold flex items-center gap-1 hover:bg-gray-100 shadow">
+                    <i class="fa-solid fa-phone"></i> 9890896040
+                </a>
+                <a href="tel:9922862007" class="bg-white text-redbus px-2.5 py-1 rounded-full text-xs font-bold flex items-center gap-1 hover:bg-gray-100 shadow">
+                    <i class="fa-solid fa-phone"></i> 9922862007
+                </a>
+            </div>
+
         </div>
     </header>
 
-    <div class="container mx-auto p-4 max-w-2xl">
+    <div class="container mx-auto p-3 max-w-lg">
         
         <!-- Navigation Tabs -->
-        <div class="grid grid-cols-3 gap-2 mb-6 text-xs sm:text-sm font-semibold">
-            <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2.5 rounded-lg border bg-white shadow-sm transition">1. Sharing</button>
-            <button onclick="switchTab('oneway')" id="tab-oneway" class="tab-btn p-2.5 rounded-lg border bg-white shadow-sm transition">2. One Way</button>
-            <button onclick="switchTab('airport')" id="tab-airport" class="tab-btn p-2.5 rounded-lg border bg-white shadow-sm transition">3. Airport</button>
-            <button onclick="switchTab('fleet')" id="tab-fleet" class="tab-btn p-2.5 rounded-lg border bg-white shadow-sm transition">4. Fleet</button>
-            <button onclick="switchTab('darshan')" id="tab-darshan" class="tab-btn p-2.5 rounded-lg border bg-white shadow-sm transition">5. Darshan</button>
-            <button onclick="switchTab('bus')" id="tab-bus" class="tab-btn p-2.5 rounded-lg border bg-white shadow-sm transition">6. Bus Inquiry</button>
+        <div class="grid grid-cols-3 gap-1.5 mb-4 text-xs font-semibold">
+            <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
+            <button onclick="switchTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>
+            <button onclick="switchTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport</button>
+            <button onclick="switchTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet</button>
+            <button onclick="switchTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. Darshan</button>
+            <button onclick="switchTab('bus')" id="tab-bus" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Bus Inquiry</button>
         </div>
 
-        <!-- Main Form Container -->
-        <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-xl border border-gray-100">
+        <!-- Main Card -->
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
             
-            <!-- Customer Info -->
-            <div class="mb-5 border-b pb-4">
-                <h2 class="text-md font-bold text-gray-800 mb-3 flex items-center gap-2">
+            <!-- Customer Details -->
+            <div class="mb-4 border-b pb-3">
+                <h2 class="text-xs font-bold text-gray-700 uppercase mb-2 flex items-center gap-1">
                     <i class="fa-solid fa-user text-redbus"></i> ग्राहक माहिती (Customer Details)
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">पूर्ण नाव *</label>
-                        <input type="text" id="cust-name" placeholder="उदा. राहुल पाटील" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-redbus outline-none text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">मोबाईल नंबर *</label>
-                        <input type="tel" id="cust-phone" placeholder="उदा. 98xxxxxxxx" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-redbus outline-none text-sm">
-                    </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="cust-name" placeholder="पूर्ण नाव *" class="p-2 border rounded text-xs focus:ring-1 focus:ring-redbus outline-none">
+                    <input type="tel" id="cust-phone" placeholder="मोबाईल नंबर *" class="p-2 border rounded text-xs focus:ring-1 focus:ring-redbus outline-none">
                 </div>
             </div>
 
             <!-- 1. SHARING SECTION -->
             <div id="section-sharing" class="booking-section">
-                <h3 class="font-bold text-gray-800 mb-3 text-sm">१. शेअरिंग टॅक्सी - सीट सिलेक्ट करा</h3>
                 
-                <div class="mb-4">
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">प्रवासाची तारीख (Travel Date) *</label>
-                    <input type="date" id="sharing-date" class="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-redbus outline-none">
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची तारीख *</label>
+                        <input type="date" id="sharing-date" class="w-full p-1.5 border rounded text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी *</label>
+                        <select onchange="selectCar(this.value)" id="car-select" class="w-full p-1.5 border rounded text-xs font-bold text-redbus">
+                            <option value="ertiga">Ertiga (6 Seater)</option>
+                            <option value="ciaz">Ciaz (4 Seater)</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="mb-4">
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">वेळ निवडा (Select Time) *</label>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button type="button" onclick="selectTime(this, '04:00 AM')" class="time-btn p-2 text-xs border rounded-lg hover:border-redbus">04:00 AM</button>
-                        <button type="button" onclick="selectTime(this, '04:30 AM')" class="time-btn p-2 text-xs border rounded-lg hover:border-redbus">04:30 AM</button>
-                        <button type="button" onclick="selectTime(this, '05:00 AM')" class="time-btn p-2 text-xs border rounded-lg hover:border-redbus">05:00 AM</button>
-                        <button type="button" onclick="selectTime(this, '08:00 AM')" class="time-btn p-2 text-xs border rounded-lg hover:border-redbus">08:00 AM</button>
-                        <button type="button" onclick="selectTime(this, '08:30 AM')" class="time-btn p-2 text-xs border rounded-lg hover:border-redbus">08:30 AM</button>
-                        <button type="button" onclick="selectTime(this, '09:00 AM')" class="time-btn p-2 text-xs border rounded-lg hover:border-redbus">09:00 AM</button>
+                <!-- Time Selection -->
+                <div class="mb-3">
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ निवडा *</label>
+                    <div class="grid grid-cols-3 gap-1.5">
+                        <button type="button" onclick="selectTime(this, '04:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">04:00 AM</button>
+                        <button type="button" onclick="selectTime(this, '04:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">04:30 AM</button>
+                        <button type="button" onclick="selectTime(this, '05:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">05:00 AM</button>
+                        <button type="button" onclick="selectTime(this, '08:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">08:00 AM</button>
+                        <button type="button" onclick="selectTime(this, '08:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">08:30 AM</button>
+                        <button type="button" onclick="selectTime(this, '09:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">09:00 AM</button>
                     </div>
                     <input type="hidden" id="sharing-time">
                 </div>
 
-                <!-- Vehicle Selection Tabs -->
-                <div class="mb-4">
-                    <label class="block text-xs font-semibold text-gray-600 mb-2">गाडी निवडा (Select Car Model) *</label>
-                    <div class="flex gap-3">
-                        <button type="button" onclick="selectCar('ertiga')" id="car-btn-ertiga" class="flex-1 p-2.5 border-2 rounded-xl text-center font-bold text-sm bg-red-50 border-redbus text-redbus">
-                            <i class="fa-solid fa-car-side"></i> Ertiga (6 Seater)
-                        </button>
-                        <button type="button" onclick="selectCar('ciaz')" id="car-btn-ciaz" class="flex-1 p-2.5 border-2 rounded-xl text-center font-bold text-sm border-gray-200 text-gray-600 hover:border-redbus">
-                            <i class="fa-solid fa-car text-sm"></i> Ciaz (4 Seater)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- SEAT LAYOUT CONTAINER -->
-                <div class="bg-gray-100 p-4 rounded-xl border border-gray-200 mb-4">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-xs font-bold text-gray-600">स्टिअरिंग (Driver Front)</span>
-                        <div class="flex gap-3 text-xs">
-                            <span class="flex items-center gap-1"><span class="w-3 h-3 bg-white border rounded"></span> रिकामी</span>
-                            <span class="flex items-center gap-1"><span class="w-3 h-3 bg-redbus rounded"></span> तुमची सीट</span>
+                <!-- SEAT LAYOUT CONTAINER (REDBUS CAR INTERIOR STYLE) -->
+                <div class="bg-gray-50 p-3 rounded-lg border-2 border-gray-300">
+                    <div class="flex justify-between items-center mb-3 pb-2 border-b">
+                        <span class="text-[11px] font-bold text-gray-500 uppercase">समोरची बाजू (Front)</span>
+                        <div class="flex gap-2 text-[10px]">
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-white border border-gray-400 rounded"></span> उपलब्ध</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-redbus rounded"></span> सिलेक्टेड</span>
                         </div>
                     </div>
 
-                    <!-- ERTIGA SEAT LAYOUT (1 Front + 3 Middle + 2 Back) -->
-                    <div id="layout-ertiga" class="space-y-4">
-                        <!-- Front Row -->
-                        <div class="flex justify-between items-center border-b pb-2">
-                            <div class="w-12 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-xs font-bold text-gray-600"><i class="fa-solid fa-wheel"></i></div>
-                            <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-14 h-11 bg-white border-2 border-green-500 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold shadow-sm">
-                                <span>F1</span><span class="text-[9px] text-green-700">₹750</span>
+                    <!-- ERTIGA SEAT LAYOUT (Driver Right, Passenger Left) -->
+                    <div id="layout-ertiga" class="space-y-3">
+                        
+                        <!-- Row 1: Left Front Seat | Right Driver -->
+                        <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
+                            <!-- Left: Front Passenger Seat -->
+                            <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
+                                <span class="text-xs font-black">F1 (Front)</span>
+                            </button>
+                            
+                            <!-- Right: Driver Seat -->
+                            <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
+                                <i class="fa-solid fa-wheel"></i> Driver
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Middle Row (3 Compact Seats) -->
+                        <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Middle Left (M1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">M1 (Left)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Middle Center (M2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">M2 (Mid)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Middle Right (M3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">M3 (Right)</span>
                             </button>
                         </div>
-                        <!-- Middle Row (3 Seats) -->
-                        <div class="grid grid-cols-3 gap-2 border-b pb-2">
-                            <button type="button" onclick="toggleSeat(this, 'Middle Seat (M1) - ₹550')" class="seat h-11 bg-white border border-gray-300 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold shadow-sm">
-                                <span>M1</span><span class="text-[9px] text-gray-500">₹550</span>
+
+                        <!-- Row 3: Back Row (2 Rear Seats) -->
+                        <div class="grid grid-cols-2 gap-3 bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Back Left (B1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">B1 (Back L)</span>
                             </button>
-                            <button type="button" onclick="toggleSeat(this, 'Middle Seat (M2) - ₹550')" class="seat h-11 bg-white border border-gray-300 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold shadow-sm">
-                                <span>M2</span><span class="text-[9px] text-gray-500">₹550</span>
-                            </button>
-                            <button type="button" onclick="toggleSeat(this, 'Middle Seat (M3) - ₹550')" class="seat h-11 bg-white border border-gray-300 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold shadow-sm">
-                                <span>M3</span><span class="text-[9px] text-gray-500">₹550</span>
+                            <button type="button" onclick="toggleSeat(this, 'Back Right (B2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">B2 (Back R)</span>
                             </button>
                         </div>
-                        <!-- Back Row (2 Seats) -->
-                        <div class="grid grid-cols-2 gap-4 px-4">
-                            <button type="button" onclick="toggleSeat(this, 'Back Seat (B1) - ₹550')" class="seat h-11 bg-white border border-gray-300 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold shadow-sm">
-                                <span>B1</span><span class="text-[9px] text-gray-500">₹550</span>
+
+                    </div>
+
+                    <!-- CIAZ SEAT LAYOUT (Driver Right, Passenger Left) -->
+                    <div id="layout-ciaz" class="space-y-3 hidden">
+                        
+                        <!-- Row 1: Left Front Seat | Right Driver -->
+                        <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
+                            <!-- Left: Front Passenger Seat -->
+                            <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
+                                <span class="text-xs font-black">F1 (Front)</span>
                             </button>
-                            <button type="button" onclick="toggleSeat(this, 'Back Seat (B2) - ₹550')" class="seat h-11 bg-white border border-gray-300 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold shadow-sm">
-                                <span>B2</span><span class="text-[9px] text-gray-500">₹550</span>
+                            
+                            <!-- Right: Driver Seat -->
+                            <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
+                                <i class="fa-solid fa-wheel"></i> Driver
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Rear Row (3 Seats) -->
+                        <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
+                            <button type="button" onclick="toggleSeat(this, 'Rear Left (R1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">R1 (Left)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Rear Center (R2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">R2 (Mid)</span>
+                            </button>
+                            <button type="button" onclick="toggleSeat(this, 'Rear Right (R3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                <span class="text-xs font-bold">R3 (Right)</span>
                             </button>
                         </div>
+
                     </div>
 
-                    <!-- CIAZ SEAT LAYOUT (1 Front + 3 Back) -->
-                    <div id="layout-ciaz" class="space-y-4 hidden">
-                        <!-- Front Row -->
-                        <div class="flex justify-between items-center border-b pb-2">
-                            <div class="w-12 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-xs font-bold text-gray-600"><i class="fa-solid fa-wheel"></i></div>
-                            <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-14 h-11 bg-white border-2 border-green-500 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold shadow-sm">
-                                <span>F1</span><span class="text-[9px] text-green-700">₹750</span>
-                            </button>
-                        </div>
-                        <!-- Back Row (3 Seats) -->
-                        <div class="grid grid-cols-3 gap-2">
-                            <button type="button" onclick="toggleSeat(this, 'Back Seat (R1) - ₹550')" class="seat h-11 bg-white border border-gray-300 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold shadow-sm">
-                                <span>R1</span><span class="text-[9px] text-gray-500">₹550</span>
-                            </button>
-                            <button type="button" onclick="toggleSeat(this, 'Back Seat (R2) - ₹550')" class="seat h-11 bg-white border border-gray-300 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold shadow-sm">
-                                <span>R2</span><span class="text-[9px] text-gray-500">₹550</span>
-                            </button>
-                            <button type="button" onclick="toggleSeat(this, 'Back Seat (R3) - ₹550')" class="seat h-11 bg-white border border-gray-300 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold shadow-sm">
-                                <span>R3</span><span class="text-[9px] text-gray-500">₹550</span>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
 
-            <!-- 2. ONE WAY SECTION -->
-            <div id="section-oneway" class="booking-section hidden">
-                <h3 class="font-bold text-gray-800 mb-3 text-sm">२. वन-वे टॅक्सी बुकिंग</h3>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">रूट निवडा *</label>
-                        <select id="oneway-route" class="w-full p-2.5 border rounded-lg text-sm">
-                            <option value="Nashik to Pune">Nashik To Pune</option>
-                            <option value="Pune to Nashik">Pune To Nashik</option>
-                            <option value="Nashik to Mumbai">Nashik To Mumbai</option>
-                            <option value="Mumbai to Nashik">Mumbai To Nashik</option>
-                            <option value="Pune to Mumbai">Pune To Mumbai</option>
-                            <option value="Mumbai to Pune">Mumbai To Pune</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">तारीख *</label>
-                        <input type="date" id="oneway-date" class="w-full p-2.5 border rounded-lg text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">गाडी चा प्रकार *</label>
-                        <select id="oneway-car" class="w-full p-2.5 border rounded-lg text-sm">
-                            <option value="Sedan (₹3000)">Sedan (Dzire / Ciaz) - ₹3000</option>
-                            <option value="SUV (₹4000)">SUV (Ertiga) - ₹4000</option>
-                            <option value="Diesel (₹5500)">Diesel (Kia Carens / Crysta) - ₹5500</option>
-                        </select>
-                    </div>
-                </div>
+            <!-- Other Sections (One Way, Airport, Fleet, Darshan, Bus) -->
+            <div id="section-oneway" class="booking-section hidden space-y-2">
+                <label class="block text-xs font-semibold">रूट निवडा *</label>
+                <select id="oneway-route" class="w-full p-2 border rounded text-xs">
+                    <option value="Nashik to Pune">Nashik To Pune</option>
+                    <option value="Pune to Nashik">Pune To Nashik</option>
+                    <option value="Nashik to Mumbai">Nashik To Mumbai</option>
+                    <option value="Mumbai to Nashik">Mumbai To Nashik</option>
+                </select>
+                <label class="block text-xs font-semibold">तारीख *</label>
+                <input type="date" id="oneway-date" class="w-full p-2 border rounded text-xs">
+                <label class="block text-xs font-semibold">गाडी प्रकार *</label>
+                <select id="oneway-car" class="w-full p-2 border rounded text-xs">
+                    <option value="Sedan (₹3000)">Sedan (Dzire/Ciaz) - ₹3000</option>
+                    <option value="SUV (₹4000)">SUV (Ertiga) - ₹4000</option>
+                </select>
             </div>
 
-            <!-- 3. AIRPORT SECTION -->
-            <div id="section-airport" class="booking-section hidden">
-                <h3 class="font-bold text-gray-800 mb-3 text-sm">३. एअरपोर्ट ट्रान्सफर</h3>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">एअरपोर्ट रूट *</label>
-                        <select id="airport-route" class="w-full p-2.5 border rounded-lg text-sm">
-                            <option value="Nashik to Mumbai Airport">Nashik To Mumbai Airport</option>
-                            <option value="Mumbai Airport to Nashik">Mumbai Airport To Nashik</option>
-                            <option value="Pune to Mumbai Airport">Pune To Mumbai Airport</option>
-                            <option value="Mumbai Airport to Pune">Mumbai Airport To Pune</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">तारीख *</label>
-                        <input type="date" id="airport-date" class="w-full p-2.5 border rounded-lg text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">गाडी चा प्रकार *</label>
-                        <select id="airport-car" class="w-full p-2.5 border rounded-lg text-sm">
-                            <option value="Sedan (₹3200)">Sedan - ₹3200</option>
-                            <option value="SUV (₹4000)">SUV - ₹4000</option>
-                            <option value="Kia Carens (₹5500)">Kia Carens - ₹5500</option>
-                            <option value="Innova Crysta (₹6500)">Innova Crysta - ₹6500</option>
-                        </select>
-                    </div>
-                </div>
+            <div id="section-airport" class="booking-section hidden space-y-2">
+                <label class="block text-xs font-semibold">एअरपोर्ट रूट *</label>
+                <select id="airport-route" class="w-full p-2 border rounded text-xs">
+                    <option value="Nashik to Mumbai Airport">Nashik To Mumbai Airport</option>
+                    <option value="Mumbai Airport to Nashik">Mumbai Airport To Nashik</option>
+                </select>
+                <input type="date" id="airport-date" class="w-full p-2 border rounded text-xs">
             </div>
 
-            <!-- 4. FLEET SECTION -->
-            <div id="section-fleet" class="booking-section hidden">
-                <h3 class="font-bold text-gray-800 mb-3 text-sm">४. फ्लीट बुकिंग (Per KM)</h3>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">गाडी निवडा *</label>
-                        <select id="fleet-car" class="w-full p-2.5 border rounded-lg text-sm">
-                            <option value="Dzire 4+1 (₹12/km)">Dzire (₹12/km)</option>
-                            <option value="Ciaz 4+1 (₹13/km)">Ciaz (₹13/km)</option>
-                            <option value="Ertiga 6+1 (₹15/km)">Ertiga (₹15/km)</option>
-                            <option value="Kia Carens (₹16/km)">Kia Carens (₹16/km)</option>
-                            <option value="Crysta 7+1 (₹20/km)">Crysta (₹20/km)</option>
-                            <option value="Urbania 17 (₹35/km)">Urbania 17 Seater (₹35/km)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">तारीख *</label>
-                        <input type="date" id="fleet-date" class="w-full p-2.5 border rounded-lg text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">कुठे जायचे आहे? (Spot/Destination) *</label>
-                        <input type="text" id="fleet-spot" placeholder="उदा. नाशिक ते शिर्डी - महाबळेश्वर" class="w-full p-2.5 border rounded-lg text-sm">
-                    </div>
-                </div>
+            <div id="section-fleet" class="booking-section hidden space-y-2">
+                <input type="date" id="fleet-date" class="w-full p-2 border rounded text-xs">
+                <input type="text" id="fleet-spot" placeholder="ठिकाण (Destinations)" class="w-full p-2 border rounded text-xs">
             </div>
 
-            <!-- 5. DARSHAN SECTION -->
-            <div id="section-darshan" class="booking-section hidden">
-                <h3 class="font-bold text-gray-800 mb-3 text-sm">५. नाशिक दर्शन</h3>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">गाडी निवडा *</label>
-                        <select id="darshan-car" class="w-full p-2.5 border rounded-lg text-sm">
-                            <option value="Sedan (₹3600)">Sedan - ₹3600</option>
-                            <option value="Ertiga (₹4500)">Ertiga - ₹4500</option>
-                            <option value="Crysta (₹5500)">Crysta - ₹5500</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">तारीख *</label>
-                        <input type="date" id="darshan-date" class="w-full p-2.5 border rounded-lg text-sm">
-                    </div>
-                </div>
+            <div id="section-darshan" class="booking-section hidden space-y-2">
+                <input type="date" id="darshan-date" class="w-full p-2 border rounded text-xs">
             </div>
 
-            <!-- 6. BUS SECTION -->
-            <div id="section-bus" class="booking-section hidden">
-                <h3 class="font-bold text-gray-800 mb-3 text-sm">६. बस इन्क्वायरी</h3>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">बस क्षमता *</label>
-                        <select id="bus-capacity" class="w-full p-2.5 border rounded-lg text-sm">
-                            <option value="17 Seater">17 Seater</option>
-                            <option value="20 Seater">20 Seater</option>
-                            <option value="27 Seater">27 Seater</option>
-                            <option value="32 Seater">32 Seater</option>
-                            <option value="50 Seater">50 Seater</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">तारीख</label>
-                        <input type="date" id="bus-date" class="w-full p-2.5 border rounded-lg text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">इतर माहिती / रूट</label>
-                        <textarea id="bus-msg" rows="2" placeholder="उदा. नाशिक ते गोवा ३ दिवस ट्रिप" class="w-full p-2.5 border rounded-lg text-sm"></textarea>
-                    </div>
-                </div>
+            <div id="section-bus" class="booking-section hidden space-y-2">
+                <textarea id="bus-msg" placeholder="बस माहिती किंवा मागणी..." class="w-full p-2 border rounded text-xs"></textarea>
             </div>
 
-            <!-- Submit WhatsApp Button -->
-            <button onclick="sendWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-lg flex justify-center items-center gap-2 mt-6 transition text-md">
-                <i class="fa-brands fa-whatsapp text-2xl"></i> व्हॉट्सॲपवर बुकिंग पाठवा
+            <!-- Submit Button -->
+            <button onclick="sendWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow flex justify-center items-center gap-2 mt-4 text-sm">
+                <i class="fa-brands fa-whatsapp text-lg"></i> व्हॉट्सॲपवर सीट बुक करा
             </button>
 
         </div>
     </div>
 
-    <!-- JavaScript Handling -->
     <script>
         let currentTab = 'sharing';
         let selectedCar = 'ertiga';
@@ -356,13 +301,9 @@
             document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
 
             if(carType === 'ertiga') {
-                document.getElementById('car-btn-ertiga').className = 'flex-1 p-2.5 border-2 rounded-xl text-center font-bold text-sm bg-red-50 border-redbus text-redbus';
-                document.getElementById('car-btn-ciaz').className = 'flex-1 p-2.5 border-2 rounded-xl text-center font-bold text-sm border-gray-200 text-gray-600 hover:border-redbus';
                 document.getElementById('layout-ertiga').classList.remove('hidden');
                 document.getElementById('layout-ciaz').classList.add('hidden');
             } else {
-                document.getElementById('car-btn-ciaz').className = 'flex-1 p-2.5 border-2 rounded-xl text-center font-bold text-sm bg-red-50 border-redbus text-redbus';
-                document.getElementById('car-btn-ertiga').className = 'flex-1 p-2.5 border-2 rounded-xl text-center font-bold text-sm border-gray-200 text-gray-600 hover:border-redbus';
                 document.getElementById('layout-ciaz').classList.remove('hidden');
                 document.getElementById('layout-ertiga').classList.add('hidden');
             }
@@ -383,73 +324,31 @@
             const phone = document.getElementById('cust-phone').value.trim();
 
             if (!name || !phone) {
-                alert('कृपया नाव आणि मोबाईल नंबर टाका!');
+                alert('कृपया तुमचे नाव आणि मोबाईल नंबर टाका!');
                 return;
             }
 
-            let message = `*न्यू बुकिंग - गुरुकृपा टुअर्स*\n`;
+            let message = `*न्यू बुकिंग - गुरुकृपा टूअर्स अँड ट्रॅव्हल्स*\n`;
+            message += `*ओनर:* शशी राहणे (9890896040 / 9922862007)\n`;
             message += `----------------------------\n`;
-            message += `👤 *नाव:* ${name}\n`;
+            message += `👤 *ग्राहक:* ${name}\n`;
             message += `📞 *मोबाईल:* ${phone}\n`;
 
             if (currentTab === 'sharing') {
                 const date = document.getElementById('sharing-date').value;
                 const time = document.getElementById('sharing-time').value;
 
-                if (!date || !time) {
-                    alert('कृपया प्रवासाची तारीख आणि वेळ निवडा!');
-                    return;
-                }
-                if (selectedSeats.length === 0) {
-                    alert('कृपया किमान एक सीट निवडा!');
-                    return;
-                }
+                if (!date || !time) return alert('कृपया तारीख आणि वेळ निवडा!');
+                if (selectedSeats.length === 0) return alert('कृपया सीट सिलेक्ट करा!');
 
-                message += `🚕 *सेवा:* शेअरिंग टॅक्सी (Nashik-Pune)\n`;
+                message += `🚕 *सेवा:* शेअरिंग टॅक्सी\n`;
                 message += `🚘 *गाडी:* ${selectedCar.toUpperCase()}\n`;
                 message += `📅 *तारीख:* ${date}\n`;
                 message += `⏰ *वेळ:* ${time}\n`;
-                message += `💺 *निवडलेल्या सीट:* \n - ${selectedSeats.join('\n - ')}\n`;
-
-            } else if (currentTab === 'oneway') {
-                const route = document.getElementById('oneway-route').value;
-                const date = document.getElementById('oneway-date').value;
-                const car = document.getElementById('oneway-car').value;
-                if(!date) return alert('तारीख निवडा!');
-
-                message += `🚕 *सेवा:* वन-वे टॅक्सी\n📍 *रूट:* ${route}\n📅 *तारीख:* ${date}\n🚘 *गाडी:* ${car}\n`;
-
-            } else if (currentTab === 'airport') {
-                const route = document.getElementById('airport-route').value;
-                const date = document.getElementById('airport-date').value;
-                const car = document.getElementById('airport-car').value;
-                if(!date) return alert('तारीख निवडा!');
-
-                message += `✈️ *सेवा:* एअरपोर्ट ट्रान्सफर\n📍 *रूट:* ${route}\n📅 *तारीख:* ${date}\n🚘 *गाडी:* ${car}\n`;
-
-            } else if (currentTab === 'fleet') {
-                const car = document.getElementById('fleet-car').value;
-                const date = document.getElementById('fleet-date').value;
-                const spot = document.getElementById('fleet-spot').value;
-                if(!date || !spot) return alert('तारीख आणि ठिकाण टाका!');
-
-                message += `🚘 *सेवा:* फ्लीट (Per KM)\n🚗 *गाडी:* ${car}\n📅 *तारीख:* ${date}\n📍 *ठिकाण:* ${spot}\n`;
-
-            } else if (currentTab === 'darshan') {
-                const car = document.getElementById('darshan-car').value;
-                const date = document.getElementById('darshan-date').value;
-                if(!date) return alert('तारीख निवडा!');
-
-                message += `🛕 *सेवा:* नाशिक दर्शन\n🚘 *गाडी:* ${car}\n📅 *तारीख:* ${date}\n`;
-
-            } else if (currentTab === 'bus') {
-                const cap = document.getElementById('bus-capacity').value;
-                const date = document.getElementById('bus-date').value;
-                const msg = document.getElementById('bus-msg').value;
-
-                message += `🚌 *सेवा:* बस इन्क्वायरी\n💺 *क्षमता:* ${cap}\n📅 *तारीख:* ${date}\n📝 *टीप:* ${msg}\n`;
+                message += `💺 *सिलेक्ट केलेल्या सीट:* \n - ${selectedSeats.join('\n - ')}\n`;
             }
 
+            // WhatsApp Redirection to owner
             const whatsappUrl = `https://wa.me/919890896040?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
         }
