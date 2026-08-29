@@ -1,829 +1,267 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gurukrupa Tours & Travels - Official Portal</title>
-    <!-- Tailwind CSS & FontAwesome CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        redbus: '#d84e55',
-                        redbusDark: '#b83238'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .seat { transition: all 0.2s ease; }
-        .seat.selected {
-            background-color: #d84e55 !important;
-            color: white !important;
-            border-color: #b83238 !important;
-        }
-        .seat.selected .price-tag { color: white !important; }
-        .tab-btn.active {
-            background-color: #d84e55;
-            color: white;
-            border-color: #d84e55;
-        }
-        .time-btn.selected {
-            background-color: #d84e55;
-            color: white;
-            border-color: #d84e55;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ओनर डॅशबोर्ड - ड्रायव्हर व शिल्लक रक्कम व्यवस्थापन</title>
+  
+  <!-- SheetJS (Excel फाईल जनरेट करण्यासाठी लायब्ररी) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #f4f7f6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #333;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    .status-card {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196F3;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-save { background-color: #4CAF50; }
+    .btn-excel { background-color: #107c41; }
+    .btn-reset { background-color: #d9534f; margin-left: 10px; }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #2196F3;
+      color: white;
+    }
+    .excel-tab {
+      margin-top: 30px;
+      padding: 20px;
+      background: #eef9f2;
+      border: 1px solid #c3e6cb;
+      border-radius: 8px;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans pb-10">
+<body>
 
-    <!-- Header -->
-    <header class="bg-redbus text-white p-3 shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-black rounded-full border-2 border-yellow-500 flex items-center justify-center p-1 shadow-md shrink-0">
-                    <span class="text-yellow-500 font-black text-lg tracking-tighter">GK</span>
-                </div>
-                <div>
-                    <h1 class="text-base font-black tracking-wide text-yellow-300 uppercase leading-none">GURUKRUPA</h1>
-                    <p class="text-[9px] tracking-widest text-white uppercase font-bold">TOURS AND TRAVELS</p>
-                </div>
-            </div>
+<div class="container">
+  <h1>🚛 ओनर डॅशबोर्ड (Owner Dashboard)</h1>
 
-            <!-- Header Right Section (User Info & Logout) -->
-            <div class="flex items-center gap-2">
-                <div id="user-badge" class="hidden text-xs bg-redbusDark px-2 py-1 rounded border border-yellow-400 font-semibold">
-                    <span id="user-name-display"></span> (<span id="user-role-display"></span>)
-                </div>
-                <button id="logout-btn" onclick="logout()" class="hidden bg-yellow-500 hover:bg-yellow-600 text-black px-2 py-1 rounded text-xs font-bold shadow">
-                    <i class="fa-solid fa-right-from-bracket"></i> बाहेर पडा
-                </button>
-            </div>
-        </div>
-    </header>
+  <!-- ऑटो रिसेट माहिती -->
+  <div class="status-card">
+    <p>⏰ <strong>टिप:</strong> दररोज दुपारी <strong>१२:०० वाजता</strong> ड्रायव्हर डिटेल्स आणि शिल्लक रक्कम ऑटो-रिसेट होऊन एक्सेलमध्ये बॅकअप घेतला जातो.</p>
+    <p id="next-reset-time" style="color: #555; margin-top: 5px;"></p>
+  </div>
 
-    <div class="container mx-auto p-3 max-w-xl">
-
-        <!-- ================= 1. LOGIN SCREEN ================= -->
-        <div id="screen-login" class="bg-white p-5 rounded-xl shadow-lg border border-gray-200 mt-4">
-            <h2 class="text-base font-bold text-gray-800 text-center mb-4 border-b pb-2">
-                पोर्टल लॉगिन (Select Role & Login)
-            </h2>
-
-            <!-- Role Selector -->
-            <div class="grid grid-cols-3 gap-2 mb-5">
-                <button onclick="selectLoginRole('customer')" id="role-btn-customer" class="p-2 border rounded-lg text-xs font-bold text-center bg-redbus text-white shadow">
-                    <i class="fa-solid fa-user text-base block mb-1"></i> Customer
-                </button>
-                <button onclick="selectLoginRole('owner')" id="role-btn-owner" class="p-2 border rounded-lg text-xs font-bold text-center bg-gray-100 text-gray-700">
-                    <i class="fa-solid fa-user-tie text-base block mb-1"></i> Owner
-                </button>
-                <button onclick="selectLoginRole('driver')" id="role-btn-driver" class="p-2 border rounded-lg text-xs font-bold text-center bg-gray-100 text-gray-700">
-                    <i class="fa-solid fa-id-card text-base block mb-1"></i> Driver
-                </button>
-            </div>
-
-            <!-- Login Form Fields -->
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">पूर्ण नाव (Full Name) *</label>
-                    <input type="text" id="login-name" placeholder="तुमचे नाव टाका" class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-redbus">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">मोबाईल नंबर *</label>
-                    <input type="tel" id="login-phone" placeholder="10 अंकी मोबाईल नंबर" class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-redbus">
-                </div>
-                <div id="password-field" class="hidden">
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">पासवर्ड (Password) *</label>
-                    <input type="password" id="login-pass" placeholder="पासवर्ड टाका" class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-redbus">
-                </div>
-
-                <button onclick="handleLogin()" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2.5 rounded-lg text-xs shadow mt-2">
-                    लॉगिन करा (Login)
-                </button>
-            </div>
-        </div>
-
-        <!-- ================= 2. CUSTOMER PORTAL ================= -->
-        <div id="screen-customer" class="hidden">
-            <!-- Navigation Tabs -->
-            <div class="grid grid-cols-3 gap-1.5 mb-4 text-xs font-semibold">
-                <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
-                <button onclick="switchTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>
-                <button onclick="switchTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport Drop</button>
-                <button onclick="switchTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet (Per KM)</button>
-                <button onclick="switchTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. नाशिक दर्शन</button>
-                <button onclick="switchTab('bus')" id="tab-bus" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Bus Inquiry</button>
-            </div>
-
-            <!-- Main Booking Card -->
-            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
-                <div class="mb-4 border-b pb-2 flex justify-between items-center bg-gray-50 p-2 rounded">
-                    <div class="text-xs">
-                        <span class="font-bold text-gray-700">ग्राहक:</span> <span id="cust-display-name" class="font-semibold text-redbus"></span> 
-                        (<span id="cust-display-phone" class="text-gray-600"></span>)
-                    </div>
-                </div>
-
-                <!-- SHARING SECTION -->
-                <div id="section-sharing" class="booking-section">
-                    <div class="bg-red-50 border border-red-200 text-redbus text-xs font-bold p-2 rounded-lg text-center mb-3 flex items-center justify-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-route"></i> नाशिक ते पुणे शेअरिंग टॅक्सी (Nashik to Pune Sharing)
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 mb-3">
-                        <div>
-                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">नाशिक पिकअप पॉईंट *</label>
-                            <select id="sharing-pickup" class="w-full p-1.5 border rounded text-xs font-semibold bg-white">
-                                <option value="ठक्कर बाजार">ठक्कर बाजार</option>
-                                <option value="द्वारका सर्कल">द्वारका सर्कल</option>
-                                <option value="मुंबई नाका">मुंबई नाका</option>
-                                <option value="गोविंद नगर">गोविंद नगर</option>
-                                <option value="टनेल (Tunnel)">टनेल (Tunnel)</option>
-                                <option value="पवन हॉटेल">पवन हॉटेल</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">पुणे ड्रॉप पॉईंट *</label>
-                            <select id="sharing-drop" class="w-full p-1.5 border rounded text-xs font-semibold bg-white">
-                                <option value="चाकण">चाकण</option>
-                                <option value="मोशी">मोशी</option>
-                                <option value="भोसरी">भोसरी</option>
-                                <option value="नाशिक फाटा">नाशिक फाटा</option>
-                                <option value="वाकडेवाडी">वाकडेवाडी</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2 mb-3">
-                        <div>
-                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची तारीख *</label>
-                            <input type="date" id="sharing-date" class="w-full p-1.5 border rounded text-xs">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी / सर्व्हिस *</label>
-                            <select onchange="selectCar(this.value)" id="car-select" class="w-full p-1.5 border rounded text-xs font-bold text-redbus">
-                                <option value="ertiga">Ertiga (6 Seater)</option>
-                                <option value="ciaz">Ciaz (4 Seater)</option>
-                                <option value="ladies-ertiga">👩‍🦰 लेडीज स्पेशल (Ertiga)</option>
-                                <option value="ladies-ciaz">👩‍🦰 लेडीज स्पेशल (Ciaz)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची वेळ निवडा *</label>
-                        <div class="grid grid-cols-3 gap-1.5">
-                            <button type="button" onclick="selectTime(this, '04:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">04:00 AM</button>
-                            <button type="button" onclick="selectTime(this, '04:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">04:30 AM</button>
-                            <button type="button" onclick="selectTime(this, '05:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">05:00 AM</button>
-                            <button type="button" onclick="selectTime(this, '08:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">08:00 AM</button>
-                            <button type="button" onclick="selectTime(this, '08:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">08:30 AM</button>
-                            <button type="button" onclick="selectTime(this, '09:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus">09:00 AM</button>
-                        </div>
-                        <input type="hidden" id="sharing-time">
-                    </div>
-
-                    <!-- Seat Layout -->
-                    <div class="bg-gray-50 p-3 rounded-lg border-2 border-gray-300">
-                        <div class="flex justify-between items-center mb-3 pb-2 border-b">
-                            <span class="text-[11px] font-bold text-gray-500 uppercase">समोरची बाजू (Front)</span>
-                            <div class="flex gap-2 text-[10px]">
-                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-white border border-gray-400 rounded"></span> उपलब्ध</span>
-                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-redbus rounded"></span> सिलेक्टेड</span>
-                            </div>
-                        </div>
-
-                        <!-- ERTIGA SEAT LAYOUT -->
-                        <div id="layout-ertiga" class="space-y-3">
-                            <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
-                                <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
-                                    <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
-                                    <span class="text-xs font-black">F1 (Front)</span>
-                                </button>
-                                <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
-                                    <i class="fa-solid fa-wheel"></i> Driver
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
-                                <button type="button" onclick="toggleSeat(this, 'Middle Left (M1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                    <span class="text-xs font-bold">M1 (Left)</span>
-                                </button>
-                                <button type="button" onclick="toggleSeat(this, 'Middle Center (M2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                    <span class="text-xs font-bold">M2 (Mid)</span>
-                                </button>
-                                <button type="button" onclick="toggleSeat(this, 'Middle Right (M3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                    <span class="text-xs font-bold">M3 (Right)</span>
-                                </button>
-                            </div>
-                            <div class="grid grid-cols-2 gap-3 bg-gray-200 p-1.5 rounded-md">
-                                <button type="button" onclick="toggleSeat(this, 'Back Left (B1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                    <span class="text-xs font-bold">B1 (Back L)</span>
-                                </button>
-                                <button type="button" onclick="toggleSeat(this, 'Back Right (B2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                    <span class="text-xs font-bold">B2 (Back R)</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- CIAZ SEAT LAYOUT -->
-                        <div id="layout-ciaz" class="space-y-3 hidden">
-                            <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
-                                <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
-                                    <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
-                                    <span class="text-xs font-black">F1 (Front)</span>
-                                </button>
-                                <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
-                                    <i class="fa-solid fa-wheel"></i> Driver
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
-                                <button type="button" onclick="toggleSeat(this, 'Rear Left (R1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                    <span class="text-xs font-bold">R1 (Left)</span>
-                                </button>
-                                <button type="button" onclick="toggleSeat(this, 'Rear Center (R2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                    <span class="text-xs font-bold">R2 (Mid)</span>
-                                </button>
-                                <button type="button" onclick="toggleSeat(this, 'Rear Right (R3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
-                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
-                                    <span class="text-xs font-bold">R3 (Right)</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ONE WAY SECTION -->
-                <div id="section-oneway" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included)</h3>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>
-                        <select id="oneway-route" class="w-full p-2 border rounded text-xs font-bold">
-                            <option value="Nashik to Pune">नाशिक ते पुणे</option>
-                            <option value="Pune to Nashik">पुणे ते नाशिक</option>
-                            <option value="Nashik to Mumbai">नाशिक ते मुंबई</option>
-                            <option value="Mumbai to Nashik">मुंबई ते नाशिक</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व प्राईस *</label>
-                        <select id="oneway-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
-                            <option value="SEDAN (Dzire/Aura) - ₹3000">SEDAN (Dzire / Aura) - ₹3000</option>
-                            <option value="SUV (Ertiga) - ₹4000">SUV (Ertiga) - ₹4000</option>
-                        </select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
-                            <input type="date" id="oneway-date" class="w-full p-2 border rounded text-xs">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
-                            <input type="time" id="oneway-time" class="w-full p-2 border rounded text-xs">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AIRPORT SECTION -->
-                <div id="section-airport" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट ड्रॉप सर्व्हिस</h3>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट *</label>
-                        <select id="airport-route" class="w-full p-2 border rounded text-xs font-bold">
-                            <option value="Nashik to Mumbai Airport Drop">NASHIK TO MUMBAI AIRPORT DROP</option>
-                            <option value="Mumbai Airport to Nashik Drop">MUMBAI AIRPORT TO NASHIK DROP</option>
-                        </select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
-                            <input type="date" id="airport-date" class="w-full p-2 border rounded text-xs">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
-                            <input type="time" id="airport-time" class="w-full p-2 border rounded text-xs">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FLEET SECTION -->
-                <div id="section-fleet" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर रेट्स (Per KM Inquiry)</h3>
-                    <input type="text" id="fleet-spot" placeholder="उदा. नाशिक ते गोवा" class="w-full p-2 border rounded text-xs mb-2">
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="date" id="fleet-date" class="p-2 border rounded text-xs">
-                        <input type="time" id="fleet-time" class="p-2 border rounded text-xs">
-                    </div>
-                </div>
-
-                <!-- DARSHAN SECTION -->
-                <div id="section-darshan" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट</h3>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="date" id="darshan-date" class="p-2 border rounded text-xs">
-                        <input type="time" id="darshan-time" class="p-2 border rounded text-xs">
-                    </div>
-                </div>
-
-                <!-- BUS INQUIRY SECTION -->
-                <div id="section-bus" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">बस इन्क्वायरी</h3>
-                    <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती (उदा. प्रवासी संख्या, तारीख)..." class="w-full p-2 border rounded text-xs"></textarea>
-                </div>
-
-                <!-- Booking Submission -->
-                <button onclick="submitBooking()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center gap-2 mt-4 text-sm">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> व्हॉट्सॲपवर बुकिंग पाठवा व सेव करा
-                </button>
-            </div>
-        </div>
-
-        <!-- ================= 3. OWNER DASHBOARD ================= -->
-        <div id="screen-owner" class="hidden space-y-4">
-            <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
-                <h2 class="text-sm font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-gauge-high text-redbus"></i> ओनर डॅशबोर्ड (Owner Control Center)
-                </h2>
-
-                <!-- 9 Separate Category Icons -->
-                <div class="grid grid-cols-3 gap-2 text-xs">
-                    <button onclick="showOwnerView('sharing-np')" class="p-2.5 border rounded-lg bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">
-                        <i class="fa-solid fa-car text-lg"></i>
-                        <span class="text-[10px] text-center">नाशिक ते पुणे</span>
-                    </button>
-                    <button onclick="showOwnerView('sharing-pn')" class="p-2.5 border rounded-lg bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">
-                        <i class="fa-solid fa-car-side text-lg"></i>
-                        <span class="text-[10px] text-center">पुणे ते नाशिक</span>
-                    </button>
-                    <button onclick="showOwnerView('oneway')" class="p-2.5 border rounded-lg bg-emerald-50 text-emerald-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-emerald-100">
-                        <i class="fa-solid fa-route text-lg"></i>
-                        <span class="text-[10px] text-center">वनवे बुकिंग</span>
-                    </button>
-                    <button onclick="showOwnerView('airport')" class="p-2.5 border rounded-lg bg-purple-50 text-purple-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-purple-100">
-                        <i class="fa-solid fa-plane-departure text-lg"></i>
-                        <span class="text-[10px] text-center">एअरपोर्ट ड्रॉप</span>
-                    </button>
-                    <button onclick="showOwnerView('darshan')" class="p-2.5 border rounded-lg bg-amber-50 text-amber-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-amber-100">
-                        <i class="fa-solid fa-gopuram text-lg"></i>
-                        <span class="text-[10px] text-center">नाशिक दर्शन</span>
-                    </button>
-                    <button onclick="showOwnerView('fleet')" class="p-2.5 border rounded-lg bg-blue-50 text-blue-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-blue-100">
-                        <i class="fa-solid fa-calculator text-lg"></i>
-                        <span class="text-[10px] text-center">km प्रमाणे इन्क्वायरी</span>
-                    </button>
-                    <button onclick="showOwnerView('bus')" class="p-2.5 border rounded-lg bg-indigo-50 text-indigo-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-indigo-100">
-                        <i class="fa-solid fa-bus text-lg"></i>
-                        <span class="text-[10px] text-center">बसेस इन्क्वायरी</span>
-                    </button>
-                    <button onclick="showOwnerView('driver-log')" class="p-2.5 border rounded-lg bg-gray-800 text-yellow-400 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-black">
-                        <i class="fa-solid fa-id-card-clip text-lg"></i>
-                        <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>
-                    </button>
-                    <!-- Icon Changed to Remaining Balance -->
-                    <button onclick="showOwnerView('cash-balance')" class="p-2.5 border rounded-lg bg-green-50 text-green-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-green-100 border-green-300">
-                        <i class="fa-solid fa-sack-dollar text-lg text-green-600"></i>
-                        <span class="text-[10px] text-center">शिल्लक पैसे</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Dynamic Data Display Box -->
-            <div id="owner-content-box" class="bg-white p-4 rounded-xl shadow border border-gray-200 min-h-[160px] text-xs">
-                <p class="text-gray-500 text-center py-8">कृपया माहिती पाहण्यासाठी वरील कोणत्याही आयकॉनवर क्लिक करा.</p>
-            </div>
-        </div>
-
-        <!-- ================= 4. DRIVER DASHBOARD ================= -->
-        <div id="screen-driver" class="hidden space-y-4">
-            <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
-                <h2 class="text-sm font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-id-card text-green-600"></i> ड्रायव्हर दैनिक हिशोब (Driver Daily Log)
-                </h2>
-
-                <!-- Driver Expenses Input Grid -->
-                <div class="grid grid-cols-2 gap-2.5 mb-3 text-xs">
-                    <div class="bg-green-50 p-2 rounded border border-green-200">
-                        <label class="block font-bold text-green-800 mb-1"><i class="fa-solid fa-wallet"></i> 1. कलेक्शन (Collection) ₹</label>
-                        <input type="number" id="drv-collection" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-green-700 bg-white outline-none">
-                    </div>
-                    <div class="bg-red-50 p-2 rounded border border-red-200">
-                        <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-road"></i> 2. टोल्स (Tolls) ₹</label>
-                        <input type="number" id="drv-toll" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-600 bg-white outline-none">
-                    </div>
-                    <div class="bg-red-50 p-2 rounded border border-red-200">
-                        <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-gas-pump"></i> 3. पेट्रोल / CNG ₹</label>
-                        <input type="number" id="drv-fuel" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-600 bg-white outline-none">
-                    </div>
-                    <div class="bg-red-50 p-2 rounded border border-red-200">
-                        <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-receipt"></i> 4. इतर खर्च (Other) ₹</label>
-                        <input type="number" id="drv-other" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-600 bg-white outline-none">
-                    </div>
-                </div>
-
-                <!-- Calculated Net Cash Balance Card -->
-                <div class="bg-yellow-100 border-2 border-yellow-400 p-3 rounded-lg text-center shadow-inner">
-                    <p class="text-xs font-bold text-gray-700 uppercase">शिल्लक रक्कम (Net Cash Balance)</p>
-                    <p class="text-2xl font-black text-gray-900 mt-1">₹ <span id="drv-balance">0</span></p>
-                </div>
-
-                <button onclick="sendDriverReport()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-xs shadow mt-3 flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-base"></i> ओनरला हिशोब पाठवा (Send to Owner)
-                </button>
-            </div>
-        </div>
-
+  <!-- ड्रायव्हर माहिती भरण्याचा फॉर्म -->
+  <h2>आजची ड्रायव्हर एंट्री</h2>
+  <form id="driverForm">
+    <div class="form-group">
+      <label>ड्रायव्हरचे नाव:</label>
+      <input type="text" id="driverName" placeholder="ड्रायव्हरचे नाव टाका" required>
     </div>
+    <div class="form-group">
+      <label>मोबाईल नंबर:</label>
+      <input type="text" id="driverPhone" placeholder="मोबाईल नंबर टाका" required>
+    </div>
+    <div class="form-group">
+      <label>गाडी नंबर:</label>
+      <input type="text" id="vehicleNo" placeholder="उदा. MH 15 AB 1234" required>
+    </div>
+    <div class="form-group">
+      <label>शिल्लक रक्कम (Balance ₹):</label>
+      <input type="number" id="balance" placeholder="रक्कम टाका" required>
+    </div>
+    <button type="submit" class="btn btn-save">डेटा सेव्ह करा</button>
+  </form>
 
-    <!-- Firebase SDK (Modular v10) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+  <!-- सध्याची माहिती दाखवणारा टेबल -->
+  <h2 style="margin-top: 30px;">आजचा सक्रिय डेटा</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ड्रायव्हरचे नाव</th>
+        <th>मोबाईल नंबर</th>
+        <th>गाडी नंबर</th>
+        <th>शिल्लक रक्कम (₹)</th>
+      </tr>
+    </thead>
+    <tbody id="driverTableBody">
+      <!-- जावास्क्रिप्ट द्वारे डेटा येईल -->
+    </tbody>
+  </table>
 
-        // Firebase Credentials
-        const firebaseConfig = {
-            apiKey: "AIzaSyAhFTOcugnyUczs2dbMaEPl42HIFhKyGWI",
-            authDomain: "gurukrupa--tours--travels.firebaseapp.com",
-            databaseURL: "https://gurukrupa--tours--travels-default-rtdb.firebaseio.com",
-            projectId: "gurukrupa--tours--travels",
-            storageBucket: "gurukrupa--tours--travels.firebasestorage.app",
-            messagingSenderId: "186732465527",
-            appId: "1:186732465527:web:c5e9807bdacbbe603d2572",
-            measurementId: "G-JHSWK3JBC1"
-        };
+  <!-- ओनरसाठी एक्सेल टॅब (Excel Tab & Monthly Backup) -->
+  <div class="excel-tab">
+    <h2>📊 Excel Tab (मंथली बॅकअप)</h2>
+    <p style="margin-bottom: 15px;">खालील बटणावर क्लिक करून दररोज जमा झालेला एक्सेल डेटा डाउनलोड करा (मंथली रिपोर्ट):</p>
+    <button id="downloadExcelBtn" class="btn btn-excel">📥 Monthly Excel Backup डाउनलोड करा</button>
+    <button id="manualResetBtn" class="btn btn-reset">🔄 आताच रिसेट करा (Manual Reset)</button>
+  </div>
+</div>
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
+<script>
+  // १. लोकल स्टोरेजमधून डेटा लोड करणे
+  let currentDriver = JSON.parse(localStorage.getItem('currentDriver')) || null;
+  let excelHistory = JSON.parse(localStorage.getItem('excelHistory')) || [];
 
-        // Application Global States
-        window.currentRole = 'customer';
-        window.currentUser = null;
-        window.selectedCar = 'ertiga';
-        window.selectedSeats = [];
-        window.activeTab = 'sharing';
+  const driverForm = document.getElementById('driverForm');
+  const driverTableBody = document.getElementById('driverTableBody');
+  const downloadExcelBtn = document.getElementById('downloadExcelBtn');
+  const manualResetBtn = document.getElementById('manualResetBtn');
 
-        const ownerAuth = { phone: '9890896040', pass: 'owner123' };
-        const driverAuth = { phone: '9922862007', pass: 'driver123' };
+  // २. स्क्रीनवर टेबल अपडेट करणे
+  function renderTable() {
+    driverTableBody.innerHTML = '';
+    if (currentDriver) {
+      const row = `
+        <tr>
+          <td>${currentDriver.name}</td>
+          <td>${currentDriver.phone}</td>
+          <td>${currentDriver.vehicle}</td>
+          <td>₹${currentDriver.balance}</td>
+        </tr>
+      `;
+      driverTableBody.innerHTML = row;
+    } else {
+      driverTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">आजचा कोणताही डेटा उपलब्ध नाही.</td></tr>`;
+    }
+  }
 
-        // Auto Load Saved Session on Page Refresh
-        window.addEventListener('load', () => {
-            const savedUser = localStorage.getItem('gk_user');
-            if (savedUser) {
-                window.currentUser = JSON.parse(savedUser);
-                window.currentRole = window.currentUser.role;
-                applyUserSession(window.currentUser);
-            }
-        });
+  // ३. फॉर्म सबमिट झाल्यावर डेटा सेव्ह करणे
+  driverForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    currentDriver = {
+      name: document.getElementById('driverName').value,
+      phone: document.getElementById('driverPhone').value,
+      vehicle: document.getElementById('vehicleNo').value,
+      balance: parseFloat(document.getElementById('balance').value) || 0
+    };
+    localStorage.setItem('currentDriver', JSON.stringify(currentDriver));
+    renderTable();
+    driverForm.reset();
+    alert('माहिती यशस्वीरीत्या अपडेट झाली!');
+  });
 
-        window.selectLoginRole = function(role) {
-            window.currentRole = role;
-            document.querySelectorAll('#screen-login button[id^="role-btn"]').forEach(btn => {
-                btn.className = "p-2 border rounded-lg text-xs font-bold text-center bg-gray-100 text-gray-700";
-            });
-            document.getElementById(`role-btn-${role}`).className = "p-2 border rounded-lg text-xs font-bold text-center bg-redbus text-white shadow";
+  // ४. ऑटो-रिसेट आणि एक्सेल बॅकअप लॉजिक (12:00 PM Auto Reset)
+  function perform12PMReset() {
+    if (currentDriver) {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('mr-IN');
+      const timeStr = now.toLocaleTimeString('mr-IN');
 
-            if (role === 'customer') {
-                document.getElementById('password-field').classList.add('hidden');
-            } else {
-                document.getElementById('password-field').classList.remove('hidden');
-            }
-        };
+      // एक्सेल हिस्ट्रीमध्ये आजचा डेटा जोडा
+      excelHistory.push({
+        "तारीख": dateStr,
+        "वेळ": timeStr,
+        "ड्रायव्हरचे नाव": currentDriver.name,
+        "मोबाईल नंबर": currentDriver.phone,
+        "गाडी नंबर": currentDriver.vehicle,
+        "शिल्लक रक्कम (₹)": currentDriver.balance
+      });
 
-        window.handleLogin = function() {
-            const name = document.getElementById('login-name').value.trim();
-            const phone = document.getElementById('login-phone').value.trim();
-            const pass = document.getElementById('login-pass').value.trim();
+      localStorage.setItem('excelHistory', JSON.stringify(excelHistory));
 
-            if (!name || !phone) {
-                alert('कृपया तुमचे नाव आणि मोबाईल नंबर टाका!');
-                return;
-            }
+      // डेटा रिसेट करा
+      currentDriver = null;
+      localStorage.removeItem('currentDriver');
+      renderTable();
+      console.log('12:00 PM Auto-Reset and Backup completed.');
+    }
+  }
 
-            if (phone.length < 10) {
-                alert('कृपया 10 अंकी वैध मोबाईल नंबर टाका!');
-                return;
-            }
+  // ५. दुपारी १२:०० वाजता टायमर चेक करणे
+  function checkClockFor12PM() {
+    const now = new Date();
+    const lastResetDate = localStorage.getItem('lastResetDate');
+    const todayStr = now.toDateString();
 
-            if (window.currentRole === 'customer') {
-                const userObj = { name, phone, role: 'customer' };
-                saveAndApplyUser(userObj);
-            } else if (window.currentRole === 'owner') {
-                if (phone === ownerAuth.phone && pass === ownerAuth.pass) {
-                    const userObj = { name, phone, role: 'owner' };
-                    saveAndApplyUser(userObj);
-                } else {
-                    alert('चुकीचा फोन नंबर किंवा पासवर्ड!');
-                }
-            } else if (window.currentRole === 'driver') {
-                if (phone === driverAuth.phone && pass === driverAuth.pass) {
-                    const userObj = { name, phone, role: 'driver' };
-                    saveAndApplyUser(userObj);
-                } else {
-                    alert('चुकीचा फोन नंबर किंवा पासवर्ड!');
-                }
-            }
-        };
+    // दुपारी १२:०० वाजले आहेत का आणि आज आधी रिसेट झाले नाहीये ना?
+    if (now.getHours() === 12 && lastResetDate !== todayStr) {
+      perform12PMReset();
+      localStorage.setItem('lastResetDate', todayStr);
+    }
+  }
 
-        function saveAndApplyUser(userObj) {
-            localStorage.setItem('gk_user', JSON.stringify(userObj));
-            window.currentUser = userObj;
-            applyUserSession(userObj);
-        }
+  // दर मिनिटाला वेळ तपासा
+  setInterval(checkClockFor12PM, 60000);
+  checkClockFor12PM(); // पेज लोड झाल्यावर त्वरित चेक करा
 
-        function applyUserSession(userObj) {
-            document.getElementById('screen-login').classList.add('hidden');
-            document.getElementById('user-badge').classList.remove('hidden');
-            document.getElementById('logout-btn').classList.remove('hidden');
-            document.getElementById('user-name-display').innerText = userObj.name;
-            document.getElementById('user-role-display').innerText = userObj.role.toUpperCase();
+  // ६. एक्सेल फाईल डाउनलोड करणे (Excel Download Functionality)
+  downloadExcelBtn.addEventListener('click', function() {
+    if (excelHistory.length === 0) {
+      alert('अजूनपर्यंत कोणताही बॅकअप डेटा उपलब्ध नाही.');
+      return;
+    }
 
-            if (userObj.role === 'customer') {
-                document.getElementById('screen-customer').classList.remove('hidden');
-                document.getElementById('cust-display-name').innerText = userObj.name;
-                document.getElementById('cust-display-phone').innerText = userObj.phone;
-            } else if (userObj.role === 'owner') {
-                document.getElementById('screen-owner').classList.remove('hidden');
-            } else if (userObj.role === 'driver') {
-                document.getElementById('screen-driver').classList.remove('hidden');
-            }
-        }
+    // SheetJS वापरून Excel WorkSheet तयार करा
+    const worksheet = XLSX.utils.json_to_sheet(excelHistory);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Daily_Backup");
 
-        window.logout = function() {
-            localStorage.removeItem('gk_user');
-            window.currentUser = null;
-            document.getElementById('screen-login').classList.remove('hidden');
-            document.getElementById('screen-customer').classList.add('hidden');
-            document.getElementById('screen-owner').classList.add('hidden');
-            document.getElementById('screen-driver').classList.add('hidden');
-            document.getElementById('user-badge').classList.add('hidden');
-            document.getElementById('logout-btn').classList.add('hidden');
-        };
+    // Excel फाईल डाऊनलोड करा
+    XLSX.writeFile(workbook, "Monthly_Driver_Balance_Report.xlsx");
+  });
 
-        window.switchTab = function(tabName) {
-            window.activeTab = tabName;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`tab-${tabName}`).classList.add('active');
+  // ७. मॅन्युअल रिसेट बटण (Manual Reset Button)
+  manualResetBtn.addEventListener('click', function() {
+    if (confirm('तुम्हाला नक्की आजचा डेटा एक्सेलमध्ये सेव्ह करून रिसेट करायचा आहे का?')) {
+      perform12PMReset();
+      alert('डेटा एक्सेलमध्ये बॅकअप घेऊन रिसेट करण्यात आला आहे.');
+    }
+  });
 
-            document.querySelectorAll('.booking-section').forEach(sec => sec.classList.add('hidden'));
-            document.getElementById(`section-${tabName}`).classList.remove('hidden');
-        };
+  // सुरुवातीला टेबल रेंडर करा
+  renderTable();
+</script>
 
-        window.selectCar = function(carType) {
-            window.selectedCar = carType;
-            window.selectedSeats = [];
-            document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
-
-            if (carType.includes('ertiga')) {
-                document.getElementById('layout-ertiga').classList.remove('hidden');
-                document.getElementById('layout-ciaz').classList.add('hidden');
-            } else {
-                document.getElementById('layout-ertiga').classList.add('hidden');
-                document.getElementById('layout-ciaz').classList.remove('hidden');
-            }
-        };
-
-        window.selectTime = function(btn, timeStr) {
-            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            document.getElementById('sharing-time').value = timeStr;
-        };
-
-        window.toggleSeat = function(btn, seatDetail) {
-            if (btn.classList.contains('selected')) {
-                btn.classList.remove('selected');
-                window.selectedSeats = window.selectedSeats.filter(item => item !== seatDetail);
-            } else {
-                btn.classList.add('selected');
-                window.selectedSeats.push(seatDetail);
-            }
-        };
-
-        window.calculateDriverBalance = function() {
-            const col = parseFloat(document.getElementById('drv-collection').value) || 0;
-            const toll = parseFloat(document.getElementById('drv-toll').value) || 0;
-            const fuel = parseFloat(document.getElementById('drv-fuel').value) || 0;
-            const other = parseFloat(document.getElementById('drv-other').value) || 0;
-
-            const bal = col - (toll + fuel + other);
-            document.getElementById('drv-balance').innerText = bal;
-        };
-
-        // CUSTOMER BOOKING SUBMISSION TO FIREBASE REALTIME DB
-        window.submitBooking = function() {
-            if (!window.currentUser) {
-                alert('कृपया आधी लॉगिन करा!');
-                return;
-            }
-
-            let bookingData = {
-                customerName: window.currentUser.name,
-                customerPhone: window.currentUser.phone,
-                type: window.activeTab,
-                createdAt: new Date().toLocaleString('mr-IN')
-            };
-
-            let whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - नवीन बुकिंग*\n`;
-            whatsappText += `ग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\n`;
-
-            if (window.activeTab === 'sharing') {
-                const pickup = document.getElementById('sharing-pickup').value;
-                const drop = document.getElementById('sharing-drop').value;
-                const date = document.getElementById('sharing-date').value;
-                const time = document.getElementById('sharing-time').value;
-
-                if (!date || !time || window.selectedSeats.length === 0) {
-                    alert('कृपया तारीख, वेळ आणि किमान एक सीट निवडा!');
-                    return;
-                }
-
-                bookingData.pickup = pickup;
-                bookingData.drop = drop;
-                bookingData.date = date;
-                bookingData.time = time;
-                bookingData.car = window.selectedCar;
-                bookingData.seats = window.selectedSeats;
-                bookingData.direction = "Nashik to Pune";
-
-                whatsappText += `प्रकार: नाशिक-पुणे शेअरिंग\nपिकअप: ${pickup}\nड्रॉप: ${drop}\nतारीख: ${date}\nवेळ: ${time}\nगाडी: ${window.selectedCar}\nसीट्स: ${window.selectedSeats.join(', ')}`;
-
-            } else if (window.activeTab === 'oneway') {
-                bookingData.route = document.getElementById('oneway-route').value;
-                bookingData.car = document.getElementById('oneway-car').value;
-                bookingData.date = document.getElementById('oneway-date').value;
-                bookingData.time = document.getElementById('oneway-time').value;
-
-                whatsappText += `प्रकार: वन-वे टॅक्सी\nरूट: ${bookingData.route}\nगाडी: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
-            } else if (window.activeTab === 'airport') {
-                bookingData.route = document.getElementById('airport-route').value;
-                bookingData.date = document.getElementById('airport-date').value;
-                bookingData.time = document.getElementById('airport-time').value;
-
-                whatsappText += `प्रकार: एअरपोर्ट ड्रॉप\nरूट: ${bookingData.route}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
-            } else if (window.activeTab === 'fleet') {
-                bookingData.spot = document.getElementById('fleet-spot').value;
-                bookingData.date = document.getElementById('fleet-date').value;
-                bookingData.time = document.getElementById('fleet-time').value;
-
-                whatsappText += `प्रकार: KM इन्क्वायरी\nपॉईंट: ${bookingData.spot}\nतारीख: ${bookingData.date}`;
-            } else if (window.activeTab === 'darshan') {
-                bookingData.date = document.getElementById('darshan-date').value;
-                bookingData.time = document.getElementById('darshan-time').value;
-
-                whatsappText += `प्रकार: नाशिक दर्शन\nतारीख: ${bookingData.date}`;
-            } else if (window.activeTab === 'bus') {
-                bookingData.details = document.getElementById('bus-msg').value;
-
-                whatsappText += `प्रकार: बस इन्क्वायरी\nमाहिती: ${bookingData.details}`;
-            }
-
-            push(ref(database, 'bookings/'), bookingData)
-                .then(() => {
-                    alert("बुकिंग फायरबेस डेटाबेसमध्ये सेव्ह झाली आहे!");
-                    const encodedMsg = encodeURIComponent(whatsappText);
-                    window.open(`https://wa.me/919890896040?text=${encodedMsg}`, '_blank');
-                })
-                .catch(err => {
-                    console.error("Firebase Live Error: ", err);
-                    alert("डेटा सेव्ह करण्यात अडचण आली.");
-                });
-        };
-
-        // DRIVER REPORT SUBMISSION TO FIREBASE REALTIME DB
-        window.sendDriverReport = function() {
-            const col = document.getElementById('drv-collection').value;
-            const toll = document.getElementById('drv-toll').value;
-            const fuel = document.getElementById('drv-fuel').value;
-            const other = document.getElementById('drv-other').value;
-            const bal = document.getElementById('drv-balance').innerText;
-
-            const logData = {
-                driverName: window.currentUser ? window.currentUser.name : "Driver",
-                driverPhone: window.currentUser ? window.currentUser.phone : "N/A",
-                collection: parseFloat(col) || 0,
-                toll: parseFloat(toll) || 0,
-                fuel: parseFloat(fuel) || 0,
-                other: parseFloat(other) || 0,
-                balance: parseFloat(bal) || 0,
-                date: new Date().toLocaleString('mr-IN')
-            };
-
-            push(ref(database, 'driver_logs/'), logData)
-                .then(() => {
-                    alert("हिशोब सेव्ह झाला आहे!");
-                    const msg = `*दैनिक हिशोब रिपोर्ट*\nड्रायव्हर: ${logData.driverName}\nकलेक्शन: ₹${col}\nटोल: ₹${toll}\nइंधन: ₹${fuel}\nइतर: ₹${other}\n------------------\n*शिल्लक कॅश: ₹${bal}*`;
-                    window.open(`https://wa.me/919890896040?text=${encodeURIComponent(msg)}`, '_blank');
-                });
-        };
-
-        // OWNER REALTIME VIEW SYSTEM
-        window.showOwnerView = function(category) {
-            const contentBox = document.getElementById('owner-content-box');
-            contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>माहिती लोड होत आहे...</p>";
-
-            if (category === 'driver-log') {
-                const logsRef = ref(database, 'driver_logs/');
-                onValue(logsRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if (!data) {
-                        contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणताही ड्रायव्हर रिपोर्ट उपलब्ध नाही.</p>";
-                        return;
-                    }
-                    let html = "<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm'>ड्रायव्हर दैनंदिन हिशोब नोंदी</h4>";
-                    Object.values(data).reverse().forEach(log => {
-                        html += `
-                            <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
-                                <p class="font-bold text-gray-800">${log.driverName} <span class="text-[10px] text-gray-500">(${log.date})</span></p>
-                                <p class="text-gray-600">कलेक्शन: ₹${log.collection} | खर्च (टोल+पेट्रोल+इतर): ₹${log.toll + log.fuel + log.other}</p>
-                                <p class="font-black text-green-700">शिल्लक जमा कॅश: ₹${log.balance}</p>
-                            </div>
-                        `;
-                    });
-                    contentBox.innerHTML = html;
-                });
-
-            } else if (category === 'cash-balance') {
-                // Calculation of All Drivers' Remaining Cash Balance
-                const logsRef = ref(database, 'driver_logs/');
-                onValue(logsRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if (!data) {
-                        contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>शिल्लक रकमेची नोंद उपलब्ध नाही.</p>";
-                        return;
-                    }
-
-                    let totalNetCash = 0;
-                    let html = `
-                        <div class="mb-3 p-3 bg-green-100 border border-green-400 rounded-lg text-center">
-                            <span class="text-xs font-bold text-gray-700 block">एकूण ड्रायव्हर्स कडील शिल्लक कॅश (Total Cash Balance)</span>
-                            <span id="grand-total-cash" class="text-2xl font-black text-green-700">₹ 0</span>
-                        </div>
-                        <h4 class='font-bold mb-2 border-b pb-1 text-gray-800 text-xs uppercase'>ड्रायव्हरनुसार शिल्लक रक्कम तपशील:</h4>
-                    `;
-
-                    Object.values(data).reverse().forEach(log => {
-                        totalNetCash += (log.balance || 0);
-                        html += `
-                            <div class="p-2 border-b text-xs flex justify-between items-center bg-gray-50 rounded mb-1">
-                                <div>
-                                    <p class="font-bold text-gray-800">${log.driverName}</p>
-                                    <p class="text-[10px] text-gray-500">${log.date}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-black text-green-700 text-sm">₹${log.balance}</p>
-                                </div>
-                            </div>
-                        `;
-                    });
-
-                    contentBox.innerHTML = html;
-                    document.getElementById('grand-total-cash').innerText = `₹ ${totalNetCash}`;
-                });
-
-            } else {
-                const bookRef = ref(database, 'bookings/');
-                onValue(bookRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if (!data) {
-                        contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणतीही बुकिंग नोंद उपलब्ध नाही.</p>";
-                        return;
-                    }
-
-                    let filteredData = Object.values(data).filter(item => {
-                        if (category === 'sharing-np') return item.type === 'sharing' && (!item.direction || item.direction.includes('Nashik'));
-                        if (category === 'sharing-pn') return item.type === 'sharing' && item.direction && item.direction.includes('Pune');
-                        return item.type === category;
-                    });
-
-                    if (filteredData.length === 0) {
-                        contentBox.innerHTML = `<p class='text-center py-6 text-gray-400'>ह्या कॅटेगरीमध्ये कोणतीही बुकिंग नाही.</p>`;
-                        return;
-                    }
-
-                    let html = `<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm uppercase'>${category} बुकिंग यादी</h4>`;
-                    filteredData.reverse().forEach(b => {
-                        html += `
-                            <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
-                                <p class="font-bold text-redbus">${b.customerName} (${b.customerPhone})</p>
-                                <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.details || ''}</p>
-                                <p class="text-[10px] text-gray-500">तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
-                                ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
-                            </div>
-                        `;
-                    });
-                    contentBox.innerHTML = html;
-                });
-            }
-        };
-    </script>
 </body>
 </html>
