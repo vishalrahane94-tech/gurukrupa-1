@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <!-- Header Right Section -->
+            <!-- Header Right Section (User Info & Logout) -->
             <div class="flex items-center gap-2">
                 <div id="user-badge" class="hidden text-xs bg-redbusDark px-2 py-1 rounded border border-yellow-400 font-semibold">
                     <span id="user-name-display"></span> (<span id="user-role-display"></span>)
@@ -71,7 +71,7 @@
         <!-- ================= 1. LOGIN SCREEN ================= -->
         <div id="screen-login" class="bg-white p-5 rounded-xl shadow-lg border border-gray-200 mt-4">
             <h2 class="text-base font-bold text-gray-800 text-center mb-4 border-b pb-2">
-                पोर्टल लॉगिन (Login) Select Role
+                पोर्टल लॉगिन (Select Role & Login)
             </h2>
 
             <!-- Role Selector -->
@@ -87,10 +87,10 @@
                 </button>
             </div>
 
-            <!-- Login Form -->
+            <!-- Login Form Fields -->
             <div class="space-y-3">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">नाव (Full Name) *</label>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">पूर्ण नाव (Full Name) *</label>
                     <input type="text" id="login-name" placeholder="तुमचे नाव टाका" class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-redbus">
                 </div>
                 <div>
@@ -120,10 +120,10 @@
                 <button onclick="switchTab('bus')" id="tab-bus" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Bus Inquiry</button>
             </div>
 
-            <!-- Main Card Container -->
+            <!-- Main Booking Card -->
             <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
                 
-                <!-- Customer Auto-filled Info -->
+                <!-- Logged In Customer Info Header -->
                 <div class="mb-4 border-b pb-2 flex justify-between items-center bg-gray-50 p-2 rounded">
                     <div class="text-xs">
                         <span class="font-bold text-gray-700">ग्राहक:</span> <span id="cust-display-name" class="font-semibold text-redbus"></span> 
@@ -324,7 +324,7 @@
 
                 <!-- 4. FLEET SECTION -->
                 <div id="section-fleet" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर रेट्स (Per KM)</h3>
+                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर रेट्स (Per KM Inquiry)</h3>
                     <input type="text" id="fleet-spot" placeholder="उदा. नाशिक ते गोवा" class="w-full p-2 border rounded text-xs mb-2">
                     <div class="grid grid-cols-2 gap-2">
                         <input type="date" id="fleet-date" class="p-2 border rounded text-xs">
@@ -344,10 +344,10 @@
                 <!-- 6. BUS INQUIRY SECTION -->
                 <div id="section-bus" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">बस इन्क्वायरी</h3>
-                    <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती..." class="w-full p-2 border rounded text-xs"></textarea>
+                    <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती (उदा. प्रवासी संख्या, तारीख)..." class="w-full p-2 border rounded text-xs"></textarea>
                 </div>
 
-                <!-- Submit Button -->
+                <!-- Booking Submission -->
                 <button onclick="submitBooking()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center gap-2 mt-4 text-sm">
                     <i class="fa-brands fa-whatsapp text-lg"></i> व्हॉट्सॲपवर बुकिंग पाठवा व सेव करा
                 </button>
@@ -358,28 +358,53 @@
         <div id="screen-owner" class="hidden space-y-4">
             <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
                 <h2 class="text-sm font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-gauge-high text-redbus"></i> ओनर डॅशबोर्ड (Owner Dashboard)
+                    <i class="fa-solid fa-gauge-high text-redbus"></i> ओनर डॅशबोर्ड (Owner Control Center)
                 </h2>
 
-                <div class="grid grid-cols-2 gap-3 text-xs">
-                    <button onclick="showOwnerView('sharing')" class="p-3 border rounded-lg bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">
-                        <i class="fa-solid fa-car text-xl"></i> शेअरिंग बुकिंग्स
+                <!-- 9 Separate Category Icons Requested by Owner -->
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <button onclick="showOwnerView('sharing-np')" class="p-2.5 border rounded-lg bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">
+                        <i class="fa-solid fa-car text-lg"></i>
+                        <span class="text-[10px] text-center">नाशिक ते पुणे</span>
                     </button>
-                    <button onclick="showOwnerView('oneway')" class="p-3 border rounded-lg bg-emerald-50 text-emerald-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-emerald-100">
-                        <i class="fa-solid fa-route text-xl"></i> वनवे बुकिंग
+                    <button onclick="showOwnerView('sharing-pn')" class="p-2.5 border rounded-lg bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">
+                        <i class="fa-solid fa-car-side text-lg"></i>
+                        <span class="text-[10px] text-center">पुणे ते नाशिक</span>
                     </button>
-                    <button onclick="showOwnerView('airport')" class="p-3 border rounded-lg bg-purple-50 text-purple-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-purple-100">
-                        <i class="fa-solid fa-plane-departure text-xl"></i> एअरपोर्ट ड्रॉप
+                    <button onclick="showOwnerView('oneway')" class="p-2.5 border rounded-lg bg-emerald-50 text-emerald-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-emerald-100">
+                        <i class="fa-solid fa-route text-lg"></i>
+                        <span class="text-[10px] text-center">वनवे बुकिंग</span>
                     </button>
-                    <button onclick="showOwnerView('driver-log')" class="p-3 border rounded-lg bg-gray-800 text-white font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-black">
-                        <i class="fa-solid fa-id-card-clip text-xl text-yellow-400"></i> ड्रायव्हर रिपोर्ट्स
+                    <button onclick="showOwnerView('airport')" class="p-2.5 border rounded-lg bg-purple-50 text-purple-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-purple-100">
+                        <i class="fa-solid fa-plane-departure text-lg"></i>
+                        <span class="text-[10px] text-center">एअरपोर्ट ड्रॉप</span>
+                    </button>
+                    <button onclick="showOwnerView('darshan')" class="p-2.5 border rounded-lg bg-amber-50 text-amber-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-amber-100">
+                        <i class="fa-solid fa-gopuram text-lg"></i>
+                        <span class="text-[10px] text-center">नाशिक दर्शन</span>
+                    </button>
+                    <button onclick="showOwnerView('fleet')" class="p-2.5 border rounded-lg bg-blue-50 text-blue-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-blue-100">
+                        <i class="fa-solid fa-calculator text-lg"></i>
+                        <span class="text-[10px] text-center">km प्रमाणे इन्क्वायरी</span>
+                    </button>
+                    <button onclick="showOwnerView('bus')" class="p-2.5 border rounded-lg bg-indigo-50 text-indigo-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-indigo-100">
+                        <i class="fa-solid fa-bus text-lg"></i>
+                        <span class="text-[10px] text-center">बसेस इन्क्वायरी</span>
+                    </button>
+                    <button onclick="showOwnerView('driver-log')" class="p-2.5 border rounded-lg bg-gray-800 text-yellow-400 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-black">
+                        <i class="fa-solid fa-id-card-clip text-lg"></i>
+                        <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>
+                    </button>
+                    <button onclick="showOwnerView('car-status')" class="p-2.5 border rounded-lg bg-teal-50 text-teal-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-teal-100">
+                        <i class="fa-solid fa-boxes-packing text-lg"></i>
+                        <span class="text-[10px] text-center">शिल्लक गाड्या</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Dynamic Owner View Container -->
-            <div id="owner-content-box" class="bg-white p-4 rounded-xl shadow border border-gray-200 min-h-[150px] text-xs">
-                <p class="text-gray-500 text-center py-6">कृपया माहिती पाहण्यासाठी वरील आयकॉनवर क्लिक करा.</p>
+            <!-- Dynamic Data Display Box -->
+            <div id="owner-content-box" class="bg-white p-4 rounded-xl shadow border border-gray-200 min-h-[160px] text-xs">
+                <p class="text-gray-500 text-center py-8">कृपया माहिती पाहण्यासाठी वरील कोणत्याही आयकॉनवर क्लिक करा.</p>
             </div>
         </div>
 
@@ -390,29 +415,30 @@
                     <i class="fa-solid fa-id-card text-green-600"></i> ड्रायव्हर दैनिक हिशोब (Driver Daily Log)
                 </h2>
 
-                <div class="grid grid-cols-2 gap-2 mb-3 text-xs">
-                    <div>
-                        <label class="block font-semibold text-gray-600 mb-1">1. कलेक्शन (Total Collection) ₹</label>
-                        <input type="number" id="drv-collection" value="0" oninput="calculateDriverBalance()" class="w-full p-2 border rounded font-bold text-green-700 outline-none">
+                <!-- Driver Expenses Input Grid -->
+                <div class="grid grid-cols-2 gap-2.5 mb-3 text-xs">
+                    <div class="bg-green-50 p-2 rounded border border-green-200">
+                        <label class="block font-bold text-green-800 mb-1"><i class="fa-solid fa-wallet"></i> 1. कलेक्शन (Collection) ₹</label>
+                        <input type="number" id="drv-collection" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-green-700 bg-white outline-none">
                     </div>
-                    <div>
-                        <label class="block font-semibold text-gray-600 mb-1">2. टोल्स (Tolls) ₹</label>
-                        <input type="number" id="drv-toll" value="0" oninput="calculateDriverBalance()" class="w-full p-2 border rounded font-bold text-red-600 outline-none">
+                    <div class="bg-red-50 p-2 rounded border border-red-200">
+                        <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-road"></i> 2. टोल्स (Tolls) ₹</label>
+                        <input type="number" id="drv-toll" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-600 bg-white outline-none">
                     </div>
-                    <div>
-                        <label class="block font-semibold text-gray-600 mb-1">3. पेट्रोल / CNG ₹</label>
-                        <input type="number" id="drv-fuel" value="0" oninput="calculateDriverBalance()" class="w-full p-2 border rounded font-bold text-red-600 outline-none">
+                    <div class="bg-red-50 p-2 rounded border border-red-200">
+                        <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-gas-pump"></i> 3. पेट्रोल / CNG ₹</label>
+                        <input type="number" id="drv-fuel" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-600 bg-white outline-none">
                     </div>
-                    <div>
-                        <label class="block font-semibold text-gray-600 mb-1">4. इतर खर्च (Other Exp.) ₹</label>
-                        <input type="number" id="drv-other" value="0" oninput="calculateDriverBalance()" class="w-full p-2 border rounded font-bold text-red-600 outline-none">
+                    <div class="bg-red-50 p-2 rounded border border-red-200">
+                        <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-receipt"></i> 4. इतर खर्च (Other) ₹</label>
+                        <input type="number" id="drv-other" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-600 bg-white outline-none">
                     </div>
                 </div>
 
-                <!-- Final Balance Card -->
-                <div class="bg-yellow-50 border-2 border-yellow-400 p-3 rounded-lg text-center">
+                <!-- Calculated Net Cash Balance Card -->
+                <div class="bg-yellow-100 border-2 border-yellow-400 p-3 rounded-lg text-center shadow-inner">
                     <p class="text-xs font-bold text-gray-700 uppercase">शिल्लक रक्कम (Net Cash Balance)</p>
-                    <p class="text-xl font-black text-gray-900 mt-1">₹ <span id="drv-balance">0</span></p>
+                    <p class="text-2xl font-black text-gray-900 mt-1">₹ <span id="drv-balance">0</span></p>
                 </div>
 
                 <button onclick="sendDriverReport()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-xs shadow mt-3 flex items-center justify-center gap-2">
@@ -423,12 +449,12 @@
 
     </div>
 
-    <!-- Firebase SDK Implementation -->
+    <!-- Firebase SDK (Modular v10) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Firebase Config Setup
+        // Firebase Credentials
         const firebaseConfig = {
             apiKey: "AIzaSyAhFTOcugnyUczs2dbMaEPl42HIFhKyGWI",
             authDomain: "gurukrupa--tours--travels.firebaseapp.com",
@@ -440,20 +466,22 @@
             measurementId: "G-JHSWK3JBC1"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        // State Variables
+        // Application Global States
         window.currentRole = 'customer';
         window.currentUser = null;
         window.selectedCar = 'ertiga';
         window.selectedSeats = [];
         window.activeTab = 'sharing';
 
+        // Stored Credentials for Owner & Driver Validation
         const ownerAuth = { phone: '9890896040', pass: 'owner123' };
         const driverAuth = { phone: '9922862007', pass: 'driver123' };
 
-        // Functions exposed globally for onclick handlers
+        // Select Role Tabs (Customer / Owner / Driver)
         window.selectLoginRole = function(role) {
             window.currentRole = role;
             document.querySelectorAll('#screen-login button[id^="role-btn"]').forEach(btn => {
@@ -468,13 +496,19 @@
             }
         };
 
+        // Handle Login Submission
         window.handleLogin = function() {
             const name = document.getElementById('login-name').value.trim();
             const phone = document.getElementById('login-phone').value.trim();
             const pass = document.getElementById('login-pass').value.trim();
 
             if (!name || !phone) {
-                alert('कृपया नाव आणि मोबाईल नंबर टाका!');
+                alert('कृपया तुमचे नाव आणि मोबाईल नंबर टाका!');
+                return;
+            }
+
+            if (phone.length < 10) {
+                alert('कृपया 10 अंकी वैध मोबाईल नंबर टाका!');
                 return;
             }
 
@@ -567,7 +601,7 @@
             document.getElementById('drv-balance').innerText = bal;
         };
 
-        // SAVE BOOKING TO FIREBASE & WHATSAPP
+        // CUSTOMER BOOKING SUBMISSION & FIREBASE SAVE
         window.submitBooking = function() {
             if (!window.currentUser) {
                 alert('कृपया आधी लॉगिन करा!');
@@ -601,6 +635,7 @@
                 bookingData.time = time;
                 bookingData.car = window.selectedCar;
                 bookingData.seats = window.selectedSeats;
+                bookingData.direction = "Nashik to Pune";
 
                 whatsappText += `प्रकार: नाशिक-पुणे शेअरिंग\nपिकअप: ${pickup}\nड्रॉप: ${drop}\nतारीख: ${date}\nवेळ: ${time}\nगाडी: ${window.selectedCar}\nसीट्स: ${window.selectedSeats.join(', ')}`;
 
@@ -617,25 +652,37 @@
                 bookingData.time = document.getElementById('airport-time').value;
 
                 whatsappText += `प्रकार: एअरपोर्ट ड्रॉप\nरूट: ${bookingData.route}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
-            } else {
-                bookingData.details = "इतर चौकशी";
-                whatsappText += `प्रकार: ${window.activeTab} चौकशी`;
+            } else if (window.activeTab === 'fleet') {
+                bookingData.spot = document.getElementById('fleet-spot').value;
+                bookingData.date = document.getElementById('fleet-date').value;
+                bookingData.time = document.getElementById('fleet-time').value;
+
+                whatsappText += `प्रकार: KM इन्क्वायरी\nपॉईंट: ${bookingData.spot}\nतारीख: ${bookingData.date}`;
+            } else if (window.activeTab === 'darshan') {
+                bookingData.date = document.getElementById('darshan-date').value;
+                bookingData.time = document.getElementById('darshan-time').value;
+
+                whatsappText += `प्रकार: नाशिक दर्शन\nतारीख: ${bookingData.date}`;
+            } else if (window.activeTab === 'bus') {
+                bookingData.details = document.getElementById('bus-msg').value;
+
+                whatsappText += `प्रकार: बस इन्क्वायरी\nमाहिती: ${bookingData.details}`;
             }
 
             // Save Data into Firebase Realtime Database
             push(ref(database, 'bookings/'), bookingData)
                 .then(() => {
-                    alert("बुकिंग डेटाबेसमध्ये यशस्वीरीत्या जतन केला गेला!");
+                    alert("बुकिंग डेटाबेसमध्ये सेव्ह झाली आहे!");
                     const encodedMsg = encodeURIComponent(whatsappText);
                     window.open(`https://wa.me/919890896040?text=${encodedMsg}`, '_blank');
                 })
                 .catch(err => {
                     console.error("Firebase Error: ", err);
-                    alert("डेटा सेव्ह करण्यात अडचण आली.");
+                    alert("डेटा सेव्ह करण्यात त्रुटी आली.");
                 });
         };
 
-        // DRIVER REPORT SUBMIT
+        // DRIVER REPORT SUBMISSION
         window.sendDriverReport = function() {
             const col = document.getElementById('drv-collection').value;
             const toll = document.getElementById('drv-toll').value;
@@ -660,46 +707,73 @@
                 });
         };
 
-        // OWNER REALTIME DASHBOARD VIEW
+        // OWNER REALTIME CONTROL CENTER VIEW
         window.showOwnerView = function(category) {
             const contentBox = document.getElementById('owner-content-box');
-            contentBox.innerHTML = "<p class='text-center py-4'>माहिती लोड होत आहे...</p>";
+            contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>माहिती लोड होत आहे...</p>";
 
             if (category === 'driver-log') {
                 const logsRef = ref(database, 'driver_logs/');
                 onValue(logsRef, (snapshot) => {
                     const data = snapshot.val();
                     if (!data) {
-                        contentBox.innerHTML = "<p class='text-center py-4 text-red-500'>कोणताही डेटा उपलब्ध नाही.</p>";
+                        contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणताही ड्रायव्हर रिपोर्ट उपलब्ध नाही.</p>";
                         return;
                     }
-                    let html = "<h4 class='font-bold mb-2 border-b pb-1'>ड्रायव्हर हिशोब नोंदी</h4>";
+                    let html = "<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm'>ड्रायव्हर दैनंदिन हिशोब नोंदी</h4>";
                     Object.values(data).reverse().forEach(log => {
                         html += `
-                            <div class="p-2 border-b text-xs space-y-0.5 mb-1 bg-gray-50 rounded">
+                            <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
                                 <p class="font-bold text-gray-800">${log.driverName} <span class="text-[10px] text-gray-500">(${log.date})</span></p>
-                                <p>कलेक्शन: ₹${log.collection} | खर्च: ₹${parseFloat(log.toll)+parseFloat(log.fuel)+parseFloat(log.other)}</p>
-                                <p class="font-bold text-green-700">शिल्लक: ₹${log.balance}</p>
+                                <p class="text-gray-600">कलेक्शन: ₹${log.collection} | खर्च (टोल+पेट्रोल+इतर): ₹${parseFloat(log.toll)+parseFloat(log.fuel)+parseFloat(log.other)}</p>
+                                <p class="font-black text-green-700">शिल्लक जमा कॅश: ₹${log.balance}</p>
                             </div>
                         `;
                     });
                     contentBox.innerHTML = html;
                 });
+            } else if (category === 'car-status') {
+                contentBox.innerHTML = `
+                    <h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm'>शिल्लक गाड्यांची स्थिती (Available Vehicles)</h4>
+                    <div class="space-y-2">
+                        <div class="p-2 border rounded bg-green-50 flex justify-between items-center">
+                            <span class="font-bold">Ertiga (MH 15 XX 1234)</span>
+                            <span class="text-xs bg-green-600 text-white px-2 py-0.5 rounded">उपलब्ध (Available)</span>
+                        </div>
+                        <div class="p-2 border rounded bg-yellow-50 flex justify-between items-center">
+                            <span class="font-bold">Ciaz (MH 15 XX 5678)</span>
+                            <span class="text-xs bg-yellow-600 text-white px-2 py-0.5 rounded">रस्त्यावर (On Route)</span>
+                        </div>
+                    </div>
+                `;
             } else {
                 const bookRef = ref(database, 'bookings/');
                 onValue(bookRef, (snapshot) => {
                     const data = snapshot.val();
                     if (!data) {
-                        contentBox.innerHTML = "<p class='text-center py-4 text-red-500'>कोणतीही बुकिंग माहिती उपलब्ध नाही.</p>";
+                        contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणतीही बुकिंग नोंद उपलब्ध नाही.</p>";
                         return;
                     }
-                    let html = `<h4 class='font-bold mb-2 border-b pb-1 uppercase'>${category} बुकिंग्स</h4>`;
-                    Object.values(data).filter(item => item.type === category).reverse().forEach(b => {
+
+                    let filteredData = Object.values(data).filter(item => {
+                        if (category === 'sharing-np') return item.type === 'sharing' && (!item.direction || item.direction.includes('Nashik'));
+                        if (category === 'sharing-pn') return item.type === 'sharing' && item.direction && item.direction.includes('Pune');
+                        return item.type === category;
+                    });
+
+                    if (filteredData.length === 0) {
+                        contentBox.innerHTML = `<p class='text-center py-6 text-gray-400'>${category} साठी कोणतीही नोद नाही.</p>`;
+                        return;
+                    }
+
+                    let html = `<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm uppercase'>${category} बुकिंग यादी</h4>`;
+                    filteredData.reverse().forEach(b => {
                         html += `
-                            <div class="p-2 border-b text-xs space-y-1 mb-1 bg-gray-50 rounded">
+                            <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
                                 <p class="font-bold text-redbus">${b.customerName} (${b.customerPhone})</p>
-                                <p>${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || ''}</p>
-                                <p class="text-[10px] text-gray-600">तारीख: ${b.date || ''} | वेळ: ${b.time || ''} | सीट्स: ${b.seats ? b.seats.join(', ') : ''}</p>
+                                <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.details || ''}</p>
+                                <p class="text-[10px] text-gray-500">तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
+                                ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
                             </div>
                         `;
                     });
