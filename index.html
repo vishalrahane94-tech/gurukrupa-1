@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gurukrupa Tours & Travels - Official Portal</title>
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS & FontAwesome CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -122,8 +122,6 @@
 
             <!-- Main Booking Card -->
             <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
-                
-                <!-- Logged In Customer Info Header -->
                 <div class="mb-4 border-b pb-2 flex justify-between items-center bg-gray-50 p-2 rounded">
                     <div class="text-xs">
                         <span class="font-bold text-gray-700">ग्राहक:</span> <span id="cust-display-name" class="font-semibold text-redbus"></span> 
@@ -131,12 +129,11 @@
                     </div>
                 </div>
 
-                <!-- 1. SHARING SECTION -->
+                <!-- SHARING SECTION -->
                 <div id="section-sharing" class="booking-section">
                     <div class="bg-red-50 border border-red-200 text-redbus text-xs font-bold p-2 rounded-lg text-center mb-3 flex items-center justify-center gap-2 shadow-sm">
                         <i class="fa-solid fa-route"></i> नाशिक ते पुणे शेअरिंग टॅक्सी (Nashik to Pune Sharing)
                     </div>
-
                     <div class="grid grid-cols-2 gap-2 mb-3">
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">नाशिक पिकअप पॉईंट *</label>
@@ -211,7 +208,6 @@
                                     <i class="fa-solid fa-wheel"></i> Driver
                                 </div>
                             </div>
-
                             <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
                                 <button type="button" onclick="toggleSeat(this, 'Middle Left (M1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
@@ -226,7 +222,6 @@
                                     <span class="text-xs font-bold">M3 (Right)</span>
                                 </button>
                             </div>
-
                             <div class="grid grid-cols-2 gap-3 bg-gray-200 p-1.5 rounded-md">
                                 <button type="button" onclick="toggleSeat(this, 'Back Left (B1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
@@ -250,7 +245,6 @@
                                     <i class="fa-solid fa-wheel"></i> Driver
                                 </div>
                             </div>
-
                             <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
                                 <button type="button" onclick="toggleSeat(this, 'Rear Left (R1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
@@ -269,7 +263,7 @@
                     </div>
                 </div>
 
-                <!-- 2. ONE WAY SECTION -->
+                <!-- ONE WAY SECTION -->
                 <div id="section-oneway" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included)</h3>
                     <div>
@@ -300,7 +294,7 @@
                     </div>
                 </div>
 
-                <!-- 3. AIRPORT SECTION -->
+                <!-- AIRPORT SECTION -->
                 <div id="section-airport" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट ड्रॉप सर्व्हिस</h3>
                     <div>
@@ -322,7 +316,7 @@
                     </div>
                 </div>
 
-                <!-- 4. FLEET SECTION -->
+                <!-- FLEET SECTION -->
                 <div id="section-fleet" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर रेट्स (Per KM Inquiry)</h3>
                     <input type="text" id="fleet-spot" placeholder="उदा. नाशिक ते गोवा" class="w-full p-2 border rounded text-xs mb-2">
@@ -332,7 +326,7 @@
                     </div>
                 </div>
 
-                <!-- 5. DARSHAN SECTION -->
+                <!-- DARSHAN SECTION -->
                 <div id="section-darshan" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट</h3>
                     <div class="grid grid-cols-2 gap-2">
@@ -341,7 +335,7 @@
                     </div>
                 </div>
 
-                <!-- 6. BUS INQUIRY SECTION -->
+                <!-- BUS INQUIRY SECTION -->
                 <div id="section-bus" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">बस इन्क्वायरी</h3>
                     <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती (उदा. प्रवासी संख्या, तारीख)..." class="w-full p-2 border rounded text-xs"></textarea>
@@ -361,7 +355,7 @@
                     <i class="fa-solid fa-gauge-high text-redbus"></i> ओनर डॅशबोर्ड (Owner Control Center)
                 </h2>
 
-                <!-- 9 Separate Category Icons Requested by Owner -->
+                <!-- 9 Separate Category Icons -->
                 <div class="grid grid-cols-3 gap-2 text-xs">
                     <button onclick="showOwnerView('sharing-np')" class="p-2.5 border rounded-lg bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">
                         <i class="fa-solid fa-car text-lg"></i>
@@ -395,9 +389,10 @@
                         <i class="fa-solid fa-id-card-clip text-lg"></i>
                         <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>
                     </button>
-                    <button onclick="showOwnerView('car-status')" class="p-2.5 border rounded-lg bg-teal-50 text-teal-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-teal-100">
-                        <i class="fa-solid fa-boxes-packing text-lg"></i>
-                        <span class="text-[10px] text-center">शिल्लक गाड्या</span>
+                    <!-- Icon Changed to Remaining Balance -->
+                    <button onclick="showOwnerView('cash-balance')" class="p-2.5 border rounded-lg bg-green-50 text-green-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-green-100 border-green-300">
+                        <i class="fa-solid fa-sack-dollar text-lg text-green-600"></i>
+                        <span class="text-[10px] text-center">शिल्लक पैसे</span>
                     </button>
                 </div>
             </div>
@@ -477,11 +472,19 @@
         window.selectedSeats = [];
         window.activeTab = 'sharing';
 
-        // Stored Credentials for Owner & Driver Validation
         const ownerAuth = { phone: '9890896040', pass: 'owner123' };
         const driverAuth = { phone: '9922862007', pass: 'driver123' };
 
-        // Select Role Tabs (Customer / Owner / Driver)
+        // Auto Load Saved Session on Page Refresh
+        window.addEventListener('load', () => {
+            const savedUser = localStorage.getItem('gk_user');
+            if (savedUser) {
+                window.currentUser = JSON.parse(savedUser);
+                window.currentRole = window.currentUser.role;
+                applyUserSession(window.currentUser);
+            }
+        });
+
         window.selectLoginRole = function(role) {
             window.currentRole = role;
             document.querySelectorAll('#screen-login button[id^="role-btn"]').forEach(btn => {
@@ -496,7 +499,6 @@
             }
         };
 
-        // Handle Login Submission
         window.handleLogin = function() {
             const name = document.getElementById('login-name').value.trim();
             const phone = document.getElementById('login-phone').value.trim();
@@ -513,36 +515,51 @@
             }
 
             if (window.currentRole === 'customer') {
-                loginSuccess(name, phone, 'Customer', 'screen-customer');
-                document.getElementById('cust-display-name').innerText = name;
-                document.getElementById('cust-display-phone').innerText = phone;
+                const userObj = { name, phone, role: 'customer' };
+                saveAndApplyUser(userObj);
             } else if (window.currentRole === 'owner') {
                 if (phone === ownerAuth.phone && pass === ownerAuth.pass) {
-                    loginSuccess(name, phone, 'Owner', 'screen-owner');
+                    const userObj = { name, phone, role: 'owner' };
+                    saveAndApplyUser(userObj);
                 } else {
                     alert('चुकीचा फोन नंबर किंवा पासवर्ड!');
                 }
             } else if (window.currentRole === 'driver') {
                 if (phone === driverAuth.phone && pass === driverAuth.pass) {
-                    loginSuccess(name, phone, 'Driver', 'screen-driver');
+                    const userObj = { name, phone, role: 'driver' };
+                    saveAndApplyUser(userObj);
                 } else {
                     alert('चुकीचा फोन नंबर किंवा पासवर्ड!');
                 }
             }
         };
 
-        function loginSuccess(name, phone, roleDisplay, screenId) {
-            window.currentUser = { name, phone, role: window.currentRole };
-            document.getElementById('screen-login').classList.add('hidden');
-            document.getElementById(screenId).classList.remove('hidden');
+        function saveAndApplyUser(userObj) {
+            localStorage.setItem('gk_user', JSON.stringify(userObj));
+            window.currentUser = userObj;
+            applyUserSession(userObj);
+        }
 
+        function applyUserSession(userObj) {
+            document.getElementById('screen-login').classList.add('hidden');
             document.getElementById('user-badge').classList.remove('hidden');
             document.getElementById('logout-btn').classList.remove('hidden');
-            document.getElementById('user-name-display').innerText = name;
-            document.getElementById('user-role-display').innerText = roleDisplay;
+            document.getElementById('user-name-display').innerText = userObj.name;
+            document.getElementById('user-role-display').innerText = userObj.role.toUpperCase();
+
+            if (userObj.role === 'customer') {
+                document.getElementById('screen-customer').classList.remove('hidden');
+                document.getElementById('cust-display-name').innerText = userObj.name;
+                document.getElementById('cust-display-phone').innerText = userObj.phone;
+            } else if (userObj.role === 'owner') {
+                document.getElementById('screen-owner').classList.remove('hidden');
+            } else if (userObj.role === 'driver') {
+                document.getElementById('screen-driver').classList.remove('hidden');
+            }
         }
 
         window.logout = function() {
+            localStorage.removeItem('gk_user');
             window.currentUser = null;
             document.getElementById('screen-login').classList.remove('hidden');
             document.getElementById('screen-customer').classList.add('hidden');
@@ -601,7 +618,7 @@
             document.getElementById('drv-balance').innerText = bal;
         };
 
-        // CUSTOMER BOOKING SUBMISSION & FIREBASE SAVE
+        // CUSTOMER BOOKING SUBMISSION TO FIREBASE REALTIME DB
         window.submitBooking = function() {
             if (!window.currentUser) {
                 alert('कृपया आधी लॉगिन करा!');
@@ -669,20 +686,19 @@
                 whatsappText += `प्रकार: बस इन्क्वायरी\nमाहिती: ${bookingData.details}`;
             }
 
-            // Save Data into Firebase Realtime Database
             push(ref(database, 'bookings/'), bookingData)
                 .then(() => {
-                    alert("बुकिंग डेटाबेसमध्ये सेव्ह झाली आहे!");
+                    alert("बुकिंग फायरबेस डेटाबेसमध्ये सेव्ह झाली आहे!");
                     const encodedMsg = encodeURIComponent(whatsappText);
                     window.open(`https://wa.me/919890896040?text=${encodedMsg}`, '_blank');
                 })
                 .catch(err => {
-                    console.error("Firebase Error: ", err);
-                    alert("डेटा सेव्ह करण्यात त्रुटी आली.");
+                    console.error("Firebase Live Error: ", err);
+                    alert("डेटा सेव्ह करण्यात अडचण आली.");
                 });
         };
 
-        // DRIVER REPORT SUBMISSION
+        // DRIVER REPORT SUBMISSION TO FIREBASE REALTIME DB
         window.sendDriverReport = function() {
             const col = document.getElementById('drv-collection').value;
             const toll = document.getElementById('drv-toll').value;
@@ -692,22 +708,24 @@
 
             const logData = {
                 driverName: window.currentUser ? window.currentUser.name : "Driver",
-                collection: col,
-                toll: toll,
-                fuel: fuel,
-                other: other,
-                balance: bal,
+                driverPhone: window.currentUser ? window.currentUser.phone : "N/A",
+                collection: parseFloat(col) || 0,
+                toll: parseFloat(toll) || 0,
+                fuel: parseFloat(fuel) || 0,
+                other: parseFloat(other) || 0,
+                balance: parseFloat(bal) || 0,
                 date: new Date().toLocaleString('mr-IN')
             };
 
             push(ref(database, 'driver_logs/'), logData)
                 .then(() => {
+                    alert("हिशोब सेव्ह झाला आहे!");
                     const msg = `*दैनिक हिशोब रिपोर्ट*\nड्रायव्हर: ${logData.driverName}\nकलेक्शन: ₹${col}\nटोल: ₹${toll}\nइंधन: ₹${fuel}\nइतर: ₹${other}\n------------------\n*शिल्लक कॅश: ₹${bal}*`;
                     window.open(`https://wa.me/919890896040?text=${encodeURIComponent(msg)}`, '_blank');
                 });
         };
 
-        // OWNER REALTIME CONTROL CENTER VIEW
+        // OWNER REALTIME VIEW SYSTEM
         window.showOwnerView = function(category) {
             const contentBox = document.getElementById('owner-content-box');
             contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>माहिती लोड होत आहे...</p>";
@@ -725,27 +743,52 @@
                         html += `
                             <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
                                 <p class="font-bold text-gray-800">${log.driverName} <span class="text-[10px] text-gray-500">(${log.date})</span></p>
-                                <p class="text-gray-600">कलेक्शन: ₹${log.collection} | खर्च (टोल+पेट्रोल+इतर): ₹${parseFloat(log.toll)+parseFloat(log.fuel)+parseFloat(log.other)}</p>
+                                <p class="text-gray-600">कलेक्शन: ₹${log.collection} | खर्च (टोल+पेट्रोल+इतर): ₹${log.toll + log.fuel + log.other}</p>
                                 <p class="font-black text-green-700">शिल्लक जमा कॅश: ₹${log.balance}</p>
                             </div>
                         `;
                     });
                     contentBox.innerHTML = html;
                 });
-            } else if (category === 'car-status') {
-                contentBox.innerHTML = `
-                    <h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm'>शिल्लक गाड्यांची स्थिती (Available Vehicles)</h4>
-                    <div class="space-y-2">
-                        <div class="p-2 border rounded bg-green-50 flex justify-between items-center">
-                            <span class="font-bold">Ertiga (MH 15 XX 1234)</span>
-                            <span class="text-xs bg-green-600 text-white px-2 py-0.5 rounded">उपलब्ध (Available)</span>
+
+            } else if (category === 'cash-balance') {
+                // Calculation of All Drivers' Remaining Cash Balance
+                const logsRef = ref(database, 'driver_logs/');
+                onValue(logsRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (!data) {
+                        contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>शिल्लक रकमेची नोंद उपलब्ध नाही.</p>";
+                        return;
+                    }
+
+                    let totalNetCash = 0;
+                    let html = `
+                        <div class="mb-3 p-3 bg-green-100 border border-green-400 rounded-lg text-center">
+                            <span class="text-xs font-bold text-gray-700 block">एकूण ड्रायव्हर्स कडील शिल्लक कॅश (Total Cash Balance)</span>
+                            <span id="grand-total-cash" class="text-2xl font-black text-green-700">₹ 0</span>
                         </div>
-                        <div class="p-2 border rounded bg-yellow-50 flex justify-between items-center">
-                            <span class="font-bold">Ciaz (MH 15 XX 5678)</span>
-                            <span class="text-xs bg-yellow-600 text-white px-2 py-0.5 rounded">रस्त्यावर (On Route)</span>
-                        </div>
-                    </div>
-                `;
+                        <h4 class='font-bold mb-2 border-b pb-1 text-gray-800 text-xs uppercase'>ड्रायव्हरनुसार शिल्लक रक्कम तपशील:</h4>
+                    `;
+
+                    Object.values(data).reverse().forEach(log => {
+                        totalNetCash += (log.balance || 0);
+                        html += `
+                            <div class="p-2 border-b text-xs flex justify-between items-center bg-gray-50 rounded mb-1">
+                                <div>
+                                    <p class="font-bold text-gray-800">${log.driverName}</p>
+                                    <p class="text-[10px] text-gray-500">${log.date}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-black text-green-700 text-sm">₹${log.balance}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    contentBox.innerHTML = html;
+                    document.getElementById('grand-total-cash').innerText = `₹ ${totalNetCash}`;
+                });
+
             } else {
                 const bookRef = ref(database, 'bookings/');
                 onValue(bookRef, (snapshot) => {
@@ -762,7 +805,7 @@
                     });
 
                     if (filteredData.length === 0) {
-                        contentBox.innerHTML = `<p class='text-center py-6 text-gray-400'>${category} साठी कोणतीही नोद नाही.</p>`;
+                        contentBox.innerHTML = `<p class='text-center py-6 text-gray-400'>ह्या कॅटेगरीमध्ये कोणतीही बुकिंग नाही.</p>`;
                         return;
                     }
 
