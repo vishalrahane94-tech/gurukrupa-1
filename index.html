@@ -45,7 +45,6 @@
             color: white;
             border-color: #d84e55;
         }
-        /* Scrollbar Styling for Portals */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .portal-card.active {
@@ -156,8 +155,6 @@
 
                 <!-- SHARING SECTION -->
                 <div id="section-sharing" class="booking-section">
-                    
-                    <!-- ROUTE SELECTOR BUTTONS (WITHOUT ARROWS) -->
                     <div class="grid grid-cols-2 gap-2 mb-4">
                         <button type="button" id="btn-route-np" onclick="setSharingRoute('NP')" class="route-toggle-btn active p-2.5 rounded-lg border text-xs font-bold flex items-center justify-center shadow-sm">
                             नाशिक ते पुणे
@@ -194,12 +191,9 @@
                         </div>
                     </div>
 
-                    <!-- DYNAMIC TIME BUTTONS CONTAINER -->
                     <div class="mb-3">
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची वेळ निवडा *</label>
-                        <div id="sharing-time-container" class="grid grid-cols-3 gap-1.5">
-                            <!-- Dynamic Time Buttons -->
-                        </div>
+                        <div id="sharing-time-container" class="grid grid-cols-3 gap-1.5"></div>
                         <input type="hidden" id="sharing-time">
                     </div>
 
@@ -220,9 +214,7 @@
                                     <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
                                     <span class="text-xs font-black">F1 (Front)</span>
                                 </button>
-                                <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
-                                    Driver
-                                </div>
+                                <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">Driver</div>
                             </div>
                             <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
                                 <button type="button" onclick="toggleSeat(this, 'Middle Left (M1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
@@ -257,9 +249,7 @@
                                     <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
                                     <span class="text-xs font-black">F1 (Front)</span>
                                 </button>
-                                <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
-                                    Driver
-                                </div>
+                                <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">Driver</div>
                             </div>
                             <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
                                 <button type="button" onclick="toggleSeat(this, 'Rear Left (R1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
@@ -464,45 +454,55 @@
 
     </div>
 
-    <!-- JavaScript Scripting for Functionality -->
+    <!-- JavaScript Application Logic -->
     <script>
+        const NASHIK_POINTS = ["द्वारका (Dwarka)", "बिटको (Bitco)", "उपनगर (Upnagar)", "इंदिरामगोन (Indira Nagar)"];
+        const PUNE_POINTS = ["शिवाजीनगर (Shivajinagar)", "स्वारगेट (Swargate)", "वाकड (Wakad)", "चाकण (Chakan)"];
+
         let currentRole = 'customer';
-        let currentSharingRoute = 'NP'; // NP: Nashik to Pune, PN: Pune to Nashik
+        let currentUser = null;
         let selectedSeats = [];
+        let sharingRoute = 'NP'; // NP: Nashik->Pune, PN: Pune->Nashik
 
-        // Pickup & Drop Data
-        const nashikPickups = ['ठक्कर बाजार', 'द्वारका सर्कल', 'मुंबई नाका', 'गोविंद नगर', 'टनेल (Tunnel)', 'पवन हॉटेल'];
-        const puneDrops = ['चाकण', 'मोशी', 'भोसरी', 'नाशिक फाटा', 'वाकडेवाडी'];
-
-        // Updated Time Data as requested
-        const timesNP = ['04:00 AM', '04:30 AM', '04:45 AM', '01:00 PM', '01:15 PM', '01:30 PM'];
-        const timesPN = ['08:30 AM', '08:45 AM', '09:00 AM', '06:00 PM', '06:15 PM', '06:30 PM'];
-
+        // Initializer
         window.onload = function() {
             setSharingRoute('NP');
+            setTodayDates();
         };
 
+        function setTodayDates() {
+            const today = new Date().toISOString().split('T')[0];
+            ['sharing-date', 'oneway-date', 'airport-date', 'fleet-date', 'darshan-date'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.value = today;
+            });
+        }
+
+        // 1. LOGIN SYSTEM
         function selectLoginRole(role) {
             currentRole = role;
-            document.querySelectorAll('.portal-card').forEach(c => c.classList.remove('active'));
-            document.getElementById(`role-card-${role}`).classList.add('active');
-            
-            const passField = document.getElementById('password-field');
-            if (role === 'owner' || role === 'driver') {
-                passField.classList.remove('hidden');
-            } else {
-                passField.classList.add('hidden');
-            }
+            ['customer', 'owner', 'driver'].forEach(r => {
+                document.getElementById(`role-card-${r}`).classList.toggle('active', r === role);
+            });
+            document.getElementById('password-field').classList.toggle('hidden', role === 'customer');
         }
 
         function handleLogin() {
             const name = document.getElementById('login-name').value.trim();
             const phone = document.getElementById('login-phone').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
 
             if (!name || !phone) {
-                alert('कृपया नाव आणि मोबाईल नंबर टाका');
+                alert('कृपया नाव आणि मोबाईल नंबर टाका!');
                 return;
             }
+
+            if (currentRole !== 'customer' && pass !== '1234') {
+                alert('चुकीचा पासवर्ड! (पासवर्ड 1234 टाका)');
+                return;
+            }
+
+            currentUser = { name, phone, role: currentRole };
 
             document.getElementById('screen-login').classList.add('hidden');
             document.getElementById('user-badge').classList.remove('hidden');
@@ -517,129 +517,184 @@
                 document.getElementById('cust-display-phone').innerText = phone;
             } else if (currentRole === 'owner') {
                 document.getElementById('screen-owner').classList.remove('hidden');
+                showOwnerView('all');
             } else if (currentRole === 'driver') {
                 document.getElementById('screen-driver').classList.remove('hidden');
             }
         }
 
         function logout() {
-            location.reload();
+            currentUser = null;
+            document.getElementById('user-badge').classList.add('hidden');
+            document.getElementById('logout-btn').classList.add('hidden');
+            document.getElementById('screen-customer').classList.add('hidden');
+            document.getElementById('screen-owner').classList.add('hidden');
+            document.getElementById('screen-driver').classList.add('hidden');
+            document.getElementById('screen-login').classList.remove('hidden');
         }
 
+        // 2. CUSTOMER TABS & SEAT ROUTING
         function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`tab-${tab}`).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.booking-section').forEach(sec => sec.classList.add('hidden'));
 
-            document.querySelectorAll('.booking-section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
             document.getElementById(`section-${tab}`).classList.remove('hidden');
         }
 
-        // Set Sharing Route (NP or PN)
-        function setSharingRoute(route) {
-            currentSharingRoute = route;
+        function setSharingRoute(type) {
+            sharingRoute = type;
             const btnNP = document.getElementById('btn-route-np');
             const btnPN = document.getElementById('btn-route-pn');
-            const lblPickup = document.getElementById('lbl-pickup');
-            const lblDrop = document.getElementById('lbl-drop');
-            const selectPickup = document.getElementById('sharing-pickup');
-            const selectDrop = document.getElementById('sharing-drop');
+            const pickupSel = document.getElementById('sharing-pickup');
+            const dropSel = document.getElementById('sharing-drop');
 
-            if (route === 'NP') {
+            if (type === 'NP') {
                 btnNP.classList.add('active');
                 btnPN.classList.remove('active');
-                lblPickup.innerText = 'नाशिक पिकअप पॉईंट *';
-                lblDrop.innerText = 'पुणे ड्रॉप पॉईंट *';
-                
-                populateSelect(selectPickup, nashikPickups);
-                populateSelect(selectDrop, puneDrops);
-                renderTimeButtons(timesNP);
+                document.getElementById('lbl-pickup').innerText = "नाशिक पिकअप पॉईंट *";
+                document.getElementById('lbl-drop').innerText = "पुणे ड्रॉप पॉईंट *";
+                populateSelect(pickupSel, NASHIK_POINTS);
+                populateSelect(dropSel, PUNE_POINTS);
             } else {
                 btnPN.classList.add('active');
                 btnNP.classList.remove('active');
-                lblPickup.innerText = 'पुणे पिकअप पॉईंट *';
-                lblDrop.innerText = 'नाशिक ड्रॉप पॉईंट *';
-
-                populateSelect(selectPickup, puneDrops);
-                populateSelect(selectDrop, nashikPickups);
-                renderTimeButtons(timesPN);
+                document.getElementById('lbl-pickup').innerText = "पुणे पिकअप पॉईंट *";
+                document.getElementById('lbl-drop').innerText = "नाशिक ड्रॉप पॉईंट *";
+                populateSelect(pickupSel, PUNE_POINTS);
+                populateSelect(dropSel, NASHIK_POINTS);
             }
+            renderTimeButtons();
         }
 
-        function populateSelect(selectElem, optionsArray) {
-            selectElem.innerHTML = '';
-            optionsArray.forEach(opt => {
-                const el = document.createElement('option');
-                el.value = opt;
-                el.innerText = opt;
-                selectElem.appendChild(el);
-            });
+        function populateSelect(elem, options) {
+            elem.innerHTML = options.map(o => `<option value="${o}">${o}</option>`).join('');
         }
 
-        function renderTimeButtons(timeArray) {
+        function renderTimeButtons() {
+            const times = ["05:00 AM", "07:00 AM", "09:00 AM", "12:00 PM", "03:00 PM", "06:00 PM"];
             const container = document.getElementById('sharing-time-container');
-            container.innerHTML = '';
-            document.getElementById('sharing-time').value = '';
-
-            timeArray.forEach(t => {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'time-btn p-2 text-[11px] border rounded-lg hover:border-redbus bg-white font-bold shadow-sm';
-                btn.innerText = t;
-                btn.onclick = function() { selectTime(this, t); };
-                container.appendChild(btn);
-            });
+            container.innerHTML = times.map(t => 
+                `<button type="button" onclick="selectTime('${t}', this)" class="time-btn p-2 border rounded text-xs font-bold bg-white">${t}</button>`
+            ).join('');
         }
 
-        function selectTime(btn, timeVal) {
-            document.querySelectorAll('#sharing-time-container .time-btn').forEach(b => b.classList.remove('selected'));
+        function selectTime(time, btn) {
+            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
-            document.getElementById('sharing-time').value = timeVal;
+            document.getElementById('sharing-time').value = time;
         }
 
-        function selectCar(carType) {
-            const ertigaLayout = document.getElementById('layout-ertiga');
-            const ciazLayout = document.getElementById('layout-ciaz');
-
-            if (carType.includes('ciaz')) {
-                ertigaLayout.classList.add('hidden');
-                ciazLayout.classList.remove('hidden');
-            } else {
-                ertigaLayout.classList.remove('hidden');
-                ciazLayout.classList.add('hidden');
-            }
+        function selectCar(val) {
+            const isCiaz = val.includes('ciaz');
+            document.getElementById('layout-ertiga').classList.toggle('hidden', isCiaz);
+            document.getElementById('layout-ciaz').classList.toggle('hidden', !isCiaz);
+            selectedSeats = [];
+            document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
         }
 
-        function toggleSeat(btn, seatName) {
+        function toggleSeat(btn, seatInfo) {
             if (btn.classList.contains('selected')) {
                 btn.classList.remove('selected');
-                selectedSeats = selectedSeats.filter(s => s !== seatName);
+                selectedSeats = selectedSeats.filter(s => s !== seatInfo);
             } else {
                 btn.classList.add('selected');
-                selectedSeats.push(seatName);
+                selectedSeats.push(seatInfo);
             }
         }
 
+        // 3. BOOKING SUBMISSION & WHATSAPP INTEGRATION
         function submitBooking() {
-            alert('बुकिंग सबमिट झाले आहे!');
+            const activeTab = document.querySelector('.tab-btn.active').id.replace('tab-', '');
+            let message = `*Gurukrupa Tours & Travels Booking*\n`;
+            message += `👤 Name: ${currentUser.name}\n📞 Phone: ${currentUser.phone}\n------------------------------\n`;
+
+            let bookingData = { customer: currentUser.name, phone: currentUser.phone, type: activeTab, date: new Date().toLocaleDateString() };
+
+            if (activeTab === 'sharing') {
+                const time = document.getElementById('sharing-time').value;
+                if (!time || selectedSeats.length === 0) {
+                    alert('कृपया वेळ आणि किमान १ सीट निवडा!');
+                    return;
+                }
+                bookingData.route = sharingRoute === 'NP' ? 'Nashik to Pune' : 'Pune to Nashik';
+                bookingData.seats = selectedSeats.join(', ');
+                bookingData.time = time;
+
+                message += `🚍 Route: ${bookingData.route}\n📍 Pickup: ${document.getElementById('sharing-pickup').value}\n📍 Drop: ${document.getElementById('sharing-drop').value}\n📅 Date: ${document.getElementById('sharing-date').value}\n⏰ Time: ${time}\n💺 Seats: ${bookingData.seats}`;
+            } else if (activeTab === 'oneway') {
+                bookingData.route = document.getElementById('oneway-route').value;
+                bookingData.car = document.getElementById('oneway-car').value;
+                bookingData.date = document.getElementById('oneway-date').value;
+                message += `🚕 Type: One Way Taxi\n🛣 Route: ${bookingData.route}\n🚘 Car: ${bookingData.car}\n📅 Date: ${bookingData.date}`;
+            } else {
+                message += `Service Type: ${activeTab.toUpperCase()}\nDetails submitted.`;
+            }
+
+            // Save to LocalStorage for Owner View
+            let logs = JSON.parse(localStorage.getItem('gk_bookings') || '[]');
+            logs.push(bookingData);
+            localStorage.setItem('gk_bookings', JSON.stringify(logs));
+
+            // Redirect to WhatsApp
+            const targetPhone = "919876543210"; 
+            window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        function showOwnerView(type) {
+        // 4. OWNER CONTROL DASHBOARD
+        function showOwnerView(view) {
             const box = document.getElementById('owner-content-box');
-            box.innerText = `तुम्ही '${type}' ची माहिती निवडली आहे.`;
+            let bookings = JSON.parse(localStorage.getItem('gk_bookings') || '[]');
+            let driverLogs = JSON.parse(localStorage.getItem('gk_driver_logs') || '[]');
+
+            if (view === 'all') {
+                box.innerHTML = `<h3 class="font-bold mb-2">सर्व बुकिंग्स (Total: ${bookings.length})</h3>` +
+                    (bookings.map(b => `<div class="p-2 border-b mb-1 bg-gray-50"><b>${b.customer}</b> (${b.phone}) - ${b.type} | ${b.route || ''}</div>`).join('') || '<p>नवीन बुकिंग्स नाहीत.</p>');
+            } else if (view === 'driver-log') {
+                box.innerHTML = `<h3 class="font-bold mb-2">ड्रायव्हर दैनंदिन लॉग</h3>` +
+                    (driverLogs.map(d => `<div class="p-2 border-b bg-gray-50 mb-1"><b>${d.driver}</b>: Collection: ₹${d.collection} | Fuel: ₹${d.fuel} | Net Balance: <b>₹${d.net}</b></div>`).join('') || '<p>ड्रायव्हर एंट्री उपलब्ध नाही.</p>');
+            } else if (view === 'cash-balance') {
+                let totalCollected = driverLogs.reduce((acc, curr) => acc + Number(curr.net), 0);
+                box.innerHTML = `<div class="p-4 text-center"><h3 class="font-bold text-gray-700">एकूण जमा शिल्लक रक्कम (Net Cash)</h3><p class="text-2xl font-black text-green-600 mt-2">₹ ${totalCollected}</p></div>`;
+            } else {
+                box.innerHTML = `<p class="text-center py-4 text-gray-500">${view.toUpperCase()} मधील माहिती लवकरच दिसेल.</p>`;
+            }
         }
 
+        // 5. DRIVER CALCULATIONS & SUBMISSION
         function calculateDriverBalance() {
-            const col = parseFloat(document.getElementById('drv-collection').value) || 0;
-            const toll = parseFloat(document.getElementById('drv-toll').value) || 0;
-            const fuel = parseFloat(document.getElementById('drv-fuel').value) || 0;
-            const other = parseFloat(document.getElementById('drv-other').value) || 0;
+            const col = Number(document.getElementById('drv-collection').value) || 0;
+            const toll = Number(document.getElementById('drv-toll').value) || 0;
+            const fuel = Number(document.getElementById('drv-fuel').value) || 0;
+            const other = Number(document.getElementById('drv-other').value) || 0;
 
             const net = col - (toll + fuel + other);
             document.getElementById('drv-net-display').innerText = `₹ ${net}`;
+            return net;
         }
 
         function submitDriverLog() {
-            alert('ड्रायव्हर हिशोब यशस्वीरित्या जमा झाला!');
+            const net = calculateDriverBalance();
+            const logData = {
+                driver: currentUser.name,
+                collection: document.getElementById('drv-collection').value,
+                toll: document.getElementById('drv-toll').value,
+                fuel: document.getElementById('drv-fuel').value,
+                other: document.getElementById('drv-other').value,
+                net: net,
+                timestamp: new Date().toLocaleString()
+            };
+
+            let logs = JSON.parse(localStorage.getItem('gk_driver_logs') || '[]');
+            logs.push(logData);
+            localStorage.setItem('gk_driver_logs', JSON.stringify(logs));
+
+            alert('हिशोब यशस्वीरीत्या जमा झाला आहे!');
+            document.getElementById('drv-collection').value = 0;
+            document.getElementById('drv-toll').value = 0;
+            document.getElementById('drv-fuel').value = 0;
+            document.getElementById('drv-other').value = 0;
+            calculateDriverBalance();
         }
     </script>
 </body>
