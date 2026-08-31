@@ -96,9 +96,9 @@
             <h2 class="text-base font-bold text-gray-800 text-center mb-1">पोर्टल निवडा (Scroll & Select Role)</h2>
             <p class="text-[11px] text-gray-500 text-center mb-4">डावीकडून उजवीकडे स्क्रोल करून तुमचा रोल निवडा</p>
 
-            <!-- ONLY Customer visible at first; Owner & Driver hidden until scrolled horizontally -->
+            <!-- Role Selection Cards -->
             <div class="flex gap-4 overflow-x-auto no-scrollbar pb-3 px-1 role-scroll-container w-full">
-                <!-- Card 1: Customer (Occupies full visible width) -->
+                <!-- Card 1: Customer -->
                 <div id="role-card-customer" onclick="selectLoginRole('customer')" class="portal-card active role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0">
                     <div class="w-12 h-12 bg-red-100 text-redbus rounded-full flex items-center justify-center mx-auto mb-2">
                         <i class="fa-solid fa-user text-xl"></i>
@@ -107,7 +107,7 @@
                     <p class="text-xs text-gray-500 mt-0.5">कस्टमर पोर्टल</p>
                 </div>
 
-                <!-- Card 2: Owner (Hidden offscreen, revealed on horizontal scroll) -->
+                <!-- Card 2: Owner -->
                 <div id="role-card-owner" onclick="selectLoginRole('owner')" class="portal-card role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0">
                     <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto mb-2">
                         <i class="fa-solid fa-user-tie text-xl"></i>
@@ -116,7 +116,7 @@
                     <p class="text-xs text-gray-500 mt-0.5">ओनर पोर्टल</p>
                 </div>
 
-                <!-- Card 3: Driver (Hidden offscreen, revealed on horizontal scroll) -->
+                <!-- Card 3: Driver -->
                 <div id="role-card-driver" onclick="selectLoginRole('driver')" class="portal-card role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0">
                     <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-2">
                         <i class="fa-solid fa-id-card text-xl"></i>
@@ -133,7 +133,8 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1">मोबाईल नंबर *</label>
-                    <input type="tel" id="login-phone" placeholder="10 अंकी मोबाईल नंबर" class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-redbus">
+                    <!-- Open text field for any driver or user -->
+                    <input type="tel" id="login-phone" placeholder="10 अंकी मोबाईल नंबर टाका" class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-redbus">
                 </div>
                 <div id="password-field" class="hidden">
                     <label class="block text-xs font-semibold text-gray-600 mb-1">पासवर्ड (Password) *</label>
@@ -630,7 +631,6 @@
         window.selectedRoute = 'Nashik to Pune';
 
         const ownerAuth = { phone: '9890896040', pass: 'owner123' };
-        const driverAuth = { phone: '9922862007', pass: 'driver123' };
 
         const nashikPoints = ["ठक्कर बाजार", "द्वारका सर्कल", "मुंबई नाका", "गोविंद नगर", "टनेल (Tunnel)", "पवन हॉटेल"];
         const punePoints = ["चाकण", "मोशी", "भोसरी", "नाशिक फाटा", "वाकडेवाडी"];
@@ -652,13 +652,12 @@
             return `${year}-${month}-${day}`;
         }
 
-        // Set minimum date on all date input fields to today's date (Disables past dates)
         function setCalendarMinDates() {
             const todayStr = getTodayString();
             document.querySelectorAll('.date-picker-min').forEach(input => {
                 input.min = todayStr;
                 if (!input.value) {
-                    input.value = todayStr; // Auto select today by default
+                    input.value = todayStr;
                 }
             });
         }
@@ -679,7 +678,6 @@
             listenTodaysDriverBalance();
         });
 
-        // INQUIRY DELETE LOGIC (Next day after the booking date passed)
         function cleanBackdatedBookings() {
             const yesterdayStr = getYesterdayString(); 
             const bookRef = ref(database, 'bookings/');
@@ -696,7 +694,6 @@
             }, { onlyOnce: true });
         }
 
-        // LISTEN & DISPLAY TODAY'S TOTAL BALANCE ON OWNER CASH ICON
         function listenTodaysDriverBalance() {
             const logsRef = ref(database, 'driver_logs/');
             const todayStr = getTodayString();
@@ -753,10 +750,11 @@
                     alert('चुकीचा फोन नंबर किंवा पासवर्ड!');
                 }
             } else if (window.currentRole === 'driver') {
-                if (phone === driverAuth.phone && pass === driverAuth.pass) {
+                // Open login for drivers without rigid phone number restriction
+                if (pass === 'driver123') {
                     saveAndApplyUser({ name, phone, role: 'driver' });
                 } else {
-                    alert('चुकीचा फोन नंबर किंवा पासवर्ड!');
+                    alert('चुकीचा पासवर्ड!');
                 }
             }
         };
@@ -1126,6 +1124,7 @@
                 });
         };
 
+        // DRIVER HISHOB REPORT (SENDING TO BOTH NUMBERS)
         window.sendDriverReport = function() {
             const col = document.getElementById('drv-collection').value;
             const toll = document.getElementById('drv-toll').value;
@@ -1146,9 +1145,17 @@
 
             push(ref(database, 'driver_logs/'), logData)
                 .then(() => {
-                    alert("हिशोब सेव्ह झाला आहे!");
-                    const msg = `*दैनिक हिशोब रिपोर्ट*\nड्रायव्हर: ${logData.driverName}\nकलेक्शन: ₹${col}\nटोल: ₹${toll}\nइंधन: ₹${fuel}\nइतर: ₹${other}\n------------------\n*शिल्लक कॅश: ₹${bal}*`;
-                    window.open(`https://wa.me/919890896040?text=${encodeURIComponent(msg)}`, '_blank');
+                    alert("हिशोब सेव्ह झाला आहे! दोन्ही नंबरवर पाठवण्यासाठी व्हॉट्सॲप उघडत आहे.");
+                    const msg = `*दैनिक हिशोब रिपोर्ट*\nड्रायव्हर: ${logData.driverName} (${logData.driverPhone})\nकलेक्शन: ₹${col}\nटोल: ₹${toll}\nइंधन: ₹${fuel}\nइतर: ₹${other}\n------------------\n*शिल्लक कॅश: ₹${bal}*`;
+                    const encodedMsg = encodeURIComponent(msg);
+                    
+                    // Send to First Number (9890896040)
+                    window.open(`https://wa.me/919890896040?text=${encodedMsg}`, '_blank');
+                    
+                    // Send to Second Number (7498502915)
+                    setTimeout(() => {
+                        window.open(`https://wa.me/917498502915?text=${encodedMsg}`, '_blank');
+                    }, 1000);
                 });
         };
 
@@ -1211,7 +1218,7 @@
                         html += `
                             <div class="p-3 border-b text-xs space-y-1 mb-2 bg-green-50/50 border-green-200 rounded-lg shadow-sm">
                                 <div class="flex justify-between items-center border-b pb-1">
-                                    <p class="font-bold text-gray-800 text-xs"><i class="fa-solid fa-user-gear text-green-700"></i> ${log.driverName}</p>
+                                    <p class="font-bold text-gray-800 text-xs"><i class="fa-solid fa-user-gear text-green-700"></i> ${log.driverName} (${log.driverPhone || 'N/A'})</p>
                                     <span class="text-[10px] bg-green-200 text-green-900 font-bold px-1.5 py-0.5 rounded">${log.date}</span>
                                 </div>
                                 <div class="grid grid-cols-2 gap-1 text-[11px] text-gray-700 pt-1">
