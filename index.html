@@ -595,9 +595,29 @@
                     <p class="text-2xl font-black text-gray-900 mt-1">₹ <span id="drv-balance">0</span></p>
                 </div>
 
-                <button onclick="sendDriverReport()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-xs shadow mt-3 flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-base"></i> ओनरला हिशोब पाठवा (Send to Both Numbers)
+                <!-- १. हिशोब सेव्ह करण्याचे बटण -->
+                <button type="button" onclick="sendDriverReport()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-xs shadow mt-3 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-floppy-disk text-base"></i> 💾 हिशोब सेव्ह करा
                 </button>
+
+                <!-- २. डेटा सेव्ह झाल्यावर ही बटने आपोआप दिसतील -->
+                <div id="whatsapp-buttons" class="hidden text-center mt-4 p-3 bg-gray-50 rounded-lg border border-gray-300">
+                    <p class="text-gray-800 text-xs font-bold mb-2">
+                        ✅ हिशोब सेव्ह झाला आहे! खालील दोन्ही बटनांवर क्लिक करून व्हॉट्सॲप मेसेज पाठवा:
+                    </p>
+                    
+                    <div class="flex gap-2 justify-center flex-wrap">
+                        <a id="btn-owner-1" href="#" target="_blank" class="flex-1 min-w-[130px] bg-[#25D366] hover:bg-green-600 text-white p-2 text-xs rounded-lg font-bold text-center shadow flex flex-col items-center justify-center">
+                            <span>📲 ओनर १ ला पाठवा</span>
+                            <span class="text-[10px] opacity-90">(9890896040)</span>
+                        </a>
+
+                        <a id="btn-owner-2" href="#" target="_blank" class="flex-1 min-w-[130px] bg-[#128C7E] hover:bg-teal-700 text-white p-2 text-xs rounded-lg font-bold text-center shadow flex flex-col items-center justify-center">
+                            <span>📲 ओनर २ ला पाठवा</span>
+                            <span class="text-[10px] opacity-90">(7498502915)</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1122,13 +1142,18 @@
                 });
         };
 
-        // DRIVER HISHOB REPORT (DIRECT DUAL-NUMBER WHATSAPP SENDER)
+        // DRIVER HISHOB REPORT (SAFE TWO-BUTTON WHATSAPP SENDER)
         window.sendDriverReport = function() {
             const col = document.getElementById('drv-collection').value;
             const toll = document.getElementById('drv-toll').value;
             const fuel = document.getElementById('drv-fuel').value;
             const other = document.getElementById('drv-other').value;
             const bal = document.getElementById('drv-balance').innerText;
+
+            if (!col || col == 0) {
+                alert("कृपया आधी कलेक्शन रक्कम टाका.");
+                return;
+            }
 
             const logData = {
                 driverName: window.currentUser ? window.currentUser.name : "Driver",
@@ -1141,19 +1166,19 @@
                 date: getTodayString()
             };
 
-            const numbers = ["919890896040", "917498502915"];
             const msg = `*दैनिक हिशोब रिपोर्ट*\nड्रायव्हर: ${logData.driverName} (${logData.driverPhone})\nकलेक्शन: ₹${col}\nटोल: ₹${toll}\nइंधन: ₹${fuel}\nइतर: ₹${other}\n------------------\n*शिल्लक कॅश: ₹${bal}*`;
             const encodedMsg = encodeURIComponent(msg);
 
-            // Pop-up Blocker Bypass logic: Triggers windows instantly on user gesture
-            const win1 = window.open(`https://wa.me/${numbers[0]}?text=${encodedMsg}`, '_blank');
-            const win2 = window.open(`https://wa.me/${numbers[1]}?text=${encodedMsg}`, '_blank');
-
             push(ref(database, 'driver_logs/'), logData)
                 .then(() => {
-                    if (!win1 || !win2) {
-                        alert("हिशोब सेव्ह झाला! परंतु, ब्राउझरने पॉप-अप ब्लॉक केला आहे. कृपया ॲड्रेस बारमधील 'Pop-up Blocked' वर क्लिक करून 'Allow' करा.");
-                    }
+                    // १. बटनांमध्ये व्हॉट्सॲप लिंक्स सेट करणे
+                    document.getElementById('btn-owner-1').href = `https://api.whatsapp.com/send?phone=919890896040&text=${encodedMsg}`;
+                    document.getElementById('btn-owner-2').href = `https://api.whatsapp.com/send?phone=917498502915&text=${encodedMsg}`;
+
+                    // २. व्हॉट्सॲप बटने स्क्रीनवर दाखवणे
+                    document.getElementById('whatsapp-buttons').classList.remove('hidden');
+
+                    alert("हिशोब डेटाबेसमध्ये सेव्ह झाला आहे! खालील दोन्ही बटनांवर क्लिक करून व्हॉट्सॲप मेसेज पाठवा.");
                 })
                 .catch(err => {
                     console.error("Firebase Error: ", err);
