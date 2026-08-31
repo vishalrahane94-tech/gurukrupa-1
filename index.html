@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gurukrupa Tours & Travels - Official Portal</title>
+    <!-- Tailwind CSS & FontAwesome CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- SheetJS (XLSX) Export CDN -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <script>
@@ -50,10 +52,20 @@
             background-color: #fef2f2;
             transform: scale(1.02);
         }
+        
+        /* Smooth horizontal scroll snapping for role cards */
+        .role-scroll-container {
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .role-card-item {
+            scroll-snap-align: start;
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans pb-10">
 
+    <!-- Header -->
     <header class="bg-redbus text-white p-3 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
@@ -79,33 +91,38 @@
 
     <div class="container mx-auto p-3 max-w-xl">
 
+        <!-- 1. LOGIN SCREEN -->
         <div id="screen-login" class="bg-white p-5 rounded-xl shadow-lg border border-gray-200 mt-4">
-            <h2 class="text-sm font-bold text-gray-800 text-center mb-1">पोर्टल निवडा (Scroll & Select Role)</h2>
+            <h2 class="text-base font-bold text-gray-800 text-center mb-1">पोर्टल निवडा (Scroll & Select Role)</h2>
             <p class="text-[11px] text-gray-500 text-center mb-4">डावीकडून उजवीकडे स्क्रोल करून तुमचा रोल निवडा</p>
 
-            <div class="flex gap-3 overflow-x-auto no-scrollbar pb-3 px-1">
-                <div id="role-card-customer" onclick="selectLoginRole('customer')" class="portal-card active min-w-[140px] flex-1 p-3 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm">
-                    <div class="w-10 h-10 bg-red-100 text-redbus rounded-full flex items-center justify-center mx-auto mb-2">
-                        <i class="fa-solid fa-user text-lg"></i>
+            <!-- ONLY Customer visible at first; Owner & Driver hidden until scrolled horizontally -->
+            <div class="flex gap-4 overflow-x-auto no-scrollbar pb-3 px-1 role-scroll-container w-full">
+                <!-- Card 1: Customer (Occupies full visible width) -->
+                <div id="role-card-customer" onclick="selectLoginRole('customer')" class="portal-card active role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0">
+                    <div class="w-12 h-12 bg-red-100 text-redbus rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fa-solid fa-user text-xl"></i>
                     </div>
-                    <p class="text-xs font-black text-gray-800">1. Customer</p>
-                    <p class="text-[10px] text-gray-500 mt-0.5">कस्टमर पोर्टल</p>
+                    <p class="text-sm font-black text-gray-800">1. Customer</p>
+                    <p class="text-xs text-gray-500 mt-0.5">कस्टमर पोर्टल</p>
                 </div>
 
-                <div id="role-card-owner" onclick="selectLoginRole('owner')" class="portal-card min-w-[140px] flex-1 p-3 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm">
-                    <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <i class="fa-solid fa-user-tie text-lg"></i>
+                <!-- Card 2: Owner (Hidden offscreen, revealed on horizontal scroll) -->
+                <div id="role-card-owner" onclick="selectLoginRole('owner')" class="portal-card role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fa-solid fa-user-tie text-xl"></i>
                     </div>
-                    <p class="text-xs font-black text-gray-800">2. Owner</p>
-                    <p class="text-[10px] text-gray-500 mt-0.5">ओनर पोर्टल</p>
+                    <p class="text-sm font-black text-gray-800">2. Owner</p>
+                    <p class="text-xs text-gray-500 mt-0.5">ओनर पोर्टल</p>
                 </div>
 
-                <div id="role-card-driver" onclick="selectLoginRole('driver')" class="portal-card min-w-[140px] flex-1 p-3 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm">
-                    <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <i class="fa-solid fa-id-card text-lg"></i>
+                <!-- Card 3: Driver (Hidden offscreen, revealed on horizontal scroll) -->
+                <div id="role-card-driver" onclick="selectLoginRole('driver')" class="portal-card role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fa-solid fa-id-card text-xl"></i>
                     </div>
-                    <p class="text-xs font-black text-gray-800">3. Driver</p>
-                    <p class="text-[10px] text-gray-500 mt-0.5">ड्रायव्हर पोर्टल</p>
+                    <p class="text-sm font-black text-gray-800">3. Driver</p>
+                    <p class="text-xs text-gray-500 mt-0.5">ड्रायव्हर पोर्टल</p>
                 </div>
             </div>
 
@@ -129,6 +146,7 @@
             </div>
         </div>
 
+        <!-- 2. CUSTOMER PORTAL -->
         <div id="screen-customer" class="hidden">
             <div class="grid grid-cols-3 gap-1.5 mb-4 text-xs font-semibold">
                 <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
@@ -148,6 +166,7 @@
                     </div>
                 </div>
 
+                <!-- SHARING SECTION -->
                 <div id="section-sharing" class="booking-section">
                     <div class="flex gap-2 mb-3">
                         <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active flex-1 p-2 text-xs font-bold border rounded-lg shadow-sm border-redbus text-center">
@@ -172,7 +191,7 @@
                     <div class="grid grid-cols-2 gap-2 mb-3">
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची तारीख *</label>
-                            <input type="date" id="sharing-date" class="w-full p-1.5 border rounded text-xs">
+                            <input type="date" id="sharing-date" class="w-full p-1.5 border rounded text-xs date-picker-min">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी / सर्व्हिस *</label>
@@ -280,6 +299,7 @@
                     </div>
                 </div>
 
+                <!-- ONE WAY SECTION -->
                 <div id="section-oneway" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>
                     <div>
@@ -304,7 +324,7 @@
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
-                            <input type="date" id="oneway-date" class="w-full p-2 border rounded text-xs">
+                            <input type="date" id="oneway-date" class="w-full p-2 border rounded text-xs date-picker-min">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
@@ -313,6 +333,7 @@
                     </div>
                 </div>
 
+                <!-- AIRPORT DROP SECTION -->
                 <div id="section-airport" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>
                     <div>
@@ -334,7 +355,7 @@
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
-                            <input type="date" id="airport-date" class="w-full p-2 border rounded text-xs">
+                            <input type="date" id="airport-date" class="w-full p-2 border rounded text-xs date-picker-min">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
@@ -343,6 +364,7 @@
                     </div>
                 </div>
 
+                <!-- FLEET KM PORTAL -->
                 <div id="section-fleet" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>
                     <div>
@@ -374,7 +396,7 @@
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
-                            <input type="date" id="fleet-date" class="w-full p-2 border rounded text-xs">
+                            <input type="date" id="fleet-date" class="w-full p-2 border rounded text-xs date-picker-min">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
@@ -383,6 +405,7 @@
                     </div>
                 </div>
 
+                <!-- NASHIK DARSHAN PORTAL -->
                 <div id="section-darshan" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट प्रेक्षणीय स्थळे</h3>
                     <div class="bg-red-50 p-2.5 rounded border border-red-200 text-[11px] text-gray-700 leading-relaxed">
@@ -400,7 +423,7 @@
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
-                            <input type="date" id="darshan-date" class="w-full p-2 border rounded text-xs">
+                            <input type="date" id="darshan-date" class="w-full p-2 border rounded text-xs date-picker-min">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
@@ -409,6 +432,7 @@
                     </div>
                 </div>
 
+                <!-- PACKAGES SECTION -->
                 <div id="section-packages" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">खास टुरिझम पॅकेजेस (Special Tour Packages)</h3>
                     <div>
@@ -428,7 +452,7 @@
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
-                            <input type="date" id="package-date" class="w-full p-2 border rounded text-xs">
+                            <input type="date" id="package-date" class="w-full p-2 border rounded text-xs date-picker-min">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
@@ -437,6 +461,7 @@
                     </div>
                 </div>
 
+                <!-- BUSES INQUIRY SECTION -->
                 <div id="section-buses" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">
                         <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)
@@ -471,6 +496,7 @@
             </div>
         </div>
 
+        <!-- 3. OWNER DASHBOARD -->
         <div id="screen-owner" class="hidden space-y-4">
             <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
                 <div class="flex justify-between items-center border-b pb-2 mb-3">
@@ -524,6 +550,7 @@
                         <i class="fa-solid fa-id-card-clip text-lg"></i>
                         <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>
                     </button>
+                    <!-- TODAY'S BALANCE CASH DISPLAY ICON -->
                     <button onclick="showOwnerView('driver-balance')" class="p-2.5 border-2 border-green-600 rounded-lg bg-green-50 text-green-800 font-bold flex flex-col items-center gap-1 shadow-md hover:bg-green-100 col-span-3">
                         <i class="fa-solid fa-wallet text-xl text-green-600"></i>
                         <span class="text-xs font-black text-green-900">💰 आजची शिल्लक जमा कॅश: <span id="owner-today-balance-text" class="text-base text-redbus font-extrabold">₹ 0</span></span>
@@ -537,6 +564,7 @@
             </div>
         </div>
 
+        <!-- 4. DRIVER DASHBOARD -->
         <div id="screen-driver" class="hidden space-y-4">
             <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
                 <h2 class="text-sm font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">
@@ -575,6 +603,7 @@
 
     </div>
 
+    <!-- Firebase SDK (Modular v10) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -608,16 +637,34 @@
 
         function getTodayString() {
             const today = new Date();
-            return today.toISOString().split('T')[0];
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
 
         function getYesterdayString() {
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
-            return yesterday.toISOString().split('T')[0];
+            const year = yesterday.getFullYear();
+            const month = String(yesterday.getMonth() + 1).padStart(2, '0');
+            const day = String(yesterday.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Set minimum date on all date input fields to today's date (Disables past dates)
+        function setCalendarMinDates() {
+            const todayStr = getTodayString();
+            document.querySelectorAll('.date-picker-min').forEach(input => {
+                input.min = todayStr;
+                if (!input.value) {
+                    input.value = todayStr; // Auto select today by default
+                }
+            });
         }
 
         window.addEventListener('load', () => {
+            setCalendarMinDates();
             const savedUser = localStorage.getItem('gk_user');
             if (savedUser) {
                 window.currentUser = JSON.parse(savedUser);
@@ -632,11 +679,9 @@
             listenTodaysDriverBalance();
         });
 
-        // 1. UPDATED: INQUIRY DELETE LOGIC (Next day after the booking date passed)
+        // INQUIRY DELETE LOGIC (Next day after the booking date passed)
         function cleanBackdatedBookings() {
             const yesterdayStr = getYesterdayString(); 
-            // जे बुकिंग कालच्या आधीचे (उदा. २ दिवस जुने) असतील तेच डिलीट होतील. 
-            // यामुळे आजचे व उद्याचे बुकिंग सुरक्षित राहतील.
             const bookRef = ref(database, 'bookings/');
             onValue(bookRef, (snapshot) => {
                 const data = snapshot.val();
@@ -651,7 +696,7 @@
             }, { onlyOnce: true });
         }
 
-        // 2. UPDATED: LISTEN & DISPLAY TODAY'S TOTAL BALANCE ON OWNER CASH ICON
+        // LISTEN & DISPLAY TODAY'S TOTAL BALANCE ON OWNER CASH ICON
         function listenTodaysDriverBalance() {
             const logsRef = ref(database, 'driver_logs/');
             const todayStr = getTodayString();
@@ -1107,8 +1152,13 @@
                 });
         };
 
-        // 3. EXPORT ALL DRIVER LOGS & BALANCES TO EXCEL SHEET
+        // EXPORT ALL DRIVER LOGS & BALANCES TO EXCEL SHEET
         window.exportDriverLogsToExcel = function() {
+            if (typeof XLSX === 'undefined') {
+                alert("Excel लायब्ररी लोड होत आहे, कृपया २ सेकंद थांबा आणि पुन्हा प्रयत्न करा!");
+                return;
+            }
+
             const logsRef = ref(database, 'driver_logs/');
             onValue(logsRef, (snapshot) => {
                 const data = snapshot.val();
@@ -1143,7 +1193,6 @@
         window.showOwnerView = function(category) {
             const contentBox = document.getElementById('owner-content-box');
             contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>माहिती लोड होत आहे...</p>";
-            const todayStr = getTodayString();
 
             if (category === 'driver-log' || category === 'driver-balance') {
                 const logsRef = ref(database, 'driver_logs/');
