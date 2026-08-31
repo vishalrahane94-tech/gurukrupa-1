@@ -320,7 +320,7 @@
                     </div>
                 </div>
 
-                <!-- 3. AIRPORT DROP SECTION (UPDATED FROM CHART 1) -->
+                <!-- 3. AIRPORT DROP SECTION (UPDATED WITH 3 NEW POINTS) -->
                 <div id="section-airport" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>
                     <div>
@@ -330,6 +330,9 @@
                             <option value="Mumbai Airport To Nashik Drop">Mumbai Airport To Nashik Drop</option>
                             <option value="Pune To Mumbai Airport Drop">Pune To Mumbai Airport Drop</option>
                             <option value="Mumbai Airport To Pune Drop">Mumbai Airport To Pune Drop</option>
+                            <option value="Nashik To Pune Drop">Nashik To Pune Drop</option>
+                            <option value="Nashik To Ozar Drop">Nashik To Ozar Drop</option>
+                            <option value="Nashik To Shirdi Drop">Nashik To Shirdi Drop</option>
                         </select>
                     </div>
                     <div>
@@ -416,7 +419,7 @@
                     </div>
                 </div>
 
-                <!-- 6. PACKAGES SECTION (UPDATED) -->
+                <!-- 6. PACKAGES SECTION -->
                 <div id="section-packages" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">खास टुरिझम पॅकेजेस (Special Tour Packages)</h3>
                     <div>
@@ -821,18 +824,39 @@
             }
         };
 
-        // AIRPORT CARS & RATES (UPDATED ACCORDING TO CHART 1)
+        // AIRPORT CARS & RATES (UPDATED WITH 3 NEW ROUTES)
         window.updateAirportCars = function() {
+            const route = document.getElementById('airport-route').value;
             const carSelect = document.getElementById('airport-car');
-            carSelect.innerHTML = `
-                <option value="SEDAN (S.V / DZIRE) - ₹3200">SEDAN (S.V / DZIRE) - ₹3200</option>
-                <option value="SUV (ERTIGA / EXCEL SIX) - ₹4000">SUV (ERTIGA / EXCEL SIX) - ₹4000</option>
-                <option value="KIA (CARENS) - ₹5500">KIA (CARENS) - ₹5500</option>
-                <option value="INNOVA (CRYSTA) - ₹6500">INNOVA (CRYSTA) - ₹6500</option>
-            `;
+            carSelect.innerHTML = '';
+
+            if (route === 'Nashik To Pune Drop') {
+                carSelect.innerHTML = `
+                    <option value="SEDAN - ₹3000">SEDAN - ₹3000</option>
+                    <option value="SUV - ₹3800">SUV - ₹3800</option>
+                `;
+            } else if (route === 'Nashik To Ozar Drop') {
+                carSelect.innerHTML = `
+                    <option value="SEDAN - ₹1200">SEDAN - ₹1200</option>
+                    <option value="SUV - ₹3000">SUV - ₹3000</option>
+                `;
+            } else if (route === 'Nashik To Shirdi Drop') {
+                carSelect.innerHTML = `
+                    <option value="SEDAN - ₹2500">SEDAN - ₹2500</option>
+                    <option value="SUV - ₹3500">SUV - ₹3500</option>
+                `;
+            } else {
+                // Default Mumbai Airport Drop Rates
+                carSelect.innerHTML = `
+                    <option value="SEDAN (S.V / DZIRE) - ₹3200">SEDAN (S.V / DZIRE) - ₹3200</option>
+                    <option value="SUV (ERTIGA / EXCEL SIX) - ₹4000">SUV (ERTIGA / EXCEL SIX) - ₹4000</option>
+                    <option value="KIA (CARENS) - ₹5500">KIA (CARENS) - ₹5500</option>
+                    <option value="INNOVA (CRYSTA) - ₹6500">INNOVA (CRYSTA) - ₹6500</option>
+                `;
+            }
         };
 
-        // PACKAGES CARS & RATES (UPDATED FOR PUNE TO VANI WITH CHART 3 VEHICLES)
+        // PACKAGES CARS & RATES
         window.updatePackageCars = function() {
             const route = document.getElementById('package-route').value;
             const carSelect = document.getElementById('package-car');
