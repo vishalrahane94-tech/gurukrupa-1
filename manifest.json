@@ -2,23 +2,34 @@
   "id": "/gurukrupa-1/",
   "name": "Gurukrupa Tours and Travels",
   "short_name": "Gurukrupa",
-  "description": "Nashik, Pune, Mumbai - Safe, Fast & Affordable Cabs. Book Dzire, Ertiga, Innova anytime.",
+  "description": "Nashik, Pune, Mumbai - Safe, Fast & Affordable Cabs.",
   "start_url": "/gurukrupa-1/",
   "scope": "/gurukrupa-1/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#000000",
   "theme_color": "#d4af37",
+  "categories": ["travel"],
   "icons": [
     {
-      "src": "/gurukrupa-1/icon-192x192.png",
+      "src": "icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "/gurukrupa-1/icon-512x512.png",
+      "src": "icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }
