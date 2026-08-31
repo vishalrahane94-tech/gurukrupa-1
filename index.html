@@ -320,7 +320,7 @@
                     </div>
                 </div>
 
-                <!-- 3. AIRPORT DROP SECTION (UPDATED WITH 3 NEW POINTS) -->
+                <!-- AIRPORT DROP SECTION -->
                 <div id="section-airport" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>
                     <div>
@@ -419,7 +419,7 @@
                     </div>
                 </div>
 
-                <!-- 6. PACKAGES SECTION -->
+                <!-- PACKAGES SECTION -->
                 <div id="section-packages" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">खास टुरिझम पॅकेजेस (Special Tour Packages)</h3>
                     <div>
@@ -448,7 +448,7 @@
                     </div>
                 </div>
 
-                <!-- 7. BUSES INQUIRY SECTION -->
+                <!-- BUSES INQUIRY SECTION -->
                 <div id="section-buses" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">
                         <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)
@@ -483,16 +483,21 @@
             </div>
         </div>
 
-        <!-- 3. OWNER DASHBOARD -->
+        <!-- 3. OWNER DASHBOARD (UPDATED WITH BALANCE ICON AND EXCEL EXPORT BUTTON) -->
         <div id="screen-owner" class="hidden space-y-4">
             <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
                 <div class="flex justify-between items-center border-b pb-2 mb-3">
                     <h2 class="text-sm font-bold text-gray-800 flex items-center gap-2">
                         <i class="fa-solid fa-gauge-high text-redbus"></i> ओनर डॅशबोर्ड (Owner Control Center)
                     </h2>
-                    <button onclick="showOwnerView('all')" class="bg-redbus text-white text-[11px] font-bold px-2.5 py-1 rounded shadow hover:bg-redbusDark">
-                        <i class="fa-solid fa-list-check"></i> Inquire All
-                    </button>
+                    <div class="flex gap-1.5">
+                        <button onclick="exportDriverLogsToExcel()" class="bg-emerald-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow hover:bg-emerald-700 flex items-center gap-1">
+                            <i class="fa-solid fa-file-excel"></i> Excel Download
+                        </button>
+                        <button onclick="showOwnerView('all')" class="bg-redbus text-white text-[10px] font-bold px-2 py-1 rounded shadow hover:bg-redbusDark">
+                            <i class="fa-solid fa-list-check"></i> Inquire All
+                        </button>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -531,6 +536,12 @@
                     <button onclick="showOwnerView('driver-log')" class="p-2.5 border rounded-lg bg-gray-800 text-yellow-400 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-black">
                         <i class="fa-solid fa-id-card-clip text-lg"></i>
                         <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>
+                    </button>
+                    <!-- NEW BALANCE ICON ADDED HERE -->
+                    <button onclick="showOwnerView('driver-balance')" class="p-2.5 border-2 border-green-600 rounded-lg bg-green-50 text-green-800 font-bold flex flex-col items-center gap-1 shadow-md hover:bg-green-100 col-span-3">
+                        <i class="fa-solid fa-wallet text-xl text-green-600"></i>
+                        <span class="text-xs font-black text-green-900">💰 शिल्लक जमा कॅश (Driver Balances)</span>
+                        <span class="text-[10px] text-gray-500 font-normal">ड्रायव्हरने जमा केलेला दररोजचा हिशोब पहा</span>
                     </button>
                 </div>
             </div>
@@ -824,7 +835,6 @@
             }
         };
 
-        // AIRPORT CARS & RATES (UPDATED WITH 3 NEW ROUTES)
         window.updateAirportCars = function() {
             const route = document.getElementById('airport-route').value;
             const carSelect = document.getElementById('airport-car');
@@ -846,7 +856,6 @@
                     <option value="SUV - ₹3500">SUV - ₹3500</option>
                 `;
             } else {
-                // Default Mumbai Airport Drop Rates
                 carSelect.innerHTML = `
                     <option value="SEDAN (S.V / DZIRE) - ₹3200">SEDAN (S.V / DZIRE) - ₹3200</option>
                     <option value="SUV (ERTIGA / EXCEL SIX) - ₹4000">SUV (ERTIGA / EXCEL SIX) - ₹4000</option>
@@ -856,7 +865,6 @@
             }
         };
 
-        // PACKAGES CARS & RATES
         window.updatePackageCars = function() {
             const route = document.getElementById('package-route').value;
             const carSelect = document.getElementById('package-car');
@@ -1084,12 +1092,45 @@
                 });
         };
 
+        // EXPORT DRIVER LOGS TO EXCEL SHEET (MONTH-END BACKUP)
+        window.exportDriverLogsToExcel = function() {
+            const logsRef = ref(database, 'driver_logs/');
+            onValue(logsRef, (snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    alert("डाउनलोड करण्यासाठी कोणतीही ड्रायव्हर हिशोब नोंद उपलब्ध नाही!");
+                    return;
+                }
+
+                const rows = [];
+                Object.values(data).forEach(log => {
+                    rows.push({
+                        "तारीख (Date)": log.date || 'N/A',
+                        "ड्रायव्हरचे नाव (Driver Name)": log.driverName || 'N/A',
+                        "मोबाईल नंबर (Phone)": log.driverPhone || 'N/A',
+                        "एकूण कलेक्शन (Collection ₹)": log.collection || 0,
+                        "टोल खर्च (Tolls ₹)": log.toll || 0,
+                        "इंधन खर्च (Fuel ₹)": log.fuel || 0,
+                        "इतर खर्च (Other ₹)": log.other || 0,
+                        "शिल्लक जमा कॅश (Balance Cash ₹)": log.balance || 0
+                    });
+                });
+
+                const worksheet = XLSX.utils.json_to_sheet(rows);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Driver_Daily_Logs");
+
+                const fileName = `Gurukrupa_Driver_Logs_${getTodayString()}.xlsx`;
+                XLSX.writeFile(workbook, fileName);
+            }, { onlyOnce: true });
+        };
+
         window.showOwnerView = function(category) {
             const contentBox = document.getElementById('owner-content-box');
             contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>माहिती लोड होत आहे...</p>";
             const todayStr = getTodayString();
 
-            if (category === 'driver-log') {
+            if (category === 'driver-log' || category === 'driver-balance') {
                 const logsRef = ref(database, 'driver_logs/');
                 onValue(logsRef, (snapshot) => {
                     const data = snapshot.val();
@@ -1097,13 +1138,27 @@
                         contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणतीही ड्रायव्हर नोंद उपलब्ध नाही.</p>";
                         return;
                     }
-                    let html = "<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm'>ड्रायव्हर दैनंदिन हिशोब नोंदी</h4>";
+
+                    let html = category === 'driver-balance' 
+                        ? "<h4 class='font-bold mb-3 border-b pb-1 text-green-800 text-sm'>💰 ड्रायव्हर शिल्लक जमा कॅश (Driver Balances)</h4>"
+                        : "<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm'>ड्रायव्हर दैनंदिन हिशोब नोंदी</h4>";
+
                     Object.values(data).reverse().forEach(log => {
                         html += `
-                            <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
-                                <p class="font-bold text-gray-800">${log.driverName} <span class="text-[10px] text-gray-500">(${log.date})</span></p>
-                                <p class="text-gray-600">कलेक्शन: ₹${log.collection} | खर्च: ₹${log.toll + log.fuel + log.other}</p>
-                                <p class="font-black text-green-700">शिल्लक जमा कॅश: ₹${log.balance}</p>
+                            <div class="p-3 border-b text-xs space-y-1 mb-2 bg-green-50/50 border-green-200 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-center border-b pb-1">
+                                    <p class="font-bold text-gray-800 text-xs"><i class="fa-solid fa-user-gear text-green-700"></i> ${log.driverName}</p>
+                                    <span class="text-[10px] bg-green-200 text-green-900 font-bold px-1.5 py-0.5 rounded">${log.date}</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-1 text-[11px] text-gray-700 pt-1">
+                                    <p>कलेक्शन: <span class="font-bold text-green-700">₹${log.collection}</span></p>
+                                    <p>टोल: <span class="font-bold text-red-600">₹${log.toll}</span></p>
+                                    <p>पेट्रोल/CNG: <span class="font-bold text-red-600">₹${log.fuel}</span></p>
+                                    <p>इतर खर्च: <span class="font-bold text-red-600">₹${log.other}</span></p>
+                                </div>
+                                <div class="bg-emerald-100 p-1.5 rounded text-center mt-1 border border-emerald-300">
+                                    <p class="font-black text-emerald-900 text-xs">शिल्लक जमा कॅश: ₹${log.balance}</p>
+                                </div>
                             </div>
                         `;
                     });
