@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gurukrupa Tours & Travels - Official Portal</title>
+    <!-- Tailwind CSS & FontAwesome CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- SheetJS (XLSX) Export CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        redbus: '#d84e55',
+                        redbusDark: '#b83238'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .seat { transition: all 0.2s ease; }
+        .seat.selected {
+            background-color: #d84e55 !important;
+            color: white !important;
+            border-color: #b83238 !important;
+        }
+        .seat.selected .price-tag { color: white !important; }
+        .tab-btn.active {
+            background-color: #d84e55;
+            color: white;
+            border-color: #d84e55;
+        }
+        .time-btn.selected {
+            background-color: #d84e55;
+            color: white;
+            border-color: #d84e55;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .portal-card.active {
+            border-color: #d84e55;
+            background-color: #fef2f2;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans pb-10">
+
+    <!-- Header -->
+    <header class="bg-redbus text-white p-3 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-black rounded-full border-2 border-yellow-500 flex items-center justify-center p-1 shadow-md shrink-0">
+                    <span class="text-yellow-500 font-black text-lg tracking-tighter">GK</span>
+                </div>
+                <div>
+                    <h1 class="text-base font-black tracking-wide text-yellow-300 uppercase leading-none">GURUKRUPA</h1>
+                    <p class="text-[9px] tracking-widest text-white uppercase font-bold">TOURS AND TRAVELS</p>
+                </div>
+            </div>
+
+            <!-- Header Right Section -->
+            <div class="flex items-center gap-2">
+                <div id="user-badge" class="hidden text-xs bg-redbusDark px-2 py-1 rounded border border-yellow-400 font-semibold">
+                    <span id="user-name-display"></span> (<span id="user-role-display"></span>)
+                </div>
+                <button id="logout-btn" onclick="logout()" class="hidden bg-yellow-500 hover:bg-yellow-600 text-black px-2 py-1 rounded text-xs font-bold shadow">
+                    <i class="fa-solid fa-right-from-bracket"></i> बाहेर पडा
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto p-3 max-w-xl">
+
+        <!-- ================= 1. LOGIN SCREEN ================= -->
+        <div id="screen-login" class="bg-white p-5 rounded-xl shadow-lg border border-gray-200 mt-4">
+            <h2 class="text-sm font-bold text-gray-800 text-center mb-1">पोर्टल निवडा (Scroll & Select Role)</h2>
+            <p class="text-[11px] text-gray-500 text-center mb-4">डावीकडून उजवीकडे स्क्रोल करून तुमचा रोल निवडा</p>
+
+            <div class="flex gap-3 overflow-x-auto no-scrollbar pb-3 px-1">
+                <!-- 1. Customer -->
+                <div id="role-card-customer" onclick="selectLoginRole('customer')" class="portal-card active min-w-[140px] flex-1 p-3 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm">
+                    <div class="w-10 h-10 bg-red-100 text-redbus rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fa-solid fa-user text-lg"></i>
+                    </div>
+                    <p class="text-xs font-black text-gray-800">1. Customer</p>
+                    <p class="text-[10px] text-gray-500 mt-0.5">कस्टमर पोर्टल</p>
+                </div>
+
+                <!-- 2. Owner -->
+                <div id="role-card-owner" onclick="selectLoginRole('owner')" class="portal-card min-w-[140px] flex-1 p-3 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm">
+                    <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fa-solid fa-user-tie text-lg"></i>
+                    </div>
+                    <p class="text-xs font-black text-gray-800">2. Owner</p>
+                    <p class="text-[10px] text-gray-500 mt-0.5">ओनर पोर्टल</p>
+                </div>
+
+                <!-- 3. Driver -->
+                <div id="role-card-driver" onclick="selectLoginRole('driver')" class="portal-card min-w-[140px] flex-1 p-3 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fa-solid fa-id-card text-lg"></i>
+                    </div>
+                    <p class="text-xs font-black text-gray-800">3. Driver</p>
+                    <p class="text-[10px] text-gray-500 mt-0.5">ड्रायव्हर पोर्टल</p>
+                </div>
+            </div>
+
+            <div class="space-y-3 mt-4 border-t pt-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">पूर्ण नाव (Full Name) *</label>
+                    <input type="text" id="login-name" placeholder="तुमचे नाव टाका" class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-redbus">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">मोबाईल नंबर *</label>
+                    <input type="tel" id="login-phone" placeholder="10 अंकी मोबाईल नंबर" class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-redbus">
+                </div>
+                <div id="password-field" class="hidden">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">पासवर्ड (Password) *</label>
+                    <input type="password" id="login-pass" placeholder="पासवर्ड टाका" class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-redbus">
+                </div>
+
+                <button onclick="handleLogin()" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2.5 rounded-lg text-xs shadow mt-2">
+                    लॉगिन करा (Login)
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= 2. CUSTOMER PORTAL ================= -->
+        <div id="screen-customer" class="hidden">
+            <div class="grid grid-cols-3 gap-1.5 mb-4 text-xs font-semibold">
+                <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
+                <button onclick="switchTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>
+                <button onclick="switchTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport Drop</button>
+                <button onclick="switchTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet (Per KM)</button>
+                <button onclick="switchTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. नाशिक दर्शन</button>
+                <button onclick="switchTab('bus')" id="tab-bus" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Bus Inquiry</button>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
+                <div class="mb-4 border-b pb-2 flex justify-between items-center bg-gray-50 p-2 rounded">
+                    <div class="text-xs">
+                        <span class="font-bold text-gray-700">ग्राहक:</span> <span id="cust-display-name" class="font-semibold text-redbus"></span> 
+                        (<span id="cust-display-phone" class="text-gray-600"></span>)
+                    </div>
+                </div>
+
+                <!-- SHARING SECTION -->
+                <div id="section-sharing" class="booking-section">
+                    <div class="bg-red-50 border border-red-200 text-redbus text-xs font-bold p-2 rounded-lg text-center mb-3 flex items-center justify-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-route"></i> नाशिक ते पुणे शेअरिंग टॅक्सी (Nashik to Pune Sharing)
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mb-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">नाशिक पिकअप पॉईंट *</label>
+                            <select id="sharing-pickup" class="w-full p-1.5 border rounded text-xs font-semibold bg-white">
+                                <option value="ठक्कर बाजार">ठक्कर बाजार</option>
+                                <option value="द्वारका सर्कल">द्वारका सर्कल</option>
+                                <option value="मुंबई नाका">मुंबई नाका</option>
+                                <option value="गोविंद नगर">गोविंद नगर</option>
+                                <option value="टनेल (Tunnel)">टनेल (Tunnel)</option>
+                                <option value="पवन हॉटेल">पवन हॉटेल</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">पुणे ड्रॉप पॉईंट *</label>
+                            <select id="sharing-drop" class="w-full p-1.5 border rounded text-xs font-semibold bg-white">
+                                <option value="चाकण">चाकण</option>
+                                <option value="मोशी">मोशी</option>
+                                <option value="भोसरी">भोसरी</option>
+                                <option value="नाशिक फाटा">नाशिक फाटा</option>
+                                <option value="वाकडेवाडी">वाकडेवाडी</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 mb-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची तारीख *</label>
+                            <input type="date" id="sharing-date" class="w-full p-1.5 border rounded text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी / सर्व्हिस *</label>
+                            <select onchange="selectCar(this.value)" id="car-select" class="w-full p-1.5 border rounded text-xs font-bold text-redbus">
+                                <option value="ertiga">Ertiga (6 Seater)</option>
+                                <option value="ciaz">Ciaz (4 Seater)</option>
+                                <option value="ladies-ertiga">👩‍🦰 लेडीज स्पेशल (Ertiga)</option>
+                                <option value="ladies-ciaz">👩‍🦰 लेडीज स्पेशल (Ciaz)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- RE-ADDED TIMINGS BUTTONS & SLOT SELECTION -->
+                    <div class="mb-3">
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची वेळ निवडा (Time Slots) *</label>
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <button type="button" onclick="selectTime(this, '04:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-semibold bg-white">04:00 AM</button>
+                            <button type="button" onclick="selectTime(this, '04:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-semibold bg-white">04:30 AM</button>
+                            <button type="button" onclick="selectTime(this, '05:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-semibold bg-white">05:00 AM</button>
+                            <button type="button" onclick="selectTime(this, '08:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-semibold bg-white">08:00 AM</button>
+                            <button type="button" onclick="selectTime(this, '08:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-semibold bg-white">08:30 AM</button>
+                            <button type="button" onclick="selectTime(this, '09:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-semibold bg-white">09:00 AM</button>
+                        </div>
+                        <input type="hidden" id="sharing-time">
+                    </div>
+
+                    <!-- Seat Layout -->
+                    <div class="bg-gray-50 p-3 rounded-lg border-2 border-gray-300">
+                        <div class="flex justify-between items-center mb-3 pb-2 border-b">
+                            <span class="text-[11px] font-bold text-gray-500 uppercase">समोरची बाजू (Front)</span>
+                            <div class="flex gap-2 text-[10px]">
+                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-white border border-gray-400 rounded"></span> उपलब्ध</span>
+                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-redbus rounded"></span> सिलेक्टेड</span>
+                            </div>
+                        </div>
+
+                        <!-- ERTIGA SEAT LAYOUT -->
+                        <div id="layout-ertiga" class="space-y-3">
+                            <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
+                                <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
+                                    <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
+                                    <span class="text-xs font-black">F1 (Front)</span>
+                                </button>
+                                <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
+                                    <i class="fa-solid fa-wheel"></i> Driver
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
+                                <button type="button" onclick="toggleSeat(this, 'Middle Left (M1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                    <span class="text-xs font-bold">M1 (Left)</span>
+                                </button>
+                                <button type="button" onclick="toggleSeat(this, 'Middle Center (M2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                    <span class="text-xs font-bold">M2 (Mid)</span>
+                                </button>
+                                <button type="button" onclick="toggleSeat(this, 'Middle Right (M3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                    <span class="text-xs font-bold">M3 (Right)</span>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 bg-gray-200 p-1.5 rounded-md">
+                                <button type="button" onclick="toggleSeat(this, 'Back Left (B1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                    <span class="text-xs font-bold">B1 (Back L)</span>
+                                </button>
+                                <button type="button" onclick="toggleSeat(this, 'Back Right (B2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                    <span class="text-xs font-bold">B2 (Back R)</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- CIAZ SEAT LAYOUT -->
+                        <div id="layout-ciaz" class="space-y-3 hidden">
+                            <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
+                                <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
+                                    <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
+                                    <span class="text-xs font-black">F1 (Front)</span>
+                                </button>
+                                <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">
+                                    <i class="fa-solid fa-wheel"></i> Driver
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
+                                <button type="button" onclick="toggleSeat(this, 'Rear Left (R1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                    <span class="text-xs font-bold">R1 (Left)</span>
+                                </button>
+                                <button type="button" onclick="toggleSeat(this, 'Rear Center (R2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                    <span class="text-xs font-bold">R2 (Mid)</span>
+                                </button>
+                                <button type="button" onclick="toggleSeat(this, 'Rear Right (R3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                    <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
+                                    <span class="text-xs font-bold">R3 (Right)</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ONE WAY SECTION -->
+                <div id="section-oneway" class="booking-section hidden space-y-3">
+                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included)</h3>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>
+                        <select id="oneway-route" class="w-full p-2 border rounded text-xs font-bold">
+                            <option value="Nashik to Pune">नाशिक ते पुणे</option>
+                            <option value="Pune to Nashik">पुणे ते नाशिक</option>
+                            <option value="Nashik to Mumbai">नाशिक ते मुंबई</option>
+                            <option value="Mumbai to Nashik">मुंबई ते नाशिक</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व प्राईस *</label>
+                        <select id="oneway-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
+                            <option value="SEDAN (Dzire/Aura) - ₹3000">SEDAN (Dzire / Aura) - ₹3000</option>
+                            <option value="SUV (Ertiga) - ₹4000">SUV (Ertiga) - ₹4000</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
+                            <input type="date" id="oneway-date" class="w-full p-2 border rounded text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
+                            <input type="time" id="oneway-time" class="w-full p-2 border rounded text-xs">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AIRPORT SECTION -->
+                <div id="section-airport" class="booking-section hidden space-y-3">
+                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट ड्रॉप सर्व्हिस</h3>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट *</label>
+                        <select id="airport-route" class="w-full p-2 border rounded text-xs font-bold">
+                            <option value="Nashik to Mumbai Airport Drop">NASHIK TO MUMBAI AIRPORT DROP</option>
+                            <option value="Mumbai Airport to Nashik Drop">MUMBAI AIRPORT TO NASHIK DROP</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
+                            <input type="date" id="airport-date" class="w-full p-2 border rounded text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
+                            <input type="time" id="airport-time" class="w-full p-2 border rounded text-xs">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FLEET SECTION -->
+                <div id="section-fleet" class="booking-section hidden space-y-3">
+                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर रेट्स (Per KM Inquiry)</h3>
+                    <input type="text" id="fleet-spot" placeholder="उदा. नाशिक ते गोवा" class="w-full p-2 border rounded text-xs mb-2">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="date" id="fleet-date" class="p-2 border rounded text-xs">
+                        <input type="time" id="fleet-time" class="p-2 border rounded text-xs">
+                    </div>
+                </div>
+
+                <!-- DARSHAN SECTION -->
+                <div id="section-darshan" class="booking-section hidden space-y-3">
+                    <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="date" id="darshan-date" class="p-2 border rounded text-xs">
+                        <input type="time" id="darshan-time" class="p-2 border rounded text-xs">
+                    </div>
+                </div>
+
+                <!-- BUS INQUIRY SECTION -->
+                <div id="section-bus" class="booking-section hidden space-y-3">
+                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">बस इन्क्वायरी</h3>
+                    <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती (उदा. प्रवासी संख्या, तारीख)..." class="w-full p-2 border rounded text-xs"></textarea>
+                </div>
+
+                <!-- Booking Submission -->
+                <button onclick="submitBooking()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center gap-2 mt-4 text-sm">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> व्हॉट्सॲपवर बुकिंग पाठवा व सेव करा
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= 3. OWNER DASHBOARD ================= -->
+        <div id="screen-owner" class="hidden space-y-4">
+            <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
+                <div class="flex justify-between items-center border-b pb-2 mb-3">
+                    <h2 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+                        <i class="fa-solid fa-gauge-high text-redbus"></i> ओनर डॅशबोर्ड (Owner Control Center)
+                    </h2>
+                    <button onclick="showOwnerView('all')" class="bg-redbus text-white text-[11px] font-bold px-2.5 py-1 rounded shadow hover:bg-redbusDark">
+                        <i class="fa-solid fa-list-check"></i> Inquire All
+                    </button>
+                </div>
+
+                <!-- Category Icons -->
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <button onclick="showOwnerView('sharing')" class="p-2.5 border rounded-lg bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">
+                        <i class="fa-solid fa-car text-lg"></i>
+                        <span class="text-[10px] text-center">नाशिक ते पुणे</span>
+                    </button>
+                    <button onclick="showOwnerView('oneway')" class="p-2.5 border rounded-lg bg-emerald-50 text-emerald-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-emerald-100">
+                        <i class="fa-solid fa-route text-lg"></i>
+                        <span class="text-[10px] text-center">वनवे बुकिंग</span>
+                    </button>
+                    <button onclick="showOwnerView('airport')" class="p-2.5 border rounded-lg bg-purple-50 text-purple-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-purple-100">
+                        <i class="fa-solid fa-plane-departure text-lg"></i>
+                        <span class="text-[10px] text-center">एअरपोर्ट ड्रॉप</span>
+                    </button>
+                    <button onclick="showOwnerView('darshan')" class="p-2.5 border rounded-lg bg-amber-50 text-amber-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-amber-100">
+                        <i class="fa-solid fa-gopuram text-lg"></i>
+                        <span class="text-[10px] text-center">नाशिक दर्शन</span>
+                    </button>
+                    <button onclick="showOwnerView('fleet')" class="p-2.5 border rounded-lg bg-blue-50 text-blue-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-blue-100">
+                        <i class="fa-solid fa-calculator text-lg"></i>
+                        <span class="text-[10px] text-center">km प्रमाणे इन्क्वायरी</span>
+                    </button>
+                    <button onclick="showOwnerView('bus')" class="p-2.5 border rounded-lg bg-indigo-50 text-indigo-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-indigo-100">
+                        <i class="fa-solid fa-bus text-lg"></i>
+                        <span class="text-[10px] text-center">बसेस इन्क्वायरी</span>
+                    </button>
+                    <button onclick="showOwnerView('driver-log')" class="p-2.5 border rounded-lg bg-gray-800 text-yellow-400 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-black col-span-2">
+                        <i class="fa-solid fa-id-card-clip text-lg"></i>
+                        <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स व हिशोब</span>
+                    </button>
+                    <button onclick="exportToExcel()" class="p-2.5 border rounded-lg bg-green-50 text-green-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-green-100 border-green-300">
+                        <i class="fa-solid fa-file-excel text-lg text-green-600"></i>
+                        <span class="text-[10px] text-center">Excel Download</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dynamic Data Display Box -->
+            <div id="owner-content-box" class="bg-white p-4 rounded-xl shadow border border-gray-200 min-h-[160px] text-xs">
+                <p class="text-gray-500 text-center py-8">कृपया माहिती पाहण्यासाठी वरील कोणत्याही आयकॉनवर क्लिक करा.</p>
+            </div>
+        </div>
+
+        <!-- ================= 4. DRIVER DASHBOARD ================= -->
+        <div id="screen-driver" class="hidden space-y-4">
+            <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
+                <h2 class="text-sm font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-id-card text-green-600"></i> ड्रायव्हर दैनिक हिशोब (Driver Daily Log)
+                </h2>
+
+                <div class="grid grid-cols-2 gap-2.5 mb-3 text-xs">
+                    <div class="bg-green-50 p-2 rounded border border-green-200">
+                        <label class="block font-bold text-green-800 mb-1"><i class="fa-solid fa-wallet"></i> 1. कलेक्शन (Collection) ₹</label>
+                        <input type="number" id="drv-collection" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-green-700 bg-white outline-none">
+                    </div>
+                    <div class="bg-red-50 p-2 rounded border border-red-200">
+                        <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-road"></i> 2. टोल्स (Tolls) ₹</label>
+                        <input type="number" id="drv-toll" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-700 bg-white outline-none">
+                    </div>
+                    <div class="bg-red-50 p-2 rounded border border-red-200">
+                        <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-gas-pump"></i> 3. सीएनजी/डिफेल (Fuel) ₹</label>
+                        <input type="number" id="drv-fuel" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-700 bg-white outline-none">
+                    </div>
+                    <div class="bg-red-50 p-2 rounded border border-red-200">
+                        <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-receipt"></i> 4. इतर खर्च (Other) ₹</label>
+                        <input type="number" id="drv-other" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-700 bg-white outline-none">
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 p-3 rounded-lg border border-blue-200 text-center mb-3">
+                    <p class="text-xs font-bold text-blue-900">मालकाला जमा करावयाची रक्कम (Balance to Owner):</p>
+                    <p id="drv-balance-display" class="text-xl font-black text-blue-700">₹ 0</p>
+                </div>
+
+                <button onclick="submitDriverLog()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg text-xs shadow">
+                    <i class="fa-solid fa-paper-plane"></i> हिशोब ओनरकडे पाठवा (Submit Log)
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        let currentUser = null;
+        let selectedRole = 'customer';
+        let currentTab = 'sharing';
+        let selectedCarType = 'ertiga';
+        let selectedTimeSlot = '';
+        let selectedSeats = [];
+
+        function selectLoginRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.portal-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(`role-card-${role}`).classList.add('active');
+
+            const passField = document.getElementById('password-field');
+            if (role === 'owner') {
+                passField.classList.remove('hidden');
+            } else {
+                passField.classList.add('hidden');
+            }
+        }
+
+        function handleLogin() {
+            const name = document.getElementById('login-name').value.trim();
+            const phone = document.getElementById('login-phone').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+
+            if (!name || !phone) {
+                alert('कृपया नाव आणि मोबाईल नंबर भरा!');
+                return;
+            }
+
+            if (selectedRole === 'owner' && pass !== '1234') {
+                alert('चुकीचा पासवर्ड! ओनर पासवर्ड 1234 आहे.');
+                return;
+            }
+
+            currentUser = { name, phone, role: selectedRole };
+            localStorage.setItem('gk_current_user', JSON.stringify(currentUser));
+
+            initAppSession();
+        }
+
+        function initAppSession() {
+            const saved = localStorage.getItem('gk_current_user');
+            if (!saved) return;
+            currentUser = JSON.parse(saved);
+
+            document.getElementById('screen-login').classList.add('hidden');
+            document.getElementById('user-badge').classList.remove('hidden');
+            document.getElementById('logout-btn').classList.remove('hidden');
+            document.getElementById('user-name-display').innerText = currentUser.name;
+            document.getElementById('user-role-display').innerText = currentUser.role.toUpperCase();
+
+            document.getElementById('screen-customer').classList.add('hidden');
+            document.getElementById('screen-owner').classList.add('hidden');
+            document.getElementById('screen-driver').classList.add('hidden');
+
+            if (currentUser.role === 'customer') {
+                document.getElementById('screen-customer').classList.remove('hidden');
+                document.getElementById('cust-display-name').innerText = currentUser.name;
+                document.getElementById('cust-display-phone').innerText = currentUser.phone;
+            } else if (currentUser.role === 'owner') {
+                document.getElementById('screen-owner').classList.remove('hidden');
+            } else if (currentUser.role === 'driver') {
+                document.getElementById('screen-driver').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('gk_current_user');
+            location.reload();
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+
+            document.querySelectorAll('.booking-section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`section-${tab}`).classList.remove('hidden');
+        }
+
+        function selectCar(car) {
+            selectedCarType = car;
+            selectedSeats = [];
+            document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
+
+            if (car.includes('ertiga')) {
+                document.getElementById('layout-ertiga').classList.remove('hidden');
+                document.getElementById('layout-ciaz').classList.add('hidden');
+            } else {
+                document.getElementById('layout-ertiga').classList.add('hidden');
+                document.getElementById('layout-ciaz').classList.remove('hidden');
+            }
+        }
+
+        function selectTime(btn, time) {
+            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedTimeSlot = time;
+            document.getElementById('sharing-time').value = time;
+        }
+
+        function toggleSeat(btn, seatInfo) {
+            if (btn.classList.contains('selected')) {
+                btn.classList.remove('selected');
+                selectedSeats = selectedSeats.filter(s => s !== seatInfo);
+            } else {
+                btn.classList.add('selected');
+                selectedSeats.push(seatInfo);
+            }
+        }
+
+        function calculateDriverBalance() {
+            const col = parseFloat(document.getElementById('drv-collection').value) || 0;
+            const toll = parseFloat(document.getElementById('drv-toll').value) || 0;
+            const fuel = parseFloat(document.getElementById('drv-fuel').value) || 0;
+            const other = parseFloat(document.getElementById('drv-other').value) || 0;
+
+            const balance = col - (toll + fuel + other);
+            document.getElementById('drv-balance-display').innerText = `₹ ${balance}`;
+        }
+
+        function submitDriverLog() {
+            const log = {
+                driverName: currentUser.name,
+                phone: currentUser.phone,
+                collection: document.getElementById('drv-collection').value,
+                toll: document.getElementById('drv-toll').value,
+                fuel: document.getElementById('drv-fuel').value,
+                other: document.getElementById('drv-other').value,
+                balance: document.getElementById('drv-balance-display').innerText,
+                date: new Date().toLocaleString()
+            };
+
+            let logs = JSON.parse(localStorage.getItem('gk_driver_logs') || '[]');
+            logs.push(log);
+            localStorage.setItem('gk_driver_logs', JSON.stringify(logs));
+            alert('ड्रायव्हर हिशोब यशस्वीरित्या सेव्ह झाला!');
+        }
+
+        function submitBooking() {
+            let details = {};
+            let category = currentTab;
+
+            if (currentTab === 'sharing') {
+                if(!selectedTimeSlot) {
+                    alert('कृपया प्रवासाची वेळ (Time Slot) निवडा!');
+                    return;
+                }
+                details = {
+                    pickup: document.getElementById('sharing-pickup').value,
+                    drop: document.getElementById('sharing-drop').value,
+                    date: document.getElementById('sharing-date').value,
+                    car: selectedCarType,
+                    time: selectedTimeSlot,
+                    seats: selectedSeats.join(', ')
+                };
+            } else if (currentTab === 'oneway') {
+                details = {
+                    route: document.getElementById('oneway-route').value,
+                    car: document.getElementById('oneway-car').value,
+                    date: document.getElementById('oneway-date').value,
+                    time: document.getElementById('oneway-time').value
+                };
+            } else if (currentTab === 'airport') {
+                details = {
+                    route: document.getElementById('airport-route').value,
+                    date: document.getElementById('airport-date').value,
+                    time: document.getElementById('airport-time').value
+                };
+            } else if (currentTab === 'fleet') {
+                details = {
+                    spot: document.getElementById('fleet-spot').value,
+                    date: document.getElementById('fleet-date').value,
+                    time: document.getElementById('fleet-time').value
+                };
+            } else if (currentTab === 'darshan') {
+                details = {
+                    date: document.getElementById('darshan-date').value,
+                    time: document.getElementById('darshan-time').value
+                };
+            } else if (currentTab === 'bus') {
+                details = {
+                    msg: document.getElementById('bus-msg').value
+                };
+            }
+
+            const booking = {
+                name: currentUser.name,
+                phone: currentUser.phone,
+                category,
+                details,
+                timestamp: new Date().toLocaleString()
+            };
+
+            let allBookings = JSON.parse(localStorage.getItem('gk_bookings') || '[]');
+            allBookings.push(booking);
+            localStorage.setItem('gk_bookings', JSON.stringify(allBookings));
+
+            let waText = `*New Booking - Gurukrupa Tours*%0A👤 Name: ${currentUser.name}%0A📞 Phone: ${currentUser.phone}%0A🏷️ Category: ${category}%0A📌 Details: ${JSON.stringify(details)}`;
+            window.open(`https://wa.me/919422252119?text=${waText}`, '_blank');
+            alert('बुकिंग यशस्वीरीत्या सेव्ह आणि व्हॉट्सॲपवर पाठवली गेली!');
+        }
+
+        function showOwnerView(viewType) {
+            const box = document.getElementById('owner-content-box');
+            let bookings = JSON.parse(localStorage.getItem('gk_bookings') || '[]');
+            let driverLogs = JSON.parse(localStorage.getItem('gk_driver_logs') || '[]');
+
+            if (viewType === 'driver-log') {
+                if (driverLogs.length === 0) {
+                    box.innerHTML = `<p class="text-gray-500 text-center py-4">कोणताही ड्रायव्हर हिशोब उपलब्ध नाही.</p>`;
+                    return;
+                }
+                let html = `<h3 class="font-bold mb-2 text-gray-800">ड्रायव्हर दैनिक हिशोब यादी</h3><div class="space-y-2 max-h-60 overflow-y-auto">`;
+                driverLogs.forEach(l => {
+                    html += `<div class="p-2 border rounded bg-gray-50"><b>${l.driverName}</b> (${l.phone})<br>Collection: ₹${l.collection} | Balance: ${l.balance}<br><span class="text-[10px] text-gray-400">${l.date}</span></div>`;
+                });
+                html += `</div>`;
+                box.innerHTML = html;
+                return;
+            }
+
+            let filtered = bookings;
+            if (viewType !== 'all') {
+                filtered = bookings.filter(b => b.category === viewType);
+            }
+
+            if (filtered.length === 0) {
+                box.innerHTML = `<p class="text-gray-500 text-center py-4">या विभागात कोणतीही नोंद आढळली नाही.</p>`;
+                return;
+            }
+
+            let html = `<h3 class="font-bold mb-2 text-gray-800 uppercase">यादी (${viewType}) - एकूण: ${filtered.length}</h3><div class="space-y-2 max-h-60 overflow-y-auto">`;
+            filtered.forEach(b => {
+                let detStr = JSON.stringify(b.details).replace(/[{}]/g, '').replace(/"/g, ' ');
+                html += `<div class="p-2 border rounded bg-gray-50 flex justify-between items-start">
+                    <div>
+                        <b>${b.name}</b> (${b.phone})<br>
+                        <span class="text-gray-600 font-medium">तपशील: ${detStr}</span><br>
+                        <span class="text-[10px] text-gray-400">${b.timestamp}</span>
+                    </div>
+                    <span class="bg-red-100 text-redbus px-1.5 py-0.5 rounded text-[10px] font-bold uppercase">${b.category}</span>
+                </div>`;
+            });
+            html += `</div>`;
+            box.innerHTML = html;
+        }
+
+        function exportToExcel() {
+            let bookings = JSON.parse(localStorage.getItem('gk_bookings') || '[]');
+            if (bookings.length === 0) {
+                alert('एक्सपोर्ट करण्यासाठी कोणतीही बुकिंग डेटा उपलब्ध नाही!');
+                return;
+            }
+            let dataToExport = bookings.map(b => ({
+                Name: b.name,
+                Phone: b.phone,
+                Category: b.category,
+                Details: JSON.stringify(b.details),
+                Timestamp: b.timestamp
+            }));
+            let worksheet = XLSX.utils.json_to_sheet(dataToExport);
+            let workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Bookings");
+            XLSX.writeFile(workbook, "Gurukrupa_Bookings.xlsx");
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('gk_current_user')) {
+                initAppSession();
+            }
+        };
+    </script>
+</body>
+</html>
