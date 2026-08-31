@@ -1,6 +1,6 @@
-
-"name": "gurukrupa",
-  "short_name": "shashi",
+{
+  "name": "Gurukrupa Tours",
+  "short_name": "Gurukrupa",
   "start_url": "/gurukrupa-1/",
   "display": "standalone",
   "background_color": "#ffffff",
