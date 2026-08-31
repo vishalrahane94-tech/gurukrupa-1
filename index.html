@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gurukrupa Tours & Travels - Official Portal</title>
-    <!-- Tailwind CSS & FontAwesome CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- SheetJS (XLSX) Export CDN -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <script>
@@ -56,7 +54,6 @@
 </head>
 <body class="bg-gray-100 font-sans pb-10">
 
-    <!-- Header -->
     <header class="bg-redbus text-white p-3 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
@@ -82,7 +79,6 @@
 
     <div class="container mx-auto p-3 max-w-xl">
 
-        <!-- 1. LOGIN SCREEN -->
         <div id="screen-login" class="bg-white p-5 rounded-xl shadow-lg border border-gray-200 mt-4">
             <h2 class="text-sm font-bold text-gray-800 text-center mb-1">पोर्टल निवडा (Scroll & Select Role)</h2>
             <p class="text-[11px] text-gray-500 text-center mb-4">डावीकडून उजवीकडे स्क्रोल करून तुमचा रोल निवडा</p>
@@ -133,7 +129,6 @@
             </div>
         </div>
 
-        <!-- 2. CUSTOMER PORTAL -->
         <div id="screen-customer" class="hidden">
             <div class="grid grid-cols-3 gap-1.5 mb-4 text-xs font-semibold">
                 <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
@@ -153,7 +148,6 @@
                     </div>
                 </div>
 
-                <!-- SHARING SECTION -->
                 <div id="section-sharing" class="booking-section">
                     <div class="flex gap-2 mb-3">
                         <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active flex-1 p-2 text-xs font-bold border rounded-lg shadow-sm border-redbus text-center">
@@ -286,7 +280,6 @@
                     </div>
                 </div>
 
-                <!-- ONE WAY SECTION -->
                 <div id="section-oneway" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>
                     <div>
@@ -320,7 +313,6 @@
                     </div>
                 </div>
 
-                <!-- AIRPORT DROP SECTION -->
                 <div id="section-airport" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>
                     <div>
@@ -351,7 +343,6 @@
                     </div>
                 </div>
 
-                <!-- FLEET KM PORTAL -->
                 <div id="section-fleet" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>
                     <div>
@@ -392,7 +383,6 @@
                     </div>
                 </div>
 
-                <!-- NASHIK DARSHAN PORTAL -->
                 <div id="section-darshan" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट प्रेक्षणीय स्थळे</h3>
                     <div class="bg-red-50 p-2.5 rounded border border-red-200 text-[11px] text-gray-700 leading-relaxed">
@@ -419,7 +409,6 @@
                     </div>
                 </div>
 
-                <!-- PACKAGES SECTION -->
                 <div id="section-packages" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">खास टुरिझम पॅकेजेस (Special Tour Packages)</h3>
                     <div>
@@ -448,7 +437,6 @@
                     </div>
                 </div>
 
-                <!-- BUSES INQUIRY SECTION -->
                 <div id="section-buses" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">
                         <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)
@@ -483,7 +471,6 @@
             </div>
         </div>
 
-        <!-- 3. OWNER DASHBOARD (UPDATED WITH BALANCE ICON AND EXCEL EXPORT BUTTON) -->
         <div id="screen-owner" class="hidden space-y-4">
             <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
                 <div class="flex justify-between items-center border-b pb-2 mb-3">
@@ -537,10 +524,9 @@
                         <i class="fa-solid fa-id-card-clip text-lg"></i>
                         <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>
                     </button>
-                    <!-- NEW BALANCE ICON ADDED HERE -->
                     <button onclick="showOwnerView('driver-balance')" class="p-2.5 border-2 border-green-600 rounded-lg bg-green-50 text-green-800 font-bold flex flex-col items-center gap-1 shadow-md hover:bg-green-100 col-span-3">
                         <i class="fa-solid fa-wallet text-xl text-green-600"></i>
-                        <span class="text-xs font-black text-green-900">💰 शिल्लक जमा कॅश (Driver Balances)</span>
+                        <span class="text-xs font-black text-green-900">💰 आजची शिल्लक जमा कॅश: <span id="owner-today-balance-text" class="text-base text-redbus font-extrabold">₹ 0</span></span>
                         <span class="text-[10px] text-gray-500 font-normal">ड्रायव्हरने जमा केलेला दररोजचा हिशोब पहा</span>
                     </button>
                 </div>
@@ -551,7 +537,6 @@
             </div>
         </div>
 
-        <!-- 4. DRIVER DASHBOARD -->
         <div id="screen-driver" class="hidden space-y-4">
             <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
                 <h2 class="text-sm font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">
@@ -590,7 +575,6 @@
 
     </div>
 
-    <!-- Firebase SDK (Modular v10) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -627,6 +611,12 @@
             return today.toISOString().split('T')[0];
         }
 
+        function getYesterdayString() {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            return yesterday.toISOString().split('T')[0];
+        }
+
         window.addEventListener('load', () => {
             const savedUser = localStorage.getItem('gk_user');
             if (savedUser) {
@@ -639,22 +629,47 @@
             updateOnewayCars();
             updateAirportCars();
             updatePackageCars();
+            listenTodaysDriverBalance();
         });
 
+        // 1. UPDATED: INQUIRY DELETE LOGIC (Next day after the booking date passed)
         function cleanBackdatedBookings() {
-            const todayStr = getTodayString();
+            const yesterdayStr = getYesterdayString(); 
+            // जे बुकिंग कालच्या आधीचे (उदा. २ दिवस जुने) असतील तेच डिलीट होतील. 
+            // यामुळे आजचे व उद्याचे बुकिंग सुरक्षित राहतील.
             const bookRef = ref(database, 'bookings/');
             onValue(bookRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
                     Object.keys(data).forEach((key) => {
                         const b = data[key];
-                        if (b.date && b.date < todayStr) {
+                        if (b.date && b.date < yesterdayStr) {
                             remove(ref(database, `bookings/${key}`));
                         }
                     });
                 }
             }, { onlyOnce: true });
+        }
+
+        // 2. UPDATED: LISTEN & DISPLAY TODAY'S TOTAL BALANCE ON OWNER CASH ICON
+        function listenTodaysDriverBalance() {
+            const logsRef = ref(database, 'driver_logs/');
+            const todayStr = getTodayString();
+            onValue(logsRef, (snapshot) => {
+                const data = snapshot.val();
+                let todayTotal = 0;
+                if (data) {
+                    Object.values(data).forEach(log => {
+                        if (log.date === todayStr) {
+                            todayTotal += parseFloat(log.balance) || 0;
+                        }
+                    });
+                }
+                const balanceDisplay = document.getElementById('owner-today-balance-text');
+                if (balanceDisplay) {
+                    balanceDisplay.innerText = `₹ ${todayTotal}`;
+                }
+            });
         }
 
         window.selectLoginRole = function(role) {
@@ -1092,7 +1107,7 @@
                 });
         };
 
-        // EXPORT DRIVER LOGS TO EXCEL SHEET (MONTH-END BACKUP)
+        // 3. EXPORT ALL DRIVER LOGS & BALANCES TO EXCEL SHEET
         window.exportDriverLogsToExcel = function() {
             const logsRef = ref(database, 'driver_logs/');
             onValue(logsRef, (snapshot) => {
@@ -1118,7 +1133,7 @@
 
                 const worksheet = XLSX.utils.json_to_sheet(rows);
                 const workbook = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(workbook, worksheet, "Driver_Daily_Logs");
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Monthly_Driver_Logs");
 
                 const fileName = `Gurukrupa_Driver_Logs_${getTodayString()}.xlsx`;
                 XLSX.writeFile(workbook, fileName);
@@ -1174,8 +1189,6 @@
                     }
 
                     let filteredData = Object.values(data).filter(item => {
-                        if (item.date && item.date !== todayStr) return false;
-
                         if (category === 'all') return true;
                         if (category === 'sharing-np') return item.type === 'sharing' && (!item.direction || item.direction.includes('Nashik to Pune'));
                         if (category === 'sharing-pn') return item.type === 'sharing' && item.direction && item.direction.includes('Pune to Nashik');
@@ -1183,11 +1196,11 @@
                     });
 
                     if (filteredData.length === 0) {
-                        contentBox.innerHTML = `<p class='text-center py-6 text-gray-400'>आजसाठी या कॅटेगरीत कोणतीही नवीन बुकिंग उपलब्ध नाही.</p>`;
+                        contentBox.innerHTML = `<p class='text-center py-6 text-gray-400'>या कॅटेगरीत कोणतीही नवीन बुकिंग उपलब्ध नाही.</p>`;
                         return;
                     }
 
-                    let html = `<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm uppercase'>आजच्या बुकिंग्स (Today's Live Bookings)</h4>`;
+                    let html = `<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm uppercase'>लाइव्ह बुकिंग्स (Live Inquiries)</h4>`;
                     filteredData.reverse().forEach(b => {
                         html += `
                             <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
