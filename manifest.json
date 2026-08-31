@@ -1,12 +1,29 @@
 {
-  "name": "Gurukrupa Tours and Travels",
+  "name": "Gurukrupa",
   "short_name": "Gurukrupa",
-  "start_url": ".",
+  "description": "Gurukrupa application for progressive web experience.",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#d4af37",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
   "icons": [
-    { "src": "./icon-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "./icon-512x512.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
   ]
 }
