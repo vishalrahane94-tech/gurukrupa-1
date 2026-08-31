@@ -135,7 +135,6 @@
 
         <!-- 2. CUSTOMER PORTAL -->
         <div id="screen-customer" class="hidden">
-            <!-- Updated Tabs List with Option 7: Buses Inquiry -->
             <div class="grid grid-cols-3 gap-1.5 mb-4 text-xs font-semibold">
                 <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
                 <button onclick="switchTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>
@@ -321,16 +320,16 @@
                     </div>
                 </div>
 
-                <!-- 3. AIRPORT DROP SECTION (UPDATED) -->
+                <!-- 3. AIRPORT DROP SECTION (UPDATED FROM CHART 1) -->
                 <div id="section-airport" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>
                         <select id="airport-route" onchange="updateAirportCars()" class="w-full p-2 border rounded text-xs font-bold">
-                            <option value="Nsk to mum Airport">नाशिक ते मुंबई एअरपोर्ट (Nsk to mum Airport)</option>
-                            <option value="Nsk to pune Airport">नाशिक ते पुणे एअरपोर्ट (Nsk to pune Airport)</option>
-                            <option value="Nsk to ozer Airport">नाशिक ते ओझर एअरपोर्ट (Nsk to ozer Airport)</option>
-                            <option value="Nsk to shirdi Airport">नाशिक ते शिर्डी एअरपोर्ट (Nsk to shirdi Airport)</option>
+                            <option value="Nashik To Mumbai Airport Drop">Nashik To Mumbai Airport Drop</option>
+                            <option value="Mumbai Airport To Nashik Drop">Mumbai Airport To Nashik Drop</option>
+                            <option value="Pune To Mumbai Airport Drop">Pune To Mumbai Airport Drop</option>
+                            <option value="Mumbai Airport To Pune Drop">Mumbai Airport To Pune Drop</option>
                         </select>
                     </div>
                     <div>
@@ -349,7 +348,7 @@
                     </div>
                 </div>
 
-                <!-- FLEET KM PORTAL (UPDATED KM RATES) -->
+                <!-- FLEET KM PORTAL -->
                 <div id="section-fleet" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>
                     <div>
@@ -417,14 +416,14 @@
                     </div>
                 </div>
 
-                <!-- 6. NEW PACKAGES SECTION (UPDATED) -->
+                <!-- 6. PACKAGES SECTION (UPDATED) -->
                 <div id="section-packages" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">खास टुरिझम पॅकेजेस (Special Tour Packages)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">पॅकेज रूट निवडा *</label>
                         <select id="package-route" onchange="updatePackageCars()" class="w-full p-2 border rounded text-xs font-bold">
-                            <option value="Nsk to vani return">नाशिक ते वणी रिटर्न (Nsk to vani return)</option>
                             <option value="Pune to vani return">पुणे ते वणी रिटर्न (Pune to vani return)</option>
+                            <option value="Nsk to vani return">नाशिक ते वणी रिटर्न (Nsk to vani return)</option>
                             <option value="Nsk to shirdi return">नाशिक ते शिर्डी रिटर्न (Nsk to shirdi return)</option>
                             <option value="Pune to shirdi return">पुणे ते शिर्डी रिटर्न (Pune to shirdi return)</option>
                             <option value="Nsk to trambakeshwar return">नाशिक ते त्र्यंबकेश्वर रिटर्न (Nsk to trambakeshwar return)</option>
@@ -446,7 +445,7 @@
                     </div>
                 </div>
 
-                <!-- 7. NEW BUSES INQUIRY SECTION (DEDICATED SECTION/TAB) -->
+                <!-- 7. BUSES INQUIRY SECTION -->
                 <div id="section-buses" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">
                         <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)
@@ -822,49 +821,37 @@
             }
         };
 
-        // AIRPORT CARS & RATES UPDATED
+        // AIRPORT CARS & RATES (UPDATED ACCORDING TO CHART 1)
         window.updateAirportCars = function() {
-            const route = document.getElementById('airport-route').value;
             const carSelect = document.getElementById('airport-car');
-            carSelect.innerHTML = '';
-
-            if (route === 'Nsk to mum Airport') {
-                carSelect.innerHTML = `
-                    <option value="Sedan - ₹3200">Sedan - ₹3200</option>
-                    <option value="Ertiga / SUV - ₹4000">Ertiga / SUV - ₹4000</option>
-                `;
-            } else if (route === 'Nsk to pune Airport') {
-                carSelect.innerHTML = `
-                    <option value="Sedan - ₹3000">Sedan - ₹3000</option>
-                    <option value="Ertiga / SUV - ₹3800">Ertiga / SUV - ₹3800</option>
-                `;
-            } else if (route === 'Nsk to ozer Airport') {
-                carSelect.innerHTML = `
-                    <option value="Sedan - ₹1200">Sedan - ₹1200</option>
-                    <option value="Ertiga / SUV - ₹3000">Ertiga / SUV - ₹3000</option>
-                `;
-            } else if (route === 'Nsk to shirdi Airport') {
-                carSelect.innerHTML = `
-                    <option value="Sedan - ₹2500">Sedan - ₹2500</option>
-                    <option value="Ertiga / SUV - ₹3500">Ertiga / SUV - ₹3500</option>
-                `;
-            }
+            carSelect.innerHTML = `
+                <option value="SEDAN (S.V / DZIRE) - ₹3200">SEDAN (S.V / DZIRE) - ₹3200</option>
+                <option value="SUV (ERTIGA / EXCEL SIX) - ₹4000">SUV (ERTIGA / EXCEL SIX) - ₹4000</option>
+                <option value="KIA (CARENS) - ₹5500">KIA (CARENS) - ₹5500</option>
+                <option value="INNOVA (CRYSTA) - ₹6500">INNOVA (CRYSTA) - ₹6500</option>
+            `;
         };
 
-        // PACKAGES CARS & RATES UPDATED
+        // PACKAGES CARS & RATES (UPDATED FOR PUNE TO VANI WITH CHART 3 VEHICLES)
         window.updatePackageCars = function() {
             const route = document.getElementById('package-route').value;
             const carSelect = document.getElementById('package-car');
             carSelect.innerHTML = '';
 
-            if (route === 'Nsk to vani return') {
+            if (route === 'Pune to vani return') {
+                carSelect.innerHTML = `
+                    <option value="MARUTI DZIRE - ₹12/- PER KM">MARUTI DZIRE - ₹12/- PER KM</option>
+                    <option value="MARUTI CIAZ - ₹13/- PER KM">MARUTI CIAZ - ₹13/- PER KM</option>
+                    <option value="MARUTI ERTIGA - ₹15/- PER KM">MARUTI ERTIGA - ₹15/- PER KM</option>
+                    <option value="MARUTI EXCEL 6 - ₹15/- PER KM">MARUTI EXCEL 6 - ₹15/- PER KM</option>
+                    <option value="KIA CARENS - ₹16/- PER KM">KIA CARENS - ₹16/- PER KM</option>
+                    <option value="INNOVA CRYSTA - ₹20/- PER KM">INNOVA CRYSTA - ₹20/- PER KM</option>
+                    <option value="FORCE URBANIA - ₹35/- PER KM">FORCE URBANIA - ₹35/- PER KM</option>
+                `;
+            } else if (route === 'Nsk to vani return') {
                 carSelect.innerHTML = `
                     <option value="Sedan - ₹3700">Sedan - ₹3700</option>
                     <option value="Ertiga - ₹4500">Ertiga - ₹4500</option>
-                `;
-            } else if (route === 'Pune to vani return') {
-                carSelect.innerHTML = `
-                    <option value="KM Wise (किलोमीटर प्रमाणे दर)">KM Wise (किलोमीटर प्रमाणे दर)</option>
                 `;
             } else if (route === 'Nsk to shirdi return') {
                 carSelect.innerHTML = `
