@@ -141,7 +141,7 @@
                 <button onclick="switchTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport Drop</button>
                 <button onclick="switchTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet (Per KM)</button>
                 <button onclick="switchTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. नाशिक दर्शन</button>
-                <button onclick="switchTab('bus')" id="tab-bus" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Bus Inquiry</button>
+                <button onclick="switchTab('packages')" id="tab-packages" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Packages</button>
             </div>
 
             <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
@@ -285,7 +285,7 @@
                     </div>
                 </div>
 
-                <!-- 1. UPDATED ONE WAY SECTION (FROM CHART 1) -->
+                <!-- ONE WAY SECTION -->
                 <div id="section-oneway" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>
                     <div>
@@ -319,26 +319,21 @@
                     </div>
                 </div>
 
-                <!-- 2. UPDATED AIRPORT DROP SECTION (FROM CHART 2) -->
+                <!-- 3. AIRPORT DROP SECTION (UPDATED FROM IMAGE 1) -->
                 <div id="section-airport" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">मार्क मुंबई एअरपोर्ट पिकअप & ड्रॉप (Toll Included)</h3>
+                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>
-                        <select id="airport-route" class="w-full p-2 border rounded text-xs font-bold">
-                            <option value="NASHIK TO MUMBAI AIRPORT DROP">नाशिक ते मुंबई एअरपोर्ट ड्रॉप (NASHIK TO MUMBAI AIRPORT DROP)</option>
-                            <option value="MUMBAI AIRPORT TO NASHIK DROP">मुंबई एअरपोर्ट ते नाशिक ड्रॉप (MUMBAI AIRPORT TO NASHIK DROP)</option>
-                            <option value="PUNE TO MUMBAI AIRPORT DROP">पुणे ते मुंबई एअरपोर्ट ड्रॉप (PUNE TO MUMBAI AIRPORT DROP)</option>
-                            <option value="MUMBAI AIRPORT TO PUNE DROP">मुंबई एअरपोर्ट ते पुणे ड्रॉप (MUMBAI AIRPORT TO PUNE DROP)</option>
+                        <select id="airport-route" onchange="updateAirportCars()" class="w-full p-2 border rounded text-xs font-bold">
+                            <option value="Nsk to mum Airport">नाशिक ते मुंबई एअरपोर्ट (Nsk to mum Airport)</option>
+                            <option value="Nsk to pune Airport">नाशिक ते पुणे एअरपोर्ट (Nsk to pune Airport)</option>
+                            <option value="Nsk to ozer Airport">नाशिक ते ओझर एअरपोर्ट (Nsk to ozer Airport)</option>
+                            <option value="Nsk to shirdi Airport">नाशिक ते शिर्डी एअरपोर्ट (Nsk to shirdi Airport)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व दर *</label>
-                        <select id="airport-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
-                            <option value="SEDAN (S.V / Dzire) - ₹3200">SEDAN (S.V / Dzire) - ₹3200</option>
-                            <option value="SUV (Ertiga / Excel Six) - ₹4000">SUV (Ertiga / Excel Six) - ₹4000</option>
-                            <option value="KIA (Carens) - ₹5500">KIA (Carens) - ₹5500</option>
-                            <option value="INNOVA (Crysta) - ₹6500">INNOVA (Crysta) - ₹6500</option>
-                        </select>
+                        <select id="airport-car" class="w-full p-2 border rounded text-xs font-bold text-redbus"></select>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
@@ -352,7 +347,7 @@
                     </div>
                 </div>
 
-                <!-- 3. UPDATED FLEET KM PORTAL (FROM CHART 3) -->
+                <!-- FLEET KM PORTAL -->
                 <div id="section-fleet" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>
                     <div>
@@ -393,7 +388,7 @@
                     </div>
                 </div>
 
-                <!-- 4. UPDATED NASHIK DARSHAN PORTAL (FROM CHART 4) -->
+                <!-- NASHIK DARSHAN PORTAL -->
                 <div id="section-darshan" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट प्रेक्षणीय स्थळे</h3>
                     <div class="bg-red-50 p-2.5 rounded border border-red-200 text-[11px] text-gray-700 leading-relaxed">
@@ -420,13 +415,65 @@
                     </div>
                 </div>
 
-                <!-- BUS INQUIRY SECTION -->
-                <div id="section-bus" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">बस इन्क्वायरी (Buses Inquiry)</h3>
-                    <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती (उदा. प्रवासी संख्या, तारीख, ठिकाण)..." class="w-full p-2 border rounded text-xs"></textarea>
+                <!-- 6. NEW PACKAGES SECTION (UPDATED FROM IMAGE 2) -->
+                <div id="section-packages" class="booking-section hidden space-y-3">
+                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">खास टुरिझम पॅकेजेस (Special Tour Packages)</h3>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पॅकेज रूट निवडा *</label>
+                        <select id="package-route" onchange="updatePackageCars()" class="w-full p-2 border rounded text-xs font-bold">
+                            <option value="Nsk to vani return">नाशिक ते वणी रिटर्न (Nsk to vani return)</option>
+                            <option value="Pune to vani return">पुणे ते वणी रिटर्न (Pune to vani return)</option>
+                            <option value="Nsk to shirdi return">नाशिक ते शिर्डी रिटर्न (Nsk to shirdi return)</option>
+                            <option value="Pune to shirdi return">पुणे ते शिर्डी रिटर्न (Pune to shirdi return)</option>
+                            <option value="Nsk to trambakeshwar return">नाशिक ते त्र्यंबकेश्वर रिटर्न (Nsk to trambakeshwar return)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व दर *</label>
+                        <select id="package-car" class="w-full p-2 border rounded text-xs font-bold text-redbus"></select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
+                            <input type="date" id="package-date" class="w-full p-2 border rounded text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
+                            <input type="time" id="package-time" class="w-full p-2 border rounded text-xs">
+                        </div>
+                    </div>
                 </div>
 
-                <button onclick="submitBooking()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center gap-2 mt-4 text-sm">
+                <!-- BUS INQUIRY SECTION (SHIFTED DOWN WITH BIG BUS OPTIONS) -->
+                <div class="mt-6 pt-4 border-t-2 border-dashed border-gray-300">
+                    <h3 class="font-bold text-redbus text-xs border-b pb-1 mb-3 flex items-center gap-1">
+                        <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)
+                    </h3>
+                    <div class="space-y-3 bg-red-50 p-3 rounded-lg border border-red-200">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-700 mb-1">बसची क्षमता (Seater Capacity) *</label>
+                            <select id="bus-capacity" class="w-full p-2 border rounded text-xs font-bold text-gray-800 bg-white">
+                                <option value="17 Seater Mini Bus">17 Seater (मिनी बस)</option>
+                                <option value="20 to 24 Seater Bus">20 ते 24 Seater Bus</option>
+                                <option value="27 Seater Bus">27 Seater Bus</option>
+                                <option value="32 Seater Bus">32 Seater Bus</option>
+                                <option value="35 Seater Bus">35 Seater Bus</option>
+                                <option value="40 Seater Bus">40 Seater Bus</option>
+                                <option value="45 Seater Luxury Bus">45 Seater Luxury Bus</option>
+                                <option value="50 Seater Big Bus">50 Seater Big Bus</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-700 mb-1">इतर माहिती / रूट (उदा. नाशिक ते गोवा 3 दिवस)</label>
+                            <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती किंवा रूट टाका..." class="w-full p-2 border rounded text-xs bg-white"></textarea>
+                        </div>
+                        <button onclick="submitBusInquiry()" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2 rounded-lg text-xs shadow flex justify-center items-center gap-1">
+                            <i class="fa-solid fa-paper-plane"></i> बस इन्क्वायरी पाठवा
+                        </button>
+                    </div>
+                </div>
+
+                <button onclick="submitBooking()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center gap-2 mt-5 text-sm">
                     <i class="fa-brands fa-whatsapp text-lg"></i> व्हॉट्सॲपवर बुकिंग पाठवा व सेव्ह करा
                 </button>
             </div>
@@ -465,6 +512,10 @@
                         <i class="fa-solid fa-gopuram text-lg"></i>
                         <span class="text-[10px] text-center">नाशिक दर्शन</span>
                     </button>
+                    <button onclick="showOwnerView('packages')" class="p-2.5 border rounded-lg bg-pink-50 text-pink-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-pink-100">
+                        <i class="fa-solid fa-box-open text-lg"></i>
+                        <span class="text-[10px] text-center">टूर पॅकेजेस</span>
+                    </button>
                     <button onclick="showOwnerView('fleet')" class="p-2.5 border rounded-lg bg-blue-50 text-blue-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-blue-100">
                         <i class="fa-solid fa-calculator text-lg"></i>
                         <span class="text-[10px] text-center">km प्रमाणे इन्क्वायरी</span>
@@ -476,10 +527,6 @@
                     <button onclick="showOwnerView('driver-log')" class="p-2.5 border rounded-lg bg-gray-800 text-yellow-400 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-black">
                         <i class="fa-solid fa-id-card-clip text-lg"></i>
                         <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>
-                    </button>
-                    <button onclick="showOwnerView('cash-balance')" class="p-2.5 border rounded-lg bg-green-50 text-green-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-green-100 border-green-300">
-                        <i class="fa-solid fa-sack-dollar text-lg text-green-600"></i>
-                        <span class="text-[10px] text-center">शिल्लक पैसे</span>
                     </button>
                 </div>
             </div>
@@ -553,7 +600,6 @@
         window.selectedSeats = [];
         window.activeTab = 'sharing';
         window.selectedRoute = 'Nashik to Pune';
-        window.latestDriverLogs = [];
 
         const ownerAuth = { phone: '9890896040', pass: 'owner123' };
         const driverAuth = { phone: '9922862007', pass: 'driver123' };
@@ -576,6 +622,8 @@
             cleanBackdatedBookings();
             updateDropdownOptions('nashik-pune');
             updateOnewayCars();
+            updateAirportCars();
+            updatePackageCars();
         });
 
         function cleanBackdatedBookings() {
@@ -745,7 +793,6 @@
             });
         }
 
-        // ONE WAY DYNAMIC CAR RATES UPDATE BASED ON CHART 1
         window.updateOnewayCars = function() {
             const route = document.getElementById('oneway-route').value;
             const carSelect = document.getElementById('oneway-car');
@@ -766,7 +813,68 @@
             }
         };
 
-        // FLEET KM CALCULATION BASED ON CHART 3
+        // AIRPORT CARS & RATES UPDATED FROM CHART 1
+        window.updateAirportCars = function() {
+            const route = document.getElementById('airport-route').value;
+            const carSelect = document.getElementById('airport-car');
+            carSelect.innerHTML = '';
+
+            if (route === 'Nsk to mum Airport') {
+                carSelect.innerHTML = `
+                    <option value="Sedan - ₹3200">Sedan - ₹3200</option>
+                    <option value="Ertiga / SUV - ₹4000">Ertiga / SUV - ₹4000</option>
+                `;
+            } else if (route === 'Nsk to pune Airport') {
+                carSelect.innerHTML = `
+                    <option value="Sedan - ₹3000">Sedan - ₹3000</option>
+                    <option value="Ertiga / SUV - ₹3800">Ertiga / SUV - ₹3800</option>
+                `;
+            } else if (route === 'Nsk to ozer Airport') {
+                carSelect.innerHTML = `
+                    <option value="Sedan - ₹1200">Sedan - ₹1200</option>
+                    <option value="Ertiga / SUV - ₹3000">Ertiga / SUV - ₹3000</option>
+                `;
+            } else if (route === 'Nsk to shirdi Airport') {
+                carSelect.innerHTML = `
+                    <option value="Sedan - ₹2500">Sedan - ₹2500</option>
+                    <option value="Ertiga / SUV - ₹3500">Ertiga / SUV - ₹3500</option>
+                `;
+            }
+        };
+
+        // PACKAGES CARS & RATES UPDATED FROM CHART 2
+        window.updatePackageCars = function() {
+            const route = document.getElementById('package-route').value;
+            const carSelect = document.getElementById('package-car');
+            carSelect.innerHTML = '';
+
+            if (route === 'Nsk to vani return') {
+                carSelect.innerHTML = `
+                    <option value="Sedan - ₹3700">Sedan - ₹3700</option>
+                    <option value="Ertiga - ₹4500">Ertiga - ₹4500</option>
+                `;
+            } else if (route === 'Pune to vani return') {
+                carSelect.innerHTML = `
+                    <option value="KM Wise (किलोमीटर प्रमाणे दर)">KM Wise (किलोमीटर प्रमाणे दर)</option>
+                `;
+            } else if (route === 'Nsk to shirdi return') {
+                carSelect.innerHTML = `
+                    <option value="Sedan - ₹4000">Sedan - ₹4000</option>
+                    <option value="Ertiga - ₹5000">Ertiga - ₹5000</option>
+                `;
+            } else if (route === 'Pune to shirdi return') {
+                carSelect.innerHTML = `
+                    <option value="Sedan - ₹6500">Sedan - ₹6500</option>
+                    <option value="Ertiga - ₹7500">Ertiga - ₹7500</option>
+                `;
+            } else if (route === 'Nsk to trambakeshwar return') {
+                carSelect.innerHTML = `
+                    <option value="Sedan - ₹3500">Sedan - ₹3500</option>
+                    <option value="Ertiga - ₹4500">Ertiga - ₹4500</option>
+                `;
+            }
+        };
+
         window.calculateFleetTotal = function() {
             const carSelect = document.getElementById('fleet-car');
             const rate = parseFloat(carSelect.options[carSelect.selectedIndex].getAttribute('data-rate')) || 0;
@@ -866,7 +974,7 @@
                 bookingData.date = document.getElementById('airport-date').value;
                 bookingData.time = document.getElementById('airport-time').value;
 
-                whatsappText += `प्रकार: मुंबई एअरपोर्ट सर्व्हिस\nरूट: ${bookingData.route}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
+                whatsappText += `प्रकार: एअरपोर्ट ड्रॉप सर्व्हिस\nरूट: ${bookingData.route}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
             } else if (window.activeTab === 'fleet') {
                 bookingData.car = document.getElementById('fleet-car').value;
                 bookingData.spot = document.getElementById('fleet-spot').value;
@@ -882,10 +990,13 @@
                 bookingData.time = document.getElementById('darshan-time').value;
 
                 whatsappText += `प्रकार: नाशिक दर्शन सिटी टूर\nपॅकेज/गाडी: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
-            } else if (window.activeTab === 'bus') {
-                bookingData.details = document.getElementById('bus-msg').value;
+            } else if (window.activeTab === 'packages') {
+                bookingData.route = document.getElementById('package-route').value;
+                bookingData.car = document.getElementById('package-car').value;
+                bookingData.date = document.getElementById('package-date').value;
+                bookingData.time = document.getElementById('package-time').value;
 
-                whatsappText += `प्रकार: बस इन्क्वायरी\nमाहिती: ${bookingData.details}`;
+                whatsappText += `प्रकार: टूर पॅकेज (Packages)\nरूट: ${bookingData.route}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
             }
 
             push(ref(database, 'bookings/'), bookingData)
@@ -897,6 +1008,33 @@
                 .catch(err => {
                     console.error("Firebase Error: ", err);
                     alert("डेटा सेव्ह करण्यात अडचण आली.");
+                });
+        };
+
+        window.submitBusInquiry = function() {
+            if (!window.currentUser) {
+                alert('कृपया आधी लॉगिन करा!');
+                return;
+            }
+
+            const busCap = document.getElementById('bus-capacity').value;
+            const busMsg = document.getElementById('bus-msg').value;
+
+            const bookingData = {
+                customerName: window.currentUser.name,
+                customerPhone: window.currentUser.phone,
+                type: 'bus',
+                capacity: busCap,
+                details: busMsg,
+                createdAt: new Date().toLocaleString('mr-IN')
+            };
+
+            const whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - मोठी बस इन्क्वायरी*\nग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\nबस प्रकार: ${busCap}\nमाहिती/रूट: ${busMsg}`;
+
+            push(ref(database, 'bookings/'), bookingData)
+                .then(() => {
+                    alert("बस इन्क्वायरी सेव्ह झाली!");
+                    window.open(`https://wa.me/919890896040?text=${encodeURIComponent(whatsappText)}`, '_blank');
                 });
         };
 
@@ -926,31 +1064,12 @@
                 });
         };
 
-        window.exportDriverExcel = function() {
-            if (!window.latestDriverLogs || window.latestDriverLogs.length === 0) {
-                alert("डाऊनलोड करण्यासाठी ड्रायव्हर डेटा उपलब्ध नाही!");
-                return;
-            }
-
-            const excelRows = window.latestDriverLogs.map(log => ({
-                "Driver Name": log.driverName,
-                "Mobile Number": log.driverPhone || 'N/A',
-                "Pending Balance (₹)": log.balance,
-                "Date": log.date || 'N/A'
-            }));
-
-            const worksheet = XLSX.utils.json_to_sheet(excelRows);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Driver_Balance");
-            XLSX.writeFile(workbook, `Driver_Pending_Balance_${getTodayString()}.xlsx`);
-        };
-
         window.showOwnerView = function(category) {
             const contentBox = document.getElementById('owner-content-box');
             contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>माहिती लोड होत आहे...</p>";
             const todayStr = getTodayString();
 
-            if (category === 'driver-log' || category === 'cash-balance') {
+            if (category === 'driver-log') {
                 const logsRef = ref(database, 'driver_logs/');
                 onValue(logsRef, (snapshot) => {
                     const data = snapshot.val();
@@ -958,55 +1077,18 @@
                         contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणतीही ड्रायव्हर नोंद उपलब्ध नाही.</p>";
                         return;
                     }
-                    window.latestDriverLogs = Object.values(data);
-
-                    if (category === 'driver-log') {
-                        let html = "<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm'>ड्रायव्हर दैनंदिन हिशोब नोंदी</h4>";
-                        Object.values(data).reverse().forEach(log => {
-                            html += `
-                                <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
-                                    <p class="font-bold text-gray-800">${log.driverName} <span class="text-[10px] text-gray-500">(${log.date})</span></p>
-                                    <p class="text-gray-600">कलेक्शन: ₹${log.collection} | खर्च: ₹${log.toll + log.fuel + log.other}</p>
-                                    <p class="font-black text-green-700">शिल्लक जमा कॅश: ₹${log.balance}</p>
-                                </div>
-                            `;
-                        });
-                        contentBox.innerHTML = html;
-                    } else {
-                        let totalNetCash = 0;
-                        let html = `
-                            <div class="mb-3 p-3 bg-green-100 border border-green-400 rounded-lg text-center shadow-sm">
-                                <span class="text-xs font-bold text-gray-700 block">एकूण ड्रायव्हर्स कडील शिल्लक कॅश (Total Cash)</span>
-                                <span id="grand-total-cash" class="text-2xl font-black text-green-700">₹ 0</span>
-                            </div>
-                            <div class="flex justify-between items-center mb-3 border-b pb-2">
-                                <h4 class='font-bold text-gray-800 text-xs uppercase'>ड्रायव्हर शिल्लक रक्कम डेटा</h4>
-                                <button onclick="exportDriverExcel()" class="bg-green-700 hover:bg-green-800 text-white font-bold px-2.5 py-1 rounded text-[11px] flex items-center gap-1 shadow">
-                                    <i class="fa-solid fa-file-excel"></i> Excel Sheet डाउनलोड करा
-                                </button>
+                    let html = "<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm'>ड्रायव्हर दैनंदिन हिशोब नोंदी</h4>";
+                    Object.values(data).reverse().forEach(log => {
+                        html += `
+                            <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
+                                <p class="font-bold text-gray-800">${log.driverName} <span class="text-[10px] text-gray-500">(${log.date})</span></p>
+                                <p class="text-gray-600">कलेक्शन: ₹${log.collection} | खर्च: ₹${log.toll + log.fuel + log.other}</p>
+                                <p class="font-black text-green-700">शिल्लक जमा कॅश: ₹${log.balance}</p>
                             </div>
                         `;
-
-                        Object.values(data).reverse().forEach(log => {
-                            totalNetCash += (log.balance || 0);
-                            html += `
-                                <div class="p-2 border-b text-xs flex justify-between items-center bg-gray-50 rounded mb-1">
-                                    <div>
-                                        <p class="font-bold text-gray-800">${log.driverName}</p>
-                                        <p class="text-[10px] text-gray-500">${log.date}</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="font-black text-green-700 text-sm">₹${log.balance}</p>
-                                    </div>
-                                </div>
-                            `;
-                        });
-
-                        contentBox.innerHTML = html;
-                        document.getElementById('grand-total-cash').innerText = `₹ ${totalNetCash}`;
-                    }
+                    });
+                    contentBox.innerHTML = html;
                 });
-
             } else {
                 const bookRef = ref(database, 'bookings/');
                 onValue(bookRef, (snapshot) => {
@@ -1035,7 +1117,7 @@
                         html += `
                             <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
                                 <p class="font-bold text-redbus">${b.customerName} (${b.customerPhone})</p>
-                                <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.details || ''}</p>
+                                <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
                                 <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
                                 ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
                             </div>
