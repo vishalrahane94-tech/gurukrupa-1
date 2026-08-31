@@ -154,8 +154,6 @@
 
                 <!-- SHARING SECTION -->
                 <div id="section-sharing" class="booking-section">
-                    
-                    <!-- Route Selection Buttons -->
                     <div class="flex gap-2 mb-3">
                         <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active flex-1 p-2 text-xs font-bold border rounded-lg shadow-sm border-redbus text-center">
                             नाशिक ते पुणे (Nashik to Pune)
@@ -165,7 +163,6 @@
                         </button>
                     </div>
 
-                    <!-- Dynamic Pickup & Drop Points -->
                     <div class="grid grid-cols-2 gap-2 mb-3">
                         <div>
                             <label id="lbl-pickup" class="block text-[11px] font-semibold text-gray-600 mb-1">नाशिक पिकअप पॉईंट *</label>
@@ -193,10 +190,8 @@
                         </div>
                     </div>
 
-                    <!-- Timings Section -->
                     <div class="mb-3">
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची वेळ निवडा *</label>
-                        
                         <div id="times-nashik-pune" class="grid grid-cols-3 gap-1.5">
                             <button type="button" onclick="selectTime(this, '04:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">04:00 AM</button>
                             <button type="button" onclick="selectTime(this, '04:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">04:30 AM</button>
@@ -214,11 +209,9 @@
                             <button type="button" onclick="selectTime(this, '06:15 PM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">06:15 PM</button>
                             <button type="button" onclick="selectTime(this, '06:30 PM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">06:30 PM</button>
                         </div>
-
                         <input type="hidden" id="sharing-time">
                     </div>
 
-                    <!-- Seat Layout -->
                     <div class="bg-gray-50 p-3 rounded-lg border-2 border-gray-300">
                         <div class="flex justify-between items-center mb-3 pb-2 border-b">
                             <span class="text-[11px] font-bold text-gray-500 uppercase">समोरची बाजू (Front)</span>
@@ -228,7 +221,6 @@
                             </div>
                         </div>
 
-                        <!-- ERTIGA SEAT LAYOUT -->
                         <div id="layout-ertiga" class="space-y-3">
                             <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
                                 <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
@@ -265,7 +257,6 @@
                             </div>
                         </div>
 
-                        <!-- CIAZ SEAT LAYOUT -->
                         <div id="layout-ciaz" class="space-y-3 hidden">
                             <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
                                 <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
@@ -294,24 +285,27 @@
                     </div>
                 </div>
 
-                <!-- ONE WAY SECTION -->
+                <!-- 1. UPDATED ONE WAY SECTION (FROM CHART 1) -->
                 <div id="section-oneway" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included)</h3>
+                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>
-                        <select id="oneway-route" class="w-full p-2 border rounded text-xs font-bold">
-                            <option value="Nashik to Pune">नाशिक ते पुणे</option>
-                            <option value="Pune to Nashik">पुणे ते नाशिक</option>
-                            <option value="Nashik to Mumbai">नाशिक ते मुंबई</option>
-                            <option value="Mumbai to Nashik">मुंबई ते नाशिक</option>
+                        <select id="oneway-route" onchange="updateOnewayCars()" class="w-full p-2 border rounded text-xs font-bold">
+                            <option value="नाशिक ते पुणे">नाशिक ते पुणे</option>
+                            <option value="पुणे ते नाशिक">पुणे ते नाशिक</option>
+                            <option value="नाशिक ते मुंबई">नाशिक ते मुंबई</option>
+                            <option value="मुंबई ते नाशिक">मुंबई ते नाशिक</option>
+                            <option value="पुणे ते मुंबई">पुणे ते मुंबई</option>
+                            <option value="मुंबई ते पुणे">मुंबई ते पुणे</option>
+                            <option value="नाशिक ते संभाजीनगर">नाशिक ते संभाजीनगर</option>
+                            <option value="संभाजीनगर ते नाशिक">संभाजीनगर ते नाशिक</option>
+                            <option value="पुणे ते संभाजीनगर">पुणे ते संभाजीनगर</option>
+                            <option value="संभाजीनगर ते पुणे">संभाजीनगर ते पुणे</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व प्राईस *</label>
-                        <select id="oneway-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
-                            <option value="SEDAN (Dzire/Aura) - ₹3000">SEDAN (Dzire / Aura) - ₹3000</option>
-                            <option value="SUV (Ertiga) - ₹4000">SUV (Ertiga) - ₹4000</option>
-                        </select>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व दर *</label>
+                        <select id="oneway-car" class="w-full p-2 border rounded text-xs font-bold text-redbus"></select>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
@@ -325,14 +319,25 @@
                     </div>
                 </div>
 
-                <!-- AIRPORT SECTION -->
+                <!-- 2. UPDATED AIRPORT DROP SECTION (FROM CHART 2) -->
                 <div id="section-airport" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट ड्रॉप सर्व्हिस</h3>
+                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">मार्क मुंबई एअरपोर्ट पिकअप & ड्रॉप (Toll Included)</h3>
                     <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट *</label>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>
                         <select id="airport-route" class="w-full p-2 border rounded text-xs font-bold">
-                            <option value="Nashik to Mumbai Airport Drop">NASHIK TO MUMBAI AIRPORT DROP</option>
-                            <option value="Mumbai Airport to Nashik Drop">MUMBAI AIRPORT TO NASHIK DROP</option>
+                            <option value="NASHIK TO MUMBAI AIRPORT DROP">नाशिक ते मुंबई एअरपोर्ट ड्रॉप (NASHIK TO MUMBAI AIRPORT DROP)</option>
+                            <option value="MUMBAI AIRPORT TO NASHIK DROP">मुंबई एअरपोर्ट ते नाशिक ड्रॉप (MUMBAI AIRPORT TO NASHIK DROP)</option>
+                            <option value="PUNE TO MUMBAI AIRPORT DROP">पुणे ते मुंबई एअरपोर्ट ड्रॉप (PUNE TO MUMBAI AIRPORT DROP)</option>
+                            <option value="MUMBAI AIRPORT TO PUNE DROP">मुंबई एअरपोर्ट ते पुणे ड्रॉप (MUMBAI AIRPORT TO PUNE DROP)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व दर *</label>
+                        <select id="airport-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
+                            <option value="SEDAN (S.V / Dzire) - ₹3200">SEDAN (S.V / Dzire) - ₹3200</option>
+                            <option value="SUV (Ertiga / Excel Six) - ₹4000">SUV (Ertiga / Excel Six) - ₹4000</option>
+                            <option value="KIA (Carens) - ₹5500">KIA (Carens) - ₹5500</option>
+                            <option value="INNOVA (Crysta) - ₹6500">INNOVA (Crysta) - ₹6500</option>
                         </select>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
@@ -347,33 +352,82 @@
                     </div>
                 </div>
 
-                <!-- FLEET SECTION -->
+                <!-- 3. UPDATED FLEET KM PORTAL (FROM CHART 3) -->
                 <div id="section-fleet" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर रेट्स (Per KM Inquiry)</h3>
-                    <input type="text" id="fleet-spot" placeholder="उदा. नाशिक ते गोवा" class="w-full p-2 border rounded text-xs mb-2">
+                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी निवडा *</label>
+                        <select id="fleet-car" onchange="calculateFleetTotal()" class="w-full p-2 border rounded text-xs font-bold text-redbus">
+                            <option value="MARUTI DZIRE - ₹12/- Per KM" data-rate="12">MARUTI DZIRE - ₹12/- PER KM</option>
+                            <option value="MARUTI CIAZ - ₹13/- Per KM" data-rate="13">MARUTI CIAZ - ₹13/- PER KM</option>
+                            <option value="MARUTI ERTIGA - ₹15/- Per KM" data-rate="15">MARUTI ERTIGA - ₹15/- PER KM</option>
+                            <option value="MARUTI EXCEL 6 - ₹15/- Per KM" data-rate="15">MARUTI EXCEL 6 - ₹15/- PER KM</option>
+                            <option value="KIA CARENS - ₹16/- Per KM" data-rate="16">KIA CARENS - ₹16/- PER KM</option>
+                            <option value="INNOVA CRYSTA - ₹20/- Per KM" data-rate="20">INNOVA CRYSTA - ₹20/- PER KM</option>
+                            <option value="FORCE URBANIA - ₹35/- Per KM" data-rate="35">FORCE URBANIA - ₹35/- PER KM</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">कुठून कुठे जायचे आहे (रूट / ठिकाण) *</label>
+                        <input type="text" id="fleet-spot" placeholder="उदा. नाशिक ते गोवा" class="w-full p-2 border rounded text-xs">
+                    </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <input type="date" id="fleet-date" class="p-2 border rounded text-xs">
-                        <input type="time" id="fleet-time" class="p-2 border rounded text-xs">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे किलोमीटर (KM)</label>
+                            <input type="number" id="fleet-km" placeholder="उदा. 300" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे एकूण रक्कम (₹)</label>
+                            <div id="fleet-total-display" class="p-2 border rounded bg-gray-100 font-bold text-redbus text-xs flex items-center h-[34px]">₹ 0</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
+                            <input type="date" id="fleet-date" class="w-full p-2 border rounded text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
+                            <input type="time" id="fleet-time" class="w-full p-2 border rounded text-xs">
+                        </div>
                     </div>
                 </div>
 
-                <!-- DARSHAN SECTION -->
+                <!-- 4. UPDATED NASHIK DARSHAN PORTAL (FROM CHART 4) -->
                 <div id="section-darshan" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट</h3>
+                    <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट प्रेक्षणीय स्थळे</h3>
+                    <div class="bg-red-50 p-2.5 rounded border border-red-200 text-[11px] text-gray-700 leading-relaxed">
+                        <p class="font-bold text-redbus mb-1">समाविष्ट स्थळे:</p>
+                        • त्र्यंबकेश्वर ज्योतिर्लिंग • श्री स्वामी समर्थ गुरुपीठ • अंजनेरी हनुमानजी टेम्पल • सोमेश्वर • साधना मिसळ / ग्रेप अंबेसि • पंचवटी • तपोवन • स्वामिनारायण टेम्पल • अण्णा गणपती • मुक्तिधाम
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडीचा प्रकार व पॅकेज रेट *</label>
+                        <select id="darshan-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">
+                            <option value="सिडान कार 4+1 (Sedan) - ₹3600">सिडान कार (Sedan 4+1) - ₹3600</option>
+                            <option value="ईर्टीका 6+1 (Ertiga) - ₹4500">ईर्टीका (Ertiga 6+1) - ₹4500</option>
+                            <option value="इनोव्हा / किया करेन्स 7+1 - ₹5500">इनोव्हा / किया करेन्स (Innova/Carens 7+1) - ₹5500</option>
+                        </select>
+                    </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <input type="date" id="darshan-date" class="p-2 border rounded text-xs">
-                        <input type="time" id="darshan-time" class="p-2 border rounded text-xs">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>
+                            <input type="date" id="darshan-date" class="w-full p-2 border rounded text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>
+                            <input type="time" id="darshan-time" class="w-full p-2 border rounded text-xs">
+                        </div>
                     </div>
                 </div>
 
                 <!-- BUS INQUIRY SECTION -->
                 <div id="section-bus" class="booking-section hidden space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">बस इन्क्वायरी</h3>
-                    <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती (उदा. प्रवासी संख्या, तारीख)..." class="w-full p-2 border rounded text-xs"></textarea>
+                    <h3 class="font-bold text-gray-800 text-xs border-b pb-1">बस इन्क्वायरी (Buses Inquiry)</h3>
+                    <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती (उदा. प्रवासी संख्या, तारीख, ठिकाण)..." class="w-full p-2 border rounded text-xs"></textarea>
                 </div>
 
                 <button onclick="submitBooking()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center gap-2 mt-4 text-sm">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> व्हॉट्सॲपवर बुकिंग पाठवा व सेव करा
+                    <i class="fa-brands fa-whatsapp text-lg"></i> व्हॉट्सॲपवर बुकिंग पाठवा व सेव्ह करा
                 </button>
             </div>
         </div>
@@ -504,7 +558,6 @@
         const ownerAuth = { phone: '9890896040', pass: 'owner123' };
         const driverAuth = { phone: '9922862007', pass: 'driver123' };
 
-        // Pickup & Drop Lists Data
         const nashikPoints = ["ठक्कर बाजार", "द्वारका सर्कल", "मुंबई नाका", "गोविंद नगर", "टनेल (Tunnel)", "पवन हॉटेल"];
         const punePoints = ["चाकण", "मोशी", "भोसरी", "नाशिक फाटा", "वाकडेवाडी"];
 
@@ -521,7 +574,8 @@
                 applyUserSession(window.currentUser);
             }
             cleanBackdatedBookings();
-            updateDropdownOptions('nashik-pune'); // Initialize Default Route
+            updateDropdownOptions('nashik-pune');
+            updateOnewayCars();
         });
 
         function cleanBackdatedBookings() {
@@ -628,7 +682,6 @@
             document.getElementById(`section-${tabName}`).classList.remove('hidden');
         };
 
-        // Switch Route & Update Dynamic Pickup/Drop Options
         window.selectRoute = function(route) {
             const btnNP = document.getElementById('btn-route-np');
             const btnPN = document.getElementById('btn-route-pn');
@@ -661,7 +714,6 @@
             updateDropdownOptions(route);
         };
 
-        // Populate Pickup and Drop Options dynamically based on selected route
         function updateDropdownOptions(route) {
             const pickupSelect = document.getElementById('sharing-pickup');
             const dropSelect = document.getElementById('sharing-drop');
@@ -692,6 +744,37 @@
                 dropSelect.innerHTML += `<option value="${pt}">${pt}</option>`;
             });
         }
+
+        // ONE WAY DYNAMIC CAR RATES UPDATE BASED ON CHART 1
+        window.updateOnewayCars = function() {
+            const route = document.getElementById('oneway-route').value;
+            const carSelect = document.getElementById('oneway-car');
+            carSelect.innerHTML = '';
+
+            if (route.includes('संभाजीनगर')) {
+                carSelect.innerHTML = `
+                    <option value="SEDAN (Dzire, Aura) - ₹3500">SEDAN (Dzire, Aura) - ₹3500</option>
+                    <option value="SUV (Ertiga) - ₹4500">SUV (Ertiga) - ₹4500</option>
+                    <option value="DIESEL (Kia Carens, Crysta) - ₹5500">DIESEL (Kia Carens, Crysta) - ₹5500</option>
+                `;
+            } else {
+                carSelect.innerHTML = `
+                    <option value="SEDAN (Dzire, Aura) - ₹3000">SEDAN (Dzire, Aura) - ₹3000</option>
+                    <option value="SUV (Ertiga) - ₹4000">SUV (Ertiga) - ₹4000</option>
+                    <option value="DIESEL (Kia Carens, Crysta) - ₹5500">DIESEL (Kia Carens, Crysta) - ₹5500</option>
+                `;
+            }
+        };
+
+        // FLEET KM CALCULATION BASED ON CHART 3
+        window.calculateFleetTotal = function() {
+            const carSelect = document.getElementById('fleet-car');
+            const rate = parseFloat(carSelect.options[carSelect.selectedIndex].getAttribute('data-rate')) || 0;
+            const km = parseFloat(document.getElementById('fleet-km').value) || 0;
+            const total = rate * km;
+
+            document.getElementById('fleet-total-display').innerText = `₹ ${total}`;
+        };
 
         window.selectCar = function(carType) {
             window.selectedCar = carType;
@@ -776,24 +859,29 @@
                 bookingData.date = document.getElementById('oneway-date').value;
                 bookingData.time = document.getElementById('oneway-time').value;
 
-                whatsappText += `प्रकार: वन-वे टॅक्सी\nरूट: ${bookingData.route}\nगाडी: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
+                whatsappText += `प्रकार: वन-वे टॅक्सी\nरूट: ${bookingData.route}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
             } else if (window.activeTab === 'airport') {
                 bookingData.route = document.getElementById('airport-route').value;
+                bookingData.car = document.getElementById('airport-car').value;
                 bookingData.date = document.getElementById('airport-date').value;
                 bookingData.time = document.getElementById('airport-time').value;
 
-                whatsappText += `प्रकार: एअरपोर्ट ड्रॉप\nरूट: ${bookingData.route}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
+                whatsappText += `प्रकार: मुंबई एअरपोर्ट सर्व्हिस\nरूट: ${bookingData.route}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
             } else if (window.activeTab === 'fleet') {
+                bookingData.car = document.getElementById('fleet-car').value;
                 bookingData.spot = document.getElementById('fleet-spot').value;
+                bookingData.km = document.getElementById('fleet-km').value;
+                bookingData.totalEstimate = document.getElementById('fleet-total-display').innerText;
                 bookingData.date = document.getElementById('fleet-date').value;
                 bookingData.time = document.getElementById('fleet-time').value;
 
-                whatsappText += `प्रकार: KM इन्क्वायरी\nपॉईंट: ${bookingData.spot}\nतारीख: ${bookingData.date}`;
+                whatsappText += `प्रकार: Fleet Per KM बुकिंग\nगाडी: ${bookingData.car}\nरूट: ${bookingData.spot}\nएकूण KM: ${bookingData.km}\nअंदाजे भाडे: ${bookingData.totalEstimate}\nतारीख: ${bookingData.date}`;
             } else if (window.activeTab === 'darshan') {
+                bookingData.car = document.getElementById('darshan-car').value;
                 bookingData.date = document.getElementById('darshan-date').value;
                 bookingData.time = document.getElementById('darshan-time').value;
 
-                whatsappText += `प्रकार: नाशिक दर्शन\nतारीख: ${bookingData.date}`;
+                whatsappText += `प्रकार: नाशिक दर्शन सिटी टूर\nपॅकेज/गाडी: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
             } else if (window.activeTab === 'bus') {
                 bookingData.details = document.getElementById('bus-msg').value;
 
@@ -802,12 +890,12 @@
 
             push(ref(database, 'bookings/'), bookingData)
                 .then(() => {
-                    alert("बुकिंग फायरबेस डेटाबेसमध्ये सेव्ह झाली आहे!");
+                    alert("बुकिंग डेटाबेसमध्ये यशस्वीपणे सेव्ह झाली!");
                     const encodedMsg = encodeURIComponent(whatsappText);
                     window.open(`https://wa.me/919890896040?text=${encodedMsg}`, '_blank');
                 })
                 .catch(err => {
-                    console.error("Firebase Live Error: ", err);
+                    console.error("Firebase Error: ", err);
                     alert("डेटा सेव्ह करण्यात अडचण आली.");
                 });
         };
@@ -878,7 +966,7 @@
                             html += `
                                 <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
                                     <p class="font-bold text-gray-800">${log.driverName} <span class="text-[10px] text-gray-500">(${log.date})</span></p>
-                                    <p class="text-gray-600">कलेक्शन: ₹${log.collection} | खर्च (टोल+पेट्रोल+इतर): ₹${log.toll + log.fuel + log.other}</p>
+                                    <p class="text-gray-600">कलेक्शन: ₹${log.collection} | खर्च: ₹${log.toll + log.fuel + log.other}</p>
                                     <p class="font-black text-green-700">शिल्लक जमा कॅश: ₹${log.balance}</p>
                                 </div>
                             `;
@@ -948,7 +1036,7 @@
                             <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
                                 <p class="font-bold text-redbus">${b.customerName} (${b.customerPhone})</p>
                                 <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.details || ''}</p>
-                                <p class="text-[10px] text-gray-500">रूट: ${b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
+                                <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
                                 ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
                             </div>
                         `;
