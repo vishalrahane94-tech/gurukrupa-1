@@ -58,8 +58,6 @@
             background-color: #fef2f2;
             transform: scale(1.02);
         }
-        
-        /* Smooth horizontal scroll snapping for role cards */
         .role-scroll-container {
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
@@ -102,7 +100,6 @@
             <h2 class="text-base font-bold text-gray-800 text-center mb-1">पोर्टल निवडा (Scroll & Select Role)</h2>
             <p class="text-[11px] text-gray-500 text-center mb-4">डावीकडून उजवीकडे स्क्रोल करून तुमचा रोल निवडा</p>
 
-            <!-- Role Selection Cards -->
             <div class="flex gap-4 overflow-x-auto no-scrollbar pb-3 px-1 role-scroll-container w-full">
                 <!-- Card 1: Customer -->
                 <div id="role-card-customer" onclick="selectLoginRole('customer')" class="portal-card active role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0">
@@ -339,7 +336,7 @@
                     </div>
                 </div>
 
-                <!-- AIRPORT DROP SECTION -->
+                <!-- AIRPORT DROP SECTION (NEW ROUTES ADDED) -->
                 <div id="section-airport" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>
                     <div>
@@ -351,7 +348,9 @@
                             <option value="Mumbai Airport To Pune Drop">Mumbai Airport To Pune Drop</option>
                             <option value="Nashik To Pune Drop">Nashik To Pune Drop</option>
                             <option value="Nashik To Ozar Drop">Nashik To Ozar Drop</option>
+                            <option value="Ozar To Nashik Drop">Ozar To Nashik Drop</option>
                             <option value="Nashik To Shirdi Drop">Nashik To Shirdi Drop</option>
+                            <option value="Shirdi To Nashik Drop">Shirdi To Nashik Drop</option>
                         </select>
                     </div>
                     <div>
@@ -467,7 +466,7 @@
                     </div>
                 </div>
 
-                <!-- BUSES INQUIRY SECTION -->
+                <!-- BUSES INQUIRY SECTION (DATE/TIME ADDED) -->
                 <div id="section-buses" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">
                         <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)
@@ -486,6 +485,16 @@
                                 <option value="50 Seater Big Bus">50 Seater Big Bus</option>
                             </select>
                         </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">तारीख *</label>
+                                <input type="date" id="bus-date" class="w-full p-2 border rounded text-xs bg-white date-picker-min">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-gray-700 mb-1">वेळ *</label>
+                                <input type="time" id="bus-time" class="w-full p-2 border rounded text-xs bg-white">
+                            </div>
+                        </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-700 mb-1">इतर माहिती / रूट (उदा. नाशिक ते गोवा 3 दिवस)</label>
                             <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती किंवा रूट टाका..." class="w-full p-2 border rounded text-xs bg-white"></textarea>
@@ -496,9 +505,46 @@
                     </div>
                 </div>
 
-                <button id="main-submit-btn" onclick="submitBooking()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center gap-2 mt-5 text-sm">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> व्हॉट्सॲपवर बुकिंग पाठवा व सेव्ह करा
+                <!-- PAYMENT SECTION (MANDATORY FOR TABS 1 TO 6) -->
+                <div id="payment-section" class="mt-5 border-t-2 border-dashed border-gray-300 pt-4 text-center">
+                    <h4 class="text-sm font-bold text-gray-800">Shashiraj Rahane</h4>
+                    <!-- Dynamic UPI QR -->
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shash74.s7@oksbi&pn=Shashiraj%20Rahane" alt="UPI QR Code" class="w-32 h-32 mx-auto my-2 rounded-lg shadow-md border p-1">
+                    <p class="text-xs font-semibold text-gray-700">UPI ID: shash74.s7@oksbi</p>
+                    <p class="text-[10px] text-gray-500 mb-3">Scan to pay with any UPI app</p>
+                    
+                    <div class="text-left bg-red-50 p-3 rounded border border-red-200">
+                        <label class="block text-[11px] font-bold text-red-600 mb-1">* पेमेंट Transaction / UTR ID (बुकिंगसाठी आवश्यक):</label>
+                        <input type="text" id="paymentTxnId" placeholder="12 अंकी UTR किंवा Transaction ID टाका" class="w-full p-2 border rounded text-xs outline-none focus:ring-1 focus:ring-redbus" required>
+                    </div>
+                </div>
+
+                <button id="main-submit-btn" onclick="submitBooking()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center gap-2 mt-4 text-sm">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> पेमेंट करा व बुकिंग व्हॉट्सॲपवर पाठवा
                 </button>
+
+                <!-- TRAVEL FEATURES & LOGO SECTION -->
+                <div class="mt-6 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm">
+                    <div class="text-center mb-3">
+                        <div class="w-16 h-16 border-2 border-blue-900 rounded-full mx-auto flex flex-col items-center justify-center bg-white shadow">
+                            <span class="font-bold text-blue-900 text-[8px] leading-tight">GURUKRUPA</span>
+                            <span class="font-black text-red-600 text-lg leading-none">GK</span>
+                            <span class="text-[6px] text-blue-900 font-bold leading-tight">Since 1991</span>
+                        </div>
+                        <h3 class="text-red-600 font-bold text-sm mt-2">आमच्या ट्रॅव्हल्सचे वैशिष्ट्य</h3>
+                    </div>
+                    <ul class="text-[11px] text-gray-700 font-semibold space-y-1.5 ml-2">
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-red-500"></i> सर्व दहा वर्षे पुढील अनुभव असणारे ड्रायव्हर</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-red-500"></i> रस्त्याची संपूर्ण माहिती</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-red-500"></i> स्वच्छ व अपग्रेड ऐ सी वाहणे</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-red-500"></i> दिलेल्या वेळेच्या दहा मिनिटे हजर</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-red-500"></i> जी पी एस ट्रॅकींग</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-red-500"></i> महिला स्पेशल शेरींग कॅब</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-red-500"></i> पार्सल सुविधा</li>
+                        <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-red-500"></i> गेली दोन पिढ्या सेवेत</li>
+                    </ul>
+                </div>
+
             </div>
         </div>
 
@@ -834,10 +880,15 @@
             document.getElementById(`section-${tabName}`).classList.remove('hidden');
 
             const submitBtn = document.getElementById('main-submit-btn');
+            const paymentSection = document.getElementById('payment-section');
+            
+            // Hide main submit & payment section for buses (as it has its own inquiry form)
             if (tabName === 'buses') {
                 submitBtn.classList.add('hidden');
+                paymentSection.classList.add('hidden');
             } else {
                 submitBtn.classList.remove('hidden');
+                paymentSection.classList.remove('hidden');
             }
         };
 
@@ -934,12 +985,12 @@
                     <option value="SEDAN - ₹3000">SEDAN - ₹3000</option>
                     <option value="SUV - ₹3800">SUV - ₹3800</option>
                 `;
-            } else if (route === 'Nashik To Ozar Drop') {
+            } else if (route === 'Nashik To Ozar Drop' || route === 'Ozar To Nashik Drop') {
                 carSelect.innerHTML = `
                     <option value="SEDAN - ₹1200">SEDAN - ₹1200</option>
                     <option value="SUV - ₹3000">SUV - ₹3000</option>
                 `;
-            } else if (route === 'Nashik To Shirdi Drop') {
+            } else if (route === 'Nashik To Shirdi Drop' || route === 'Shirdi To Nashik Drop') {
                 carSelect.innerHTML = `
                     <option value="SEDAN - ₹2500">SEDAN - ₹2500</option>
                     <option value="SUV - ₹3500">SUV - ₹3500</option>
@@ -1047,10 +1098,18 @@
                 return;
             }
 
+            // Payment Validation (Required for Tabs 1 to 6)
+            const txnId = document.getElementById('paymentTxnId').value.trim();
+            if (!txnId) {
+                alert('कृपया आधी पेमेंट करा आणि 12 अंकी UTR / Transaction ID प्रविष्ट करा!');
+                return;
+            }
+
             let bookingData = {
                 customerName: window.currentUser.name,
                 customerPhone: window.currentUser.phone,
                 type: window.activeTab,
+                txnId: txnId, // Added payment ID to DB
                 createdAt: new Date().toLocaleString('mr-IN')
             };
 
@@ -1116,9 +1175,13 @@
                 whatsappText += `प्रकार: टूर पॅकेज (Packages)\nरूट: ${bookingData.route}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;
             }
 
+            // Append Payment Info to WhatsApp message
+            whatsappText += `\n*पेमेंट UTR ID:* ${txnId}`;
+
             push(ref(database, 'bookings/'), bookingData)
                 .then(() => {
                     alert("बुकिंग डेटाबेसमध्ये यशस्वीपणे सेव्ह झाली!");
+                    document.getElementById('paymentTxnId').value = ""; // Clear input after success
                     const encodedMsg = encodeURIComponent(whatsappText);
                     window.open(`https://wa.me/919890896040?text=${encodedMsg}`, '_blank');
                 })
@@ -1135,18 +1198,27 @@
             }
 
             const busCap = document.getElementById('bus-capacity').value;
+            const busDate = document.getElementById('bus-date').value;
+            const busTime = document.getElementById('bus-time').value;
             const busMsg = document.getElementById('bus-msg').value;
+
+            if (!busDate || !busTime) {
+                alert("कृपया प्रवासाची तारीख आणि वेळ निवडा!");
+                return;
+            }
 
             const bookingData = {
                 customerName: window.currentUser.name,
                 customerPhone: window.currentUser.phone,
                 type: 'bus',
                 capacity: busCap,
+                date: busDate,
+                time: busTime,
                 details: busMsg,
                 createdAt: new Date().toLocaleString('mr-IN')
             };
 
-            const whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - मोठी बस इन्क्वायरी*\nग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\nबस प्रकार: ${busCap}\nमाहिती/रूट: ${busMsg}`;
+            const whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - मोठी बस इन्क्वायरी*\nग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\nबस प्रकार: ${busCap}\nतारीख: ${busDate}\nवेळ: ${busTime}\nमाहिती/रूट: ${busMsg}`;
 
             push(ref(database, 'bookings/'), bookingData)
                 .then(() => {
@@ -1184,11 +1256,8 @@
 
             push(ref(database, 'driver_logs/'), logData)
                 .then(() => {
-                    // १. बटनांमध्ये व्हॉट्सॲप लिंक्स सेट करणे
                     document.getElementById('btn-owner-1').href = `https://api.whatsapp.com/send?phone=919890896040&text=${encodedMsg}`;
                     document.getElementById('btn-owner-2').href = `https://api.whatsapp.com/send?phone=917498502915&text=${encodedMsg}`;
-
-                    // २. व्हॉट्सॲप बटने स्क्रीनवर दाखवणे
                     document.getElementById('whatsapp-buttons').classList.remove('hidden');
 
                     alert("हिशोब डेटाबेसमध्ये सेव्ह झाला आहे! खालील दोन्ही बटनांवर क्लिक करून व्हॉट्सॲप मेसेज पाठवा.");
@@ -1304,6 +1373,7 @@
                                 <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
                                 <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
                                 ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
+                                ${b.txnId ? `<p class="text-[11px] font-bold text-blue-700 mt-1">💳 पेमेंट UTR: ${b.txnId}</p>` : ''}
                             </div>
                         `;
                     });
