@@ -36,6 +36,14 @@
             border-color: #b83238 !important;
         }
         .seat.selected .price-tag { color: white !important; }
+        .seat.booked {
+            background-color: #9ca3af !important;
+            color: #374151 !important;
+            border-color: #6b7280 !important;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .seat.booked .price-tag { color: #374151 !important; }
         .tab-btn.active {
             background-color: #d84e55;
             color: white;
@@ -194,7 +202,7 @@
                     <div class="grid grid-cols-2 gap-2 mb-3">
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची तारीख *</label>
-                            <input type="date" id="sharing-date" class="w-full p-1.5 border rounded text-xs date-picker-min">
+                            <input type="date" id="sharing-date" onchange="fetchOccupiedSeats()" class="w-full p-1.5 border rounded text-xs date-picker-min">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी / सर्व्हिस *</label>
@@ -235,12 +243,13 @@
                             <div class="flex gap-2 text-[10px]">
                                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-white border border-gray-400 rounded"></span> उपलब्ध</span>
                                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-redbus rounded"></span> सिलेक्टेड</span>
+                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-gray-400 border border-gray-600 rounded"></span> बुक झालेले</span>
                             </div>
                         </div>
 
                         <div id="layout-ertiga" class="space-y-3">
                             <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
-                                <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
+                                <button type="button" data-seat-code="F1" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
                                     <span class="text-xs font-black">F1 (Front)</span>
                                 </button>
@@ -249,25 +258,25 @@
                                 </div>
                             </div>
                             <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
-                                <button type="button" onclick="toggleSeat(this, 'Middle Left (M1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <button type="button" data-seat-code="M1" onclick="toggleSeat(this, 'Middle Left (M1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
                                     <span class="text-xs font-bold">M1 (Left)</span>
                                 </button>
-                                <button type="button" onclick="toggleSeat(this, 'Middle Center (M2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <button type="button" data-seat-code="M2" onclick="toggleSeat(this, 'Middle Center (M2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
                                     <span class="text-xs font-bold">M2 (Mid)</span>
                                 </button>
-                                <button type="button" onclick="toggleSeat(this, 'Middle Right (M3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <button type="button" data-seat-code="M3" onclick="toggleSeat(this, 'Middle Right (M3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
                                     <span class="text-xs font-bold">M3 (Right)</span>
                                 </button>
                             </div>
                             <div class="grid grid-cols-2 gap-3 bg-gray-200 p-1.5 rounded-md">
-                                <button type="button" onclick="toggleSeat(this, 'Back Left (B1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <button type="button" data-seat-code="B1" onclick="toggleSeat(this, 'Back Left (B1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
                                     <span class="text-xs font-bold">B1 (Back L)</span>
                                 </button>
-                                <button type="button" onclick="toggleSeat(this, 'Back Right (B2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <button type="button" data-seat-code="B2" onclick="toggleSeat(this, 'Back Right (B2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
                                     <span class="text-xs font-bold">B2 (Back R)</span>
                                 </button>
@@ -276,7 +285,7 @@
 
                         <div id="layout-ciaz" class="space-y-3 hidden">
                             <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">
-                                <button type="button" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
+                                <button type="button" data-seat-code="F1" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>
                                     <span class="text-xs font-black">F1 (Front)</span>
                                 </button>
@@ -285,15 +294,15 @@
                                 </div>
                             </div>
                             <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">
-                                <button type="button" onclick="toggleSeat(this, 'Rear Left (R1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <button type="button" data-seat-code="R1" onclick="toggleSeat(this, 'Rear Left (R1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
                                     <span class="text-xs font-bold">R1 (Left)</span>
                                 </button>
-                                <button type="button" onclick="toggleSeat(this, 'Rear Center (R2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <button type="button" data-seat-code="R2" onclick="toggleSeat(this, 'Rear Center (R2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
                                     <span class="text-xs font-bold">R2 (Mid)</span>
                                 </button>
-                                <button type="button" onclick="toggleSeat(this, 'Rear Right (R3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
+                                <button type="button" data-seat-code="R3" onclick="toggleSeat(this, 'Rear Right (R3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">
                                     <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>
                                     <span class="text-xs font-bold">R3 (Right)</span>
                                 </button>
@@ -785,6 +794,7 @@
             updateAirportCars();
             updatePackageCars();
             listenTodaysDriverBalance();
+            fetchOccupiedSeats();
         });
 
         function cleanBackdatedBookings() {
@@ -822,6 +832,48 @@
                 }
             });
         }
+
+        window.fetchOccupiedSeats = function() {
+            const date = document.getElementById('sharing-date').value;
+            const time = document.getElementById('sharing-time').value;
+            const car = window.selectedCar;
+            const route = window.selectedRoute;
+
+            window.selectedSeats = [];
+            document.querySelectorAll('.seat').forEach(btn => {
+                btn.classList.remove('selected', 'booked');
+                btn.disabled = false;
+            });
+
+            if (!date || !time) return;
+
+            const bookRef = ref(database, 'bookings/');
+            onValue(bookRef, (snapshot) => {
+                const data = snapshot.val();
+                const occupiedCodes = new Set();
+
+                if (data) {
+                    Object.values(data).forEach(b => {
+                        if (b.type === 'sharing' && b.date === date && b.time === time && b.car === car && b.direction === route && b.seats) {
+                            b.seats.forEach(s => {
+                                const match = s.match(/\(([A-Z0-9]+)\)/);
+                                if (match) {
+                                    occupiedCodes.add(match[1]);
+                                }
+                            });
+                        }
+                    });
+                }
+
+                document.querySelectorAll('.seat').forEach(btn => {
+                    const code = btn.getAttribute('data-seat-code');
+                    if (code && occupiedCodes.has(code)) {
+                        btn.classList.add('booked');
+                        btn.disabled = true;
+                    }
+                });
+            });
+        };
 
         window.selectLoginRole = function(role) {
             window.currentRole = role;
@@ -952,6 +1004,7 @@
             }
 
             updateDropdownOptions(route);
+            fetchOccupiedSeats();
         };
 
         function updateDropdownOptions(route) {
@@ -1085,8 +1138,6 @@
 
         window.selectCar = function(carType) {
             window.selectedCar = carType;
-            window.selectedSeats = [];
-            document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
 
             if (carType.includes('ertiga')) {
                 document.getElementById('layout-ertiga').classList.remove('hidden');
@@ -1095,15 +1146,20 @@
                 document.getElementById('layout-ertiga').classList.add('hidden');
                 document.getElementById('layout-ciaz').classList.remove('hidden');
             }
+
+            fetchOccupiedSeats();
         };
 
         window.selectTime = function(btn, timeStr) {
             document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             document.getElementById('sharing-time').value = timeStr;
+            fetchOccupiedSeats();
         };
 
         window.toggleSeat = function(btn, seatDetail) {
+            if (btn.classList.contains('booked')) return;
+
             if (btn.classList.contains('selected')) {
                 btn.classList.remove('selected');
                 window.selectedSeats = window.selectedSeats.filter(item => item !== seatDetail);
@@ -1213,6 +1269,7 @@
                 .then(() => {
                     alert("बुकिंग डेटाबेसमध्ये यशस्वीपणे सेव्ह झाली!");
                     document.getElementById('paymentConfirmCheckbox').checked = false; 
+                    fetchOccupiedSeats();
                     const encodedMsg = encodeURIComponent(whatsappText);
                     window.open(`https://wa.me/919890896040?text=${encodedMsg}`, '_blank');
                 })
