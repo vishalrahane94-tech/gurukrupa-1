@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="mr">
 <head>
@@ -498,15 +497,16 @@
                     </div>
                 </div>
 
+                <!-- सर्व पोर्टलसाठी QR कोड आणि पेमेंट अट (Sharing पोर्टलसाठी सक्तीची, बाकी पोर्टल्ससाठी खुली) -->
                 <div id="payment-section" class="mt-5 border-t-2 border-dashed border-gray-300 pt-4 text-center">
                     <h4 class="text-sm font-bold text-gray-800">Shashiraj Rahane</h4>
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shash74.s7@oksbi&pn=Shashiraj%20Rahane" alt="UPI QR Code" class="w-36 h-36 mx-auto my-2 rounded-lg shadow-md border p-1 bg-white">
-                    <p class="text-[11px] text-gray-600 mb-3">पेमेंट करण्यासाठी वरील QR Code स्कॅन करा.</p>
+                    <p class="text-[11px] text-gray-600 mb-3">पेमेंट करण्यासाठी वरील QR Code स्कॅन करा (UPI ID: shash74.s7@oksbi).</p>
                     
                     <div class="text-left bg-red-50 p-3 rounded border border-red-200">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" id="paymentConfirmCheckbox" class="w-4 h-4 text-redbus rounded focus:ring-redbus">
-                            <span class="text-[11px] font-bold text-red-600">मी QR कोडद्वारे पेमेंट पूर्ण केले आहे. (पेमेंट केल्याशिवाय सीट बुक होणार नाही) *</span>
+                            <span class="text-[11px] font-bold text-red-600">मी QR कोडद्वारे पेमेंट पूर्ण केले आहे. (Sharing पोर्टलमध्ये पेमेंट केल्याशिवाय सीट बुक होणार नाही) *</span>
                         </label>
                     </div>
                 </div>
@@ -709,12 +709,6 @@
 
     </div>
 
-    <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').then(() => console.log('SW registered'));
-    }
-    </script>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -739,7 +733,7 @@
         window.selectedSeats = [];
         window.activeTab = 'sharing';
         window.selectedRoute = 'Nashik to Pune';
-        window.lastActiveOwnerCategory = 'all'; // Keep track of active category for real-time updates
+        window.lastActiveOwnerCategory = 'all';
 
         const ownerAuth = { phone: '9890896040', pass: 'owner123' };
 
@@ -782,7 +776,6 @@
                 applyUserSession(window.currentUser);
             }
             cleanBackdatedBookings();
-            checkAndAutoResetMidnight(); // Check midnight reset for driver logs
             updateDropdownOptions('nashik-pune');
             updateOnewayCars();
             updateAirportCars();
@@ -793,88 +786,24 @@
             switchTab('sharing');
         });
 
-        // 1. Block past dates & times booking logic verification
+        // बॅकडेटेड तारीख आणि वेळ ब्लॉक करण्यासाठीचे फंक्शन
         function isPastDateTime(dateVal, timeVal) {
             if (!dateVal) return false;
             const now = new Date();
             const selectedDateStr = dateVal;
             const todayStr = getTodayString();
 
-            if (selectedDateStr < todayStr) return true; // Past date
+            if (selectedDateStr < todayStr) return true; // जुनी तारीख असेल तर ब्लॉक
 
             if (selectedDateStr === todayStr && timeVal) {
                 const [hours, minutes] = timeVal.split(':').map(Number);
                 const selectedTimeMinutes = hours * 60 + minutes;
                 const currentTimeMinutes = now.getHours() * 60 + now.getMinutes();
                 if (selectedTimeMinutes < currentTimeMinutes) {
-                    return true; // Past time today
+                    return true; // आजचीच पण गेलेली वेळ असेल तर ब्लॉक
                 }
             }
             return false;
-        }
-
-        // 2. Midnight Auto-Reset Driver Logs & Export to Excel
-        function checkAndAutoResetMidnight() {
-            const lastResetDate = localStorage.getItem('gk_last_reset_date');
-            const todayStr = getTodayString();
-
-            if (lastResetDate && lastResetDate !== todayStr) {
-                // It's a new day! Automatically export yesterday's logs to Excel & clear/reset
-                autoExportAndResetDriverLogs(lastResetDate);
-            } else if (!lastResetDate) {
-                localStorage.setItem('gk_last_reset_date', todayStr);
-            }
-
-            // Set a timer to check every minute if midnight (00:00) has passed
-            setInterval(() => {
-                const currentDtStr = getTodayString();
-                const storedDt = localStorage.getItem('gk_last_reset_date');
-                if (storedDt && storedDt !== currentDtStr) {
-                    autoExportAndResetDriverLogs(storedDt);
-                }
-            }, 60000);
-        }
-
-        function autoExportAndResetDriverLogs(targetDateStr) {
-            const logsRef = ref(database, 'driver_logs/');
-            onValue(logsRef, (snapshot) => {
-                const data = snapshot.val();
-                if (!data) {
-                    localStorage.setItem('gk_last_reset_date', getTodayString());
-                    return;
-                }
-
-                const rows = [];
-                let hasEntriesForTarget = false;
-
-                Object.keys(data).forEach(key => {
-                    const log = data[key];
-                    if (log.date === targetDateStr) {
-                        hasEntriesForTarget = true;
-                        rows.push({
-                            "तारीख (Date)": log.date || 'N/A',
-                            "ड्रायव्हरचे नाव (Driver Name)": log.driverName || 'N/A',
-                            "मोबाईल नंबर (Phone)": log.driverPhone || 'N/A',
-                            "एकूण कलेक्शन (Collection ₹)": log.collection || 0,
-                            "टोल खर्च (Tolls ₹)": log.toll || 0,
-                            "इंधन खर्च (Fuel ₹)": log.fuel || 0,
-                            "इतर खर्च (Other ₹)": log.other || 0,
-                            "शिल्लक जमा कॅश (Balance Cash ₹)": log.balance || 0
-                        });
-                        // Remove from active database so today's balance starts from 0
-                        remove(ref(database, `driver_logs/${key}`));
-                    }
-                });
-
-                if (hasEntriesForTarget && rows.length > 0 && typeof XLSX !== 'undefined') {
-                    const worksheet = XLSX.utils.json_to_sheet(rows);
-                    const workbook = XLSX.utils.book_new();
-                    XLSX.utils.book_append_sheet(workbook, worksheet, "Daily_Reset_Logs");
-                    XLSX.writeFile(workbook, `Auto_Driver_Report_${targetDateStr}.xlsx`);
-                }
-
-                localStorage.setItem('gk_last_reset_date', getTodayString());
-            }, { onlyOnce: true });
         }
 
         function cleanBackdatedBookings() {
@@ -954,19 +883,8 @@
                 document.getElementById('badge-fleet').innerText = counts.fleet;
                 document.getElementById('badge-bus').innerText = counts.bus;
 
-                // Refresh owner view live if currently open
                 if (window.currentRole === 'owner' && window.lastActiveOwnerCategory) {
                     showOwnerView(window.lastActiveOwnerCategory, true);
-                }
-            });
-
-            const logsRef = ref(database, 'driver_logs/');
-            onValue(logsRef, (snapshot) => {
-                const data = snapshot.val();
-                const totalLogs = data ? Object.keys(data).length : 0;
-                document.getElementById('badge-driver-log').innerText = totalLogs;
-                if (window.currentRole === 'owner' && window.lastActiveOwnerCategory === 'driver-log') {
-                    showOwnerView('driver-log', true);
                 }
             });
         }
@@ -1119,12 +1037,9 @@
             if (tabName === 'buses') {
                 submitBtn.classList.add('hidden');
                 paymentSection.classList.add('hidden');
-            } else if (tabName === 'sharing') {
-                submitBtn.classList.remove('hidden');
-                paymentSection.classList.remove('hidden');
             } else {
                 submitBtn.classList.remove('hidden');
-                paymentSection.classList.add('hidden');
+                paymentSection.classList.remove('hidden'); // सर्व पोर्टल्समध्ये QR कोड खुला ठेवला आहे
             }
         };
 
@@ -1367,10 +1282,19 @@
                 timeVal = document.getElementById('package-time').value;
             }
 
-            // Prevent past date/time booking
+            // सर्व पोर्टल्समध्ये बॅकडेटेड तारीख/वेळ चेक करून ब्लॉक करणे
             if (isPastDateTime(dateVal, timeVal)) {
-                alert('चुकीची तारीख किंवा वेळ! तुम्ही भूतकाळातील (Past) वेळेसाठी बुकिंग करू शकत नाही.');
+                alert('चुकीची तारीख किंवा वेळ! तुम्ही भूतकाळातील (Backdated) वेळेसाठी बुकिंग करू शकत नाही.');
                 return;
+            }
+
+            // शेअरिंग पोर्टलसाठी पेमेंट अट (पेमेंट केल्याशिवाय सीट बुक होणार नाही)
+            if (window.activeTab === 'sharing') {
+                const isPaymentChecked = document.getElementById('paymentConfirmCheckbox').checked;
+                if (!isPaymentChecked) {
+                    alert('अट: शेअरिंग पोर्टलमध्ये सीट बुक करण्यासाठी आधी QR कोडद्वारे पेमेंट पूर्ण करणे अनिवार्य आहे!');
+                    return;
+                }
             }
 
             let bookingData = {
@@ -1384,12 +1308,6 @@
             whatsappText += `ग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\n`;
 
             if (window.activeTab === 'sharing') {
-                const isPaymentChecked = document.getElementById('paymentConfirmCheckbox').checked;
-                if (!isPaymentChecked) {
-                    alert('कृपया सीट बुक करण्यासाठी आधी QR कोडवरून पेमेंट पूर्ण करा आणि चेकबॉक्सवर टिक करा!');
-                    return;
-                }
-
                 const pickup = document.getElementById('sharing-pickup').value;
                 const drop = document.getElementById('sharing-drop').value;
                 const date = document.getElementById('sharing-date').value;
@@ -1483,7 +1401,7 @@
             }
 
             if (isPastDateTime(busDate, busTime)) {
-                alert('भूतकाळातील वेळेसाठी बस इन्क्वायरी करता येणार नाही!');
+                alert('भूतकाळातील (Backdated) वेळेसाठी बस इन्क्वायरी करता येणार नाही!');
                 return;
             }
 
@@ -1584,7 +1502,6 @@
             }, { onlyOnce: true });
         };
 
-        // 3. Delete Option for Owner Dashboard (Inquiries & Driver Logs)
         window.deleteRecord = function(pathKey, nodeType) {
             if (confirm("तुम्हाला खात्री आहे की तुम्ही ही नोंद (Record) डिलीट करू इच्छिता?")) {
                 let dbPath = nodeType === 'driver' ? `driver_logs/${pathKey}` : `bookings/${pathKey}`;
@@ -1670,16 +1587,11 @@
                     let html = `<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm uppercase'>लाइव्ह बुकिंग्स (Live Inquiries)</h4>`;
                     filteredData.reverse().forEach(([key, b]) => {
                         html += `
-                            <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg relative">
-                                <button onclick="deleteRecord('${key}', 'booking')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-[10px] font-bold shadow flex items-center gap-1">
-                                    <i class="fa-solid fa-trash"></i> डिलीट
-                                </button>
-                                <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone}) ${b.carNumber ? `<span class="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-[10px] ml-1">Cab ${b.carNumber}</span>` : ''}</p>
-                                <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
-                                <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
-                                ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
-                                ${b.paymentStatus ? `<p class="text-[11px] font-bold text-green-700 mt-1">💳 पेमेंट: ${b.paymentStatus}</p>` : ''}
-                            </div>
+                            <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone}) ${b.carNumber ? `<span class="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-[10px] ml-1">Cab ${b.carNumber}</span>` : ''}</p>
+                            <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
+                            <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
+                            ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
+                            ${b.paymentStatus ? `<p class="text-[11px] font-bold text-green-700 mt-1">💳 पेमेंट: ${b.paymentStatus}</p>` : ''}
                         `;
                     });
                     contentBox.innerHTML = html;
