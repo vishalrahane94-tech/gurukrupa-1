@@ -1,6 +1,6 @@
 {
-  "name": "Gurukrupa",
-  "short_name": "Gurukrupa",
+  "name": "gurukrupa",
+  "short_name": "shashi",
   "description": "Gurukrupa application for progressive web experience.",
   "start_url": "./index.html",
   "display": "standalone",
