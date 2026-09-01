@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="mr">
 <head>
@@ -738,6 +739,7 @@
         window.selectedSeats = [];
         window.activeTab = 'sharing';
         window.selectedRoute = 'Nashik to Pune';
+        window.lastActiveOwnerCategory = 'all'; // Keep track of active category for real-time updates
 
         const ownerAuth = { phone: '9890896040', pass: 'owner123' };
 
@@ -780,15 +782,100 @@
                 applyUserSession(window.currentUser);
             }
             cleanBackdatedBookings();
+            checkAndAutoResetMidnight(); // Check midnight reset for driver logs
             updateDropdownOptions('nashik-pune');
             updateOnewayCars();
             updateAirportCars();
             updatePackageCars();
             listenTodaysDriverBalance();
-            listenOwnerCounts(); // Live Inquiries Badges Tracker
+            listenOwnerCounts(); 
             fetchOccupiedSeats();
             switchTab('sharing');
         });
+
+        // 1. Block past dates & times booking logic verification
+        function isPastDateTime(dateVal, timeVal) {
+            if (!dateVal) return false;
+            const now = new Date();
+            const selectedDateStr = dateVal;
+            const todayStr = getTodayString();
+
+            if (selectedDateStr < todayStr) return true; // Past date
+
+            if (selectedDateStr === todayStr && timeVal) {
+                const [hours, minutes] = timeVal.split(':').map(Number);
+                const selectedTimeMinutes = hours * 60 + minutes;
+                const currentTimeMinutes = now.getHours() * 60 + now.getMinutes();
+                if (selectedTimeMinutes < currentTimeMinutes) {
+                    return true; // Past time today
+                }
+            }
+            return false;
+        }
+
+        // 2. Midnight Auto-Reset Driver Logs & Export to Excel
+        function checkAndAutoResetMidnight() {
+            const lastResetDate = localStorage.getItem('gk_last_reset_date');
+            const todayStr = getTodayString();
+
+            if (lastResetDate && lastResetDate !== todayStr) {
+                // It's a new day! Automatically export yesterday's logs to Excel & clear/reset
+                autoExportAndResetDriverLogs(lastResetDate);
+            } else if (!lastResetDate) {
+                localStorage.setItem('gk_last_reset_date', todayStr);
+            }
+
+            // Set a timer to check every minute if midnight (00:00) has passed
+            setInterval(() => {
+                const currentDtStr = getTodayString();
+                const storedDt = localStorage.getItem('gk_last_reset_date');
+                if (storedDt && storedDt !== currentDtStr) {
+                    autoExportAndResetDriverLogs(storedDt);
+                }
+            }, 60000);
+        }
+
+        function autoExportAndResetDriverLogs(targetDateStr) {
+            const logsRef = ref(database, 'driver_logs/');
+            onValue(logsRef, (snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    localStorage.setItem('gk_last_reset_date', getTodayString());
+                    return;
+                }
+
+                const rows = [];
+                let hasEntriesForTarget = false;
+
+                Object.keys(data).forEach(key => {
+                    const log = data[key];
+                    if (log.date === targetDateStr) {
+                        hasEntriesForTarget = true;
+                        rows.push({
+                            "तारीख (Date)": log.date || 'N/A',
+                            "ड्रायव्हरचे नाव (Driver Name)": log.driverName || 'N/A',
+                            "मोबाईल नंबर (Phone)": log.driverPhone || 'N/A',
+                            "एकूण कलेक्शन (Collection ₹)": log.collection || 0,
+                            "टोल खर्च (Tolls ₹)": log.toll || 0,
+                            "इंधन खर्च (Fuel ₹)": log.fuel || 0,
+                            "इतर खर्च (Other ₹)": log.other || 0,
+                            "शिल्लक जमा कॅश (Balance Cash ₹)": log.balance || 0
+                        });
+                        // Remove from active database so today's balance starts from 0
+                        remove(ref(database, `driver_logs/${key}`));
+                    }
+                });
+
+                if (hasEntriesForTarget && rows.length > 0 && typeof XLSX !== 'undefined') {
+                    const worksheet = XLSX.utils.json_to_sheet(rows);
+                    const workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, "Daily_Reset_Logs");
+                    XLSX.writeFile(workbook, `Auto_Driver_Report_${targetDateStr}.xlsx`);
+                }
+
+                localStorage.setItem('gk_last_reset_date', getTodayString());
+            }, { onlyOnce: true });
+        }
 
         function cleanBackdatedBookings() {
             const yesterdayStr = getYesterdayString(); 
@@ -826,7 +913,6 @@
             });
         }
 
-        // Live Count Tracker for Owner Dashboard Icons
         function listenOwnerCounts() {
             const bookRef = ref(database, 'bookings/');
             onValue(bookRef, (snapshot) => {
@@ -858,7 +944,6 @@
                     });
                 }
 
-                // Update UI Badges
                 document.getElementById('count-all').innerText = counts.all;
                 document.getElementById('badge-sharing-np').innerText = counts['sharing-np'];
                 document.getElementById('badge-sharing-pn').innerText = counts['sharing-pn'];
@@ -868,18 +953,24 @@
                 document.getElementById('badge-packages').innerText = counts.packages;
                 document.getElementById('badge-fleet').innerText = counts.fleet;
                 document.getElementById('badge-bus').innerText = counts.bus;
+
+                // Refresh owner view live if currently open
+                if (window.currentRole === 'owner' && window.lastActiveOwnerCategory) {
+                    showOwnerView(window.lastActiveOwnerCategory, true);
+                }
             });
 
-            // Count for Drivers
             const logsRef = ref(database, 'driver_logs/');
             onValue(logsRef, (snapshot) => {
                 const data = snapshot.val();
                 const totalLogs = data ? Object.keys(data).length : 0;
                 document.getElementById('badge-driver-log').innerText = totalLogs;
+                if (window.currentRole === 'owner' && window.lastActiveOwnerCategory === 'driver-log') {
+                    showOwnerView('driver-log', true);
+                }
             });
         }
 
-        // UNLIMITED MULTI-VEHICLE BOOKING ENGINE
         window.fetchOccupiedSeats = function() {
             const date = document.getElementById('sharing-date').value;
             const time = document.getElementById('sharing-time').value;
@@ -894,14 +985,13 @@
 
             if (!date || !time) return;
 
-            const maxCapacity = car.includes('ertiga') ? 6 : 4; // Capacity per cab
+            const maxCapacity = car.includes('ertiga') ? 6 : 4; 
 
             const bookRef = ref(database, 'bookings/');
             onValue(bookRef, (snapshot) => {
                 const data = snapshot.val();
                 if (!data) return;
 
-                // Group bookings into cabs automatically
                 let cabBookings = {};
 
                 Object.values(data).forEach(b => {
@@ -912,15 +1002,13 @@
                     }
                 });
 
-                // Find active cab slot (if current cab is full, open a new cab!)
                 let activeCabNumber = 1;
                 while (cabBookings[activeCabNumber] && cabBookings[activeCabNumber].length >= maxCapacity) {
                     activeCabNumber++;
                 }
 
-                window.currentAssignedCab = activeCabNumber; // Save current cab allocation
+                window.currentAssignedCab = activeCabNumber; 
 
-                // Block occupied seats of current active cab only
                 let activeCabSeats = cabBookings[activeCabNumber] || [];
                 const occupiedCodes = new Set();
                 activeCabSeats.forEach(s => {
@@ -1017,7 +1105,6 @@
             document.getElementById('logout-btn').classList.add('hidden');
         };
 
-        /* SWITCH TAB LOGIC */
         window.switchTab = function(tabName) {
             window.activeTab = tabName;
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -1217,6 +1304,12 @@
         };
 
         window.selectTime = function(btn, timeStr) {
+            const dateVal = document.getElementById('sharing-date').value;
+            if (isPastDateTime(dateVal, timeStr)) {
+                alert('भूतकाळातील (Past) तारीख किंवा वेळ निवडता येणार नाही!');
+                return;
+            }
+
             document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             document.getElementById('sharing-time').value = timeStr;
@@ -1245,10 +1338,38 @@
             document.getElementById('drv-balance').innerText = bal;
         };
 
-        /* SUBMIT BOOKING (WITH MULTI-CAB SUPPORT) */
         window.submitBooking = function() {
             if (!window.currentUser) {
                 alert('कृपया आधी लॉगिन करा!');
+                return;
+            }
+
+            let dateVal = '';
+            let timeVal = '';
+
+            if (window.activeTab === 'sharing') {
+                dateVal = document.getElementById('sharing-date').value;
+                timeVal = document.getElementById('sharing-time').value;
+            } else if (window.activeTab === 'oneway') {
+                dateVal = document.getElementById('oneway-date').value;
+                timeVal = document.getElementById('oneway-time').value;
+            } else if (window.activeTab === 'airport') {
+                dateVal = document.getElementById('airport-date').value;
+                timeVal = document.getElementById('airport-time').value;
+            } else if (window.activeTab === 'fleet') {
+                dateVal = document.getElementById('fleet-date').value;
+                timeVal = document.getElementById('fleet-time').value;
+            } else if (window.activeTab === 'darshan') {
+                dateVal = document.getElementById('darshan-date').value;
+                timeVal = document.getElementById('darshan-time').value;
+            } else if (window.activeTab === 'packages') {
+                dateVal = document.getElementById('package-date').value;
+                timeVal = document.getElementById('package-time').value;
+            }
+
+            // Prevent past date/time booking
+            if (isPastDateTime(dateVal, timeVal)) {
+                alert('चुकीची तारीख किंवा वेळ! तुम्ही भूतकाळातील (Past) वेळेसाठी बुकिंग करू शकत नाही.');
                 return;
             }
 
@@ -1286,7 +1407,7 @@
                 bookingData.car = window.selectedCar;
                 bookingData.seats = window.selectedSeats;
                 bookingData.direction = window.selectedRoute;
-                bookingData.carNumber = window.currentAssignedCab || 1; // Assign dynamic Cab #
+                bookingData.carNumber = window.currentAssignedCab || 1; 
                 bookingData.paymentStatus = "Paid Via QR";
 
                 whatsappText += `प्रकार: शेअरिंग (${window.selectedRoute})\nकॅब क्र: Cab ${bookingData.carNumber}\nपिकअप: ${pickup}\nड्रॉप: ${drop}\nतारीख: ${date}\nवेळ: ${time}\nगाडी: ${window.selectedCar}\nसीट्स: ${window.selectedSeats.join(', ')}\n*पेमेंट स्थिती:* QR कोडद्वारे पेमेंट पूर्ण`;
@@ -1361,6 +1482,11 @@
                 return;
             }
 
+            if (isPastDateTime(busDate, busTime)) {
+                alert('भूतकाळातील वेळेसाठी बस इन्क्वायरी करता येणार नाही!');
+                return;
+            }
+
             const bookingData = {
                 customerName: window.currentUser.name,
                 customerPhone: window.currentUser.phone,
@@ -1381,7 +1507,6 @@
                 });
         };
 
-        // DRIVER HISHOB REPORT
         window.sendDriverReport = function() {
             const col = document.getElementById('drv-collection').value;
             const toll = document.getElementById('drv-toll').value;
@@ -1422,7 +1547,6 @@
                 });
         };
 
-        // EXPORT ALL DRIVER LOGS TO EXCEL
         window.exportDriverLogsToExcel = function() {
             if (typeof XLSX === 'undefined') {
                 alert("Excel लायब्ररी लोड होत आहे, कृपया २ सेकंद थांबा आणि पुन्हा प्रयत्न करा!");
@@ -1460,9 +1584,30 @@
             }, { onlyOnce: true });
         };
 
-        window.showOwnerView = function(category) {
+        // 3. Delete Option for Owner Dashboard (Inquiries & Driver Logs)
+        window.deleteRecord = function(pathKey, nodeType) {
+            if (confirm("तुम्हाला खात्री आहे की तुम्ही ही नोंद (Record) डिलीट करू इच्छिता?")) {
+                let dbPath = nodeType === 'driver' ? `driver_logs/${pathKey}` : `bookings/${pathKey}`;
+                remove(ref(database, dbPath))
+                    .then(() => {
+                        alert("नोंद यशस्वीपणे डिलीट केली गेली आहे!");
+                        if (window.currentRole === 'owner') {
+                            showOwnerView(window.lastActiveOwnerCategory, true);
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Delete Error:", err);
+                        alert("डेटा डिलीट करताना त्रुटी आली.");
+                    });
+            }
+        };
+
+        window.showOwnerView = function(category, isAutoRefresh = false) {
+            window.lastActiveOwnerCategory = category;
             const contentBox = document.getElementById('owner-content-box');
-            contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>माहिती लोड होत आहे...</p>";
+            if (!isAutoRefresh) {
+                contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>माहिती लोड होत आहे...</p>";
+            }
 
             if (category === 'driver-log' || category === 'driver-balance') {
                 const logsRef = ref(database, 'driver_logs/');
@@ -1477,10 +1622,13 @@
                         ? "<h4 class='font-bold mb-3 border-b pb-1 text-green-800 text-sm'>💰 ड्रायव्हर शिल्लक जमा कॅश (Driver Balances)</h4>"
                         : "<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm'>ड्रायव्हर दैनंदिन हिशोब नोंदी</h4>";
 
-                    Object.values(data).reverse().forEach(log => {
+                    Object.entries(data).reverse().forEach(([key, log]) => {
                         html += `
-                            <div class="p-3 border-b text-xs space-y-1 mb-2 bg-green-50/50 border-green-200 rounded-lg shadow-sm">
-                                <div class="flex justify-between items-center border-b pb-1">
+                            <div class="p-3 border-b text-xs space-y-1 mb-2 bg-green-50/50 border-green-200 rounded-lg shadow-sm relative">
+                                <button onclick="deleteRecord('${key}', 'driver')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-[10px] font-bold shadow flex items-center gap-1">
+                                    <i class="fa-solid fa-trash"></i> डिलीट
+                                </button>
+                                <div class="flex justify-between items-center border-b pb-1 pr-16">
                                     <p class="font-bold text-gray-800 text-xs"><i class="fa-solid fa-user-gear text-green-700"></i> ${log.driverName} (${log.driverPhone || 'N/A'})</p>
                                     <span class="text-[10px] bg-green-200 text-green-900 font-bold px-1.5 py-0.5 rounded">${log.date}</span>
                                 </div>
@@ -1497,7 +1645,7 @@
                         `;
                     });
                     contentBox.innerHTML = html;
-                });
+                }, { onlyOnce: true });
             } else {
                 const bookRef = ref(database, 'bookings/');
                 onValue(bookRef, (snapshot) => {
@@ -1507,7 +1655,7 @@
                         return;
                     }
 
-                    let filteredData = Object.values(data).filter(item => {
+                    let filteredData = Object.entries(data).filter(([key, item]) => {
                         if (category === 'all') return true;
                         if (category === 'sharing-np') return item.type === 'sharing' && (!item.direction || item.direction.includes('Nashik to Pune'));
                         if (category === 'sharing-pn') return item.type === 'sharing' && item.direction && item.direction.includes('Pune to Nashik');
@@ -1520,10 +1668,13 @@
                     }
 
                     let html = `<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm uppercase'>लाइव्ह बुकिंग्स (Live Inquiries)</h4>`;
-                    filteredData.reverse().forEach(b => {
+                    filteredData.reverse().forEach(([key, b]) => {
                         html += `
-                            <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg">
-                                <p class="font-bold text-redbus">${b.customerName} (${b.customerPhone}) ${b.carNumber ? `<span class="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-[10px] ml-1">Cab ${b.carNumber}</span>` : ''}</p>
+                            <div class="p-2.5 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg relative">
+                                <button onclick="deleteRecord('${key}', 'booking')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-[10px] font-bold shadow flex items-center gap-1">
+                                    <i class="fa-solid fa-trash"></i> डिलीट
+                                </button>
+                                <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone}) ${b.carNumber ? `<span class="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-[10px] ml-1">Cab ${b.carNumber}</span>` : ''}</p>
                                 <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
                                 <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
                                 ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
@@ -1532,7 +1683,7 @@
                         `;
                     });
                     contentBox.innerHTML = html;
-                });
+                }, { onlyOnce: true });
             }
         };
     </script>
