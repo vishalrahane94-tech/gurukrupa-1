@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gurukrupa Tours & Travels - Driver Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans pb-10">
+    <header class="bg-green-700 text-white p-3 shadow-lg">
+        <h1 class="text-sm font-bold uppercase"><i class="fa-solid fa-id-card"></i> Gurukrupa Driver Portal</h1>
+    </header>
+
+    <div class="container mx-auto p-3 max-w-xl mt-3">
+        <div class="bg-white p-4 rounded-xl shadow border">
+            <h2 class="text-sm font-bold text-gray-800 border-b pb-2 mb-3">ड्रायव्हर दैनिक हिशोब</h2>
+
+            <div class="space-y-2.5 text-xs">
+                <div><label class="font-bold">कलेक्शन (Collection) ₹</label><input type="number" id="drv-collection" value="0" oninput="calc()" class="w-full p-1.5 border rounded"></div>
+                <div><label class="font-bold">टोल (Tolls) ₹</label><input type="number" id="drv-toll" value="0" oninput="calc()" class="w-full p-1.5 border rounded"></div>
+                <div><label class="font-bold">इंधन (Fuel) ₹</label><input type="number" id="drv-fuel" value="0" oninput="calc()" class="w-full p-1.5 border rounded"></div>
+            </div>
+
+            <div class="bg-yellow-100 p-3 rounded-lg text-center mt-3">
+                <p class="text-xs font-bold">शिल्लक रक्कम: ₹ <span id="drv-balance">0</span></p>
+            </div>
+
+            <button onclick="sendReport()" class="w-full bg-green-600 text-white font-bold py-2.5 rounded-lg text-xs mt-3">हिशोब सेव्ह करा</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const db = getDatabase(initializeApp({
+            databaseURL: "https://gurukrupa--tours--travels-default-rtdb.firebaseio.com"
+        }));
+
+        window.calc = function() {
+            let col = parseFloat(document.getElementById('drv-collection').value) || 0;
+            let toll = parseFloat(document.getElementById('drv-toll').value) || 0;
+            let fuel = parseFloat(document.getElementById('drv-fuel').value) || 0;
+            document.getElementById('drv-balance').innerText = col - (toll + fuel);
+        };
+
+        window.sendReport = function() {
+            let col = document.getElementById('drv-collection').value;
+            let bal = document.getElementById('drv-balance').innerText;
+            push(ref(db, 'driver_logs/'), { collection: col, balance: bal, date: new Date().toLocaleDateString() })
+                .then(() => alert('हिशोब यशस्वीरित्या सेव्ह झाला!'));
+        };
+    </script>
+</body>
+</html>
