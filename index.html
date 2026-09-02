@@ -26,7 +26,7 @@
         }
     </script>
     <style>
-        .seat { transition: all 0.2s ease; position: relative; cursor: pointer; }
+        .seat { transition: all 0.2s ease; position: relative; cursor: pointer; background-color: #ffffff !important; }
         .seat.selected {
             background-color: #d84e55 !important;
             color: white !important;
@@ -34,9 +34,9 @@
         }
         .seat.selected .price-tag { color: white !important; }
         
-        /* आधी बुक असलेल्या सीटसाठी कस्टम स्टाईल (तरीही क्लिक करता येईल) */
+        /* आधी बुक असलेल्या सीट्सही आता नॉर्मल / सेम दिसेल */
         .seat.already-booked {
-            background-color: #e5e7eb !important;
+            background-color: #ffffff !important;
             border-color: #9ca3af !important;
         }
         
@@ -232,7 +232,6 @@
                             <div class="flex gap-2 text-[10px]">
                                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-white border border-gray-400 rounded"></span> उपलब्ध</span>
                                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-redbus rounded"></span> सिलेक्टेड</span>
-                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-gray-200 border border-gray-400 rounded"></span> आधी बुक (पुन्हा बुक करा)</span>
                             </div>
                         </div>
 
@@ -891,9 +890,6 @@
             });
         }
 
-        // ==========================================
-        // 🛠️ अद्ययावत केलेला fetchOccupiedSeats() कोड 
-        // ==========================================
         window.fetchOccupiedSeats = function() {
             const date = document.getElementById('sharing-date').value;
             const time = document.getElementById('sharing-time').value;
@@ -902,10 +898,10 @@
 
             window.selectedSeats = [];
             
-            // सर्व सीट्स रीसेट करा (पण कोणतीही सीट Disabled होणार नाही)
+            // सर्व सीट्स रीसेट करा
             document.querySelectorAll('.seat').forEach(btn => {
                 btn.classList.remove('selected', 'already-booked');
-                btn.disabled = false; // सीट सर्वांना क्लिक करण्यासाठी मोकळी राहील
+                btn.disabled = false;
                 const badge = btn.querySelector('.booked-badge');
                 if (badge) badge.remove();
             });
@@ -930,14 +926,13 @@
                 document.querySelectorAll('.seat').forEach(btn => {
                     const code = btn.getAttribute('data-seat-code');
                     if (code && occupiedCodes.has(code)) {
-                        // सीटला Disabled न करता फक्त इंडिकेटर दाखवा की ती आधीच बुक झाली आहे
                         if (!btn.classList.contains('selected')) {
                             btn.classList.add('already-booked');
                         }
                         if (!btn.querySelector('.booked-badge')) {
                             const iconSpan = document.createElement('span');
                             iconSpan.className = 'booked-badge absolute top-0.5 right-0.5 bg-gray-500 text-white rounded-full px-1 text-[8px] font-bold';
-                            iconSpan.innerHTML = '<i class="fa-solid fa-rotate-right"></i>'; // रिबुक सुचवणारा आयकॉन
+                            iconSpan.innerHTML = '<i class="fa-solid fa-rotate-right"></i>';
                             btn.appendChild(iconSpan);
                         }
                     }
@@ -1232,9 +1227,6 @@
             fetchOccupiedSeats();
         };
 
-        // ==========================================
-        // 🛠️ अद्ययावत केलेला toggleSeat() कोड (रिबुकिंगसाठी)
-        // ==========================================
         window.toggleSeat = function(btn, seatDetail) {
             if (btn.classList.contains('selected')) {
                 btn.classList.remove('selected');
