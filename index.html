@@ -26,7 +26,7 @@
         }
     </script>
     <style>
-        .seat { transition: all 0.2s ease; }
+        .seat { transition: all 0.2s ease; position: relative; }
         .seat.selected {
             background-color: #d84e55 !important;
             color: white !important;
@@ -34,13 +34,11 @@
         }
         .seat.selected .price-tag { color: white !important; }
         .seat.booked {
-            background-color: #9ca3af !important;
-            color: #374151 !important;
-            border-color: #6b7280 !important;
-            cursor: not-allowed;
-            opacity: 0.7;
+            background-color: #f3f4f6 !important;
+            color: #9ca3af !important;
+            border-color: #d1d5db !important;
         }
-        .seat.booked .price-tag { color: #374151 !important; }
+        .seat.booked .price-tag { color: #9ca3af !important; }
         .tab-btn.active {
             background-color: #d84e55;
             color: white;
@@ -233,7 +231,7 @@
                             <div class="flex gap-2 text-[10px]">
                                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-white border border-gray-400 rounded"></span> उपलब्ध</span>
                                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-redbus rounded"></span> सिलेक्टेड</span>
-                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-gray-400 border border-gray-600 rounded"></span> बुक झालेले</span>
+                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-gray-200 border border-gray-400 rounded"></span> आधी बुक (पुन्हा बुक करा)</span>
                             </div>
                         </div>
 
@@ -497,7 +495,6 @@
                     </div>
                 </div>
 
-                <!-- सर्व पोर्टलसाठी QR कोड आणि पेमेंट अट (Sharing पोर्टलसाठी सक्तीची, बाकी पोर्टल्ससाठी खुली) -->
                 <div id="payment-section" class="mt-5 border-t-2 border-dashed border-gray-300 pt-4 text-center">
                     <h4 class="text-sm font-bold text-gray-800">Shashiraj Rahane</h4>
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shash74.s7@oksbi&pn=Shashiraj%20Rahane" alt="UPI QR Code" class="w-36 h-36 mx-auto my-2 rounded-lg shadow-md border p-1 bg-white">
@@ -796,7 +793,12 @@
             if (selectedDateStr < todayStr) return true; // जुनी तारीख असेल तर ब्लॉक
 
             if (selectedDateStr === todayStr && timeVal) {
-                const [hours, minutes] = timeVal.split(':').map(Number);
+                const [timeStrPart, modifier] = timeVal.split(' ');
+                let [hours, minutes] = timeStrPart.split(':').map(Number);
+                
+                if (modifier === 'PM' && hours < 12) hours += 12;
+                if (modifier === 'AM' && hours === 12) hours = 0;
+
                 const selectedTimeMinutes = hours * 60 + minutes;
                 const currentTimeMinutes = now.getHours() * 60 + now.getMinutes();
                 if (selectedTimeMinutes < currentTimeMinutes) {
@@ -889,6 +891,7 @@
             });
         }
 
+        // जुनी बुकिंग्स असूनही सीट कितीही वेळा बुक करता यावी यासाठी डेलिगेटेड मार्किंग
         window.fetchOccupiedSeats = function() {
             const date = document.getElementById('sharing-date').value;
             const time = document.getElementById('sharing-time').value;
@@ -898,47 +901,40 @@
             window.selectedSeats = [];
             document.querySelectorAll('.seat').forEach(btn => {
                 btn.classList.remove('selected', 'booked');
+                // जुना disabled काढून टाकला जेणेकरून सीट नेहमी क्लिक करता येईल
                 btn.disabled = false;
+                const badge = btn.querySelector('.booked-badge');
+                if (badge) badge.remove();
             });
 
             if (!date || !time) return;
-
-            const maxCapacity = car.includes('ertiga') ? 6 : 4; 
 
             const bookRef = ref(database, 'bookings/');
             onValue(bookRef, (snapshot) => {
                 const data = snapshot.val();
                 if (!data) return;
 
-                let cabBookings = {};
-
+                const occupiedCodes = new Set();
                 Object.values(data).forEach(b => {
                     if (b.type === 'sharing' && b.date === date && b.time === time && b.car === car && b.direction === route && b.seats) {
-                        let cabId = b.carNumber || 1;
-                        if (!cabBookings[cabId]) cabBookings[cabId] = [];
-                        cabBookings[cabId].push(...b.seats);
+                        b.seats.forEach(s => {
+                            const match = s.match(/\(([A-Z0-9]+)\)/);
+                            if (match) occupiedCodes.add(match[1]);
+                        });
                     }
-                });
-
-                let activeCabNumber = 1;
-                while (cabBookings[activeCabNumber] && cabBookings[activeCabNumber].length >= maxCapacity) {
-                    activeCabNumber++;
-                }
-
-                window.currentAssignedCab = activeCabNumber; 
-
-                let activeCabSeats = cabBookings[activeCabNumber] || [];
-                const occupiedCodes = new Set();
-                activeCabSeats.forEach(s => {
-                    const match = s.match(/\(([A-Z0-9]+)\)/);
-                    if (match) occupiedCodes.add(match[1]);
                 });
 
                 document.querySelectorAll('.seat').forEach(btn => {
                     const code = btn.getAttribute('data-seat-code');
                     if (code && occupiedCodes.has(code)) {
                         btn.classList.add('booked');
-                        btn.disabled = true;
+                        // सीट बुक झालेली असल्यास त्यावर क्रॉस किंवा 'बुक' आयकॉन दर्शवणे
+                        if (!btn.querySelector('.booked-badge')) {
+                            const iconSpan = document.createElement('span');
+                            iconSpan.className = 'booked-badge absolute top-0.5 right-0.5 bg-gray-400 text-white rounded-full px-1 text-[8px] font-bold';
+                            iconSpan.innerHTML = '<i class="fa-solid fa-check"></i>';
+                            btn.appendChild(iconSpan);
+                        }
                     }
                 });
             });
@@ -1220,8 +1216,9 @@
 
         window.selectTime = function(btn, timeStr) {
             const dateVal = document.getElementById('sharing-date').value;
+            // जुनी किंवा निघून गेलेली वेळ असलेस सिलेक्ट होणार नाही आणि मेसेज येईल
             if (isPastDateTime(dateVal, timeStr)) {
-                alert('भूतकाळातील (Past) तारीख किंवा वेळ निवडता येणार नाही!');
+                alert('ही वेळ निघून गेलेली आहे! कृपया चालू किंवा पुढची वेळ निवडा.');
                 return;
             }
 
@@ -1232,8 +1229,6 @@
         };
 
         window.toggleSeat = function(btn, seatDetail) {
-            if (btn.classList.contains('booked')) return;
-
             if (btn.classList.contains('selected')) {
                 btn.classList.remove('selected');
                 window.selectedSeats = window.selectedSeats.filter(item => item !== seatDetail);
@@ -1282,13 +1277,11 @@
                 timeVal = document.getElementById('package-time').value;
             }
 
-            // सर्व पोर्टल्समध्ये बॅकडेटेड तारीख/वेळ चेक करून ब्लॉक करणे
-            if (isPastDateTime(dateVal, timeVal)) {
-                alert('चुकीची तारीख किंवा वेळ! तुम्ही भूतकाळातील (Backdated) वेळेसाठी बुकिंग करू शकत नाही.');
+            if (window.activeTab === 'sharing' && isPastDateTime(dateVal, timeVal)) {
+                alert('चुकीची वेळ! निघून गेलेली वेळ बुक करता येणार नाही.');
                 return;
             }
 
-            // शेअरिंग पोर्टलसाठी पेमेंट अट (पेमेंट केल्याशिवाय सीट बुक होणार नाही)
             if (window.activeTab === 'sharing') {
                 const isPaymentChecked = document.getElementById('paymentConfirmCheckbox').checked;
                 if (!isPaymentChecked) {
@@ -1397,11 +1390,6 @@
 
             if (!busDate || !busTime) {
                 alert("कृपया प्रवासाची तारीख आणि वेळ निवडा!");
-                return;
-            }
-
-            if (isPastDateTime(busDate, busTime)) {
-                alert('भूतकाळातील (Backdated) वेळेसाठी बस इन्क्वायरी करता येणार नाही!');
                 return;
             }
 
@@ -1587,11 +1575,16 @@
                     let html = `<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm uppercase'>लाइव्ह बुकिंग्स (Live Inquiries)</h4>`;
                     filteredData.reverse().forEach(([key, b]) => {
                         html += `
-                            <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone}) ${b.carNumber ? `<span class="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-[10px] ml-1">Cab ${b.carNumber}</span>` : ''}</p>
-                            <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
-                            <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
-                            ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
-                            ${b.paymentStatus ? `<p class="text-[11px] font-bold text-green-700 mt-1">💳 पेमेंट: ${b.paymentStatus}</p>` : ''}
+                            <div class="p-2.5 border-b mb-2 relative">
+                                <button onclick="deleteRecord('${key}', 'booking')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-[10px] font-bold shadow flex items-center gap-1">
+                                    <i class="fa-solid fa-trash"></i> डिलीट
+                                </button>
+                                <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone}) ${b.carNumber ? `<span class="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-[10px] ml-1">Cab ${b.carNumber}</span>` : ''}</p>
+                                <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
+                                <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
+                                ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
+                                ${b.paymentStatus ? `<p class="text-[11px] font-bold text-green-700 mt-1">💳 पेमेंट: ${b.paymentStatus}</p>` : ''}
+                            </div>
                         `;
                     });
                     contentBox.innerHTML = html;
