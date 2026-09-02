@@ -783,14 +783,13 @@
             switchTab('sharing');
         });
 
-        // बॅकडेटेड तारीख आणि वेळ ब्लॉक करण्यासाठीचे फंक्शन
         function isPastDateTime(dateVal, timeVal) {
             if (!dateVal) return false;
             const now = new Date();
             const selectedDateStr = dateVal;
             const todayStr = getTodayString();
 
-            if (selectedDateStr < todayStr) return true; // जुनी तारीख असेल तर ब्लॉक
+            if (selectedDateStr < todayStr) return true;
 
             if (selectedDateStr === todayStr && timeVal) {
                 const [timeStrPart, modifier] = timeVal.split(' ');
@@ -802,7 +801,7 @@
                 const selectedTimeMinutes = hours * 60 + minutes;
                 const currentTimeMinutes = now.getHours() * 60 + now.getMinutes();
                 if (selectedTimeMinutes < currentTimeMinutes) {
-                    return true; // आजचीच पण गेलेली वेळ असेल तर ब्लॉक
+                    return true;
                 }
             }
             return false;
@@ -891,7 +890,6 @@
             });
         }
 
-        // जुनी बुकिंग्स असूनही सीट कितीही वेळा बुक करता यावी यासाठी डेलिगेटेड मार्किंग
         window.fetchOccupiedSeats = function() {
             const date = document.getElementById('sharing-date').value;
             const time = document.getElementById('sharing-time').value;
@@ -901,7 +899,6 @@
             window.selectedSeats = [];
             document.querySelectorAll('.seat').forEach(btn => {
                 btn.classList.remove('selected', 'booked');
-                // जुना disabled काढून टाकला जेणेकरून सीट नेहमी क्लिक करता येईल
                 btn.disabled = false;
                 const badge = btn.querySelector('.booked-badge');
                 if (badge) badge.remove();
@@ -928,7 +925,6 @@
                     const code = btn.getAttribute('data-seat-code');
                     if (code && occupiedCodes.has(code)) {
                         btn.classList.add('booked');
-                        // सीट बुक झालेली असल्यास त्यावर क्रॉस किंवा 'बुक' आयकॉन दर्शवणे
                         if (!btn.querySelector('.booked-badge')) {
                             const iconSpan = document.createElement('span');
                             iconSpan.className = 'booked-badge absolute top-0.5 right-0.5 bg-gray-400 text-white rounded-full px-1 text-[8px] font-bold';
@@ -1216,7 +1212,6 @@
 
         window.selectTime = function(btn, timeStr) {
             const dateVal = document.getElementById('sharing-date').value;
-            // जुनी किंवा निघून गेलेली वेळ असलेस सिलेक्ट होणार नाही आणि मेसेज येईल
             if (isPastDateTime(dateVal, timeStr)) {
                 alert('ही वेळ निघून गेलेली आहे! कृपया चालू किंवा पुढची वेळ निवडा.');
                 return;
