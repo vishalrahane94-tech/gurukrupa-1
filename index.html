@@ -34,12 +34,6 @@
         }
         .seat.selected .price-tag { color: white !important; }
         
-        /* आधी बुक असलेल्या सीट्सही आता नॉर्मल / सेम दिसेल */
-        .seat.already-booked {
-            background-color: #ffffff !important;
-            border-color: #9ca3af !important;
-        }
-        
         .tab-btn.active {
             background-color: #d84e55;
             color: white;
@@ -191,7 +185,7 @@
                     <div class="grid grid-cols-2 gap-2 mb-3">
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची तारीख *</label>
-                            <input type="date" id="sharing-date" onchange="fetchOccupiedSeats()" class="w-full p-1.5 border rounded text-xs date-picker-min">
+                            <input type="date" id="sharing-date" class="w-full p-1.5 border rounded text-xs date-picker-min">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी / सर्व्हिस *</label>
@@ -779,7 +773,6 @@
             updatePackageCars();
             listenTodaysDriverBalance();
             listenOwnerCounts(); 
-            fetchOccupiedSeats();
             switchTab('sharing');
         });
 
@@ -889,56 +882,6 @@
                 }
             });
         }
-
-        window.fetchOccupiedSeats = function() {
-            const date = document.getElementById('sharing-date').value;
-            const time = document.getElementById('sharing-time').value;
-            const car = window.selectedCar;
-            const route = window.selectedRoute;
-
-            window.selectedSeats = [];
-            
-            // सर्व सीट्स रीसेट करा
-            document.querySelectorAll('.seat').forEach(btn => {
-                btn.classList.remove('selected', 'already-booked');
-                btn.disabled = false;
-                const badge = btn.querySelector('.booked-badge');
-                if (badge) badge.remove();
-            });
-
-            if (!date || !time) return;
-
-            const bookRef = ref(database, 'bookings/');
-            onValue(bookRef, (snapshot) => {
-                const data = snapshot.val();
-                if (!data) return;
-
-                const occupiedCodes = new Set();
-                Object.values(data).forEach(b => {
-                    if (b.type === 'sharing' && b.date === date && b.time === time && b.car === car && b.direction === route && b.seats) {
-                        b.seats.forEach(s => {
-                            const match = s.match(/\(([A-Z0-9]+)\)/);
-                            if (match) occupiedCodes.add(match[1]);
-                        });
-                    }
-                });
-
-                document.querySelectorAll('.seat').forEach(btn => {
-                    const code = btn.getAttribute('data-seat-code');
-                    if (code && occupiedCodes.has(code)) {
-                        if (!btn.classList.contains('selected')) {
-                            btn.classList.add('already-booked');
-                        }
-                        if (!btn.querySelector('.booked-badge')) {
-                            const iconSpan = document.createElement('span');
-                            iconSpan.className = 'booked-badge absolute top-0.5 right-0.5 bg-gray-500 text-white rounded-full px-1 text-[8px] font-bold';
-                            iconSpan.innerHTML = '<i class="fa-solid fa-rotate-right"></i>';
-                            btn.appendChild(iconSpan);
-                        }
-                    }
-                });
-            });
-        };
 
         window.selectLoginRole = function(role) {
             window.currentRole = role;
@@ -1069,7 +1012,6 @@
             }
 
             updateDropdownOptions(route);
-            fetchOccupiedSeats();
         };
 
         function updateDropdownOptions(route) {
@@ -1210,8 +1152,6 @@
                 document.getElementById('layout-ertiga').classList.add('hidden');
                 document.getElementById('layout-ciaz').classList.remove('hidden');
             }
-
-            fetchOccupiedSeats();
         };
 
         window.selectTime = function(btn, timeStr) {
@@ -1224,7 +1164,6 @@
             document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             document.getElementById('sharing-time').value = timeStr;
-            fetchOccupiedSeats();
         };
 
         window.toggleSeat = function(btn, seatDetail) {
@@ -1317,10 +1256,9 @@
                 bookingData.car = window.selectedCar;
                 bookingData.seats = window.selectedSeats;
                 bookingData.direction = window.selectedRoute;
-                bookingData.carNumber = window.currentAssignedCab || 1; 
                 bookingData.paymentStatus = "Paid Via QR";
 
-                whatsappText += `प्रकार: शेअरिंग (${window.selectedRoute})\nकॅब क्र: Cab ${bookingData.carNumber}\nपिकअप: ${pickup}\nड्रॉप: ${drop}\nतारीख: ${date}\nवेळ: ${time}\nगाडी: ${window.selectedCar}\nसीट्स: ${window.selectedSeats.join(', ')}\n*पेमेंट स्थिती:* QR कोडद्वारे पेमेंट पूर्ण`;
+                whatsappText += `प्रकार: शेअरिंग (${window.selectedRoute})\nपिकअप: ${pickup}\nड्रॉप: ${drop}\nतारीख: ${date}\nवेळ: ${time}\nगाडी: ${window.selectedCar}\nसीट्स: ${window.selectedSeats.join(', ')}\n*पेमेंट स्थिती:* QR कोडद्वारे पेमेंट पूर्ण`;
 
             } else if (window.activeTab === 'oneway') {
                 bookingData.route = document.getElementById('oneway-route').value;
@@ -1366,7 +1304,6 @@
                     if (document.getElementById('paymentConfirmCheckbox')) {
                         document.getElementById('paymentConfirmCheckbox').checked = false;
                     }
-                    fetchOccupiedSeats();
                     const encodedMsg = encodeURIComponent(whatsappText);
                     window.open(`https://wa.me/919890896040?text=${encodedMsg}`, '_blank');
                 })
@@ -1578,7 +1515,7 @@
                                 <button onclick="deleteRecord('${key}', 'booking')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-[10px] font-bold shadow flex items-center gap-1">
                                     <i class="fa-solid fa-trash"></i> डिलीट
                                 </button>
-                                <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone}) ${b.carNumber ? `<span class="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-[10px] ml-1">Cab ${b.carNumber}</span>` : ''}</p>
+                                <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone})</p>
                                 <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
                                 <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
                                 ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
