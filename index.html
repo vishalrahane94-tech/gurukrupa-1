@@ -63,13 +63,15 @@
         .role-card-item {
             scroll-snap-align: start;
         }
+        .hidden-portal { display: none !important; }
     </style>
 </head>
 <body class="bg-gray-100 font-sans pb-10">
 
     <header class="bg-redbus text-white p-2.5 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2.5">
+            <!-- गुप्त ट्रिगर (या लोगोवर 4 वेळा क्लिक केल्यावर Owner/Driver पोर्टल अनलॉक होईल) -->
+            <div id="secret-logo-trigger" class="flex items-center gap-2.5 cursor-pointer select-none" title="Secret Trigger">
                 <div class="w-11 h-11 bg-black rounded-full border-2 border-yellow-500 flex items-center justify-center shadow-md shrink-0">
                     <span class="text-yellow-500 font-black text-xl tracking-tighter">GK</span>
                 </div>
@@ -97,6 +99,7 @@
             <p class="text-[11px] text-gray-500 text-center mb-4">डावीकडून उजवीकडे स्क्रोल करून तुमचा रोल निवडा</p>
 
             <div class="flex gap-4 overflow-x-auto no-scrollbar pb-3 px-1 role-scroll-container w-full">
+                <!-- कस्टमर पोर्टल (हे नेहमी दिसेल) -->
                 <div id="role-card-customer" onclick="selectLoginRole('customer')" class="portal-card active role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0">
                     <div class="w-12 h-12 bg-red-100 text-redbus rounded-full flex items-center justify-center mx-auto mb-2">
                         <i class="fa-solid fa-user text-xl"></i>
@@ -105,7 +108,8 @@
                     <p class="text-xs text-gray-500 mt-0.5">कस्टमर पोर्टल</p>
                 </div>
 
-                <div id="role-card-owner" onclick="selectLoginRole('owner')" class="portal-card role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0">
+                <!-- ओनर पोर्टल (सुरुवातीला लपलेले) -->
+                <div id="role-card-owner" onclick="selectLoginRole('owner')" class="portal-card role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0 hidden-portal">
                     <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto mb-2">
                         <i class="fa-solid fa-user-tie text-xl"></i>
                     </div>
@@ -113,7 +117,8 @@
                     <p class="text-xs text-gray-500 mt-0.5">ओनर पोर्टल</p>
                 </div>
 
-                <div id="role-card-driver" onclick="selectLoginRole('driver')" class="portal-card role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0">
+                <!-- ड्रायव्हर पोर्टल (सुरुवातीला लपलेले) -->
+                <div id="role-card-driver" onclick="selectLoginRole('driver')" class="portal-card role-card-item min-w-[88%] sm:min-w-[85%] p-4 border-2 rounded-xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0 hidden-portal">
                     <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-2">
                         <i class="fa-solid fa-id-card text-xl"></i>
                     </div>
@@ -764,6 +769,9 @@
             if (savedUser) {
                 window.currentUser = JSON.parse(savedUser);
                 window.currentRole = window.currentUser.role;
+                if (window.currentUser.role !== 'customer') {
+                    unlockAdminPortals(); // आधी लॉगिन असेल तर ओनर/ड्रायव्हर कार्ड्स दिसेल
+                }
                 applyUserSession(window.currentUser);
             }
             cleanBackdatedBookings();
@@ -775,6 +783,27 @@
             listenOwnerCounts(); 
             switchTab('sharing');
         });
+
+        // गुप्त लोगो क्लिक लॉजिक (4 क्लिक्स आणि पासवर्ड)
+        let headerClickCount = 0;
+        document.getElementById('secret-logo-trigger').addEventListener('click', function() {
+            headerClickCount++;
+            if (headerClickCount === 4) {
+                let pass = prompt("ओनर/ड्रायव्हर पोर्टल अनलॉक करण्यासाठी पासवर्ड टाका:");
+                if (pass === "admin123" || pass === "owner123") {
+                    unlockAdminPortals();
+                    alert("ओनर आणि ड्रायव्हर पोर्टल अनलॉक झाले आहेत! आता स्क्रोल करून ते पाहू शकता.");
+                } else {
+                    alert("चुकाचा पासवर्ड!");
+                }
+                headerClickCount = 0;
+            }
+        });
+
+        function unlockAdminPortals() {
+            document.getElementById('role-card-owner').classList.remove('hidden-portal');
+            document.getElementById('role-card-driver').classList.remove('hidden-portal');
+        }
 
         function isPastDateTime(dateVal, timeVal) {
             if (!dateVal) return false;
