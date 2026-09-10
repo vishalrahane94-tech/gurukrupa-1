@@ -72,9 +72,7 @@
         <div class="container mx-auto flex justify-between items-center">
             <!-- गुप्त ट्रिगर (या लोगोवर 4 वेळा क्लिक केल्यावर Owner/Driver पोर्टल अनलॉक होईल) -->
             <div id="secret-logo-trigger" class="flex items-center gap-2.5 cursor-pointer select-none" title="Secret Trigger">
-                <div class="w-11 h-11 bg-black rounded-full border-2 border-yellow-500 flex items-center justify-center shadow-md shrink-0">
-                    <span class="text-yellow-500 font-black text-xl tracking-tighter">GK</span>
-                </div>
+                <img src="logo.png" alt="GK Logo" class="w-11 h-11 rounded-full border-2 border-yellow-500 shadow-md object-cover shrink-0">
                 <div>
                     <h1 class="text-base font-black tracking-wide text-yellow-300 uppercase leading-none">GURUKRUPA</h1>
                     <p class="text-[9px] tracking-widest text-white uppercase font-bold">TOURS AND TRAVELS</p>
@@ -513,11 +511,7 @@
 
                 <div class="mt-6 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm">
                     <div class="text-center mb-4">
-                        <div class="w-20 h-20 bg-black rounded-full border-2 border-yellow-500 mx-auto flex flex-col items-center justify-center p-1 shadow-md">
-                            <span class="text-yellow-500 font-black text-xl tracking-tighter leading-none">GK</span>
-                            <span class="text-[8px] text-yellow-400 font-bold tracking-widest mt-0.5">GURUKRUPA</span>
-                            <span class="text-[7px] text-white font-semibold">Since 1991</span>
-                        </div>
+                        <img src="logo.png" alt="GK Logo" class="w-20 h-20 rounded-full border-2 border-yellow-500 mx-auto shadow-md object-cover">
                         <h3 class="text-red-600 font-bold text-sm mt-2">आमच्या ट्रॅव्हल्सची वैशिष्ट्ये</h3>
                     </div>
                     
@@ -770,7 +764,7 @@
                 window.currentUser = JSON.parse(savedUser);
                 window.currentRole = window.currentUser.role;
                 if (window.currentUser.role !== 'customer') {
-                    unlockAdminPortals(); // आधी लॉगिन असेल तर ओनर/ड्रायव्हर कार्ड्स दिसेल
+                    unlockAdminPortals();
                 }
                 applyUserSession(window.currentUser);
             }
