@@ -4,7 +4,7 @@
     "target": {
       "namespace": "android_app",
       "package_name": "io.github.vishalrahane94_tech.twa",
-      "sha256_cert_fingerprints": ["E8:AA:90:05:9D:4D:4F:CE:84:B3:2E:99:85:AB:37:64:21:A2:66:8F:CA:93:C7:25:77:E2:1D:50:93:F1:E2:72"]
+      "sha256_cert_fingerprints": ["5C:68:FB:AB:FE:6D:C2:CD:8A:FD:58:63:D8:9F:66:10:4C:FD:C6:FF:18:1D:8E:9D:EE:95:92:38:72:27:47:CD"]
     }
   }
 ]
