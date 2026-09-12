@@ -70,7 +70,7 @@
 </head>
 <body class="bg-gray-100 font-sans pb-10">
 
-    <!-- लॉगिननंतर दिसणारा हेडर बार (सुरुवातीला लपलेला राहील) -->
+    <!-- लॉगिननंतर दिसणारा हेडर बार -->
     <header id="app-header" class="hidden bg-redbus text-white p-2.5 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2.5 select-none">
@@ -94,22 +94,17 @@
 
     <div class="container mx-auto p-3 max-w-xl">
 
-        <!-- पहिल्या स्क्रीनचे डिझाइन (Main Branding Header & Login) -->
+        <!-- लॉगिन स्क्रीन -->
         <div id="screen-login" class="flex flex-col items-center justify-center pt-6 pb-4">
             
-            <!-- मुख्य ब्रँडिंग लोगो (गोल्डन लोगो आणि नाव) -->
             <div id="secret-logo-trigger" class="text-center cursor-pointer select-none mb-6">
                 <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-2 border-yellow-500">
                 <h1 class="text-2xl font-black tracking-wider text-gray-900 uppercase">GURUKRUPA</h1>
                 <p class="text-xs font-extrabold tracking-[0.2em] text-yellow-600 uppercase mt-0.5">TOURS AND TRAVELS</p>
             </div>
 
-            <!-- लॉगिन कार्ड (स्क्रीनशॉटप्रमाणे) -->
             <div class="bg-white p-5 rounded-2xl shadow-xl border border-gray-200 w-full">
-
-                <!-- रोल सिलेक्शन स्क्रोल (कस्टमर, ओनर, ड्रायव्हर) -->
                 <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 px-1 role-scroll-container w-full">
-                    <!-- कस्टमर रोल कार्ड -->
                     <div id="role-card-customer" onclick="selectLoginRole('customer')" class="portal-card active role-card-item w-full p-4 border-2 border-redbus rounded-2xl text-center cursor-pointer transition-all bg-red-50/50 shadow-sm shrink-0">
                         <div class="w-14 h-14 bg-white text-gray-800 rounded-full border-2 border-gray-800 flex items-center justify-center mx-auto mb-2">
                             <i class="fa-solid fa-user text-2xl"></i>
@@ -117,7 +112,6 @@
                         <p class="text-sm font-black text-gray-900">1. Customer</p>
                     </div>
 
-                    <!-- ओनर रोल कार्ड (सुरुवातीला लपलेले) -->
                     <div id="role-card-owner" onclick="selectLoginRole('owner')" class="portal-card role-card-item w-full p-4 border-2 rounded-2xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0 hidden-portal">
                         <div class="w-14 h-14 bg-white text-amber-700 rounded-full border-2 border-amber-700 flex items-center justify-center mx-auto mb-2">
                             <i class="fa-solid fa-user-tie text-2xl"></i>
@@ -125,7 +119,6 @@
                         <p class="text-sm font-black text-gray-900">2. Owner</p>
                     </div>
 
-                    <!-- ड्रायव्हर रोल कार्ड (सुरुवातीला लपलेले) -->
                     <div id="role-card-driver" onclick="selectLoginRole('driver')" class="portal-card role-card-item w-full p-4 border-2 rounded-2xl text-center cursor-pointer transition-all bg-gray-50 shadow-sm shrink-0 hidden-portal">
                         <div class="w-14 h-14 bg-white text-blue-700 rounded-full border-2 border-blue-700 flex items-center justify-center mx-auto mb-2">
                             <i class="fa-solid fa-id-card text-2xl"></i>
@@ -134,7 +127,6 @@
                     </div>
                 </div>
 
-                <!-- फॉर्म इनपुट्स -->
                 <div class="space-y-4 mt-4 border-t pt-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-700 mb-1">पूर्ण नाव (Full Name) *</label>
@@ -156,6 +148,7 @@
             </div>
         </div>
 
+        <!-- कस्टमर पोर्टल स्क्रीन (1. Sharing सर्वात वर) -->
         <div id="screen-customer" class="hidden pt-2">
             <div class="grid grid-cols-3 gap-1.5 mb-4 text-xs font-semibold">
                 <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
@@ -175,6 +168,7 @@
                     </div>
                 </div>
 
+                <!-- 1. Sharing Section -->
                 <div id="section-sharing" class="booking-section">
                     <div class="flex gap-2 mb-3">
                         <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active flex-1 p-2 text-xs font-bold border rounded-lg shadow-sm border-redbus text-center">
@@ -307,6 +301,7 @@
                     </div>
                 </div>
 
+                <!-- 2. One Way Section -->
                 <div id="section-oneway" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>
                     <div>
@@ -340,6 +335,7 @@
                     </div>
                 </div>
 
+                <!-- 3. Airport Section -->
                 <div id="section-airport" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>
                     <div>
@@ -371,6 +367,7 @@
                     </div>
                 </div>
 
+                <!-- 4. Fleet Section -->
                 <div id="section-fleet" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>
                     <div>
@@ -411,6 +408,7 @@
                     </div>
                 </div>
 
+                <!-- 5. Darshan Section -->
                 <div id="section-darshan" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट प्रेक्षणीय स्थळे</h3>
                     <div class="bg-red-50 p-2.5 rounded border border-red-200 text-[11px] text-gray-700 leading-relaxed">
@@ -437,6 +435,7 @@
                     </div>
                 </div>
 
+                <!-- 6. Packages Section -->
                 <div id="section-packages" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">खास टुरिझम पॅकेजेस (Special Tour Packages)</h3>
                     <div>
@@ -465,6 +464,7 @@
                     </div>
                 </div>
 
+                <!-- 7. Buses Section -->
                 <div id="section-buses" class="booking-section hidden space-y-3">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">
                         <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)
@@ -520,6 +520,7 @@
                     <i class="fa-brands fa-whatsapp text-lg"></i> बुकिंग व्हॉट्सॲपवर पाठवा
                 </button>
 
+                <!-- ट्रॅव्हल्सची वैशिष्ट्ये -->
                 <div class="mt-6 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm">
                     <div class="text-center mb-4">
                         <img src="icon-192.png" alt="GK Logo" class="w-20 h-20 rounded-full border-2 border-yellow-500 mx-auto shadow-md object-cover">
@@ -570,6 +571,7 @@
             </div>
         </div>
 
+        <!-- ओनर पोर्टल स्क्रीन -->
         <div id="screen-owner" class="hidden space-y-4 pt-2">
             <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
                 <div class="flex justify-between items-center border-b pb-2 mb-3">
@@ -654,6 +656,7 @@
             </div>
         </div>
 
+        <!-- ड्रायव्हर पोर्टल स्क्रीन -->
         <div id="screen-driver" class="hidden space-y-4 pt-2">
             <div class="bg-white p-4 rounded-xl shadow border border-gray-200">
                 <h2 class="text-sm font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">
@@ -710,6 +713,7 @@
 
     </div>
 
+    <!-- JavaScript & Firebase Setup (Realtime Sync) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -769,7 +773,7 @@
         }
 
         window.addEventListener('load', () => {
-            window.scrollTo(0, 0); // पेज लोड झाल्यावर सर्वात वर (१ नंबरपासून) दिसेल
+            window.scrollTo(0, 0);
             setCalendarMinDates();
             const savedUser = localStorage.getItem('gk_user');
             if (savedUser) {
@@ -790,7 +794,6 @@
             switchTab('sharing');
         });
 
-        // गुप्त लोगो क्लिक लॉजिक (४ वेळा क्लिक केल्यावर ओनर/ड्रायव्हर अनलॉक)
         let headerClickCount = 0;
         document.getElementById('secret-logo-trigger').addEventListener('click', function() {
             headerClickCount++;
@@ -798,7 +801,7 @@
                 let pass = prompt("ओनर/ड्रायव्हर पोर्टल अनलॉक करण्यासाठी पासवर्ड टाका:");
                 if (pass === "admin123" || pass === "shri8620shambhu") {
                     unlockAdminPortals();
-                    alert("ओनर आणि ड्रायव्हर पोर्टल अनलॉक झाले आहेत! कार्ड स्क्रोल करून पहा.");
+                    alert("ओनर आणि ड्रायव्हर पोर्टल अनलॉक झाले आहेत!");
                 } else {
                     alert("चुकीचा पासवर्ड!");
                 }
