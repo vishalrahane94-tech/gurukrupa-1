@@ -67,15 +67,24 @@
         }
         .hidden-portal { display: none !important; }
 
-        /* स्क्रोल करताना मेनू आणि ग्राहक माहिती जागेवर स्थिर राहण्यासाठी सुधारित Sticky CSS */
+        /* स्क्रोल करताना मेनू आणि ग्राहक माहिती जागेवर स्थिर राहण्यासाठी सुधारित Sticky CSS व मार्जिन */
         .sticky-customer-nav {
             position: -webkit-sticky;
             position: sticky;
             top: 50px; /* हेडरच्या खाली बरोबर मॅच करण्यासाठी */
             z-index: 40;
             background-color: #f3f4f6;
-            padding-top: 6px;
+            padding-top: 10px;
             padding-bottom: 6px;
+        }
+
+        /* लेआउट ओव्हरलॅप समस्या पूर्णपणे सोडवण्यासाठी */
+        body {
+            padding-bottom: 50px !important;
+        }
+
+        #screen-customer {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -1572,12 +1581,16 @@
                     let html = `<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm uppercase'>लाइव्ह बुकिंग्स (Live Inquiries)</h4>`;
                     filteredData.reverse().forEach(([key, b]) => {
                         html += `
-                            <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone})</p>
-                            <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
-                            <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
-                            ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
-                            ${b.paymentStatus ? `<p class="text-[11px] font-bold text-green-700 mt-1">💳 पेमेंट: ${b.paymentStatus}</p>` : ''}
-                        </div>`;
+                            <div class="p-3 border-b text-xs space-y-1 mb-2 bg-gray-50 rounded-lg shadow-sm relative">
+                                <button onclick="deleteRecord('${key}', 'booking')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-[10px] font-bold shadow flex items-center gap-1">
+                                    <i class="fa-solid fa-trash"></i> डिलीट
+                                </button>
+                                <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone})</p>
+                                <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
+                                <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
+                                ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
+                                ${b.paymentStatus ? `<p class="text-[11px] font-bold text-green-700 mt-1">💳 पेमेंट: ${b.paymentStatus}</p>` : ''}
+                            </div>`;
                     });
                     contentBox.innerHTML = html;
                 }, { onlyOnce: true });
