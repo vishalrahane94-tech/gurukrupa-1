@@ -769,6 +769,7 @@
         }
 
         window.addEventListener('load', () => {
+            window.scrollTo(0, 0); // पेज लोड झाल्यावर सर्वात वर (१ नंबरपासून) दिसेल
             setCalendarMinDates();
             const savedUser = localStorage.getItem('gk_user');
             if (savedUser) {
