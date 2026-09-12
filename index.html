@@ -66,6 +66,17 @@
             scroll-snap-align: start;
         }
         .hidden-portal { display: none !important; }
+
+        /* स्क्रोल करताना मेनू आणि ग्राहक माहिती जागेवर स्थिर राहण्यासाठी Sticky CSS */
+        .sticky-customer-nav {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 52px; /* हेडरच्या खाली बरोबर सेट करण्यासाठी */
+            z-index: 40;
+            background-color: #f3f4f6; /* bg-gray-100 */
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans pb-10">
@@ -148,25 +159,30 @@
             </div>
         </div>
 
-        <!-- कस्टमर पोर्टल स्क्रीन (1. Sharing सर्वात वर) -->
-        <div id="screen-customer" class="hidden pt-2">
-            <div class="grid grid-cols-3 gap-1.5 mb-4 text-xs font-semibold">
-                <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
-                <button onclick="switchTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>
-                <button onclick="switchTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport Drop</button>
-                <button onclick="switchTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet (Per KM)</button>
-                <button onclick="switchTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. नाशिक दर्शन</button>
-                <button onclick="switchTab('packages')" id="tab-packages" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Packages</button>
-                <button onclick="switchTab('buses')" id="tab-buses" class="tab-btn col-span-3 p-2 rounded-lg border bg-white shadow-sm text-redbus font-bold">7. Buses Inquiry</button>
-            </div>
+        <!-- कस्टमर पोर्टल स्क्रीन (Sticky Navigation जोडलेले) -->
+        <div id="screen-customer" class="hidden pt-1">
+            
+            <!-- खाली स्क्रोल करताना हे टॅब आणि माहिती जागेवर स्टेबल (Sticky) राहील -->
+            <div class="sticky-customer-nav">
+                <div class="grid grid-cols-3 gap-1.5 mb-2 text-xs font-semibold">
+                    <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
+                    <button onclick="switchTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>
+                    <button onclick="switchTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport Drop</button>
+                    <button onclick="switchTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet (Per KM)</button>
+                    <button onclick="switchTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. नाशिक दर्शन</button>
+                    <button onclick="switchTab('packages')" id="tab-packages" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Packages</button>
+                    <button onclick="switchTab('buses')" id="tab-buses" class="tab-btn col-span-3 p-2 rounded-lg border bg-white shadow-sm text-redbus font-bold">7. Buses Inquiry</button>
+                </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
-                <div class="mb-4 border-b pb-2 flex justify-between items-center bg-gray-50 p-2 rounded">
+                <div class="border-b pb-2 flex justify-between items-center bg-white p-2.5 rounded-lg shadow-sm border border-gray-200">
                     <div class="text-xs">
                         <span class="font-bold text-gray-700">ग्राहक:</span> <span id="cust-display-name" class="font-semibold text-redbus"></span> 
                         (<span id="cust-display-phone" class="text-gray-600"></span>)
                     </div>
                 </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200 mt-2">
 
                 <!-- 1. Sharing Section -->
                 <div id="section-sharing" class="booking-section">
@@ -1556,17 +1572,12 @@
                     let html = `<h4 class='font-bold mb-3 border-b pb-1 text-gray-800 text-sm uppercase'>लाइव्ह बुकिंग्स (Live Inquiries)</h4>`;
                     filteredData.reverse().forEach(([key, b]) => {
                         html += `
-                            <div class="p-2.5 border-b mb-2 relative">
-                                <button onclick="deleteRecord('${key}', 'booking')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-[10px] font-bold shadow flex items-center gap-1">
-                                    <i class="fa-solid fa-trash"></i> डिलीट
-                                </button>
-                                <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone})</p>
-                                <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
-                                <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
-                                ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
-                                ${b.paymentStatus ? `<p class="text-[11px] font-bold text-green-700 mt-1">💳 पेमेंट: ${b.paymentStatus}</p>` : ''}
-                            </div>
-                        `;
+                            <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone})</p>
+                            <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>
+                            <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>
+                            ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}
+                            ${b.paymentStatus ? `<p class="text-[11px] font-bold text-green-700 mt-1">💳 पेमेंट: ${b.paymentStatus}</p>` : ''}
+                        </div>`;
                     });
                     contentBox.innerHTML = html;
                 }, { onlyOnce: true });
