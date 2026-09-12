@@ -67,11 +67,9 @@
         }
         .hidden-portal { display: none !important; }
 
-        /* स्क्रोल करताना मेनू आणि ग्राहक माहिती जागेवर स्थिर राहण्यासाठी सुधारित Sticky CSS व मार्जिन */
+        /* सुधारीत CSS: sticky पूर्णपणे काढून relative केले आहे जेणेकरून लेआउट व्यवस्थित राहील */
         .sticky-customer-nav {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 50px; /* हेडरच्या खाली बरोबर मॅच करण्यासाठी */
+            position: relative;
             z-index: 40;
             background-color: #f3f4f6;
             padding-top: 10px;
@@ -171,16 +169,16 @@
         <!-- कस्टमर पोर्टल स्क्रीन -->
         <div id="screen-customer" class="hidden pt-1">
             
-            <!-- खाली स्क्रोल करताना हे टॅब आणि माहिती जागेवर स्टेबल (Sticky) राहील -->
+            <!-- ७ बटन्स ज्यांना onclick फंक्शन्स जोडले आहेत -->
             <div class="sticky-customer-nav">
                 <div class="grid grid-cols-3 gap-1.5 mb-2 text-xs font-semibold">
-                    <button onclick="switchTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
-                    <button onclick="switchTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>
-                    <button onclick="switchTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport Drop</button>
-                    <button onclick="switchTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet (Per KM)</button>
-                    <button onclick="switchTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. नाशिक दर्शन</button>
-                    <button onclick="switchTab('packages')" id="tab-packages" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Packages</button>
-                    <button onclick="switchTab('buses')" id="tab-buses" class="tab-btn col-span-3 p-2 rounded-lg border bg-white shadow-sm text-redbus font-bold">7. Buses Inquiry</button>
+                    <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>
+                    <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>
+                    <button onclick="showTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport Drop</button>
+                    <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet (Per KM)</button>
+                    <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. नाशिक दर्शन</button>
+                    <button onclick="showTab('packages')" id="tab-packages" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Packages</button>
+                    <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 p-2 rounded-lg border bg-white shadow-sm text-redbus font-bold">7. Buses Inquiry</button>
                 </div>
 
                 <div class="border-b pb-2 flex justify-between items-center bg-white p-2.5 rounded-lg shadow-sm border border-gray-200">
@@ -194,7 +192,7 @@
             <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200 mt-2">
 
                 <!-- 1. Sharing Section -->
-                <div id="section-sharing" class="booking-section">
+                <div id="sharing-content" class="tab-content booking-section">
                     <div class="flex gap-2 mb-3">
                         <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active flex-1 p-2 text-xs font-bold border rounded-lg shadow-sm border-redbus text-center">
                             नाशिक ते पुणे (Nashik to Pune)
@@ -327,7 +325,7 @@
                 </div>
 
                 <!-- 2. One Way Section -->
-                <div id="section-oneway" class="booking-section hidden space-y-3">
+                <div id="oneway-content" class="tab-content booking-section hidden space-y-3" style="display: none;">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>
@@ -361,7 +359,7 @@
                 </div>
 
                 <!-- 3. Airport Section -->
-                <div id="section-airport" class="booking-section hidden space-y-3">
+                <div id="airport-content" class="tab-content booking-section hidden space-y-3" style="display: none;">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>
@@ -393,7 +391,7 @@
                 </div>
 
                 <!-- 4. Fleet Section -->
-                <div id="section-fleet" class="booking-section hidden space-y-3">
+                <div id="fleet-content" class="tab-content booking-section hidden space-y-3" style="display: none;">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी निवडा *</label>
@@ -434,7 +432,7 @@
                 </div>
 
                 <!-- 5. Darshan Section -->
-                <div id="section-darshan" class="booking-section hidden space-y-3">
+                <div id="darshan-content" class="tab-content booking-section hidden space-y-3" style="display: none;">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट प्रेक्षणीय स्थळे</h3>
                     <div class="bg-red-50 p-2.5 rounded border border-red-200 text-[11px] text-gray-700 leading-relaxed">
                         <p class="font-bold text-redbus mb-1">समाविष्ट स्थळे:</p>
@@ -461,7 +459,7 @@
                 </div>
 
                 <!-- 6. Packages Section -->
-                <div id="section-packages" class="booking-section hidden space-y-3">
+                <div id="packages-content" class="tab-content booking-section hidden space-y-3" style="display: none;">
                     <h3 class="font-bold text-gray-800 text-xs border-b pb-1">खास टुरिझम पॅकेजेस (Special Tour Packages)</h3>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">पॅकेज रूट निवडा *</label>
@@ -490,7 +488,7 @@
                 </div>
 
                 <!-- 7. Buses Section -->
-                <div id="section-buses" class="booking-section hidden space-y-3">
+                <div id="buses-content" class="tab-content booking-section hidden space-y-3" style="display: none;">
                     <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">
                         <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)
                     </h3>
@@ -816,7 +814,7 @@
             updatePackageCars();
             listenTodaysDriverBalance();
             listenOwnerCounts(); 
-            switchTab('sharing');
+            showTab('sharing');
         });
 
         let headerClickCount = 0;
@@ -1032,13 +1030,24 @@
             document.getElementById('logout-btn').classList.add('hidden');
         };
 
-        window.switchTab = function(tabName) {
+        // बदललेला showTab फंक्शन जो सर्व टॅब्ज आणि बटन्स अचूक स्विच करेल
+        window.showTab = function(tabName) {
             window.activeTab = tabName;
+            
+            // सर्व बटणांवरील active काढून टाका आणि क्लिक केलेल्या बटणावर लावा
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`tab-${tabName}`).classList.add('active');
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            if (activeBtn) activeBtn.classList.add('active');
 
-            document.querySelectorAll('.booking-section').forEach(sec => sec.classList.add('hidden'));
-            document.getElementById(`section-${tabName}`).classList.remove('hidden');
+            // सर्व टॅब कंटेंट्स लपवा
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.style.display = 'none');
+
+            // युजरने क्लिक केला तोच टॅब दाखवा
+            const activeTab = document.getElementById(tabName + '-content');
+            if (activeTab) {
+                activeTab.style.display = 'block';
+            }
 
             const submitBtn = document.getElementById('main-submit-btn');
             const paymentSection = document.getElementById('payment-section');
