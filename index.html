@@ -67,15 +67,15 @@
         }
         .hidden-portal { display: none !important; }
 
-        /* स्क्रोल करताना मेनू आणि ग्राहक माहिती जागेवर स्थिर राहण्यासाठी Sticky CSS */
+        /* स्क्रोल करताना मेनू आणि ग्राहक माहिती जागेवर स्थिर राहण्यासाठी सुधारित Sticky CSS */
         .sticky-customer-nav {
             position: -webkit-sticky;
             position: sticky;
-            top: 55px; /* हेडरच्या खाली बरोबर सेट करण्यासाठी */
+            top: 50px; /* हेडरच्या खाली बरोबर मॅच करण्यासाठी */
             z-index: 40;
-            background-color: #f3f4f6; /* bg-gray-100 */
-            padding-top: 10px;
-            padding-bottom: 8px;
+            background-color: #f3f4f6;
+            padding-top: 6px;
+            padding-bottom: 6px;
         }
     </style>
 </head>
@@ -159,7 +159,7 @@
             </div>
         </div>
 
-        <!-- कस्टमर पोर्टल स्क्रीन (Sticky Navigation जोडलेले) -->
+        <!-- कस्टमर पोर्टल स्क्रीन -->
         <div id="screen-customer" class="hidden pt-1">
             
             <!-- खाली स्क्रोल करताना हे टॅब आणि माहिती जागेवर स्टेबल (Sticky) राहील -->
