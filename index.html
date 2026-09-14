@@ -1,86 +1,120 @@
-<!DOCTYPE html>  
-<html lang="mr">  
+<!DOCTYPE html>  <html lang="mr">  
 <head>  
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Gurukrupa Tours & Travels - Official Portal</title>  
-    
-    <!-- PWA & Favicon Icons -->  
-    <link rel="manifest" href="manifest.json">  
-    <meta name="theme-color" content="#ffffff">  
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">  
-    <link rel="apple-touch-icon" href="icon-192.png">  
+    <title>Gurukrupa Tours & Travels - Official Portal</title>  <!-- PWA & Favicon Icons -->  
+<link rel="manifest" href="manifest.json">  
+<meta name="theme-color" content="#ffffff">  
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">  
+<link rel="apple-touch-icon" href="icon-192.png">  
 
-    <script src="https://cdn.tailwindcss.com"></script>  
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">  
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>  
+<script src="https://cdn.tailwindcss.com"></script>  
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">  
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>  
 
-    <script>  
-        tailwind.config = {  
-            theme: {  
-                extend: {  
-                    colors: {  
-                        redbus: '#d84e55',  
-                        redbusDark: '#b83238'  
-                    }  
+<script>  
+    tailwind.config = {  
+        theme: {  
+            extend: {  
+                colors: {  
+                    redbus: '#d84e55',  
+                    redbusDark: '#b83238'  
                 }  
             }  
         }  
-    </script>  
-    <style>  
-        .seat { transition: all 0.2s ease; position: relative; cursor: pointer; background-color: #ffffff !important; }  
-        .seat.selected {  
-            background-color: #d84e55 !important;  
-            color: white !important;  
-            border-color: #b83238 !important;  
-        }  
-        .seat.selected .price-tag { color: white !important; }  
-          
-        .tab-btn.active {  
-            background-color: #d84e55;  
-            color: white;  
-            border-color: #d84e55;  
-        }  
-        .time-btn.selected {  
-            background-color: #d84e55;  
-            color: white;  
-            border-color: #d84e55;  
-        }  
-        .route-btn.active {  
-            background-color: #d84e55;  
-            color: white;  
-            border-color: #d84e55;  
-        }  
-        .no-scrollbar::-webkit-scrollbar { display: none; }  
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }  
-        .portal-card.active {  
-            border-color: #d84e55;  
-            background-color: #fff5f5;  
-            transform: scale(1.01);  
-        }  
-        .role-scroll-container {  
-            scroll-snap-type: x mandatory;  
-            -webkit-overflow-scrolling: touch;  
-        }  
-        .role-card-item {  
-            scroll-snap-align: start;  
-        }  
-        .hidden-portal { display: none !important; }  
+    }  
+</script>  
+<style>  
+    .seat { transition: all 0.2s ease; position: relative; cursor: pointer; background-color: #ffffff !important; }  
+    .seat.selected {  
+        background-color: #d84e55 !important;  
+        color: white !important;  
+        border-color: #b83238 !important;  
+    }  
+    .seat.selected .price-tag { color: white !important; }  
+      
+    .tab-btn.active {  
+        background-color: #d84e55;  
+        color: white;  
+        border-color: #d84e55;  
+    }  
+    .time-btn.selected {  
+        background-color: #d84e55;  
+        color: white;  
+        border-color: #d84e55;  
+    }  
+    .route-btn.active {  
+        background-color: #d84e55;  
+        color: white;  
+        border-color: #d84e55;  
+    }  
+    .no-scrollbar::-webkit-scrollbar { display: none; }  
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }  
+    .portal-card.active {  
+        border-color: #d84e55;  
+        background-color: #fff5f5;  
+        transform: scale(1.01);  
+    }  
+    .role-scroll-container {  
+        scroll-snap-type: x mandatory;  
+        -webkit-overflow-scrolling: touch;  
+    }  
+    .role-card-item {  
+        scroll-snap-align: start;  
+    }  
+    .hidden-portal { display: none !important; }  
 
-        /* सुधारीत CSS: लॉगिन असताना आणि डॅशबोर्डवर ओव्हरलॅप न होण्यासाठी */  
-        body {  
-            padding-bottom: 50px !important;  
-            padding-top: 0px !important;  
-        }  
+    /* FIX: Header खाली customer navigation पूर्णपणे visible राहील */
+    #app-header {
+        min-height: 64px;
+    }
 
-        #screen-customer {  
-            margin-top: 5px;  
-        }  
-    </style>
+    .sticky-customer-nav {
+        position: sticky;
+        top: 64px;
+        z-index: 40;
+        background-color: #f3f4f6;
+        padding-top: 10px;
+        padding-bottom: 6px;
+        margin-top: 0;
+    }
+
+    /* Top header/navigation मुळे कोणताही content hide होऊ नये */
+    #screen-customer {
+        margin-top: 0;
+        scroll-margin-top: 74px;
+    }
+
+    /* Login screen पूर्ण viewport मध्ये नीट दिसेल */
+    #screen-login {
+        min-height: calc(100svh - 24px);
+        box-sizing: border-box;
+    }
+
+    body {
+        padding-bottom: 50px !important;
+        overflow-x: hidden;
+    }
+
+    /* 6 main icons नेहमी पहिल्या row पासून दिसतील */
+    .sticky-customer-nav .grid {
+        position: relative;
+        z-index: 41;
+    }
+
+    @media (max-width: 640px) {
+        #app-header {
+            min-height: 62px;
+        }
+
+        .sticky-customer-nav {
+            top: 62px;
+        }
+    }  
+</style>
+
 </head>  
-<body class="bg-gray-100 font-sans pb-10">  
-
-<!-- लॉगिननंतर दिसणारा हेडर बार (सुरवातीला hidden क्लासमुळे पूर्णपणे लपलेला राहील) -->  
+<body class="bg-gray-100 font-sans pb-10">  <!-- लॉगिननंतर दिसणारा हेडर बार -->  
 <header id="app-header" class="hidden bg-redbus text-white p-2.5 shadow-lg sticky top-0 z-50">  
     <div class="container mx-auto flex justify-between items-center">  
         <div class="flex items-center gap-2.5 select-none">  
@@ -105,7 +139,7 @@
 <div class="container mx-auto p-3 max-w-xl">  
 
     <!-- लॉगिन स्क्रीन -->  
-    <div id="screen-login" class="flex flex-col items-center justify-center pt-2 pb-4">  
+    <div id="screen-login" class="flex flex-col items-center justify-center pt-6 pb-4">  
           
         <div id="secret-logo-trigger" class="text-center cursor-pointer select-none mb-6">  
             <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-2 border-yellow-500">  
@@ -161,8 +195,8 @@
     <!-- कस्टमर पोर्टल स्क्रीन -->  
     <div id="screen-customer" class="hidden pt-1">  
           
-        <!-- सर्व ६ आयकॉन आणि ७ वे बसेस इन्क्वायरी बटन -->  
-        <div class="customer-nav-container">  
+        <!-- ७ बटन्स ज्यांना onclick फंक्शन्स जोडले आहेत -->  
+        <div class="sticky-customer-nav">  
             <div class="grid grid-cols-3 gap-1.5 mb-2 text-xs font-semibold">  
                 <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>  
                 <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>  
@@ -798,10 +832,6 @@
                 unlockAdminPortals();  
             }  
             applyUserSession(window.currentUser);  
-        } else {  
-            // सुरुवातीला यूजर लॉगिन नसताना हेडर लपलेला राहील  
-            document.getElementById('app-header').classList.add('hidden');  
-            document.getElementById('screen-login').classList.remove('hidden');  
         }  
         cleanBackdatedBookings();  
         updateDropdownOptions('nashik-pune');  
@@ -1012,7 +1042,6 @@
         } else if (userObj.role === 'driver') {  
             document.getElementById('screen-driver').classList.remove('hidden');  
         }  
-        window.scrollTo(0, 0);  
     }  
 
     window.logout = function() {  
@@ -1025,19 +1054,22 @@
         document.getElementById('screen-driver').classList.add('hidden');  
         document.getElementById('user-badge').classList.add('hidden');  
         document.getElementById('logout-btn').classList.add('hidden');  
-        window.scrollTo(0, 0);  
     };  
 
+    // बदललेला showTab फंक्शन जो सर्व टॅब्ज आणि बटन्स अचूक स्विच करेल  
     window.showTab = function(tabName) {  
         window.activeTab = tabName;  
           
+        // सर्व बटणांवरील active काढून टाका आणि क्लिक केलेल्या बटणावर लावा  
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));  
         const activeBtn = document.getElementById(`tab-${tabName}`);  
         if (activeBtn) activeBtn.classList.add('active');  
 
+        // सर्व टॅब कंटेंट्स लपवा  
         const tabs = document.querySelectorAll('.tab-content');  
         tabs.forEach(tab => tab.style.display = 'none');  
 
+        // युजरने क्लिक केला तोच टॅब दाखवा  
         const activeTab = document.getElementById(tabName + '-content');  
         if (activeTab) {  
             activeTab.style.display = 'block';  
@@ -1602,4 +1634,4 @@
 </script>
 
 </body>  
-</html>
+                                </html>
