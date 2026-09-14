@@ -1,163 +1,135 @@
-<!DOCTYPE html>  <html lang="mr">  
+<!DOCTYPE html>  
+<html lang="mr">  
 <head>  
     <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Gurukrupa Tours & Travels - Official Portal</title>  <!-- PWA & Favicon Icons -->  
-<link rel="manifest" href="manifest.json">  
-<meta name="theme-color" content="#ffffff">  
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">  
-<link rel="apple-touch-icon" href="icon-192.png">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
+    <title>Gurukrupa Tours & Travels - Official Portal</title>  
+    <!-- PWA & Favicon Icons -->  
+    <link rel="manifest" href="manifest.json">  
+    <meta name="theme-color" content="#ffffff">  
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">  
+    <link rel="apple-touch-icon" href="icon-192.png">  
 
-<script src="https://cdn.tailwindcss.com"></script>  
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">  
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>  
+    <script src="https://cdn.tailwindcss.com"></script>  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">  
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>  
 
-<script>  
-    tailwind.config = {  
-        theme: {  
-            extend: {  
-                colors: {  
-                    redbus: '#d84e55',  
-                    redbusDark: '#b83238'  
+    <script>  
+        tailwind.config = {  
+            theme: {  
+                extend: {  
+                    colors: {  
+                        redbus: '#d84e55',  
+                        redbusDark: '#b83238'  
+                    }  
                 }  
             }  
         }  
-    }  
-</script>  
-<style>  
-    .seat { transition: all 0.2s ease; position: relative; cursor: pointer; background-color: #ffffff !important; }  
-    .seat.selected {  
-        background-color: #d84e55 !important;  
-        color: white !important;  
-        border-color: #b83238 !important;  
-    }  
-    .seat.selected .price-tag { color: white !important; }  
-      
-    .tab-btn.active {  
-        background-color: #d84e55;  
-        color: white;  
-        border-color: #d84e55;  
-    }  
-    .time-btn.selected {  
-        background-color: #d84e55;  
-        color: white;  
-        border-color: #d84e55;  
-    }  
-    .route-btn.active {  
-        background-color: #d84e55;  
-        color: white;  
-        border-color: #d84e55;  
-    }  
-    .no-scrollbar::-webkit-scrollbar { display: none; }  
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }  
-    .portal-card.active {  
-        border-color: #d84e55;  
-        background-color: #fff5f5;  
-        transform: scale(1.01);  
-    }  
-    .role-scroll-container {  
-        scroll-snap-type: x mandatory;  
-        -webkit-overflow-scrolling: touch;  
-    }  
-    .role-card-item {  
-        scroll-snap-align: start;  
-    }  
-    .hidden-portal { display: none !important; }  
+    </script>  
+    <style>  
+        .seat { transition: all 0.2s ease; position: relative; cursor: pointer; background-color: #ffffff !important; }  
+        .seat.selected {  
+            background-color: #d84e55 !important;  
+            color: white !important;  
+            border-color: #b83238 !important;  
+        }  
+        .seat.selected .price-tag { color: white !important; }  
+          
+        .tab-btn.active {  
+            background-color: #d84e55;  
+            color: white;  
+            border-color: #d84e55;  
+        }  
+        .time-btn.selected {  
+            background-color: #d84e55;  
+            color: white;  
+            border-color: #d84e55;  
+        }  
+        .route-btn.active {  
+            background-color: #d84e55;  
+            color: white;  
+            border-color: #d84e55;  
+        }  
+        .no-scrollbar::-webkit-scrollbar { display: none; }  
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }  
+        .portal-card.active {  
+            border-color: #d84e55;  
+            background-color: #fff5f5;  
+            transform: scale(1.01);  
+        }  
+        .role-scroll-container {  
+            scroll-snap-type: x mandatory;  
+            -webkit-overflow-scrolling: touch;  
+        }  
+        .role-card-item {  
+            scroll-snap-align: start;  
+        }  
+        .hidden-portal { display: none !important; }  
 
-    /* ===== TOP BAR / CUSTOMER NAV FIX ===== */
-    #app-header { position: sticky !important; top: 0 !important; z-index: 100 !important; }
-    .sticky-customer-nav {
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 90 !important;
-        background-color: #f3f4f6;
-        padding-top: 10px;
-        padding-bottom: 6px;
-        margin-bottom: 8px;
-    }
-    #screen-customer { margin-top: 0 !important; scroll-margin-top: 120px; }
-    .sticky-customer-nav > .grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        align-items: stretch;
-    }
-    .sticky-customer-nav .tab-btn {
-        min-height: 42px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        white-space: normal;
-        line-height: 1.15;
-        overflow: visible !important;
-    }
-    body { padding-bottom: 50px !important; overflow-x: hidden; }
-    #screen-login { min-height: calc(100vh - 20px); }
+        /* ================================
+           LAYOUT FIX - LOGIN + TOP BAR
+           ================================ */
 
-
-    /* ===== MOBILE VISIBILITY FIXES ===== */
-    .login-brand-title {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        white-space: normal !important;
-        overflow: visible !important;
-        text-overflow: clip !important;
-        line-height: 1.2;
-        letter-spacing: 0.04em;
-        text-align: center;
-        overflow-wrap: anywhere;
-    }
-
-    .route-buttons-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 8px;
-        width: 100%;
-    }
-
-    .route-buttons-grid .route-btn {
-        min-width: 0 !important;
-        width: 100% !important;
-        white-space: normal !important;
-        overflow: visible !important;
-        text-overflow: clip !important;
-        word-break: break-word;
-        overflow-wrap: anywhere;
-        position: relative;
-        z-index: 1;
-    }
-
-    @media (min-width: 480px) {
-        .route-buttons-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            margin: 0;
+            padding: 0;
         }
-    }
 
-    @media (max-width: 479px) {
-        .login-brand-title {
-            font-size: 1.15rem !important;
+        body {
+            padding-bottom: 60px !important;
         }
-    }
 
-</style>
+        #screen-login {
+            min-height: 100vh;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
+        #app-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            width: 100%;
+        }
+
+        .sticky-customer-nav {
+            position: sticky !important;
+            top: 56px !important; /* হেडरच्या बरोबर खाली स्टिक राहील */
+            z-index: 40;
+            background-color: #f3f4f6;
+            padding-top: 10px;
+            padding-bottom: 6px;
+        }
+
+        #screen-customer {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+    </style>
 </head>  
-<body class="bg-gray-100 font-sans pb-10">  <!-- लॉगिननंतर दिसणारा हेडर बार -->  
-<header id="app-header" class="hidden bg-redbus text-white p-2.5 shadow-lg sticky top-0 z-50">  
+<body class="bg-gray-100 font-sans">  
+
+<!-- लॉगिननंतर दिसणारा हेडर बार -->  
+<header id="app-header" class="hidden bg-redbus text-white p-2.5 shadow-lg">  
     <div class="container mx-auto flex justify-between items-center">  
-        <div class="flex items-center gap-2.5 select-none">  
+        <div class="flex items-center gap-2.5 select-none overflow-hidden">  
             <img src="icon-192.png" alt="GK Logo" class="w-10 h-10 rounded-full border-2 border-yellow-500 shadow-md object-cover shrink-0">  
-            <div>  
-                <h1 class="text-base font-black tracking-wide text-yellow-300 uppercase leading-none">GURUKRUPA</h1>  
-                <p class="text-[9px] tracking-widest text-white uppercase font-bold">TOURS AND TRAVELS</p>  
+            <div class="min-w-0">  
+                <h1 class="text-sm sm:text-base font-black tracking-wide text-yellow-300 uppercase truncate leading-tight">GURUKRUPA</h1>  
+                <p class="text-[8px] sm:text-[9px] tracking-widest text-white uppercase font-bold truncate leading-tight">TOURS AND TRAVELS</p>  
             </div>  
         </div>  
 
-        <div class="flex items-center gap-2">  
-            <div id="user-badge" class="hidden text-xs bg-redbusDark px-2 py-1 rounded border border-yellow-400 font-semibold">  
+        <div class="flex items-center gap-2 shrink-0">  
+            <div id="user-badge" class="hidden text-xs bg-redbusDark px-2 py-1 rounded border border-yellow-400 font-semibold truncate max-w-[120px] sm:max-w-none">  
                 <span id="user-name-display"></span> (<span id="user-role-display"></span>)  
             </div>  
-            <button id="logout-btn" onclick="logout()" class="hidden bg-yellow-500 hover:bg-yellow-600 text-black px-2 py-1 rounded text-xs font-bold shadow">  
+            <button id="logout-btn" onclick="logout()" class="hidden bg-yellow-500 hover:bg-yellow-600 text-black px-2 py-1 rounded text-xs font-bold shadow shrink-0">  
                 <i class="fa-solid fa-right-from-bracket"></i> बाहेर पडा  
             </button>  
         </div>  
@@ -167,11 +139,12 @@
 <div class="container mx-auto p-3 max-w-xl">  
 
     <!-- लॉगिन स्क्रीन -->  
-    <div id="screen-login" class="flex flex-col items-center justify-center pt-6 pb-4">  
+    <div id="screen-login" class="flex flex-col items-center justify-center pt-6 pb-4 w-full">  
           
-        <div id="secret-logo-trigger" class="text-center cursor-pointer select-none mb-6">  
-            <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-2 border-yellow-500">  
-            <h1 class="login-brand-title text-xl sm:text-2xl font-black text-gray-900 uppercase">GURUKRUPA TOURS AND TRAVELS</h1>  
+        <div id="secret-logo-trigger" class="text-center cursor-pointer select-none mb-6 w-full px-2">  
+            <img src="icon-192.png" alt="Gurukrupa Logo" class="w-32 h-32 sm:w-36 sm:h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-2 border-yellow-500">  
+            <h1 class="text-xl sm:text-2xl font-black tracking-wider text-gray-900 uppercase break-words">GURUKRUPA</h1>  
+            <p class="text-xs font-extrabold tracking-[0.2em] text-yellow-600 uppercase mt-0.5 break-words">TOURS AND TRAVELS</p>  
         </div>  
 
         <div class="bg-white p-5 rounded-2xl shadow-xl border border-gray-200 w-full">  
@@ -222,20 +195,20 @@
     <!-- कस्टमर पोर्टल स्क्रीन -->  
     <div id="screen-customer" class="hidden pt-1">  
           
-        <!-- ७ बटन्स ज्यांना onclick फंक्शन्स जोडले आहेत -->  
+        <!-- नेव्हिगेशन टॅब्ज -->  
         <div class="sticky-customer-nav">  
             <div class="grid grid-cols-3 gap-1.5 mb-2 text-xs font-semibold">  
-                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>  
-                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>  
-                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport Drop</button>  
-                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet (Per KM)</button>  
-                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. नाशिक दर्शन</button>  
-                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Packages</button>  
-                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 p-2 rounded-lg border bg-white shadow-sm text-redbus font-bold">7. Buses Inquiry</button>  
+                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm truncate">1. Sharing</button>  
+                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm truncate">2. One Way</button>  
+                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm truncate">3. Airport Drop</button>  
+                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm truncate">4. Fleet (Per KM)</button>  
+                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm truncate">5. नाशिक दर्शन</button>  
+                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn p-2 rounded-lg border bg-white shadow-sm truncate">6. Packages</button>  
+                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 p-2 rounded-lg border bg-white shadow-sm text-redbus font-bold truncate">7. Buses Inquiry</button>  
             </div>  
 
             <div class="border-b pb-2 flex justify-between items-center bg-white p-2.5 rounded-lg shadow-sm border border-gray-200">  
-                <div class="text-xs">  
+                <div class="text-xs truncate">  
                     <span class="font-bold text-gray-700">ग्राहक:</span> <span id="cust-display-name" class="font-semibold text-redbus"></span>   
                     (<span id="cust-display-phone" class="text-gray-600"></span>)  
                 </div>  
@@ -246,13 +219,13 @@
 
             <!-- 1. Sharing Section -->  
             <div id="sharing-content" class="tab-content booking-section">  
-                <div class="route-buttons-grid mb-3">
-                    <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active w-full min-w-0 p-2.5 text-xs font-bold border rounded-lg shadow-sm border-redbus text-center break-words leading-tight">
-                        नाशिक ते पुणे (Nashik to Pune)
-                    </button>
-                    <button type="button" id="btn-route-pn" onclick="selectRoute('pune-nashik')" class="route-btn w-full min-w-0 p-2.5 text-xs font-bold border rounded-lg shadow-sm border-gray-300 text-gray-700 text-center break-words leading-tight">
-                        पुणे ते नाशिक (Pune to Nashik)
-                    </button>
+                <div class="flex gap-2 mb-3">  
+                    <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active flex-1 p-2 text-[11px] sm:text-xs font-bold border rounded-lg shadow-sm border-redbus text-center truncate">  
+                        नाशिक ते पुणे  
+                    </button>  
+                    <button type="button" id="btn-route-pn" onclick="selectRoute('pune-nashik')" class="route-btn flex-1 p-2 text-[11px] sm:text-xs font-bold border rounded-lg shadow-sm border-gray-300 text-gray-700 text-center truncate">  
+                        पुणे ते नाशिक  
+                    </button>  
                 </div>  
 
                 <div class="grid grid-cols-2 gap-2 mb-3">  
@@ -585,8 +558,8 @@
                 <p class="text-[11px] text-gray-600 mb-3">पेमेंट करण्यासाठी वरील QR Code स्कॅन करा (UPI ID: shash74.s7@oksbi).</p>  
                   
                 <div class="text-left bg-red-50 p-3 rounded border border-red-200">  
-                    <label class="flex items-center gap-2 cursor-pointer">  
-                        <input type="checkbox" id="paymentConfirmCheckbox" class="w-4 h-4 text-redbus rounded focus:ring-redbus">  
+                    <label class="flex items-start gap-2 cursor-pointer">  
+                        <input type="checkbox" id="paymentConfirmCheckbox" class="w-4 h-4 text-redbus rounded focus:ring-redbus mt-0.5 shrink-0">  
                         <span class="text-[11px] font-bold text-red-600">मी QR कोडद्वारे पेमेंट पूर्ण केले आहे. (Sharing पोर्टलमध्ये पेमेंट केल्याशिवाय सीट बुक होणार नाही) *</span>  
                     </label>  
                 </div>  
@@ -603,7 +576,7 @@
                     <h3 class="text-red-600 font-bold text-sm mt-2">आमच्या ट्रॅव्हल्सची वैशिष्ट्ये</h3>  
                 </div>  
                   
-                <div class="grid grid-cols-2 gap-2 text-[11px] text-gray-700 font-semibold">  
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-gray-700 font-semibold">  
                     <div class="space-y-2">  
                         <div class="flex items-start gap-1.5 bg-white p-1.5 rounded border border-red-100 shadow-2xs">  
                             <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
@@ -650,11 +623,11 @@
     <!-- ओनर पोर्टल स्क्रीन -->  
     <div id="screen-owner" class="hidden space-y-4 pt-2">  
         <div class="bg-white p-4 rounded-xl shadow border border-gray-200">  
-            <div class="flex justify-between items-center border-b pb-2 mb-3">  
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-2 mb-3 gap-2">  
                 <h2 class="text-sm font-bold text-gray-800 flex items-center gap-2">  
                     <i class="fa-solid fa-gauge-high text-redbus"></i> ओनर डॅशबोर्ड (Owner Control Center)  
                 </h2>  
-                <div class="flex gap-1.5">  
+                <div class="flex gap-1.5 flex-wrap">  
                     <button onclick="exportDriverLogsToExcel()" class="bg-emerald-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow hover:bg-emerald-700 flex items-center gap-1">  
                         <i class="fa-solid fa-file-excel"></i> Excel Download  
                     </button>  
@@ -664,7 +637,7 @@
                 </div>  
             </div>  
 
-            <div class="grid grid-cols-3 gap-2 text-xs">  
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">  
                 <button onclick="showOwnerView('sharing-np')" class="relative p-2.5 border rounded-lg bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">  
                     <span id="badge-sharing-np" class="absolute -top-1.5 -right-1.5 bg-redbus text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow">0</span>  
                     <i class="fa-solid fa-car text-lg"></i>  
@@ -719,9 +692,9 @@
                     <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>  
                 </button>  
 
-                <button onclick="showOwnerView('driver-balance')" class="p-2.5 border-2 border-green-600 rounded-lg bg-green-50 text-green-800 font-bold flex flex-col items-center gap-1 shadow-md hover:bg-green-100 col-span-3">  
+                <button onclick="showOwnerView('driver-balance')" class="p-2.5 border-2 border-green-600 rounded-lg bg-green-50 text-green-800 font-bold flex flex-col items-center gap-1 shadow-md hover:bg-green-100 col-span-2 sm:col-span-3">  
                     <i class="fa-solid fa-wallet text-xl text-green-600"></i>  
-                    <span class="text-xs font-black text-green-900">💰 आजची शिल्लक जमा कॅश: <span id="owner-today-balance-text" class="text-base text-redbus font-extrabold">₹ 0</span></span>  
+                    <span class="text-xs font-black text-green-900 text-center">💰 आजची शिल्लक जमा कॅश: <span id="owner-today-balance-text" class="text-base text-redbus font-extrabold">₹ 0</span></span>  
                     <span class="text-[10px] text-gray-500 font-normal">ड्रायव्हरने जमा केलेला दररोजचा हिशोब पहा</span>  
                 </button>  
             </div>  
@@ -739,7 +712,7 @@
                 <i class="fa-solid fa-id-card text-green-600"></i> ड्रायव्हर दैनिक हिशोब (Driver Daily Log)  
             </h2>  
 
-            <div class="grid grid-cols-2 gap-2.5 mb-3 text-xs">  
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-3 text-xs">  
                 <div class="bg-green-50 p-2 rounded border border-green-200">  
                     <label class="block font-bold text-green-800 mb-1"><i class="fa-solid fa-wallet"></i> 1. कलेक्शन (Collection) ₹</label>  
                     <input type="number" id="drv-collection" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-green-700 bg-white outline-none">  
@@ -851,17 +824,15 @@
     window.addEventListener('load', () => {  
         window.scrollTo(0, 0);  
         setCalendarMinDates();  
-        /* प्रत्येक वेळी app उघडल्यावर प्रथम पूर्ण Login Page दाखवा.
-           जुना saved session आपोआप screen वर उघडणार नाही. */
-        window.currentUser = null;
-        window.currentRole = null;
-        document.getElementById('app-header').classList.add('hidden');
-        document.getElementById('screen-login').classList.remove('hidden');
-        document.getElementById('screen-customer').classList.add('hidden');
-        document.getElementById('screen-owner').classList.add('hidden');
-        document.getElementById('screen-driver').classList.add('hidden');
-        document.getElementById('user-badge').classList.add('hidden');
-        document.getElementById('logout-btn').classList.add('hidden');
+        const savedUser = localStorage.getItem('gk_user');  
+        if (savedUser) {  
+            window.currentUser = JSON.parse(savedUser);  
+            window.currentRole = window.currentUser.role;  
+            if (window.currentUser.role !== 'customer') {  
+                unlockAdminPortals();  
+            }  
+            applyUserSession(window.currentUser);  
+        }  
         cleanBackdatedBookings();  
         updateDropdownOptions('nashik-pune');  
         updateOnewayCars();  
@@ -1071,6 +1042,7 @@
         } else if (userObj.role === 'driver') {  
             document.getElementById('screen-driver').classList.remove('hidden');  
         }  
+        window.scrollTo(0, 0);  
     }  
 
     window.logout = function() {  
@@ -1083,22 +1055,19 @@
         document.getElementById('screen-driver').classList.add('hidden');  
         document.getElementById('user-badge').classList.add('hidden');  
         document.getElementById('logout-btn').classList.add('hidden');  
+        window.scrollTo(0, 0);  
     };  
 
-    // बदललेला showTab फंक्शन जो सर्व टॅब्ज आणि बटन्स अचूक स्विच करेल  
     window.showTab = function(tabName) {  
         window.activeTab = tabName;  
           
-        // सर्व बटणांवरील active काढून टाका आणि क्लिक केलेल्या बटणावर लावा  
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));  
         const activeBtn = document.getElementById(`tab-${tabName}`);  
         if (activeBtn) activeBtn.classList.add('active');  
 
-        // सर्व टॅब कंटेंट्स लपवा  
         const tabs = document.querySelectorAll('.tab-content');  
         tabs.forEach(tab => tab.style.display = 'none');  
 
-        // युजरने क्लिक केला तोच टॅब दाखवा  
         const activeTab = document.getElementById(tabName + '-content');  
         if (activeTab) {  
             activeTab.style.display = 'block';  
@@ -1357,7 +1326,7 @@
         if (window.activeTab === 'sharing') {  
             const isPaymentChecked = document.getElementById('paymentConfirmCheckbox').checked;  
             if (!isPaymentChecked) {  
-                alert('अट: शेअरिंग पोर्टलमध्ये सीट बुक करण्यासाठी आधी QR कोडद्वारे पेमेंट पूर्ण करणे अनिवार्य आहे!');  
+                alert('अट: शेअरिंग पोर्टलमध्ये सीट बुक करण्यासाठी आधी QR कोडद्वारे पेमेंट करणे अनिवार्य आहे!');  
                 return;  
             }  
         }  
@@ -1663,4 +1632,4 @@
 </script>
 
 </body>  
-    </html>
+</html>
