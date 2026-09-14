@@ -64,53 +64,81 @@
     }  
     .hidden-portal { display: none !important; }  
 
-    /* FIX: Header खाली customer navigation पूर्णपणे visible राहील */
-    #app-header {
-        min-height: 64px;
-    }
-
+    /* ===== TOP BAR / CUSTOMER NAV FIX ===== */
+    #app-header { position: sticky !important; top: 0 !important; z-index: 100 !important; }
     .sticky-customer-nav {
-        position: sticky;
-        top: 64px;
-        z-index: 40;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 90 !important;
         background-color: #f3f4f6;
         padding-top: 10px;
         padding-bottom: 6px;
-        margin-top: 0;
+        margin-bottom: 8px;
+    }
+    #screen-customer { margin-top: 0 !important; scroll-margin-top: 120px; }
+    .sticky-customer-nav > .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        align-items: stretch;
+    }
+    .sticky-customer-nav .tab-btn {
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        white-space: normal;
+        line-height: 1.15;
+        overflow: visible !important;
+    }
+    body { padding-bottom: 50px !important; overflow-x: hidden; }
+    #screen-login { min-height: calc(100vh - 20px); }
+
+
+    /* ===== MOBILE VISIBILITY FIXES ===== */
+    .login-brand-title {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        line-height: 1.2;
+        letter-spacing: 0.04em;
+        text-align: center;
+        overflow-wrap: anywhere;
     }
 
-    /* Top header/navigation मुळे कोणताही content hide होऊ नये */
-    #screen-customer {
-        margin-top: 0;
-        scroll-margin-top: 74px;
+    .route-buttons-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        width: 100%;
     }
 
-    /* Login screen पूर्ण viewport मध्ये नीट दिसेल */
-    #screen-login {
-        min-height: calc(100svh - 24px);
-        box-sizing: border-box;
-    }
-
-    body {
-        padding-bottom: 50px !important;
-        overflow-x: hidden;
-    }
-
-    /* 6 main icons नेहमी पहिल्या row पासून दिसतील */
-    .sticky-customer-nav .grid {
+    .route-buttons-grid .route-btn {
+        min-width: 0 !important;
+        width: 100% !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        word-break: break-word;
+        overflow-wrap: anywhere;
         position: relative;
-        z-index: 41;
+        z-index: 1;
     }
 
-    @media (max-width: 640px) {
-        #app-header {
-            min-height: 62px;
+    @media (min-width: 480px) {
+        .route-buttons-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+    }
 
-        .sticky-customer-nav {
-            top: 62px;
+    @media (max-width: 479px) {
+        .login-brand-title {
+            font-size: 1.15rem !important;
         }
-    }  
+    }
+
 </style>
 
 </head>  
@@ -143,8 +171,7 @@
           
         <div id="secret-logo-trigger" class="text-center cursor-pointer select-none mb-6">  
             <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-2 border-yellow-500">  
-            <h1 class="text-2xl font-black tracking-wider text-gray-900 uppercase">GURUKRUPA</h1>  
-            <p class="text-xs font-extrabold tracking-[0.2em] text-yellow-600 uppercase mt-0.5">TOURS AND TRAVELS</p>  
+            <h1 class="login-brand-title text-xl sm:text-2xl font-black text-gray-900 uppercase">GURUKRUPA TOURS AND TRAVELS</h1>  
         </div>  
 
         <div class="bg-white p-5 rounded-2xl shadow-xl border border-gray-200 w-full">  
@@ -219,13 +246,13 @@
 
             <!-- 1. Sharing Section -->  
             <div id="sharing-content" class="tab-content booking-section">  
-                <div class="flex gap-2 mb-3">  
-                    <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active flex-1 p-2 text-xs font-bold border rounded-lg shadow-sm border-redbus text-center">  
-                        नाशिक ते पुणे (Nashik to Pune)  
-                    </button>  
-                    <button type="button" id="btn-route-pn" onclick="selectRoute('pune-nashik')" class="route-btn flex-1 p-2 text-xs font-bold border rounded-lg shadow-sm border-gray-300 text-gray-700 text-center">  
-                        पुणे ते नाशिक (Pune to Nashik)  
-                    </button>  
+                <div class="route-buttons-grid mb-3">
+                    <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active w-full min-w-0 p-2.5 text-xs font-bold border rounded-lg shadow-sm border-redbus text-center break-words leading-tight">
+                        नाशिक ते पुणे (Nashik to Pune)
+                    </button>
+                    <button type="button" id="btn-route-pn" onclick="selectRoute('pune-nashik')" class="route-btn w-full min-w-0 p-2.5 text-xs font-bold border rounded-lg shadow-sm border-gray-300 text-gray-700 text-center break-words leading-tight">
+                        पुणे ते नाशिक (Pune to Nashik)
+                    </button>
                 </div>  
 
                 <div class="grid grid-cols-2 gap-2 mb-3">  
@@ -824,15 +851,17 @@
     window.addEventListener('load', () => {  
         window.scrollTo(0, 0);  
         setCalendarMinDates();  
-        const savedUser = localStorage.getItem('gk_user');  
-        if (savedUser) {  
-            window.currentUser = JSON.parse(savedUser);  
-            window.currentRole = window.currentUser.role;  
-            if (window.currentUser.role !== 'customer') {  
-                unlockAdminPortals();  
-            }  
-            applyUserSession(window.currentUser);  
-        }  
+        /* प्रत्येक वेळी app उघडल्यावर प्रथम पूर्ण Login Page दाखवा.
+           जुना saved session आपोआप screen वर उघडणार नाही. */
+        window.currentUser = null;
+        window.currentRole = null;
+        document.getElementById('app-header').classList.add('hidden');
+        document.getElementById('screen-login').classList.remove('hidden');
+        document.getElementById('screen-customer').classList.add('hidden');
+        document.getElementById('screen-owner').classList.add('hidden');
+        document.getElementById('screen-driver').classList.add('hidden');
+        document.getElementById('user-badge').classList.add('hidden');
+        document.getElementById('logout-btn').classList.add('hidden');
         cleanBackdatedBookings();  
         updateDropdownOptions('nashik-pune');  
         updateOnewayCars();  
@@ -1634,4 +1663,4 @@
 </script>
 
 </body>  
-                                </html>
+    </html>
