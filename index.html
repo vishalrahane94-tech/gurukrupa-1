@@ -123,88 +123,171 @@
     #app-header img, #logout-btn { flex-shrink: 0 !important; }
 
 
-    /* =========================================================
-       FINAL HEADER + MOBILE BRANDING FIX
-       Logo slightly smaller, GURUKRUPA + TOURS AND TRAVELS visible
-       ========================================================= */
-    #app-header {
-        width: 100% !important;
-        max-width: 100% !important;
-        overflow: visible !important;
-    }
-    #app-header > .container {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-        padding-left: 2px !important;
-        padding-right: 2px !important;
-    }
-    .header-brand {
-        min-width: 0 !important;
-        overflow: visible !important;
-    }
-    .header-logo {
-        width: 36px !important;
-        height: 36px !important;
-    }
-    .header-title, .header-subtitle {
-        overflow: visible !important;
-        text-overflow: clip !important;
-    }
-    .header-actions {
-        min-width: 0 !important;
-    }
-    #user-badge {
-        max-width: 116px !important;
-        min-width: 0 !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        white-space: nowrap !important;
-        padding: 6px 7px !important;
-    }
-    #logout-btn {
-        flex-shrink: 0 !important;
-        white-space: nowrap !important;
-        padding: 7px 8px !important;
-        font-size: 11px !important;
-    }
-    @media (max-width: 390px) {
-        #app-header { padding: 6px 4px !important; }
-        .header-logo { width: 33px !important; height: 33px !important; }
-        .header-brand { gap: 5px !important; }
-        .header-title { font-size: 12px !important; letter-spacing: .02em !important; }
-        .header-subtitle { font-size: 7px !important; letter-spacing: .08em !important; }
-        #user-badge { max-width: 102px !important; font-size: 10px !important; padding: 5px 6px !important; }
-        #logout-btn { font-size: 10px !important; padding: 6px 6px !important; }
-        .header-actions { gap: 4px !important; }
-    }
-    @media (max-width: 350px) {
-        .header-logo { width: 31px !important; height: 31px !important; }
-        .header-title { font-size: 11px !important; }
-        .header-subtitle { font-size: 6.5px !important; }
-        #user-badge { max-width: 92px !important; font-size: 9px !important; }
-        #logout-btn { font-size: 9px !important; padding: 5px !important; }
-    }
+/* =========================================================
+   FINAL MOBILE HEADER + SERVICE MENU FIX
+   ========================================================= */
+.gk-app-header {
+    width: 100% !important;
+    min-height: 72px !important;
+    padding: 7px 8px !important;
+    overflow: visible !important;
+}
+.gk-header-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 7px !important;
+}
+.gk-header-brand {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+.gk-header-logo {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    max-width: 42px !important;
+    border-radius: 9999px !important;
+    border: 2px solid #eab308 !important;
+    object-fit: cover !important;
+    flex: 0 0 42px !important;
+}
+.gk-header-brand-text {
+    min-width: 0 !important;
+    overflow: visible !important;
+}
+.gk-header-brand-text h1 {
+    margin: 0 !important;
+    color: #fde047 !important;
+    font-size: 17px !important;
+    line-height: 1.05 !important;
+    font-weight: 900 !important;
+    letter-spacing: .03em !important;
+    white-space: nowrap !important;
+}
+.gk-header-brand-text p {
+    margin: 3px 0 0 !important;
+    color: #fff !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    font-weight: 800 !important;
+    letter-spacing: .10em !important;
+    white-space: nowrap !important;
+}
+.gk-header-actions {
+    min-width: 0 !important;
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+}
+.gk-user-badge {
+    max-width: 120px !important;
+    min-width: 0 !important;
+    padding: 7px 8px !important;
+    border: 1px solid #facc15 !important;
+    border-radius: 7px !important;
+    background: #b83238 !important;
+    color: #fff !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    line-height: 1.15 !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+}
+.gk-logout-btn {
+    min-width: 82px !important;
+    padding: 8px 8px !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: #eab308 !important;
+    color: #000 !important;
+    font-size: 11px !important;
+    line-height: 1.1 !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+}
+
+.sticky-customer-nav {
+    width: 100% !important;
+    padding: 8px 0 7px !important;
+    overflow: visible !important;
+}
+.sticky-customer-nav > .grid {
+    width: 100% !important;
+    margin: 0 0 10px !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+}
+.sticky-customer-nav .tab-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 68px !important;
+    height: 68px !important;
+    padding: 7px 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-size: 15px !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+}
+.sticky-customer-nav .tab-btn.col-span-3 {
+    grid-column: 1 / -1 !important;
+}
+@media (max-width: 390px) {
+    .gk-app-header { min-height: 70px !important; padding: 6px 6px !important; }
+    .gk-header-inner { gap: 5px !important; }
+    .gk-header-brand { gap: 6px !important; }
+    .gk-header-logo { width: 38px !important; height: 38px !important; min-width: 38px !important; max-width: 38px !important; flex-basis: 38px !important; }
+    .gk-header-brand-text h1 { font-size: 15px !important; }
+    .gk-header-brand-text p { font-size: 8px !important; letter-spacing: .08em !important; }
+    .gk-user-badge { max-width: 105px !important; font-size: 10px !important; padding: 6px !important; }
+    .gk-logout-btn { min-width: 76px !important; font-size: 10px !important; padding: 7px 5px !important; }
+    .sticky-customer-nav > .grid { gap: 8px !important; }
+    .sticky-customer-nav .tab-btn { min-height: 64px !important; height: 64px !important; font-size: 14px !important; }
+}
+@media (max-width: 350px) {
+    .gk-header-logo { width: 34px !important; height: 34px !important; min-width: 34px !important; max-width: 34px !important; flex-basis: 34px !important; }
+    .gk-header-brand-text h1 { font-size: 13px !important; }
+    .gk-header-brand-text p { font-size: 7px !important; }
+    .gk-user-badge { max-width: 90px !important; font-size: 9px !important; }
+    .gk-logout-btn { min-width: 68px !important; font-size: 9px !important; }
+    .sticky-customer-nav > .grid { gap: 6px !important; }
+    .sticky-customer-nav .tab-btn { min-height: 60px !important; height: 60px !important; font-size: 13px !important; }
+}
 
 </style>
 
 </head>  
 <body class="bg-gray-100 font-sans pb-10">  <!-- लॉगिननंतर दिसणारा हेडर बार -->  
-<header id="app-header" class="hidden bg-redbus text-white p-2 shadow-lg sticky top-0 z-50">  
-    <div class="container mx-auto flex items-center gap-2 min-w-0">  
-        <div class="header-brand flex items-center gap-1.5 select-none min-w-0 flex-1">  
-            <img src="icon-192.png" alt="GK Logo" class="header-logo w-9 h-9 rounded-full border-2 border-yellow-500 shadow-md object-cover shrink-0">  
-            <div class="min-w-0 leading-tight">  
-                <h1 class="header-title text-[14px] font-black tracking-wide text-yellow-300 uppercase leading-none whitespace-nowrap">GURUKRUPA</h1>  
-                <p class="header-subtitle text-[8px] tracking-[0.12em] text-white uppercase font-bold whitespace-nowrap">TOURS AND TRAVELS</p>  
+<header id="app-header" class="hidden bg-redbus text-white shadow-lg sticky top-0 z-50 gk-app-header">  
+    <div class="gk-header-inner">  
+        <div class="gk-header-brand">  
+            <img src="icon-192.png" alt="GK Logo" class="gk-header-logo">  
+            <div class="gk-header-brand-text">  
+                <h1>GURUKRUPA</h1>  
+                <p>TOURS AND TRAVELS</p>  
             </div>  
         </div>  
 
-        <div class="header-actions flex items-center gap-1.5 shrink-0">  
-            <div id="user-badge" class="hidden text-xs bg-redbusDark px-2 py-1 rounded border border-yellow-400 font-semibold">  
+        <div class="gk-header-actions">  
+            <div id="user-badge" class="hidden gk-user-badge">  
                 <span id="user-name-display"></span> (<span id="user-role-display"></span>)  
             </div>  
-            <button id="logout-btn" onclick="logout()" class="hidden bg-yellow-500 hover:bg-yellow-600 text-black px-2 py-1 rounded text-xs font-bold shadow">  
+            <button id="logout-btn" onclick="logout()" class="hidden gk-logout-btn">  
                 <i class="fa-solid fa-right-from-bracket"></i> बाहेर पडा  
             </button>  
         </div>  
