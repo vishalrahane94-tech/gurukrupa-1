@@ -122,21 +122,85 @@
     #app-header > .container { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
     #app-header img, #logout-btn { flex-shrink: 0 !important; }
 
+
+    /* =========================================================
+       FINAL HEADER + MOBILE BRANDING FIX
+       Logo slightly smaller, GURUKRUPA + TOURS AND TRAVELS visible
+       ========================================================= */
+    #app-header {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: visible !important;
+    }
+    #app-header > .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+    }
+    .header-brand {
+        min-width: 0 !important;
+        overflow: visible !important;
+    }
+    .header-logo {
+        width: 36px !important;
+        height: 36px !important;
+    }
+    .header-title, .header-subtitle {
+        overflow: visible !important;
+        text-overflow: clip !important;
+    }
+    .header-actions {
+        min-width: 0 !important;
+    }
+    #user-badge {
+        max-width: 116px !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        padding: 6px 7px !important;
+    }
+    #logout-btn {
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+        padding: 7px 8px !important;
+        font-size: 11px !important;
+    }
+    @media (max-width: 390px) {
+        #app-header { padding: 6px 4px !important; }
+        .header-logo { width: 33px !important; height: 33px !important; }
+        .header-brand { gap: 5px !important; }
+        .header-title { font-size: 12px !important; letter-spacing: .02em !important; }
+        .header-subtitle { font-size: 7px !important; letter-spacing: .08em !important; }
+        #user-badge { max-width: 102px !important; font-size: 10px !important; padding: 5px 6px !important; }
+        #logout-btn { font-size: 10px !important; padding: 6px 6px !important; }
+        .header-actions { gap: 4px !important; }
+    }
+    @media (max-width: 350px) {
+        .header-logo { width: 31px !important; height: 31px !important; }
+        .header-title { font-size: 11px !important; }
+        .header-subtitle { font-size: 6.5px !important; }
+        #user-badge { max-width: 92px !important; font-size: 9px !important; }
+        #logout-btn { font-size: 9px !important; padding: 5px !important; }
+    }
+
 </style>
 
 </head>  
 <body class="bg-gray-100 font-sans pb-10">  <!-- लॉगिननंतर दिसणारा हेडर बार -->  
-<header id="app-header" class="hidden bg-redbus text-white p-2.5 shadow-lg sticky top-0 z-50">  
-    <div class="container mx-auto flex justify-between items-center">  
-        <div class="flex items-center gap-2.5 select-none">  
-            <img src="icon-192.png" alt="GK Logo" class="w-10 h-10 rounded-full border-2 border-yellow-500 shadow-md object-cover shrink-0">  
-            <div>  
-                <h1 class="text-base font-black tracking-wide text-yellow-300 uppercase leading-none">GURUKRUPA</h1>  
-                <p class="text-[9px] tracking-widest text-white uppercase font-bold">TOURS AND TRAVELS</p>  
+<header id="app-header" class="hidden bg-redbus text-white p-2 shadow-lg sticky top-0 z-50">  
+    <div class="container mx-auto flex items-center gap-2 min-w-0">  
+        <div class="header-brand flex items-center gap-1.5 select-none min-w-0 flex-1">  
+            <img src="icon-192.png" alt="GK Logo" class="header-logo w-9 h-9 rounded-full border-2 border-yellow-500 shadow-md object-cover shrink-0">  
+            <div class="min-w-0 leading-tight">  
+                <h1 class="header-title text-[14px] font-black tracking-wide text-yellow-300 uppercase leading-none whitespace-nowrap">GURUKRUPA</h1>  
+                <p class="header-subtitle text-[8px] tracking-[0.12em] text-white uppercase font-bold whitespace-nowrap">TOURS AND TRAVELS</p>  
             </div>  
         </div>  
 
-        <div class="flex items-center gap-2">  
+        <div class="header-actions flex items-center gap-1.5 shrink-0">  
             <div id="user-badge" class="hidden text-xs bg-redbusDark px-2 py-1 rounded border border-yellow-400 font-semibold">  
                 <span id="user-name-display"></span> (<span id="user-role-display"></span>)  
             </div>  
