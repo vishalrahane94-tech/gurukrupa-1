@@ -269,6 +269,37 @@
     .sticky-customer-nav .tab-btn { min-height: 60px !important; height: 60px !important; font-size: 13px !important; }
 }
 
+
+/* FINAL REQUESTED DESIGN: visible menu icons + reliable logged-in header */
+.sticky-customer-nav .tab-btn {
+    flex-direction: column !important;
+    gap: 4px !important;
+}
+.sticky-customer-nav .tab-btn .tab-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 24px !important;
+    font-size: 23px !important;
+    line-height: 1 !important;
+}
+.sticky-customer-nav .tab-btn > span:last-child {
+    display: block !important;
+    text-align: center !important;
+}
+#tab-buses {
+    flex-direction: row !important;
+    gap: 9px !important;
+}
+#tab-buses .tab-icon {
+    height: auto !important;
+    font-size: 29px !important;
+}
+@media (max-width:390px) {
+    .sticky-customer-nav .tab-btn { font-size: 13px !important; gap: 3px !important; }
+    .sticky-customer-nav .tab-btn .tab-icon { font-size: 20px !important; height: 21px !important; }
+    #tab-buses .tab-icon { font-size: 26px !important; }
+}
 </style>
 
 </head>  
@@ -356,13 +387,13 @@
         <!-- ७ बटन्स ज्यांना onclick फंक्शन्स जोडले आहेत -->  
         <div class="sticky-customer-nav">  
             <div class="grid grid-cols-3 gap-1.5 mb-2 text-xs font-semibold">  
-                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm">1. Sharing</button>  
-                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">2. One Way</button>  
-                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">3. Airport Drop</button>  
-                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">4. Fleet (Per KM)</button>  
-                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">5. नाशिक दर्शन</button>  
-                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn p-2 rounded-lg border bg-white shadow-sm">6. Packages</button>  
-                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 p-2 rounded-lg border bg-white shadow-sm text-redbus font-bold">7. Buses Inquiry</button>  
+                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-car-side"></i></span><span>1. Sharing</span></button>  
+                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-route"></i></span><span>2. One Way</span></button>  
+                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-plane"></i></span><span>3. Airport Drop</span></button>  
+                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-car"></i></span><span>4. Fleet (Per KM)</span></button>  
+                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-landmark"></i></span><span>5. नाशिक दर्शन</span></button>  
+                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-cube"></i></span><span>6. Packages</span></button>  
+                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 p-2 rounded-lg border bg-white shadow-sm text-redbus font-bold"><span class="tab-icon"><i class="fa-solid fa-bus"></i></span><span>7. Buses Inquiry</span></button>  
             </div>  
 
             <div class="border-b pb-2 flex justify-between items-center bg-white p-2.5 rounded-lg shadow-sm border border-gray-200">  
@@ -1185,7 +1216,8 @@
 
     function applyUserSession(userObj) {  
         document.getElementById('screen-login').classList.add('hidden');  
-        document.getElementById('app-header').classList.remove('hidden');  
+        document.getElementById('app-header').classList.remove('hidden');
+        document.getElementById('app-header').style.display = 'flex';  
         document.getElementById('user-badge').classList.remove('hidden');  
         document.getElementById('logout-btn').classList.remove('hidden');  
         document.getElementById('user-name-display').innerText = userObj.name;  
@@ -1205,6 +1237,7 @@
     window.logout = function() {  
         localStorage.removeItem('gk_user');  
         window.currentUser = null;  
+        document.getElementById('app-header').style.display = 'none';
         document.getElementById('app-header').classList.add('hidden');  
         document.getElementById('screen-login').classList.remove('hidden');  
         document.getElementById('screen-customer').classList.add('hidden');  
