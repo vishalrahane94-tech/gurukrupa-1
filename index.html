@@ -64,367 +64,222 @@
     }  
     .hidden-portal { display: none !important; }  
 
-    /* सुधारीत CSS: sticky पूर्णपणे काढून relative केले आहे जेणेकरून लेआउट व्यवस्थित राहील */  
     .sticky-customer-nav {  
         position: relative;  
         z-index: 40;  
         background-color: #f3f4f6;  
-        padding-top: 10px;  
+        padding-top: 6px;  
         padding-bottom: 6px;  
     }  
 
-    /* लेआउट ओव्हरलॅप समस्या पूर्णपणे सोडवण्यासाठी */  
     body {  
         padding-bottom: 50px !important;  
     }  
 
     #screen-customer {  
-        margin-top: 10px;  
+        margin-top: 5px;  
     }  
 
     /* =========================================================
-       MOBILE SERVICE MENU - VISIBILITY / RESPONSIVE FIX
+       NEW PHOTO 2 HEADER & SMALLER ICONS STYLES
        ========================================================= */
     html, body { width: 100%; max-width: 100%; overflow-x: hidden !important; }
     *, *::before, *::after { box-sizing: border-box; }
-    .sticky-customer-nav { width: 100% !important; max-width: 100% !important; overflow: visible !important; }
+
+    /* Photo 2 Red Top Header Styling */
+    .gk-app-header {
+        display: flex !important;
+        width: 100% !important;
+        background-color: #d9383a !important;
+        padding: 8px 12px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 100 !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
+    }
+
+    .gk-header-inner {
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 8px !important;
+    }
+
+    .gk-header-brand {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        min-width: 0 !important;
+    }
+
+    .logo-circle {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        background-color: #fff !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: 2px solid #e2b047 !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+        flex-shrink: 0 !important;
+    }
+
+    .logo-circle span.gk-text {
+        color: #000 !important;
+        font-weight: bold !important;
+        font-size: 15px !important;
+        line-height: 1 !important;
+    }
+
+    .logo-circle span.sub-gk {
+        color: #d9383a !important;
+        font-size: 5px !important;
+        font-weight: bold !important;
+        text-transform: uppercase !important;
+    }
+
+    .brand-title {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .brand-title h1 {
+        font-size: 19px !important; /* गुरुकृपा नावाची मोठी साइज */
+        font-weight: 900 !important;
+        color: #f3ab26 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        line-height: 1.1 !important;
+        margin: 0 !important;
+    }
+
+    .brand-title span {
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        color: #ffffff !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    .gk-header-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .gk-user-badge {
+        border: 1px solid #f3ab26 !important;
+        border-radius: 8px !important;
+        padding: 4px 8px !important;
+        text-align: center !important;
+        background-color: rgba(0, 0, 0, 0.15) !important;
+        line-height: 1.2 !important;
+    }
+
+    .gk-user-badge #user-name-display {
+        font-size: 11px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+        display: block !important;
+    }
+
+    .gk-user-badge #user-role-display {
+        font-size: 10px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+        display: block !important;
+    }
+
+    .gk-logout-btn {
+        background-color: #f1c40f !important;
+        color: #000 !important;
+        border: none !important;
+        padding: 6px 9px !important;
+        border-radius: 6px !important;
+        font-size: 11px !important;
+        font-weight: bold !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* 7 Icons Grid Small Compact Styling */
+    .sticky-customer-nav { width: 100% !important; }
     .sticky-customer-nav > .grid {
-        width: 100% !important; max-width: 100% !important;
         display: grid !important;
         grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        gap: 10px !important; margin-left: 0 !important; margin-right: 0 !important;
-        overflow: visible !important;
+        gap: 8px !important;
     }
+
     .sticky-customer-nav .tab-btn {
-        width: 100% !important; min-width: 0 !important; max-width: 100% !important;
-        min-height: 66px !important; height: auto !important;
-        padding: 10px 5px !important;
-        display: flex !important; align-items: center !important; justify-content: center !important;
-        text-align: center !important; white-space: normal !important; overflow: visible !important;
-        line-height: 1.25 !important; word-break: normal !important; overflow-wrap: break-word !important;
+        min-height: 52px !important; /* साइज लहान केली आहे */
+        height: auto !important;
+        padding: 6px 3px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        border-radius: 8px !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+        font-size: 12px !important; /* टेक्स्ट साइज थोडी लहान */
+        font-weight: 700 !important;
+        gap: 3px !important;
     }
-    .sticky-customer-nav .tab-btn.col-span-3 { grid-column: 1 / -1 !important; }
-    @media (max-width: 600px) {
-        .sticky-customer-nav { padding-left: 0 !important; padding-right: 0 !important; }
-        .sticky-customer-nav > .grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 9px !important; }
-        .sticky-customer-nav .tab-btn { min-height: 64px !important; padding: 10px 4px !important; font-size: 15px !important; }
+
+    .sticky-customer-nav .tab-btn .tab-icon {
+        font-size: 16px !important; /* लहान आयकॉन */
+        line-height: 1 !important;
     }
+
+    #tab-buses {
+        flex-direction: row !important;
+        gap: 6px !important;
+        min-height: 42px !important;
+    }
+
+    #tab-buses .tab-icon {
+        font-size: 18px !important;
+    }
+
     @media (max-width: 380px) {
-        .sticky-customer-nav > .grid { gap: 7px !important; }
-        .sticky-customer-nav .tab-btn { min-height: 60px !important; padding: 8px 3px !important; font-size: 13px !important; line-height: 1.2 !important; }
-        #app-header { padding: 8px 5px !important; }
-        #app-header h1 { font-size: 13px !important; }
-        #app-header p { font-size: 7px !important; }
-        #user-badge { max-width: 105px !important; font-size: 10px !important; }
-        #logout-btn { padding-left: 6px !important; padding-right: 6px !important; font-size: 10px !important; }
+        .brand-title h1 { font-size: 16px !important; }
+        .brand-title span { font-size: 9px !important; }
+        .logo-circle { width: 38px !important; height: 38px !important; min-width: 38px !important; }
+        .logo-circle span.gk-text { font-size: 13px !important; }
+        .gk-user-badge { padding: 3px 6px !important; }
+        .gk-user-badge #user-name-display, .gk-user-badge #user-role-display { font-size: 9px !important; }
+        .gk-logout-btn { padding: 5px 7px !important; font-size: 10px !important; }
+        .sticky-customer-nav .tab-btn { min-height: 48px !important; font-size: 11px !important; }
+        .sticky-customer-nav .tab-btn .tab-icon { font-size: 14px !important; }
     }
-    #app-header { width: 100% !important; max-width: 100% !important; overflow: visible !important; }
-    #app-header > .container { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
-    #app-header img, #logout-btn { flex-shrink: 0 !important; }
-
-
-/* =========================================================
-   FINAL MOBILE HEADER + SERVICE MENU FIX
-   ========================================================= */
-.gk-app-header {
-    width: 100% !important;
-    min-height: 72px !important;
-    padding: 7px 8px !important;
-    overflow: visible !important;
-}
-.gk-header-inner {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 7px !important;
-}
-.gk-header-brand {
-    min-width: 0 !important;
-    flex: 1 1 auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-}
-.gk-header-logo {
-    width: 42px !important;
-    height: 42px !important;
-    min-width: 42px !important;
-    max-width: 42px !important;
-    border-radius: 9999px !important;
-    border: 2px solid #eab308 !important;
-    object-fit: cover !important;
-    flex: 0 0 42px !important;
-}
-.gk-header-brand-text {
-    min-width: 0 !important;
-    overflow: visible !important;
-}
-.gk-header-brand-text h1 {
-    margin: 0 !important;
-    color: #fde047 !important;
-    font-size: 17px !important;
-    line-height: 1.05 !important;
-    font-weight: 900 !important;
-    letter-spacing: .03em !important;
-    white-space: nowrap !important;
-}
-.gk-header-brand-text p {
-    margin: 3px 0 0 !important;
-    color: #fff !important;
-    font-size: 9px !important;
-    line-height: 1 !important;
-    font-weight: 800 !important;
-    letter-spacing: .10em !important;
-    white-space: nowrap !important;
-}
-.gk-header-actions {
-    min-width: 0 !important;
-    flex: 0 0 auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 5px !important;
-}
-.gk-user-badge {
-    max-width: 120px !important;
-    min-width: 0 !important;
-    padding: 7px 8px !important;
-    border: 1px solid #facc15 !important;
-    border-radius: 7px !important;
-    background: #b83238 !important;
-    color: #fff !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
-    line-height: 1.15 !important;
-    white-space: normal !important;
-    overflow: hidden !important;
-}
-.gk-logout-btn {
-    min-width: 82px !important;
-    padding: 8px 8px !important;
-    border: 0 !important;
-    border-radius: 7px !important;
-    background: #eab308 !important;
-    color: #000 !important;
-    font-size: 11px !important;
-    line-height: 1.1 !important;
-    font-weight: 800 !important;
-    white-space: nowrap !important;
-    flex: 0 0 auto !important;
-}
-
-.sticky-customer-nav {
-    width: 100% !important;
-    padding: 8px 0 7px !important;
-    overflow: visible !important;
-}
-.sticky-customer-nav > .grid {
-    width: 100% !important;
-    margin: 0 0 10px !important;
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 9px !important;
-}
-.sticky-customer-nav .tab-btn {
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 68px !important;
-    height: 68px !important;
-    padding: 7px 4px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-    font-size: 15px !important;
-    line-height: 1.2 !important;
-    font-weight: 800 !important;
-    white-space: normal !important;
-    overflow: visible !important;
-}
-.sticky-customer-nav .tab-btn.col-span-3 {
-    grid-column: 1 / -1 !important;
-}
-@media (max-width: 390px) {
-    .gk-app-header { min-height: 70px !important; padding: 6px 6px !important; }
-    .gk-header-inner { gap: 5px !important; }
-    .gk-header-brand { gap: 6px !important; }
-    .gk-header-logo { width: 38px !important; height: 38px !important; min-width: 38px !important; max-width: 38px !important; flex-basis: 38px !important; }
-    .gk-header-brand-text h1 { font-size: 15px !important; }
-    .gk-header-brand-text p { font-size: 8px !important; letter-spacing: .08em !important; }
-    .gk-user-badge { max-width: 105px !important; font-size: 10px !important; padding: 6px !important; }
-    .gk-logout-btn { min-width: 76px !important; font-size: 10px !important; padding: 7px 5px !important; }
-    .sticky-customer-nav > .grid { gap: 8px !important; }
-    .sticky-customer-nav .tab-btn { min-height: 64px !important; height: 64px !important; font-size: 14px !important; }
-}
-@media (max-width: 350px) {
-    .gk-header-logo { width: 34px !important; height: 34px !important; min-width: 34px !important; max-width: 34px !important; flex-basis: 34px !important; }
-    .gk-header-brand-text h1 { font-size: 13px !important; }
-    .gk-header-brand-text p { font-size: 7px !important; }
-    .gk-user-badge { max-width: 90px !important; font-size: 9px !important; }
-    .gk-logout-btn { min-width: 68px !important; font-size: 9px !important; }
-    .sticky-customer-nav > .grid { gap: 6px !important; }
-    .sticky-customer-nav .tab-btn { min-height: 60px !important; height: 60px !important; font-size: 13px !important; }
-}
-
-
-/* FINAL REQUESTED DESIGN: visible menu icons + reliable logged-in header */
-.sticky-customer-nav .tab-btn {
-    flex-direction: column !important;
-    gap: 4px !important;
-}
-.sticky-customer-nav .tab-btn .tab-icon {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    height: 24px !important;
-    font-size: 23px !important;
-    line-height: 1 !important;
-}
-.sticky-customer-nav .tab-btn > span:last-child {
-    display: block !important;
-    text-align: center !important;
-}
-#tab-buses {
-    flex-direction: row !important;
-    gap: 9px !important;
-}
-#tab-buses .tab-icon {
-    height: auto !important;
-    font-size: 29px !important;
-}
-@media (max-width:390px) {
-    .sticky-customer-nav .tab-btn { font-size: 13px !important; gap: 3px !important; }
-    .sticky-customer-nav .tab-btn .tab-icon { font-size: 20px !important; height: 21px !important; }
-    #tab-buses .tab-icon { font-size: 26px !important; }
-}
-
-/* =========================================================
-   FINAL HEADER VISIBILITY + COMPACT MOBILE FIX
-   ========================================================= */
-.gk-app-header {
-    display: flex !important;
-    width: 100% !important;
-    min-height: 72px !important;
-    height: 72px !important;
-    padding: 6px 7px !important;
-    background-color: #d84e55 !important;
-    position: relative !important;
-    z-index: 100 !important;
-}
-
-/* Login screen वर header hidden ठेवायचा */
-#screen-login:not(.hidden) ~ * #app-header { display: none !important; }
-
-.gk-header-inner {
-    width: 100% !important;
-    height: 100% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 4px !important;
-}
-
-.gk-header-brand {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    overflow: visible !important;
-}
-
-.gk-header-logo {
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
-    max-width: 38px !important;
-    flex: 0 0 38px !important;
-}
-
-.gk-header-brand-text {
-    min-width: 0 !important;
-    flex: 1 1 auto !important;
-    overflow: visible !important;
-}
-
-.gk-header-brand-text h1 {
-    font-size: 16px !important;
-    line-height: 1 !important;
-    letter-spacing: .02em !important;
-    white-space: nowrap !important;
-    overflow: visible !important;
-}
-
-.gk-header-brand-text p {
-    margin-top: 3px !important;
-    font-size: 8px !important;
-    line-height: 1 !important;
-    letter-spacing: .07em !important;
-    white-space: nowrap !important;
-    overflow: visible !important;
-}
-
-.gk-header-actions {
-    flex: 0 0 auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 3px !important;
-}
-
-.gk-user-badge {
-    width: 100px !important;
-    max-width: 100px !important;
-    min-width: 100px !important;
-    padding: 6px 6px !important;
-    font-size: 10px !important;
-    line-height: 1.1 !important;
-    white-space: normal !important;
-    overflow: visible !important;
-}
-
-.gk-logout-btn {
-    width: 70px !important;
-    min-width: 70px !important;
-    max-width: 70px !important;
-    padding: 7px 3px !important;
-    font-size: 10px !important;
-    line-height: 1.1 !important;
-}
-
-/* Customer screen उघडल्यावर header नेहमी दिसावा */
-body:has(#screen-customer:not(.hidden)) #app-header {
-    display: flex !important;
-}
-
-@media (max-width: 370px) {
-    .gk-app-header { padding-left: 5px !important; padding-right: 5px !important; }
-    .gk-header-logo { width: 34px !important; height: 34px !important; min-width: 34px !important; flex-basis: 34px !important; }
-    .gk-header-brand { gap: 5px !important; }
-    .gk-header-brand-text h1 { font-size: 14px !important; }
-    .gk-header-brand-text p { font-size: 7px !important; letter-spacing: .05em !important; }
-    .gk-user-badge { width: 92px !important; min-width: 92px !important; max-width: 92px !important; font-size: 9px !important; }
-    .gk-logout-btn { width: 64px !important; min-width: 64px !important; max-width: 64px !important; font-size: 9px !important; }
-}
 </style>
 
 </head>  
-<body class="bg-gray-100 font-sans pb-10">  <!-- लॉगिननंतर दिसणारा हेडर बार -->  
-<header id="app-header" class="hidden bg-redbus text-white shadow-lg sticky top-0 z-50 gk-app-header">  
+<body class="bg-gray-100 font-sans pb-10">  <!-- फोटो २ मधील नवीन लाल रंगाचा हेडर बार -->  
+<header id="app-header" class="hidden gk-app-header">  
     <div class="gk-header-inner">  
         <div class="gk-header-brand">  
-            <img src="icon-192.png" alt="GK Logo" class="gk-header-logo">  
-            <div class="gk-header-brand-text">  
+            <div class="logo-circle">
+                <span class="gk-text">GK</span>
+                <span class="sub-gk">Gurukrupa</span>
+            </div>
+            <div class="brand-title">  
                 <h1>GURUKRUPA</h1>  
-                <p>TOURS AND TRAVELS</p>  
+                <span>TOURS AND TRAVELS</span>  
             </div>  
         </div>  
 
         <div class="gk-header-actions">  
             <div id="user-badge" class="hidden gk-user-badge">  
-                <span id="user-name-display"></span> (<span id="user-role-display"></span>)  
+                <span id="user-name-display"></span>
+                <span id="user-role-display"></span>  
             </div>  
             <button id="logout-btn" onclick="logout()" class="hidden gk-logout-btn">  
                 <i class="fa-solid fa-right-from-bracket"></i> बाहेर पडा  
@@ -492,16 +347,16 @@ body:has(#screen-customer:not(.hidden)) #app-header {
     <!-- कस्टमर पोर्टल स्क्रीन -->  
     <div id="screen-customer" class="hidden pt-1">  
           
-        <!-- ७ बटन्स ज्यांना onclick फंक्शन्स जोडले आहेत -->  
+        <!-- ७ बटन्स ची नवीन कॉम्पॅक्ट आणि लहान साईझ -->  
         <div class="sticky-customer-nav">  
             <div class="grid grid-cols-3 gap-1.5 mb-2 text-xs font-semibold">  
-                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-car-side"></i></span><span>1. Sharing</span></button>  
-                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-route"></i></span><span>2. One Way</span></button>  
-                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-plane"></i></span><span>3. Airport Drop</span></button>  
-                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-car"></i></span><span>4. Fleet (Per KM)</span></button>  
-                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-landmark"></i></span><span>5. नाशिक दर्शन</span></button>  
-                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn p-2 rounded-lg border bg-white shadow-sm"><span class="tab-icon"><i class="fa-solid fa-cube"></i></span><span>6. Packages</span></button>  
-                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 p-2 rounded-lg border bg-white shadow-sm text-redbus font-bold"><span class="tab-icon"><i class="fa-solid fa-bus"></i></span><span>7. Buses Inquiry</span></button>  
+                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active border bg-white"><span class="tab-icon"><i class="fa-solid fa-car-side"></i></span><span>1. Sharing</span></button>  
+                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-route"></i></span><span>2. One Way</span></button>  
+                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-plane"></i></span><span>3. Airport Drop</span></button>  
+                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-car"></i></span><span>4. Fleet (Per KM)</span></button>  
+                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-landmark"></i></span><span>5. नाशिक दर्शन</span></button>  
+                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-cube"></i></span><span>6. Packages</span></button>  
+                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 border bg-white text-redbus font-bold"><span class="tab-icon"><i class="fa-solid fa-bus"></i></span><span>7. Buses Inquiry</span></button>  
             </div>  
 
             <div class="border-b pb-2 flex justify-between items-center bg-white p-2.5 rounded-lg shadow-sm border border-gray-200">  
@@ -787,7 +642,7 @@ body:has(#screen-customer:not(.hidden)) #app-header {
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">पॅकेज रूट निवडा *</label>  
                     <select id="package-route" onchange="updatePackageCars()" class="w-full p-2 border rounded text-xs font-bold">  
-                        <option value="Pune to vani return">पुणे ते वणी रिटर्न (Pune to vani return)</option>  
+                        <option value="vanipune">पुणे ते वणी रिटर्न (Vanipune Return)</option>  
                         <option value="Nsk to vani return">नाशिक ते वणी रिटर्न (Nsk to vani return)</option>  
                         <option value="Nsk to shirdi return">नाशिक ते शिर्डी रिटर्न (Nsk to shirdi return)</option>  
                         <option value="Pune to shirdi return">पुणे ते शिर्डी रिटर्न (Pune to shirdi return)</option>  
@@ -1325,12 +1180,11 @@ body:has(#screen-customer:not(.hidden)) #app-header {
     function applyUserSession(userObj) {  
         document.getElementById('screen-login').classList.add('hidden');  
         document.getElementById('app-header').classList.remove('hidden');
-        document.getElementById('app-header').style.display = 'flex';
         document.getElementById('app-header').style.display = 'flex';  
         document.getElementById('user-badge').classList.remove('hidden');  
         document.getElementById('logout-btn').classList.remove('hidden');  
         document.getElementById('user-name-display').innerText = userObj.name;  
-        document.getElementById('user-role-display').innerText = userObj.role.toUpperCase();  
+        document.getElementById('user-role-display').innerText = `(${userObj.role.toUpperCase()})`;  
 
         if (userObj.role === 'customer') {  
             document.getElementById('screen-customer').classList.remove('hidden');  
@@ -1346,9 +1200,8 @@ body:has(#screen-customer:not(.hidden)) #app-header {
     window.logout = function() {  
         localStorage.removeItem('gk_user');  
         window.currentUser = null;  
-        document.getElementById('app-header').style.display = 'none';
-        document.getElementById('app-header').classList.add('hidden');
-         document.getElementById('app-header').style.display = 'none';  
+        document.getElementById('app-header').style.display = 'none';  
+        document.getElementById('app-header').classList.add('hidden');  
         document.getElementById('screen-login').classList.remove('hidden');  
         document.getElementById('screen-customer').classList.add('hidden');  
         document.getElementById('screen-owner').classList.add('hidden');  
@@ -1357,20 +1210,16 @@ body:has(#screen-customer:not(.hidden)) #app-header {
         document.getElementById('logout-btn').classList.add('hidden');  
     };  
 
-    // बदललेला showTab फंक्शन जो सर्व टॅब्ज आणि बटन्स अचूक स्विच करेल  
     window.showTab = function(tabName) {  
         window.activeTab = tabName;  
           
-        // सर्व बटणांवरील active काढून टाका आणि क्लिक केलेल्या बटणावर लावा  
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));  
         const activeBtn = document.getElementById(`tab-${tabName}`);  
         if (activeBtn) activeBtn.classList.add('active');  
 
-        // सर्व टॅब कंटेंट्स लपवा  
         const tabs = document.querySelectorAll('.tab-content');  
         tabs.forEach(tab => tab.style.display = 'none');  
 
-        // युजरने क्लिक केला तोच टॅब दाखवा  
         const activeTab = document.getElementById(tabName + '-content');  
         if (activeTab) {  
             activeTab.style.display = 'block';  
@@ -1506,7 +1355,7 @@ body:has(#screen-customer:not(.hidden)) #app-header {
         const carSelect = document.getElementById('package-car');  
         carSelect.innerHTML = '';  
 
-        if (route === 'Pune to vani return') {  
+        if (route === 'vanipune') {  
             carSelect.innerHTML = `  
                 <option value="MARUTI DZIRE - ₹12/- PER KM">MARUTI DZIRE - ₹12/- PER KM</option>  
                 <option value="MARUTI CIAZ - ₹13/- PER KM">MARUTI CIAZ - ₹13/- PER KM</option>  
@@ -1935,4 +1784,4 @@ body:has(#screen-customer:not(.hidden)) #app-header {
 </script>
 
 </body>  
-    </html>
+</html>
