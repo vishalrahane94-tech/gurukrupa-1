@@ -81,6 +81,47 @@
     #screen-customer {  
         margin-top: 10px;  
     }  
+
+    /* =========================================================
+       MOBILE SERVICE MENU - VISIBILITY / RESPONSIVE FIX
+       ========================================================= */
+    html, body { width: 100%; max-width: 100%; overflow-x: hidden !important; }
+    *, *::before, *::after { box-sizing: border-box; }
+    .sticky-customer-nav { width: 100% !important; max-width: 100% !important; overflow: visible !important; }
+    .sticky-customer-nav > .grid {
+        width: 100% !important; max-width: 100% !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 10px !important; margin-left: 0 !important; margin-right: 0 !important;
+        overflow: visible !important;
+    }
+    .sticky-customer-nav .tab-btn {
+        width: 100% !important; min-width: 0 !important; max-width: 100% !important;
+        min-height: 66px !important; height: auto !important;
+        padding: 10px 5px !important;
+        display: flex !important; align-items: center !important; justify-content: center !important;
+        text-align: center !important; white-space: normal !important; overflow: visible !important;
+        line-height: 1.25 !important; word-break: normal !important; overflow-wrap: break-word !important;
+    }
+    .sticky-customer-nav .tab-btn.col-span-3 { grid-column: 1 / -1 !important; }
+    @media (max-width: 600px) {
+        .sticky-customer-nav { padding-left: 0 !important; padding-right: 0 !important; }
+        .sticky-customer-nav > .grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 9px !important; }
+        .sticky-customer-nav .tab-btn { min-height: 64px !important; padding: 10px 4px !important; font-size: 15px !important; }
+    }
+    @media (max-width: 380px) {
+        .sticky-customer-nav > .grid { gap: 7px !important; }
+        .sticky-customer-nav .tab-btn { min-height: 60px !important; padding: 8px 3px !important; font-size: 13px !important; line-height: 1.2 !important; }
+        #app-header { padding: 8px 5px !important; }
+        #app-header h1 { font-size: 13px !important; }
+        #app-header p { font-size: 7px !important; }
+        #user-badge { max-width: 105px !important; font-size: 10px !important; }
+        #logout-btn { padding-left: 6px !important; padding-right: 6px !important; font-size: 10px !important; }
+    }
+    #app-header { width: 100% !important; max-width: 100% !important; overflow: visible !important; }
+    #app-header > .container { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
+    #app-header img, #logout-btn { flex-shrink: 0 !important; }
+
 </style>
 
 </head>  
