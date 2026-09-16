@@ -300,6 +300,114 @@
     .sticky-customer-nav .tab-btn .tab-icon { font-size: 20px !important; height: 21px !important; }
     #tab-buses .tab-icon { font-size: 26px !important; }
 }
+
+/* =========================================================
+   FINAL HEADER VISIBILITY + COMPACT MOBILE FIX
+   ========================================================= */
+.gk-app-header {
+    display: flex !important;
+    width: 100% !important;
+    min-height: 72px !important;
+    height: 72px !important;
+    padding: 6px 7px !important;
+    background-color: #d84e55 !important;
+    position: relative !important;
+    z-index: 100 !important;
+}
+
+/* Login screen वर header hidden ठेवायचा */
+#screen-login:not(.hidden) ~ * #app-header { display: none !important; }
+
+.gk-header-inner {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 4px !important;
+}
+
+.gk-header-brand {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    overflow: visible !important;
+}
+
+.gk-header-logo {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    flex: 0 0 38px !important;
+}
+
+.gk-header-brand-text {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    overflow: visible !important;
+}
+
+.gk-header-brand-text h1 {
+    font-size: 16px !important;
+    line-height: 1 !important;
+    letter-spacing: .02em !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+}
+
+.gk-header-brand-text p {
+    margin-top: 3px !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
+    letter-spacing: .07em !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+}
+
+.gk-header-actions {
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+}
+
+.gk-user-badge {
+    width: 100px !important;
+    max-width: 100px !important;
+    min-width: 100px !important;
+    padding: 6px 6px !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+}
+
+.gk-logout-btn {
+    width: 70px !important;
+    min-width: 70px !important;
+    max-width: 70px !important;
+    padding: 7px 3px !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+}
+
+/* Customer screen उघडल्यावर header नेहमी दिसावा */
+body:has(#screen-customer:not(.hidden)) #app-header {
+    display: flex !important;
+}
+
+@media (max-width: 370px) {
+    .gk-app-header { padding-left: 5px !important; padding-right: 5px !important; }
+    .gk-header-logo { width: 34px !important; height: 34px !important; min-width: 34px !important; flex-basis: 34px !important; }
+    .gk-header-brand { gap: 5px !important; }
+    .gk-header-brand-text h1 { font-size: 14px !important; }
+    .gk-header-brand-text p { font-size: 7px !important; letter-spacing: .05em !important; }
+    .gk-user-badge { width: 92px !important; min-width: 92px !important; max-width: 92px !important; font-size: 9px !important; }
+    .gk-logout-btn { width: 64px !important; min-width: 64px !important; max-width: 64px !important; font-size: 9px !important; }
+}
 </style>
 
 </head>  
@@ -1217,6 +1325,7 @@
     function applyUserSession(userObj) {  
         document.getElementById('screen-login').classList.add('hidden');  
         document.getElementById('app-header').classList.remove('hidden');
+        document.getElementById('app-header').style.display = 'flex';
         document.getElementById('app-header').style.display = 'flex';  
         document.getElementById('user-badge').classList.remove('hidden');  
         document.getElementById('logout-btn').classList.remove('hidden');  
@@ -1238,7 +1347,8 @@
         localStorage.removeItem('gk_user');  
         window.currentUser = null;  
         document.getElementById('app-header').style.display = 'none';
-        document.getElementById('app-header').classList.add('hidden');  
+        document.getElementById('app-header').classList.add('hidden');
+         document.getElementById('app-header').style.display = 'none';  
         document.getElementById('screen-login').classList.remove('hidden');  
         document.getElementById('screen-customer').classList.add('hidden');  
         document.getElementById('screen-owner').classList.add('hidden');  
