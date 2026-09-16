@@ -2,268 +2,266 @@
 <head>  
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Gurukrupa Tours & Travels - Official Portal</title>  <!-- PWA & Favicon Icons -->  
-<link rel="manifest" href="manifest.json">  
-<meta name="theme-color" content="#ffffff">  
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">  
-<link rel="apple-touch-icon" href="icon-192.png">  
+    <title>Gurukrupa Tours & Travels - Official Portal</title>  
+    
+    <!-- PWA & Favicon Icons -->  
+    <link rel="manifest" href="manifest.json">  
+    <meta name="theme-color" content="#ffffff">  
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">  
+    <link rel="apple-touch-icon" href="icon-192.png">  
 
-<script src="https://cdn.tailwindcss.com"></script>  
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">  
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>  
+    <script src="https://cdn.tailwindcss.com"></script>  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">  
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>  
 
-<script>  
-    tailwind.config = {  
-        theme: {  
-            extend: {  
-                colors: {  
-                    redbus: '#d84e55',  
-                    redbusDark: '#b83238'  
+    <script>  
+        tailwind.config = {  
+            theme: {  
+                extend: {  
+                    colors: {  
+                        redbus: '#d84e55',  
+                        redbusDark: '#b83238'  
+                    }  
                 }  
             }  
         }  
-    }  
-</script>  
-<style>  
-    .seat { transition: all 0.2s ease; position: relative; cursor: pointer; background-color: #ffffff !important; }  
-    .seat.selected {  
-        background-color: #d84e55 !important;  
-        color: white !important;  
-        border-color: #b83238 !important;  
-    }  
-    .seat.selected .price-tag { color: white !important; }  
-      
-    .tab-btn.active {  
-        background-color: #d84e55;  
-        color: white;  
-        border-color: #d84e55;  
-    }  
-    .time-btn.selected {  
-        background-color: #d84e55;  
-        color: white;  
-        border-color: #d84e55;  
-    }  
-    .route-btn.active {  
-        background-color: #d84e55;  
-        color: white;  
-        border-color: #d84e55;  
-    }  
-    .no-scrollbar::-webkit-scrollbar { display: none; }  
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }  
-    .portal-card.active {  
-        border-color: #d84e55;  
-        background-color: #fff5f5;  
-        transform: scale(1.01);  
-    }  
-    .role-scroll-container {  
-        scroll-snap-type: x mandatory;  
-        -webkit-overflow-scrolling: touch;  
-    }  
-    .role-card-item {  
-        scroll-snap-align: start;  
-    }  
-    .hidden-portal { display: none !important; }  
+    </script>  
+    <style>  
+        .seat { transition: all 0.2s ease; position: relative; cursor: pointer; background-color: #ffffff !important; }  
+        .seat.selected {  
+            background-color: #d84e55 !important;  
+            color: white !important;  
+            border-color: #b83238 !important;  
+        }  
+        .seat.selected .price-tag { color: white !important; }  
+          
+        .tab-btn.active {  
+            background-color: #d84e55;  
+            color: white;  
+            border-color: #d84e55;  
+        }  
+        .time-btn.selected {  
+            background-color: #d84e55;  
+            color: white;  
+            border-color: #d84e55;  
+        }  
+        .route-btn.active {  
+            background-color: #d84e55;  
+            color: white;  
+            border-color: #d84e55;  
+        }  
+        .no-scrollbar::-webkit-scrollbar { display: none; }  
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }  
+        .portal-card.active {  
+            border-color: #d84e55;  
+            background-color: #fff5f5;  
+            transform: scale(1.01);  
+        }  
+        .role-scroll-container {  
+            scroll-snap-type: x mandatory;  
+            -webkit-overflow-scrolling: touch;  
+        }  
+        .role-card-item {  
+            scroll-snap-align: start;  
+        }  
+        .hidden-portal { display: none !important; }  
 
-    .sticky-customer-nav {  
-        position: relative;  
-        z-index: 40;  
-        background-color: #f3f4f6;  
-        padding-top: 6px;  
-        padding-bottom: 6px;  
-    }  
+        body {  
+            padding-bottom: 50px !important;  
+        }  
 
-    body {  
-        padding-bottom: 50px !important;  
-    }  
+        /* =========================================================
+           PHOTO 3 EXACT HEADER & CLEAR MENU STYLES
+           ========================================================= */
+        html, body { width: 100%; max-width: 100%; overflow-x: hidden !important; }
+        *, *::before, *::after { box-sizing: border-box; }
 
-    #screen-customer {  
-        margin-top: 5px;  
-    }  
+        /* १ नंबर फोटो मधील अडचण फिक्स: Default header hidden */
+        .gk-app-header {
+            display: none !important; /* लॉगिन नसताना हेडर पूर्ण बंद राहील */
+            width: 100% !important;
+            background-color: #d9383a !important;
+            padding: 8px 10px !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 100 !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
+        }
 
-    /* =========================================================
-       NEW PHOTO 2 HEADER & SMALLER ICONS STYLES
-       ========================================================= */
-    html, body { width: 100%; max-width: 100%; overflow-x: hidden !important; }
-    *, *::before, *::after { box-sizing: border-box; }
+        /* लॉगिन झाल्यावरच हेडर ऑन होईल */
+        body.logged-in .gk-app-header {
+            display: flex !important;
+        }
 
-    /* Photo 2 Red Top Header Styling */
-    .gk-app-header {
-        display: flex !important;
-        width: 100% !important;
-        background-color: #d9383a !important;
-        padding: 8px 12px !important;
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 100 !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
-    }
+        .gk-header-inner {
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 6px !important;
+        }
 
-    .gk-header-inner {
-        width: 100% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        gap: 8px !important;
-    }
+        .gk-header-brand {
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            min-width: 0 !important;
+        }
 
-    .gk-header-brand {
-        display: flex !important;
-        align-items: center !important;
-        gap: 8px !important;
-        min-width: 0 !important;
-    }
+        .logo-circle {
+            width: 42px !important;
+            height: 42px !important;
+            min-width: 42px !important;
+            background-color: #fff !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border: 2px solid #e2b047 !important;
+            flex-shrink: 0 !important;
+        }
 
-    .logo-circle {
-        width: 44px !important;
-        height: 44px !important;
-        min-width: 44px !important;
-        background-color: #fff !important;
-        border-radius: 50% !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border: 2px solid #e2b047 !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
-        flex-shrink: 0 !important;
-    }
+        .logo-circle span.gk-text {
+            color: #000 !important;
+            font-weight: bold !important;
+            font-size: 14px !important;
+            line-height: 1 !important;
+        }
 
-    .logo-circle span.gk-text {
-        color: #000 !important;
-        font-weight: bold !important;
-        font-size: 15px !important;
-        line-height: 1 !important;
-    }
+        .logo-circle span.sub-gk {
+            color: #d9383a !important;
+            font-size: 5px !important;
+            font-weight: bold !important;
+            text-transform: uppercase !important;
+        }
 
-    .logo-circle span.sub-gk {
-        color: #d9383a !important;
-        font-size: 5px !important;
-        font-weight: bold !important;
-        text-transform: uppercase !important;
-    }
+        .brand-title {
+            display: flex !important;
+            flex-direction: column !important;
+        }
 
-    .brand-title {
-        display: flex !important;
-        flex-direction: column !important;
-    }
+        /* २ नंबर फोटो मधील समस्या फिक्स - नाव पूर्ण दिसेल */
+        .brand-title h1 {
+            font-size: 17px !important;
+            font-weight: 900 !important;
+            color: #f3ab26 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.3px !important;
+            line-height: 1.1 !important;
+            margin: 0 !important;
+            white-space: nowrap !important;
+        }
 
-    .brand-title h1 {
-        font-size: 19px !important; /* गुरुकृपा नावाची मोठी साइज */
-        font-weight: 900 !important;
-        color: #f3ab26 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
-        line-height: 1.1 !important;
-        margin: 0 !important;
-    }
+        .brand-title span {
+            font-size: 10px !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            letter-spacing: 0.3px !important;
+            white-space: nowrap !important;
+        }
 
-    .brand-title span {
-        font-size: 11px !important;
-        font-weight: 800 !important;
-        color: #ffffff !important;
-        letter-spacing: 0.5px !important;
-    }
+        .gk-header-actions {
+            display: flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            flex-shrink: 0 !important;
+        }
 
-    .gk-header-actions {
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        flex-shrink: 0 !important;
-    }
+        .gk-user-badge {
+            border: 1px solid #f3ab26 !important;
+            border-radius: 8px !important;
+            padding: 3px 6px !important;
+            text-align: center !important;
+            background-color: rgba(0, 0, 0, 0.15) !important;
+            line-height: 1.1 !important;
+        }
 
-    .gk-user-badge {
-        border: 1px solid #f3ab26 !important;
-        border-radius: 8px !important;
-        padding: 4px 8px !important;
-        text-align: center !important;
-        background-color: rgba(0, 0, 0, 0.15) !important;
-        line-height: 1.2 !important;
-    }
+        .gk-user-badge #user-name-display {
+            font-size: 10px !important;
+            font-weight: bold !important;
+            color: #ffffff !important;
+            display: block !important;
+            white-space: nowrap !important;
+        }
 
-    .gk-user-badge #user-name-display {
-        font-size: 11px !important;
-        font-weight: bold !important;
-        color: #ffffff !important;
-        display: block !important;
-    }
+        .gk-user-badge #user-role-display {
+            font-size: 9px !important;
+            font-weight: bold !important;
+            color: #ffffff !important;
+            display: block !important;
+        }
 
-    .gk-user-badge #user-role-display {
-        font-size: 10px !important;
-        font-weight: bold !important;
-        color: #ffffff !important;
-        display: block !important;
-    }
+        .gk-logout-btn {
+            background-color: #f1c40f !important;
+            color: #000 !important;
+            border: none !important;
+            padding: 5px 7px !important;
+            border-radius: 6px !important;
+            font-size: 10px !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 3px !important;
+            flex-shrink: 0 !important;
+            white-space: nowrap !important;
+        }
 
-    .gk-logout-btn {
-        background-color: #f1c40f !important;
-        color: #000 !important;
-        border: none !important;
-        padding: 6px 9px !important;
-        border-radius: 6px !important;
-        font-size: 11px !important;
-        font-weight: bold !important;
-        cursor: pointer !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-        flex-shrink: 0 !important;
-    }
+        /* 3 नंबर फोटोप्रमाणे आयकॉन्सची डिझाईन */
+        .sticky-customer-nav { width: 100% !important; margin-top: 8px !important; }
+        .sticky-customer-nav > .grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+        }
 
-    /* 7 Icons Grid Small Compact Styling */
-    .sticky-customer-nav { width: 100% !important; }
-    .sticky-customer-nav > .grid {
-        display: grid !important;
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        gap: 8px !important;
-    }
+        .sticky-customer-nav .tab-btn {
+            min-height: 58px !important;
+            height: auto !important;
+            padding: 6px 2px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            border-radius: 8px !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            gap: 3px !important;
+        }
 
-    .sticky-customer-nav .tab-btn {
-        min-height: 52px !important; /* साइज लहान केली आहे */
-        height: auto !important;
-        padding: 6px 3px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        text-align: center !important;
-        border-radius: 8px !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
-        font-size: 12px !important; /* टेक्स्ट साइज थोडी लहान */
-        font-weight: 700 !important;
-        gap: 3px !important;
-    }
+        .sticky-customer-nav .tab-btn .tab-icon {
+            font-size: 18px !important;
+            line-height: 1 !important;
+        }
 
-    .sticky-customer-nav .tab-btn .tab-icon {
-        font-size: 16px !important; /* लहान आयकॉन */
-        line-height: 1 !important;
-    }
+        #tab-buses {
+            flex-direction: row !important;
+            gap: 6px !important;
+            min-height: 44px !important;
+        }
 
-    #tab-buses {
-        flex-direction: row !important;
-        gap: 6px !important;
-        min-height: 42px !important;
-    }
+        #tab-buses .tab-icon {
+            font-size: 20px !important;
+        }
 
-    #tab-buses .tab-icon {
-        font-size: 18px !important;
-    }
-
-    @media (max-width: 380px) {
-        .brand-title h1 { font-size: 16px !important; }
-        .brand-title span { font-size: 9px !important; }
-        .logo-circle { width: 38px !important; height: 38px !important; min-width: 38px !important; }
-        .logo-circle span.gk-text { font-size: 13px !important; }
-        .gk-user-badge { padding: 3px 6px !important; }
-        .gk-user-badge #user-name-display, .gk-user-badge #user-role-display { font-size: 9px !important; }
-        .gk-logout-btn { padding: 5px 7px !important; font-size: 10px !important; }
-        .sticky-customer-nav .tab-btn { min-height: 48px !important; font-size: 11px !important; }
-        .sticky-customer-nav .tab-btn .tab-icon { font-size: 14px !important; }
-    }
-</style>
+        @media (max-width: 360px) {
+            .brand-title h1 { font-size: 14px !important; }
+            .brand-title span { font-size: 8px !important; }
+            .logo-circle { width: 34px !important; height: 34px !important; min-width: 34px !important; }
+            .logo-circle span.gk-text { font-size: 12px !important; }
+            .gk-user-badge #user-name-display { font-size: 9px !important; }
+            .gk-logout-btn { font-size: 9px !important; padding: 4px 5px !important; }
+        }
+    </style>
 
 </head>  
-<body class="bg-gray-100 font-sans pb-10">  <!-- फोटो २ मधील नवीन लाल रंगाचा हेडर बार -->  
-<header id="app-header" class="hidden gk-app-header">  
+<body class="bg-gray-100 font-sans pb-10">  
+
+<!-- फोटो ३ प्रमाणे हेडर (लॉगिन झाल्यावरच दिसेल) -->  
+<header id="app-header" class="gk-app-header">  
     <div class="gk-header-inner">  
         <div class="gk-header-brand">  
             <div class="logo-circle">
@@ -277,11 +275,11 @@
         </div>  
 
         <div class="gk-header-actions">  
-            <div id="user-badge" class="hidden gk-user-badge">  
+            <div id="user-badge" class="gk-user-badge">  
                 <span id="user-name-display"></span>
                 <span id="user-role-display"></span>  
             </div>  
-            <button id="logout-btn" onclick="logout()" class="hidden gk-logout-btn">  
+            <button id="logout-btn" onclick="logout()" class="gk-logout-btn">  
                 <i class="fa-solid fa-right-from-bracket"></i> बाहेर पडा  
             </button>  
         </div>  
@@ -291,7 +289,7 @@
 <div class="container mx-auto p-3 max-w-xl">  
 
     <!-- लॉगिन स्क्रीन -->  
-    <div id="screen-login" class="flex flex-col items-center justify-center pt-6 pb-4">  
+    <div id="screen-login" class="flex flex-col items-center justify-center pt-4 pb-4">  
           
         <div id="secret-logo-trigger" class="text-center cursor-pointer select-none mb-6">  
             <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-2 border-yellow-500">  
@@ -347,7 +345,7 @@
     <!-- कस्टमर पोर्टल स्क्रीन -->  
     <div id="screen-customer" class="hidden pt-1">  
           
-        <!-- ७ बटन्स ची नवीन कॉम्पॅक्ट आणि लहान साईझ -->  
+        <!-- ७ बटन्स फोटो ३ प्रमाणे क्लिअर दिसेल -->  
         <div class="sticky-customer-nav">  
             <div class="grid grid-cols-3 gap-1.5 mb-2 text-xs font-semibold">  
                 <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active border bg-white"><span class="tab-icon"><i class="fa-solid fa-car-side"></i></span><span>1. Sharing</span></button>  
@@ -1178,11 +1176,8 @@
     }  
 
     function applyUserSession(userObj) {  
+        document.body.classList.add('logged-in'); /* लॉगिन झाल्यावर हेडर ऑन होईल */
         document.getElementById('screen-login').classList.add('hidden');  
-        document.getElementById('app-header').classList.remove('hidden');
-        document.getElementById('app-header').style.display = 'flex';  
-        document.getElementById('user-badge').classList.remove('hidden');  
-        document.getElementById('logout-btn').classList.remove('hidden');  
         document.getElementById('user-name-display').innerText = userObj.name;  
         document.getElementById('user-role-display').innerText = `(${userObj.role.toUpperCase()})`;  
 
@@ -1200,14 +1195,11 @@
     window.logout = function() {  
         localStorage.removeItem('gk_user');  
         window.currentUser = null;  
-        document.getElementById('app-header').style.display = 'none';  
-        document.getElementById('app-header').classList.add('hidden');  
+        document.body.classList.remove('logged-in'); /* लॉगआउट झाल्यावर हेडर लपवला जाईल */
         document.getElementById('screen-login').classList.remove('hidden');  
         document.getElementById('screen-customer').classList.add('hidden');  
         document.getElementById('screen-owner').classList.add('hidden');  
         document.getElementById('screen-driver').classList.add('hidden');  
-        document.getElementById('user-badge').classList.add('hidden');  
-        document.getElementById('logout-btn').classList.add('hidden');  
     };  
 
     window.showTab = function(tabName) {  
