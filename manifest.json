@@ -1,12 +1,12 @@
 {
-  "name": "gurukrupa",
-  "short_name": "gurukrupa",
-  "description": "Gurukrupa application for progressive web experience.",
+  "name": "Gurukrupa Tours & Travels",
+  "short_name": "Gurukrupa",
+  "description": "Gurukrupa Tours & Travels official application.",
   "start_url": "/gurukrupa-1/",
   "scope": "/gurukrupa-1/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#f3f4f6",
+  "theme_color": "#d84e55",
   "icons": [
     {
       "src": "/gurukrupa-1/icon-192.png",
