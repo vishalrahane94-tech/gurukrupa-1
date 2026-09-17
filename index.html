@@ -71,12 +71,11 @@
         }  
 
         /* =========================================================
-           HEADER LOGO & TEXT FIX - EXACT AS REQUESTED
+           HEADER LOGO & TEXT FIX
            ========================================================= */
         html, body { width: 100%; max-width: 100%; overflow-x: hidden !important; }
         *, *::before, *::after { box-sizing: border-box; }
 
-        /* Default Header: Hidden on Login Screen */
         .gk-app-header {
             display: none !important;
             width: 100% !important;
@@ -88,7 +87,6 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
         }
 
-        /* Show Header only after Login */
         body.logged-in .gk-app-header {
             display: flex !important;
         }
@@ -109,7 +107,6 @@
             flex: 1 1 auto !important;
         }
 
-        /* मूळ इमेज लोगो (icon-192.png) स्टाइल */
         .gk-header-logo-img {
             width: 40px !important;
             height: 40px !important;
@@ -127,7 +124,6 @@
             min-width: 0 !important;
         }
 
-        /* नाव स्पष्ट आणि न लपण्यासाठी टेक्स्ट सेटिंग्ज */
         .brand-title h1 {
             font-size: 15px !important;
             font-weight: 900 !important;
@@ -196,7 +192,6 @@
             white-space: nowrap !important;
         }
 
-        /* Service Menu Buttons */
         .sticky-customer-nav { width: 100% !important; margin-top: 8px !important; }
         .sticky-customer-nav > .grid {
             display: grid !important;
@@ -247,11 +242,10 @@
 </head>  
 <body class="bg-gray-100 font-sans pb-10">  
 
-<!-- टॉप हेडर (तुमच्या ओरिजनल इमेज लोगो आणि क्लिअर नावासह) -->  
+<!-- टॉप हेडर -->  
 <header id="app-header" class="gk-app-header">  
     <div class="gk-header-inner">  
         <div class="gk-header-brand">  
-            <!-- ओरिजनल फोटोतील लोगो -->
             <img src="icon-192.png" alt="GK Logo" class="gk-header-logo-img">
             <div class="brand-title">  
                 <h1>GURUKRUPA</h1>  
@@ -329,7 +323,6 @@
 
     <!-- कस्टमर पोर्टल स्क्रीन -->  
     <div id="screen-customer" class="hidden pt-1">  
-          
         <div class="sticky-customer-nav">  
             <div class="grid grid-cols-3 gap-1.5 mb-2 text-xs font-semibold">  
                 <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active border bg-white"><span class="tab-icon"><i class="fa-solid fa-car-side"></i></span><span>1. Sharing</span></button>  
@@ -350,7 +343,6 @@
         </div>  
 
         <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200 mt-2">  
-
             <!-- 1. Sharing Section -->  
             <div id="sharing-content" class="tab-content booking-section">  
                 <div class="flex gap-2 mb-3">  
@@ -703,7 +695,7 @@
                 <i class="fa-brands fa-whatsapp text-lg"></i> बुकिंग व्हॉट्सॲपवर पाठवा  
             </button>  
 
-            <!-- ट्रॅव्हल्सची वैशिष्ट्ये (इथे मूळ लोगो आहे) -->  
+            <!-- ट्रॅव्हल्सची वैशिष्ट्ये -->  
             <div class="mt-6 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm">  
                 <div class="text-center mb-4">  
                     <img src="icon-192.png" alt="GK Logo" class="w-20 h-20 rounded-full border-2 border-yellow-500 mx-auto shadow-md object-cover">  
@@ -826,6 +818,12 @@
                     <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>  
                 </button>  
 
+                <!-- नवीन: ड्रायव्हर हजेरी रिपोर्ट बटण (Owner Panel) -->
+                <button onclick="showOwnerView('driver-attendance')" class="relative p-2.5 border rounded-lg bg-teal-800 text-white font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-teal-900 col-span-3">  
+                    <i class="fa-solid fa-calendar-check text-lg text-yellow-400"></i>  
+                    <span class="text-xs text-center font-bold">📅 ड्रायव्हर मासिक प्रेझेंटी व ट्रिप रिपोर्ट (Monthly Attendance)</span>  
+                </button>  
+
                 <button onclick="showOwnerView('driver-balance')" class="p-2.5 border-2 border-green-600 rounded-lg bg-green-50 text-green-800 font-bold flex flex-col items-center gap-1 shadow-md hover:bg-green-100 col-span-3">  
                     <i class="fa-solid fa-wallet text-xl text-green-600"></i>  
                     <span class="text-xs font-black text-green-900">💰 आजची शिल्लक जमा कॅश: <span id="owner-today-balance-text" class="text-base text-redbus font-extrabold">₹ 0</span></span>  
@@ -845,6 +843,33 @@
             <h2 class="text-sm font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">  
                 <i class="fa-solid fa-id-card text-green-600"></i> ड्रायव्हर दैनिक हिशोब (Driver Daily Log)  
             </h2>  
+
+            <!-- नवीन जोडेलेले बदल: गाडी नंबर, ट्रिपच्या तारखा आणि प्रेझेंटी -->
+            <div class="space-y-2.5 mb-3 text-xs bg-blue-50/60 p-3 rounded-lg border border-blue-200">
+                <div>  
+                    <label class="block font-bold text-blue-900 mb-1"><i class="fa-solid fa-car text-blue-700"></i> 🚘 गाडी नंबर (Vehicle Number) *</label>  
+                    <input type="text" id="drv-vehicle-no" placeholder="उदा. MH 15 AB 1234" class="w-full p-2 border border-gray-300 rounded font-bold text-gray-800 bg-white outline-none">  
+                </div>  
+
+                <div class="grid grid-cols-2 gap-2">  
+                    <div>  
+                        <label class="block font-bold text-blue-900 mb-1"><i class="fa-solid fa-calendar-days text-blue-700"></i> 📅 जाण्याची तारीख *</label>  
+                        <input type="date" id="drv-start-date" class="w-full p-1.5 border border-gray-300 rounded text-xs font-semibold bg-white outline-none">  
+                    </div>  
+                    <div>  
+                        <label class="block font-bold text-blue-900 mb-1"><i class="fa-solid fa-calendar-check text-blue-700"></i> 📅 येण्याची तारीख *</label>  
+                        <input type="date" id="drv-end-date" class="w-full p-1.5 border border-gray-300 rounded text-xs font-semibold bg-white outline-none">  
+                    </div>  
+                </div>  
+
+                <div>  
+                    <label class="block font-bold text-blue-900 mb-1"><i class="fa-solid fa-user-check text-blue-700"></i> ✅ आजचे प्रेझेंटी स्टेटस (Duty Status) *</label>  
+                    <select id="drv-duty-status" class="w-full p-2 border border-gray-300 rounded font-bold text-gray-800 bg-white outline-none">
+                        <option value="Present">Present (कामावर हजर)</option>
+                        <option value="Off-Duty">Off-Duty (सुट्टी)</option>
+                    </select>
+                </div>  
+            </div>
 
             <div class="grid grid-cols-2 gap-2.5 mb-3 text-xs">  
                 <div class="bg-green-50 p-2 rounded border border-green-200">  
@@ -896,7 +921,7 @@
 
 </div>  
 
-<!-- JavaScript & Firebase Setup (Realtime Sync) -->  
+<!-- JavaScript & Firebase Setup -->  
 <script type="module">  
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";  
     import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";  
@@ -953,6 +978,11 @@
                 input.value = todayStr;  
             }  
         });  
+
+        const drvStart = document.getElementById('drv-start-date');
+        const drvEnd = document.getElementById('drv-end-date');
+        if (drvStart && !drvStart.value) drvStart.value = todayStr;
+        if (drvEnd && !drvEnd.value) drvEnd.value = todayStr;
     }  
 
     window.addEventListener('load', () => {  
@@ -1580,12 +1610,28 @@
             });  
     };  
 
+    // नवीन बदल: ड्रायव्हरच्या रिपोर्टमध्ये गाडी नंबर, जाण्या-येण्याची तारीख व प्रेझेंटी समाविष्ट
     window.sendDriverReport = function() {  
+        const vehicleNo = document.getElementById('drv-vehicle-no').value.trim();
+        const startDate = document.getElementById('drv-start-date').value;
+        const endDate = document.getElementById('drv-end-date').value;
+        const dutyStatus = document.getElementById('drv-duty-status').value;
+
         const col = document.getElementById('drv-collection').value;  
         const toll = document.getElementById('drv-toll').value;  
         const fuel = document.getElementById('drv-fuel').value;  
         const other = document.getElementById('drv-other').value;  
         const bal = document.getElementById('drv-balance').innerText;  
+
+        if (!vehicleNo) {
+            alert("कृपया गाडी नंबर टाका!");
+            return;
+        }
+
+        if (!startDate || !endDate) {
+            alert("कृपया ट्रिपच्या जाण्याच्या आणि येण्याच्या तारखा निवडा!");
+            return;
+        }
 
         if (!col || col == 0) {  
             alert("कृपया आधी कलेक्शन रक्कम टाका.");  
@@ -1595,6 +1641,10 @@
         const logData = {  
             driverName: window.currentUser ? window.currentUser.name : "Driver",  
             driverPhone: window.currentUser ? window.currentUser.phone : "N/A",  
+            vehicleNo: vehicleNo,
+            startDate: startDate,
+            endDate: endDate,
+            dutyStatus: dutyStatus,
             collection: parseFloat(col) || 0,  
             toll: parseFloat(toll) || 0,  
             fuel: parseFloat(fuel) || 0,  
@@ -1603,7 +1653,7 @@
             date: getTodayString()  
         };  
 
-        const msg = `*दैनिक हिशोब रिपोर्ट*\nड्रायव्हर: ${logData.driverName} (${logData.driverPhone})\nकलेक्शन: ₹${col}\nटोल: ₹${toll}\nइंधन: ₹${fuel}\nइतर: ₹${other}\n------------------\n*शिल्लक कॅश: ₹${bal}*`;  
+        const msg = `*दैनिक हिशोब व ड्रायव्हर रिपोर्ट*\nड्रायव्हर: ${logData.driverName} (${logData.driverPhone})\n🚘 गाडी नंबर: ${vehicleNo}\n📅 जाण्याची तारीख: ${startDate}\n📅 येण्याची तारीख: ${endDate}\n✅ प्रेझेंटी स्टेटस: ${dutyStatus}\n------------------\nकलेक्शन: ₹${col}\nटोल: ₹${toll}\nइंधन: ₹${fuel}\nइतर: ₹${other}\n------------------\n*शिल्लक कॅश: ₹${bal}*`;  
         const encodedMsg = encodeURIComponent(msg);  
 
         push(ref(database, 'driver_logs/'), logData)  
@@ -1612,7 +1662,7 @@
                 document.getElementById('btn-owner-2').href = `https://api.whatsapp.com/send?phone=917498502915&text=${encodedMsg}`;  
                 document.getElementById('whatsapp-buttons').classList.remove('hidden');  
 
-                alert("हिशोब सेव्ह झाला आहे! खालील दोन्ही बटनांवर क्लिक करून व्हॉट्सॲप मेसेज पाठवा.");  
+                alert("हिशोब व प्रेझेंटी यशस्वीपणे सेव्ह झाली! खालील बटनांवर क्लिक करून व्हॉट्सॲपवर पाठवा.");  
             })  
             .catch(err => {  
                 console.error("Firebase Error: ", err);  
@@ -1637,14 +1687,18 @@
             const rows = [];  
             Object.values(data).forEach(log => {  
                 rows.push({  
-                    "तारीख (Date)": log.date || 'N/A',  
-                    "ड्रायव्हरचे नाव (Driver Name)": log.driverName || 'N/A',  
-                    "मोबाईल नंबर (Phone)": log.driverPhone || 'N/A',  
-                    "एकूण कलेक्शन (Collection ₹)": log.collection || 0,  
-                    "टोल खर्च (Tolls ₹)": log.toll || 0,  
-                    "इंधन खर्च (Fuel ₹)": log.fuel || 0,  
-                    "इतर खर्च (Other ₹)": log.other || 0,  
-                    "शिल्लक जमा कॅश (Balance Cash ₹)": log.balance || 0  
+                    "नोंद तारीख": log.date || 'N/A',  
+                    "ड्रायव्हर नाव": log.driverName || 'N/A',  
+                    "मोबाईल नंबर": log.driverPhone || 'N/A',  
+                    "गाडी नंबर": log.vehicleNo || 'N/A',  
+                    "जाण्याची तारीख": log.startDate || 'N/A',  
+                    "येण्याची तारीख": log.endDate || 'N/A',  
+                    "प्रेझेंटी": log.dutyStatus || 'Present',  
+                    "कलेक्शन (₹)": log.collection || 0,  
+                    "टोल (₹)": log.toll || 0,  
+                    "इंधन (₹)": log.fuel || 0,  
+                    "इतर खर्च (₹)": log.other || 0,  
+                    "शिल्लक कॅश (₹)": log.balance || 0  
                 });  
             });  
 
@@ -1674,6 +1728,7 @@
         }  
     };  
 
+    // नवीन: ओनरसाठी मासिक ड्रायव्हर रिपोर्ट आणि हजेरी कॅल्क्युलेशन  
     window.showOwnerView = function(category, isAutoRefresh = false) {  
         window.lastActiveOwnerCategory = category;  
         const contentBox = document.getElementById('owner-content-box');  
@@ -1681,7 +1736,74 @@
             contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>माहिती लोड होत आहे...</p>";  
         }  
 
-        if (category === 'driver-log' || category === 'driver-balance') {  
+        if (category === 'driver-attendance') {
+            const logsRef = ref(database, 'driver_logs/');  
+            onValue(logsRef, (snapshot) => {  
+                const data = snapshot.val();  
+                if (!data) {  
+                    contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणतीही ड्रायव्हर हजेरी किंवा ट्रिप नोंद उपलब्ध नाही.</p>";  
+                    return;  
+                }  
+
+                let driverSummary = {};
+
+                Object.values(data).forEach(log => {
+                    const name = log.driverName || 'इतर ड्रायव्हर';
+                    if (!driverSummary[name]) {
+                        driverSummary[name] = {
+                            presentDays: 0,
+                            trips: []
+                        };
+                    }
+
+                    if (log.dutyStatus === 'Present' || !log.dutyStatus) {
+                        if (log.startDate && log.endDate) {
+                            const d1 = new Date(log.startDate);
+                            const d2 = new Date(log.endDate);
+                            const diffDays = Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
+                            driverSummary[name].presentDays += (isNaN(diffDays) ? 1 : diffDays);
+                        } else {
+                            driverSummary[name].presentDays += 1;
+                        }
+                    }
+
+                    driverSummary[name].trips.push({
+                        vehicle: log.vehicleNo || 'N/A',
+                        start: log.startDate || log.date,
+                        end: log.endDate || log.date,
+                        status: log.dutyStatus || 'Present'
+                    });
+                });
+
+                let html = `<h4 class='font-bold mb-3 border-b pb-1 text-teal-800 text-sm'>📊 ड्रायव्हर मासिक प्रेझेंटी व ट्रिप समरी</h4>`;
+                
+                for (let driver in driverSummary) {
+                    html += `
+                        <div class="p-3 border-b text-xs space-y-1.5 mb-2 bg-teal-50/60 border-teal-200 rounded-lg shadow-sm">
+                            <div class="flex justify-between items-center border-b border-teal-200 pb-1">
+                                <p class="font-black text-teal-900 text-sm"><i class="fa-solid fa-user-tie"></i> ${driver}</p>
+                                <span class="bg-teal-700 text-white font-extrabold px-2 py-0.5 rounded text-[11px]">एकूण प्रेझेंटी: ${driverSummary[driver].presentDays} दिवस</span>
+                            </div>
+                            <p class="font-bold text-gray-700 text-[11px] pt-1">चालवलेल्या गाड्या व ट्रिप कालावधी:</p>
+                            <div class="space-y-1 pl-1">
+                    `;
+
+                    driverSummary[driver].trips.forEach(t => {
+                        html += `
+                            <div class="flex justify-between items-center text-[10px] bg-white p-1.5 rounded border border-teal-100">
+                                <span>🚘 <strong>${t.vehicle}</strong> (${t.start} ते ${t.end})</span>
+                                <span class="font-bold ${t.status === 'Present' ? 'text-green-700' : 'text-red-600'}">${t.status}</span>
+                            </div>
+                        `;
+                    });
+
+                    html += `</div></div>`;
+                }
+
+                contentBox.innerHTML = html;
+            }, { onlyOnce: true });
+
+        } else if (category === 'driver-log' || category === 'driver-balance') {  
             const logsRef = ref(database, 'driver_logs/');  
             onValue(logsRef, (snapshot) => {  
                 const data = snapshot.val();  
@@ -1704,6 +1826,7 @@
                                 <p class="font-bold text-gray-800 text-xs"><i class="fa-solid fa-user-gear text-green-700"></i> ${log.driverName} (${log.driverPhone || 'N/A'})</p>  
                                 <span class="text-[10px] bg-green-200 text-green-900 font-bold px-1.5 py-0.5 rounded">${log.date}</span>  
                             </div>  
+                            <p class="text-[11px] font-bold text-blue-900 pt-1">🚘 गाडी: ${log.vehicleNo || 'N/A'} | 📅 ट्रिप: ${log.startDate || 'N/A'} ते ${log.endDate || 'N/A'} | Status: ${log.dutyStatus || 'Present'}</p>
                             <div class="grid grid-cols-2 gap-1 text-[11px] text-gray-700 pt-1">  
                                 <p>कलेक्शन: <span class="font-bold text-green-700">₹${log.collection}</span></p>  
                                 <p>टोल: <span class="font-bold text-red-600">₹${log.toll}</span></p>  
