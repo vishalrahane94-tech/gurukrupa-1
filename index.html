@@ -1746,18 +1746,30 @@
                             <button onclick="deleteRecord('${key}', 'booking')" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-[10px] font-bold shadow flex items-center gap-1">  
                                 <i class="fa-solid fa-trash"></i> डिलीट  
                             </button>  
-                            <p class="font-bold text-redbus pr-16">${b.customerName} (${b.customerPhone})</p>  
-                            <p class="font-semibold text-gray-700">${b.pickup ? b.pickup + ' ➔ ' + b.drop : b.route || b.spot || b.capacity || b.details || ''}</p>  
-                            <p class="text-[10px] text-gray-500">रूट/गाडी: ${b.car || b.direction || 'N/A'} | तारीख: ${b.date || 'N/A'} | वेळ: ${b.time || 'N/A'}</p>  
-                            ${b.seats ? `<p class="text-[11px] font-bold text-green-700">सीट्स: ${b.seats.join(', ')}</p>` : ''}  
-                            ${b.paymentStatus ? `<p class="text-[11px] font-bold text-green-700 mt-1">💳 पेमेंट: ${b.paymentStatus}</p>` : ''}  
-                        </div>`;  
+                            <div class="flex justify-between items-center border-b pb-1 pr-16">  
+                                <p class="font-bold text-gray-800 text-xs"><i class="fa-solid fa-user text-redbus"></i> ${b.customerName} (${b.customerPhone})</p>  
+                                <span class="text-[10px] bg-red-100 text-red-800 font-bold px-1.5 py-0.5 rounded">${b.type.toUpperCase()}</span>  
+                            </div>  
+                            <div class="text-[11px] text-gray-700 pt-1 space-y-0.5">  
+                                ${b.direction ? `<p><strong>रूट/दिशा:</strong> ${b.direction}</p>` : ''}  
+                                ${b.pickup ? `<p><strong>पिकअप:</strong> ${b.pickup} | <strong>ड्रॉप:</strong> ${b.drop}</p>` : ''}  
+                                ${b.route ? `<p><strong>रूट:</strong> ${b.route}</p>` : ''}  
+                                ${b.spot ? `<p><strong>रूट/ठिकाण:</strong> ${b.spot}</p>` : ''}  
+                                ${b.car ? `<p><strong>गाडी:</strong> ${b.car}</p>` : ''}  
+                                ${b.seats ? `<p><strong>सीट्स:</strong> ${b.seats.join(', ')}</p>` : ''}  
+                                ${b.capacity ? `<p><strong>बस क्षमता:</strong> ${b.capacity}</p>` : ''}  
+                                ${b.km ? `<p><strong>KM:</strong> ${b.km} | <strong>अंदाजे भाडे:</strong> ${b.totalEstimate}</p>` : ''}  
+                                ${b.details ? `<p><strong>माहिती:</strong> ${b.details}</p>` : ''}  
+                                <p class="text-gray-500"><strong>तारीख & वेळ:</strong> ${b.date || ''} ${b.time || ''} (${b.createdAt || ''})</p>  
+                                ${b.paymentStatus ? `<p class="text-green-600 font-bold"><strong>पेमेंट:</strong> ${b.paymentStatus}</p>` : ''}  
+                            </div>  
+                        </div>  
+                    `;  
                 });  
                 contentBox.innerHTML = html;  
             }, { onlyOnce: true });  
         }  
     };  
-</script>
-
+</script>  
 </body>  
 </html>
