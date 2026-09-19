@@ -5,8 +5,11 @@
       "namespace": "android_app",
       "package_name": "io.github.vishalrahane94_tech.twa",
       "sha256_cert_fingerprints": [
-        "CA:6B:F2:86:0B:00:98:72:F7:7A:62:5F:C1:3D:1A:8E:9F:0B:2C:4D:5E:6F:7A:8B:9C:0D:1E:2F:3A:4B:5C",
-        "A6:2A:DF:58:4C:9D:80:80:9D:2A:55:2F:D8:07:B1:E4:3A:4B:5C:6D:7E:8F:90:1A:2B:3C:4D:5E:6F:7A"
+        "ED:9C:92:9A:4B:2C:29:6C:20:80:B3:D4:7F:0A:A9:36:4B:0A:74:97",
+        "C5:AC:50:4E:A6:65:63:17:82:6B:54:72:DA:35:F6:33:01:DC:E9:91:0A:C3:6D:ED:7F:C7:10:B9:3C:56:9A:C6",
+        "E1:BC:F3:9E:38:9A:18:C9:BA:65:24:D3:B7:9F:37:52:4C:A5:1E:54",
+        "E8:AA:90:05:9D:4D:4F:CE:84:B3:2E:99:85:AB:37:64:21:A2:66:8F:CA:93:C7:25:77:E2:1D:50:93:F1:E2:72",
+        "A6:2A:DF:58:4C:9D:80:80:9D:2A:55:2F:D8:07:B1:E4"
       ]
     }
   }
