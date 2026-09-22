@@ -1,4 +1,5 @@
-<!DOCTYPE html>  <html lang="mr">  
+<!DOCTYPE html>  
+<html lang="mr">  
 <head>  
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
@@ -959,7 +960,6 @@
     window.lastActiveOwnerCategory = 'all';  
 
     const ownerAuth = { phone: '9890896040', pass: 'shri8620shambhu' };
-    // गुरुकृपा Tours & Travels - सर्व वाहन क्रमांक
     const VEHICLE_NUMBERS = [
         "MH15HU8620",
         "MH15JW8620",
@@ -985,12 +985,10 @@
             select.appendChild(option);
         });
 
-        // आधी निवडलेला नंबर उपलब्ध असल्यास तो पुन्हा निवडा.
         if (currentValue && VEHICLE_NUMBERS.includes(currentValue)) {
             select.value = currentValue;
         }
     }
-  
 
     const nashikPoints = ["ठक्कर बाजार", "द्वारका सर्कल", "मुंबई नाका", "गोविंद नगर", "टनेल (Tunnel)", "पवन हॉटेल"];  
     const punePoints = ["चाकण", "मोशी", "भोसरी", "नाशिक फाटा", "वाकडेवाडी"];  
@@ -1654,7 +1652,6 @@
             });  
     };  
 
-    // नवीन बदल: ड्रायव्हरच्या रिपोर्टमध्ये गाडी नंबर, जाण्या-येण्याची तारीख व प्रेझेंटी समाविष्ट
     window.sendDriverReport = function() {  
         const vehicleNo = document.getElementById('drv-vehicle-no').value.trim();
         const startDate = document.getElementById('drv-start-date').value;
@@ -1772,7 +1769,7 @@
         }  
     };  
 
-    // नवीन: ओनरसाठी मासिक ड्रायव्हर रिपोर्ट आणि हजेरी कॅल्क्युलेशन  
+    // ओनर डॅशबोर्ड व्यू्ह (Owner View Handler & Monthly Attendance Calculation)
     window.showOwnerView = function(category, isAutoRefresh = false) {  
         window.lastActiveOwnerCategory = category;  
         const contentBox = document.getElementById('owner-content-box');  
@@ -1785,129 +1782,79 @@
             onValue(logsRef, (snapshot) => {  
                 const data = snapshot.val();  
                 if (!data) {  
-                    contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणतीही ड्रायव्हर हजेरी किंवा ट्रिप नोंद उपलब्ध नाही.</p>";  
-                    return;  
-                }  
+                    contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>कोणताही ड्रायव्हर हजेरी डेटा उपलब्ध नाही.</p>";
+                    return;
+                }
 
-                let driverSummary = {};
-
+                let driverStats = {};
                 Object.values(data).forEach(log => {
-                    const name = log.driverName || 'इतर ड्रायव्हर';
-                    if (!driverSummary[name]) {
-                        driverSummary[name] = {
-                            presentDays: 0,
-                            trips: []
-                        };
+                    const name = log.driverName || 'Unknown';
+                    if (!driverStats[name]) {
+                        driverStats[name] = { present: 0, off: 0, trips: 0, totalBal: 0 };
                     }
-
-                    if (log.dutyStatus === 'Present' || !log.dutyStatus) {
-                        if (log.startDate && log.endDate) {
-                            const d1 = new Date(log.startDate);
-                            const d2 = new Date(log.endDate);
-                            const diffDays = Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
-                            driverSummary[name].presentDays += (isNaN(diffDays) ? 1 : diffDays);
-                        } else {
-                            driverSummary[name].presentDays += 1;
-                        }
+                    if (log.dutyStatus === 'Off-Duty') {
+                        driverStats[name].off++;
+                    } else {
+                        driverStats[name].present++;
                     }
-
-                    driverSummary[name].trips.push({
-                        vehicle: log.vehicleNo || 'N/A',
-                        start: log.startDate || log.date,
-                        end: log.endDate || log.date,
-                        status: log.dutyStatus || 'Present',
-                        balance: log.balance || 0
-                    });
+                    driverStats[name].trips++;
+                    driverStats[name].totalBal += (parseFloat(log.balance) || 0);
                 });
 
-                let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">
-                    <span>📅 ड्रायव्हर मासिक प्रेझेंटी व ट्रिप रिपोर्ट</span>
-                    <span class="text-xs bg-teal-100 text-teal-800 px-2 py-0.5 rounded font-extrabold">एकूण ड्रायव्हर्स: ${Object.keys(driverSummary).length}</span>
-                </h3>`;
-
-                Object.keys(driverSummary).forEach(drvName => {
-                    const drv = driverSummary[drvName];
+                let html = `<h3 class='font-bold text-gray-800 text-sm mb-3 border-b pb-1'>📅 ड्रायव्हर मासिक प्रेझेंटी रिपोर्ट</h3>`;
+                html += `<div class='space-y-3'>`;
+                Object.keys(driverStats).forEach(driver => {
+                    const stats = driverStats[driver];
                     html += `
-                        <div class="mb-4 bg-teal-50/50 border border-teal-200 rounded-xl p-3 shadow-sm">
-                            <div class="flex justify-between items-center border-b border-teal-200 pb-2 mb-2">
-                                <span class="font-black text-sm text-teal-900"><i class="fa-solid fa-user-gear text-teal-700"></i> ${drvName}</span>
-                                <span class="bg-teal-700 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow">
-                                    हजेरी: ${drv.presentDays} दिवस
-                                </span>
+                        <div class='p-3 bg-teal-50 border border-teal-200 rounded-lg shadow-sm'>
+                            <div class='flex justify-between items-center font-bold text-teal-900 border-b border-teal-200 pb-1 mb-2'>
+                                <span>👤 ${driver}</span>
+                                <span class='text-xs bg-teal-700 text-white px-2 py-0.5 rounded'>एकूण ट्रिप्स: ${stats.trips}</span>
                             </div>
-                            <p class="font-bold text-gray-700 mb-1.5 text-[11px]">ट्रिप विवरण (${drv.trips.length} नोंदी):</p>
-                            <div class="space-y-1.5">
+                            <div class='grid grid-cols-3 gap-2 text-center text-xs font-semibold'>
+                                <div class='bg-green-100 text-green-800 p-1.5 rounded'>✅ हजर: ${stats.present} दिवस</div>
+                                <div class='bg-red-100 text-red-800 p-1.5 rounded'>❌ सुट्टी: ${stats.off} दिवस</div>
+                                <div class='bg-yellow-100 text-yellow-900 p-1.5 rounded'>💰 शिल्लक: ₹${stats.totalBal}</div>
+                            </div>
+                        </div>
                     `;
-
-                    drv.trips.forEach(t => {
-                        html += `
-                            <div class="flex justify-between items-center bg-white p-2 rounded border border-gray-200 text-[11px]">
-                                <div>
-                                    <span class="font-bold text-gray-900">🚘 ${t.vehicle}</span> 
-                                    <span class="text-gray-500">(${t.start} ते ${t.end})</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="font-bold ${t.status === 'Present' ? 'text-green-600' : 'text-red-500'}">${t.status}</span>
-                                    <span class="font-black text-gray-800 bg-gray-100 px-1.5 py-0.5 rounded">₹${t.balance}</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-
-                    html += `</div></div>`;
                 });
-
+                html += `</div>`;
                 contentBox.innerHTML = html;
             }, { onlyOnce: true });
             return;
         }
 
-        if (category === 'driver-balance' || category === 'driver-log') {  
+        if (category === 'driver-log' || category === 'driver-balance') {  
             const logsRef = ref(database, 'driver_logs/');  
             onValue(logsRef, (snapshot) => {  
                 const data = snapshot.val();  
                 if (!data) {  
-                    contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणताही ड्रायव्हर रिपोर्ट उपलब्ध नाही.</p>";  
+                    contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>कोणताही ड्रायव्हर हिशोब उपलब्ध नाही.</p>";  
                     return;  
                 }  
 
-                let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">  
-                    <span>📋 ड्रायव्हर दैनिक हिशोब नोंदी</span>  
-                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded font-extrabold">एकूण: ${Object.keys(data).length}</span>  
-                </h3><div class="space-y-3">`;  
-
-                let grandTotalBalance = 0;  
-
+                let html = `<h3 class='font-bold text-gray-800 text-sm mb-3 border-b pb-1'>ड्रायव्हर दैनंदिन जमा कॅश हिशोब</h3><div class='space-y-2.5'>`;  
                 Object.keys(data).reverse().forEach(key => {  
-                    const log = data[key];  
-                    grandTotalBalance += parseFloat(log.balance) || 0;  
-
+                    const item = data[key];  
                     html += `  
-                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-300 shadow-sm relative">  
-                            <button onclick="deleteRecord('${key}', 'driver')" class="absolute top-2 right-2 text-red-600 hover:text-red-800 p-1 font-bold text-xs">  
-                                <i class="fa-solid fa-trash"></i>  
+                        <div class='p-3 border rounded-lg bg-gray-50 relative shadow-sm text-xs'>  
+                            <button onclick="deleteRecord('${key}', 'driver')" class='absolute top-2 right-2 text-red-600 hover:text-red-800 font-bold text-xs bg-white p-1 rounded border border-red-200'>  
+                                <i class="fa-solid fa-trash"></i> डिलीट  
                             </button>  
-                            <div class="flex justify-between items-center mb-1 pr-6">  
-                                <span class="font-bold text-gray-900 text-xs">${log.driverName || 'Driver'} (${log.driverPhone || 'N/A'})</span>  
-                                <span class="text-[10px] bg-gray-200 px-1.5 py-0.5 rounded text-gray-700 font-semibold">${log.date || ''}</span>  
+                            <p class='font-bold text-gray-800'>👤 ${item.driverName || 'N/A'} (${item.driverPhone || 'N/A'})</p>  
+                            <p class='text-blue-700 font-bold'>🚘 गाडी: ${item.vehicleNo || 'N/A'} | Status: ${item.dutyStatus || 'Present'}</p>
+                            <p class='text-gray-600'>📅 तारीख: ${item.date || 'N/A'} (ट्रिप: ${item.startDate || 'N/A'} ते ${item.endDate || 'N/A'})</p>  
+                            <div class='grid grid-cols-2 gap-1 mt-2 text-[11px] bg-white p-2 rounded border'>  
+                                <span>कलेक्शन: ₹${item.collection || 0}</span>  
+                                <span>टोल: ₹${item.toll || 0}</span>  
+                                <span>इंधन: ₹${item.fuel || 0}</span>  
+                                <span>इतर: ₹${item.other || 0}</span>  
                             </div>  
-                            <div class="text-[11px] text-gray-700 font-medium mb-1">
-                                🚘 <b>गाडी नंबर:</b> ${log.vehicleNo || 'N/A'} | 📅 <b>कालावधी:</b> ${log.startDate || log.date} ते ${log.endDate || log.date}  
-                            </div>
-                            <div class="grid grid-cols-4 gap-1 text-[11px] my-2 bg-white p-2 rounded border text-center">  
-                                <div><span class="text-gray-500 block text-[9px]">कलेक्शन</span><b class="text-green-600">₹${log.collection || 0}</b></div>  
-                                <div><span class="text-gray-500 block text-[9px]">टोल</span><b class="text-red-500">₹${log.toll || 0}</b></div>  
-                                <div><span class="text-gray-500 block text-[9px]">इंधन</span><b class="text-red-500">₹${log.fuel || 0}</b></div>  
-                                <div><span class="text-gray-500 block text-[9px]">इतर</span><b class="text-red-500">₹${log.other || 0}</b></div>  
-                            </div>  
-                            <div class="flex justify-between items-center pt-1 border-t border-gray-200 text-xs">  
-                                <span class="font-bold text-gray-700">शिल्लक जमा कॅश:</span>  
-                                <span class="font-black text-redbus text-sm">₹ ${log.balance || 0}</span>  
-                            </div>  
+                            <p class='mt-2 font-bold text-green-700 text-sm'>💰 शिल्लक जमा कॅश: ₹${item.balance || 0}</p>  
                         </div>  
                     `;  
                 });  
-
                 html += `</div>`;  
                 contentBox.innerHTML = html;  
             }, { onlyOnce: true });  
@@ -1918,71 +1865,47 @@
         onValue(bookRef, (snapshot) => {  
             const data = snapshot.val();  
             if (!data) {  
-                contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणतीही बुकिंग किंवा इन्क्वायरी उपलब्ध नाही.</p>";  
+                contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>कोणतीही बुकिंग उपलब्ध नाही.</p>";  
                 return;  
             }  
 
-            let filteredList = [];  
-            Object.keys(data).forEach(key => {  
+            let filteredKeys = Object.keys(data).filter(key => {  
                 const item = data[key];  
-                item._key = key;  
-
-                if (category === 'all') {  
-                    filteredList.push(item);  
-                } else if (category === 'sharing-np') {  
-                    if (item.type === 'sharing' && (!item.direction || item.direction.includes('Nashik to Pune'))) {  
-                        filteredList.push(item);  
-                    }  
-                } else if (category === 'sharing-pn') {  
-                    if (item.type === 'sharing' && item.direction && item.direction.includes('Pune to Nashik')) {  
-                        filteredList.push(item);  
-                    }  
-                } else if (item.type === category) {  
-                    filteredList.push(item);  
-                }  
+                if (category === 'all') return true;  
+                if (category === 'sharing-np') return item.type === 'sharing' && (!item.direction || item.direction.includes('Nashik to Pune'));  
+                if (category === 'sharing-pn') return item.type === 'sharing' && item.direction && item.direction.includes('Pune to Nashik');  
+                return item.type === category;  
             });  
 
-            if (filteredList.length === 0) {  
-                contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>या कॅटेगरीमध्ये कोणतीही नोंद उपलब्ध नाही.</p>";  
+            if (filteredKeys.length === 0) {  
+                contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>या कॅटेगरीमध्ये कोणतीही बुकिंग नाही.</p>";  
                 return;  
             }  
 
-            let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">  
-                <span>📋 बुकिंग इन्क्वायरी नोंदी</span>  
-                <span class="text-xs bg-red-100 text-redbus px-2 py-0.5 rounded font-extrabold">एकूण: ${filteredList.length}</span>  
-            </h3><div class="space-y-3">`;  
-
-            filteredList.reverse().forEach(item => {  
+            let html = `<h3 class='font-bold text-gray-800 text-sm mb-3 border-b pb-1 uppercase'>${category} (${filteredKeys.length})</h3><div class='space-y-2.5'>`;  
+            filteredKeys.reverse().forEach(key => {  
+                const item = data[key];  
                 html += `  
-                    <div class="bg-red-50/40 p-3 rounded-lg border border-red-200 shadow-sm relative text-xs">  
-                        <button onclick="deleteRecord('${item._key}', 'booking')" class="absolute top-2 right-2 text-red-600 hover:text-red-800 p-1 font-bold">  
-                            <i class="fa-solid fa-trash"></i>  
+                    <div class='p-3 border rounded-lg bg-red-50/40 relative shadow-sm text-xs'>  
+                        <button onclick="deleteRecord('${key}', 'booking')" class='absolute top-2 right-2 text-red-600 hover:text-red-800 font-bold text-xs bg-white p-1 rounded border border-red-200'>  
+                            <i class="fa-solid fa-trash"></i> डिलीट  
                         </button>  
-                        <div class="font-bold text-gray-900 mb-1 pr-6 flex items-center gap-1.5">  
-                            <i class="fa-solid fa-user text-redbus"></i> ${item.customerName || 'N/A'} (${item.customerPhone || 'N/A'})  
-                        </div>  
-                        <div class="text-gray-700 space-y-0.5">  
-                            <div><b>प्रकार:</b> <span class="uppercase font-semibold text-redbus">${item.type || 'N/A'}</span> ${item.direction ? `(${item.direction})` : ''}</div>  
-                            ${item.pickup ? `<div><b>पिकअप:</b> ${item.pickup} \vert{} <b>ड्रॉप:</b> ${item.drop}</div>` : ''}  
-                            ${item.route ? `<div><b>रूट:</b> ${item.route}</div>` : ''}  
-                            ${item.car ? `<div><b>गाडी:</b> ${item.car}</div>` : ''}  
-                            ${item.seats ? `<div><b>सीट्स:</b> ${Array.isArray(item.seats) ? item.seats.join(', ') : item.seats}</div>` : ''}  
-                            ${item.spot ? `<div><b>ठिकाण:</b> ${item.spot} \vert{} <b>KM:</b>${item.km}</div>` : ''}  
-                            ${item.capacity ? `<div><b>बस क्षमता:</b> ${item.capacity}</div>` : ''}  
-                            <div><b>तारीख व वेळ:</b> ${item.date || ''} ${item.time || ''}</div>  
-                            ${item.paymentStatus ? `<div class="text-green-700 font-bold"><b>पेमेंट:</b> ${item.paymentStatus}</div>` : ''}  
-                            ${item.details ? `<div class="text-gray-600 italic"><b>माहिती:</b> ${item.details}</div>` : ''}  
-                        </div>  
-                        <div class="mt-2 pt-1 border-t border-red-100 flex justify-between items-center text-[10px] text-gray-400">  
-                            <span>नोंद वेळ: ${item.createdAt || 'N/A'}</span>  
-                            <a href="https://wa.me/91${item.customerPhone}" target="_blank" class="bg-green-600 text-white font-bold px-2 py-0.5 rounded flex items-center gap-1">  
-                                <i class="fa-brands fa-whatsapp"></i> संपर्क  
-                            </a>  
-                        </div>  
+                        <p class='font-bold text-redbus text-sm'>👤 ${item.customerName} (${item.customerPhone})</p>  
+                        <p class='text-gray-600 font-semibold mt-1'>📌 प्रकार: <span class='uppercase text-gray-800'>${item.type}</span> ${item.direction ? `(${item.direction})` : ''}</p>  
+                        ${item.pickup ? `<p class='text-gray-700'>📍 पिकअप / ड्रॉप: ${item.pickup} ➔${item.drop}</p>` : ''}  
+                        ${item.route ? `<p class='text-gray-700'>🛣️ रूट: ${item.route}</p>` : ''}  
+                        ${item.spot ? `<p class='text-gray-700'>📍 रूट/ठिकाण: ${item.spot}</p>` : ''}  
+                        ${item.km ? `<p class='text-gray-700'>📏 एकूण KM: ${item.km} (भाडे: ${item.totalEstimate})</p>` : ''}  
+                        ${item.capacity ? `<p class='text-gray-700'>🚌 क्षमता: ${item.capacity}</p>` : ''}  
+                        ${item.car ? `<p class='text-gray-700'>🚘 गाडी: ${item.car}</p>` : ''}  
+                        ${item.seats ? `<p class='text-gray-700 font-bold text-red-700'>💺 सीट्स: ${item.seats.join(', ')}</p>` : ''}  
+                        <p class='text-gray-700'>📅 तारीख & वेळ: ${item.date || 'N/A'} | ${item.time || 'N/A'}</p>  
+                        ${item.paymentStatus ? `<p class='font-bold text-emerald-700 mt-1'>✅ पेमेंट: ${item.paymentStatus}</p>` : ''}  
+                        ${item.details ? `<p class='text-gray-600 italic border-t pt-1 mt-1'>📝 माहिती: ${item.details}</p>` : ''}  
+                        <p class='text-[10px] text-gray-400 mt-1'>नोंद वेळ: ${item.createdAt || 'N/A'}</p>  
                     </div>  
                 `;  
             });  
-
             html += `</div>`;  
             contentBox.innerHTML = html;  
         }, { onlyOnce: true });  
