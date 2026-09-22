@@ -1,4 +1,5 @@
-<!DOCTYPE html>  <html lang="mr">  
+<!DOCTYPE html>  
+<html lang="mr">  
 <head>  
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
@@ -13,6 +14,9 @@
     <script src="https://cdn.tailwindcss.com"></script>  
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">  
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>  
+
+    <!-- Leaflet CSS for Live GPS Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <script>  
         tailwind.config = {  
@@ -70,9 +74,7 @@
             padding-bottom: 50px !important;  
         }  
 
-        /* =========================================================
-           HEADER LOGO & TEXT FIX
-           ========================================================= */
+        /* HEADER LOGO & TEXT FIX */
         html, body { width: 100%; max-width: 100%; overflow-x: hidden !important; }
         *, *::before, *::after { box-sizing: border-box; }
 
@@ -230,6 +232,16 @@
             font-size: 20px !important;
         }
 
+        /* Map styling for Owner Live Tracking */
+        #owner-live-map {
+            height: 250px;
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 10px;
+            border: 2px solid #3b82f6;
+            z-index: 1;
+        }
+
         @media (max-width: 370px) {
             .brand-title h1 { font-size: 13px !important; }
             .brand-title span { font-size: 8px !important; }
@@ -237,7 +249,7 @@
             .gk-user-badge #user-name-display { font-size: 9px !important; }
             .gk-logout-btn { font-size: 9px !important; padding: 4px 5px !important; }
         }
-    </style>
+    </style>  
 
 </head>  
 <body class="bg-gray-100 font-sans pb-10">  
@@ -313,6 +325,35 @@
                     <label class="block text-xs font-bold text-gray-700 mb-1">पासवर्ड (Password) *</label>  
                     <input type="password" id="login-pass" placeholder="पासवर्ड टाका" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
                 </div>  
+
+                <!-- नवीन: ड्रायव्हर लॉगिनमध्ये गाडी निवडणे आणि Trip Start / End बटन्स -->
+                <div id="driver-login-vehicle-box" class="hidden space-y-3 bg-blue-50 p-3 rounded-xl border border-blue-200">
+                    <div>
+                        <label class="block text-xs font-extrabold text-blue-900 mb-1"><i class="fa-solid fa-car text-blue-700"></i> गाडी निवडा (Vehicle Selection) *</label>
+                        <select id="login-driver-vehicle-select" class="w-full p-2.5 border border-blue-300 rounded-xl text-xs font-bold bg-white outline-none">
+                            <option value="">गाडी निवडा</option>
+                            <option value="MH15HU8620">गाडी १: MH15HU8620</option>
+                            <option value="MH15JW8620">गाडी २: MH15JW8620</option>
+                            <option value="MH15JX8620">गाडी ३: MH15JX8620</option>
+                            <option value="MH15KS8620">गाडी ४: MH15KS8620</option>
+                            <option value="MH15LB8620">गाडी ५: MH15LB8620</option>
+                            <option value="MH15KH8620">गाडी ६: MH15KH8620</option>
+                            <option value="MH15KV8620">गाडी ७: MH15KV8620</option>
+                            <option value="MH48BH6315">गाडी ८: MH48BH6315</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="startDriverGpsTrip()" class="bg-green-600 hover:bg-green-700 text-white p-2.5 rounded-xl font-extrabold text-xs flex flex-col items-center justify-center gap-1 shadow">
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-circle-play text-sm"></i> Trip Start</span>
+                            <span class="text-[10px] font-normal opacity-90">ट्रिप सुरू करा</span>
+                        </button>
+                        <button type="button" onclick="endDriverGpsTrip()" class="bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-xl font-extrabold text-xs flex flex-col items-center justify-center gap-1 shadow">
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-circle-xmark text-sm"></i> Trip End</span>
+                            <span class="text-[10px] font-normal opacity-90">ट्रिप संपवा</span>
+                        </button>
+                    </div>
+                </div>
 
                 <button onclick="handleLogin()" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-3 rounded-xl text-xs shadow-md mt-2 transition-all">  
                     लॉगिन करा (Login)  
@@ -818,7 +859,7 @@
                     <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>  
                 </button>  
 
-                <!-- नवीन: ड्रायव्हर हजेरी रिपोर्ट बटण (Owner Panel) -->
+                <!-- ड्रायव्हर हजेरी रिपोर्ट बटण (Owner Panel) -->
                 <button onclick="showOwnerView('driver-attendance')" class="relative p-2.5 border rounded-lg bg-teal-800 text-white font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-teal-900 col-span-3">  
                     <i class="fa-solid fa-calendar-check text-lg text-yellow-400"></i>  
                     <span class="text-xs text-center font-bold">📅 ड्रायव्हर मासिक प्रेझेंटी व ट्रिप रिपोर्ट (Monthly Attendance)</span>  
@@ -829,6 +870,35 @@
                     <span class="text-xs font-black text-green-900">💰 आजची शिल्लक जमा कॅश: <span id="owner-today-balance-text" class="text-base text-redbus font-extrabold">₹ 0</span></span>  
                     <span class="text-[10px] text-gray-500 font-normal">ड्रायव्हरने जमा केलेला दररोजचा हिशोब पहा</span>  
                 </button>  
+
+                <!-- नवीन: All Vehicle GPS Live Tracking सेक्शन ओनर डॅशबोर्डवर -->
+                <div class="col-span-3 bg-blue-700 text-white p-3 rounded-xl shadow-md border border-blue-900 mt-2">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-yellow-300 text-xl animate-bounce"></i>
+                            <div>
+                                <h3 class="text-sm font-black tracking-wide uppercase">All Vehicle GPS Live Tracking</h3>
+                                <p class="text-[10px] text-blue-100">गाडी सिलेक्ट करून लाईव्ह लोकेशन ट्रॅक करा</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-circle-down text-lg text-yellow-300"></i>
+                    </div>
+
+                    <select id="owner-gps-vehicle-select" onchange="trackVehicleOnOwnerMap()" class="w-full p-2 rounded-lg text-xs font-black text-gray-900 bg-white border border-gray-300 outline-none">
+                        <option value="">गाडी निवडा (Select Vehicle)</option>
+                        <option value="MH15HU8620">MH15HU8620</option>
+                        <option value="MH15JW8620">MH15JW8620</option>
+                        <option value="MH15JX8620">MH15JX8620</option>
+                        <option value="MH15KS8620">MH15KS8620</option>
+                        <option value="MH15LB8620">MH15LB8620</option>
+                        <option value="MH15KH8620">MH15KH8620</option>
+                        <option value="MH15KV8620">MH15KV8620</option>
+                        <option value="MH48BH6315">MH48BH6315</option>
+                    </select>
+
+                    <div id="owner-live-map" class="shadow-inner"></div>
+                </div>
+
             </div>  
         </div>  
 
@@ -844,7 +914,7 @@
                 <i class="fa-solid fa-id-card text-green-600"></i> ड्रायव्हर दैनिक हिशोब (Driver Daily Log)  
             </h2>  
 
-            <!-- नवीन जोडेलेले बदल: गाडी नंबर, ट्रिपच्या तारखा आणि प्रेझेंटी -->
+            <!-- गाडी नंबर, ट्रिपच्या तारखा आणि प्रेझेंटी -->
             <div class="space-y-2.5 mb-3 text-xs bg-blue-50/60 p-3 rounded-lg border border-blue-200">
                 <div>  
                     <label class="block font-bold text-blue-900 mb-1"><i class="fa-solid fa-car text-blue-700"></i> 🚘 गाडी नंबर (Vehicle Number) *</label>  
@@ -860,6 +930,16 @@
                         <option value="MH48BH6315">MH48BH6315</option>
                     </select>  
                 </div>  
+
+                <!-- GPS live controls inside driver portal -->
+                <div class="flex gap-2">
+                    <button type="button" onclick="startDriverGpsTripFromPortal()" class="bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-lg font-bold flex-1 text-center text-xs">
+                        <i class="fa-solid fa-location-crosshairs"></i> GPS Trip Start
+                    </button>
+                    <button type="button" onclick="endDriverGpsTripFromPortal()" class="bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-lg font-bold flex-1 text-center text-xs">
+                        <i class="fa-solid fa-circle-stop"></i> GPS Trip End
+                    </button>
+                </div>
 
                 <div class="grid grid-cols-2 gap-2">  
                     <div>  
@@ -931,10 +1011,13 @@
 
 </div>  
 
+<!-- Leaflet JS for Map -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <!-- JavaScript & Firebase Setup -->  
 <script type="module">  
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";  
-    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";  
+    import { getDatabase, ref, push, onValue, set, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";  
 
     const firebaseConfig = {  
         apiKey: "AIzaSyAhFTOcugnyUczs2dbMaEPl42HIFhKyGWI",  
@@ -959,6 +1042,7 @@
     window.lastActiveOwnerCategory = 'all';  
 
     const ownerAuth = { phone: '9890896040', pass: 'shri8620shambhu' };
+    
     // गुरुकृपा Tours & Travels - सर्व वाहन क्रमांक
     const VEHICLE_NUMBERS = [
         "MH15HU8620",
@@ -970,6 +1054,121 @@
         "MH15KV8620",
         "MH48BH6315"
     ];
+
+    let gpsWatchId = null;
+    let ownerMap = null;
+    let ownerMarker = null;
+
+    function initOwnerMap() {
+        const mapContainer = document.getElementById('owner-live-map');
+        if (!mapContainer || ownerMap) return;
+
+        ownerMap = L.map('owner-live-map').setView([19.9975, 73.7898], 12); // Nashik Default
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(ownerMap);
+    }
+
+    window.trackVehicleOnOwnerMap = function() {
+        const selectedVehicle = document.getElementById('owner-gps-vehicle-select').value;
+        if (!selectedVehicle) return;
+
+        if (!ownerMap) {
+            initOwnerMap();
+        }
+
+        const trackRef = ref(database, 'live_gps_tracking/' + selectedVehicle);
+        onValue(trackRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.latitude && data.longitude) {
+                const lat = data.latitude;
+                const lng = data.longitude;
+
+                ownerMap.setView([lat, lng], 15);
+
+                if (ownerMarker) {
+                    ownerMarker.setLatLng([lat, lng]);
+                } else {
+                    ownerMarker = L.marker([lat, lng]).addTo(ownerMap);
+                }
+                ownerMarker.bindPopup(`<b>🚘 ${selectedVehicle}</b><br>Live GPS Tracking ON...`).openPopup();
+            } else {
+                alert(`गाडी ${selectedVehicle} चे GPS बंद आहे किंवा ट्रिप सुरू झालेली नाही.`);
+            }
+        });
+    };
+
+    window.startDriverGpsTrip = function() {
+        const select = document.getElementById('login-driver-vehicle-select');
+        const vehicleNo = select ? select.value : '';
+        if (!vehicleNo) {
+            alert('कृपया आधी गाडी निवडा!');
+            return;
+        }
+
+        if (navigator.geolocation) {
+            alert(`गाडी ${vehicleNo} ची ट्रिप सुरू झाली आहे. Live GPS tracking चालू आहे.`);
+            
+            gpsWatchId = navigator.geolocation.watchPosition((position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                set(ref(database, 'live_gps_tracking/' + vehicleNo), {
+                    vehicleNo: vehicleNo,
+                    latitude: lat,
+                    longitude: lng,
+                    status: 'TRIP_STARTED',
+                    updatedAt: new Date().toLocaleString('mr-IN')
+                });
+            }, (err) => {
+                alert('GPS सर्व्हिस मिळवण्यात अडचण: ' + err.message);
+            }, {
+                enableHighAccuracy: true
+            });
+        } else {
+            alert('तुमच्या मोबाईल/ब्राउझरमध्ये GPS सपोर्ट उपलब्ध नाही.');
+        }
+    };
+
+    window.endDriverGpsTrip = function() {
+        const select = document.getElementById('login-driver-vehicle-select');
+        const vehicleNo = select ? select.value : '';
+        if (!vehicleNo) {
+            alert('कृपया आधी गाडी निवडा!');
+            return;
+        }
+
+        if (gpsWatchId !== null) {
+            navigator.geolocation.clearWatch(gpsWatchId);
+            gpsWatchId = null;
+        }
+
+        update(ref(database, 'live_gps_tracking/' + vehicleNo), {
+            status: 'TRIP_ENDED'
+        });
+
+        alert(`गाडी ${vehicleNo} ची ट्रिप संपली आहे.`);
+    };
+
+    window.startDriverGpsTripFromPortal = function() {
+        const vehicleNo = document.getElementById('drv-vehicle-no').value;
+        if (!vehicleNo) {
+            alert('कृपया ड्रायव्हर फॉर्ममध्ये गाडी नंबर निवडा!');
+            return;
+        }
+        document.getElementById('login-driver-vehicle-select').value = vehicleNo;
+        window.startDriverGpsTrip();
+    };
+
+    window.endDriverGpsTripFromPortal = function() {
+        const vehicleNo = document.getElementById('drv-vehicle-no').value;
+        if (!vehicleNo) {
+            alert('कृपया ड्रायव्हर फॉर्ममध्ये गाडी नंबर निवडा!');
+            return;
+        }
+        document.getElementById('login-driver-vehicle-select').value = vehicleNo;
+        window.endDriverGpsTrip();
+    };
 
     function populateDriverVehicleNumbers() {
         const select = document.getElementById('drv-vehicle-no');
@@ -985,12 +1184,10 @@
             select.appendChild(option);
         });
 
-        // आधी निवडलेला नंबर उपलब्ध असल्यास तो पुन्हा निवडा.
         if (currentValue && VEHICLE_NUMBERS.includes(currentValue)) {
             select.value = currentValue;
         }
     }
-  
 
     const nashikPoints = ["ठक्कर बाजार", "द्वारका सर्कल", "मुंबई नाका", "गोविंद नगर", "टनेल (Tunnel)", "पवन हॉटेल"];  
     const punePoints = ["चाकण", "मोशी", "भोसरी", "नाशिक फाटा", "वाकडेवाडी"];  
@@ -1187,11 +1384,18 @@
         activeCard.classList.add('active', 'border-redbus', 'bg-red-50/50');  
         activeCard.classList.remove('bg-gray-50');  
 
+        const driverVehicleBox = document.getElementById('driver-login-vehicle-box');
+
         if (role === 'customer') {  
             document.getElementById('password-field').classList.add('hidden');  
-        } else {  
+            if (driverVehicleBox) driverVehicleBox.classList.add('hidden');
+        } else if (role === 'driver') {  
             document.getElementById('password-field').classList.remove('hidden');  
-        }  
+            if (driverVehicleBox) driverVehicleBox.classList.remove('hidden');
+        } else {
+            document.getElementById('password-field').classList.remove('hidden');  
+            if (driverVehicleBox) driverVehicleBox.classList.add('hidden');
+        } 
     };  
 
     window.handleLogin = function() {  
@@ -1244,6 +1448,9 @@
             document.getElementById('cust-display-phone').innerText = userObj.phone;  
         } else if (userObj.role === 'owner') {  
             document.getElementById('screen-owner').classList.remove('hidden');  
+            setTimeout(() => {
+                initOwnerMap();
+            }, 500);
         } else if (userObj.role === 'driver') {  
             document.getElementById('screen-driver').classList.remove('hidden');  
             populateDriverVehicleNumbers();  
@@ -1654,7 +1861,6 @@
             });  
     };  
 
-    // नवीन बदल: ड्रायव्हरच्या रिपोर्टमध्ये गाडी नंबर, जाण्या-येण्याची तारीख व प्रेझेंटी समाविष्ट
     window.sendDriverReport = function() {  
         const vehicleNo = document.getElementById('drv-vehicle-no').value.trim();
         const startDate = document.getElementById('drv-start-date').value;
@@ -1772,7 +1978,6 @@
         }  
     };  
 
-    // नवीन: ओनरसाठी मासिक ड्रायव्हर रिपोर्ट आणि हजेरी कॅल्क्युलेशन  
     window.showOwnerView = function(category, isAutoRefresh = false) {  
         window.lastActiveOwnerCategory = category;  
         const contentBox = document.getElementById('owner-content-box');  
