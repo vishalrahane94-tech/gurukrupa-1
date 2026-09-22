@@ -234,12 +234,20 @@
 
         /* Map styling for Owner Live Tracking */
         #owner-live-map {
-            height: 250px;
+            height: 280px;
             width: 100%;
             border-radius: 12px;
             margin-top: 10px;
             border: 2px solid #3b82f6;
             z-index: 1;
+        }
+
+        /* Custom Car Marker Styling */
+        .car-marker-icon {
+            font-size: 24px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+            text-align: center;
+            line-height: 1;
         }
 
         @media (max-width: 370px) {
@@ -326,7 +334,7 @@
                     <input type="password" id="login-pass" placeholder="पासवर्ड टाका" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
                 </div>  
 
-                <!-- नवीन: ड्रायव्हर लॉगिनमध्ये गाडी निवडणे आणि Trip Start / End बटन्स -->
+                <!-- ड्रायव्हर लॉगिनमध्ये गाडी निवडणे आणि Trip Start / End बटन्स -->
                 <div id="driver-login-vehicle-box" class="hidden space-y-3 bg-blue-50 p-3 rounded-xl border border-blue-200">
                     <div>
                         <label class="block text-xs font-extrabold text-blue-900 mb-1"><i class="fa-solid fa-car text-blue-700"></i> गाडी निवडा (Vehicle Selection) *</label>
@@ -871,7 +879,7 @@
                     <span class="text-[10px] text-gray-500 font-normal">ड्रायव्हरने जमा केलेला दररोजचा हिशोब पहा</span>  
                 </button>  
 
-                <!-- नवीन: All Vehicle GPS Live Tracking सेक्शन ओनर डॅशबोर्डवर -->
+                <!-- All Vehicle GPS Live Tracking सेक्शन ओनर डॅशबोर्डवर -->
                 <div class="col-span-3 bg-blue-700 text-white p-3 rounded-xl shadow-md border border-blue-900 mt-2">
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2">
@@ -884,8 +892,8 @@
                         <i class="fa-solid fa-circle-down text-lg text-yellow-300"></i>
                     </div>
 
-                    <select id="owner-gps-vehicle-select" onchange="trackVehicleOnOwnerMap()" class="w-full p-2 rounded-lg text-xs font-black text-gray-900 bg-white border border-gray-300 outline-none">
-                        <option value="">गाडी निवडा (Select Vehicle)</option>
+                    <select id="owner-gps-vehicle-select" onchange="focusVehicleOnOwnerMap()" class="w-full p-2 rounded-lg text-xs font-black text-gray-900 bg-white border border-gray-300 outline-none">
+                        <option value="">सर्व चालू गाड्या पहा (All Live Vehicles)</option>
                         <option value="MH15HU8620">MH15HU8620</option>
                         <option value="MH15JW8620">MH15JW8620</option>
                         <option value="MH15JX8620">MH15JX8620</option>
@@ -930,16 +938,6 @@
                         <option value="MH48BH6315">MH48BH6315</option>
                     </select>  
                 </div>  
-
-                <!-- GPS live controls inside driver portal -->
-                <div class="flex gap-2">
-                    <button type="button" onclick="startDriverGpsTripFromPortal()" class="bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-lg font-bold flex-1 text-center text-xs">
-                        <i class="fa-solid fa-location-crosshairs"></i> GPS Trip Start
-                    </button>
-                    <button type="button" onclick="endDriverGpsTripFromPortal()" class="bg-rose-600 hover:bg-rose-700 text-white p-2 rounded-lg font-bold flex-1 text-center text-xs">
-                        <i class="fa-solid fa-circle-stop"></i> GPS Trip End
-                    </button>
-                </div>
 
                 <div class="grid grid-cols-2 gap-2">  
                     <div>  
@@ -1041,9 +1039,8 @@
     window.selectedRoute = 'Nashik to Pune';  
     window.lastActiveOwnerCategory = 'all';  
 
-    const ownerAuth = { phone: '9890896040', pass: 'shri8620shambhu' };
-    
-    // गुरुकृपा Tours & Travels - सर्व वाहन क्रमांक
+    const ownerAuth = { phone: '9890896040', pass: 'shri8620shambhu' };  
+
     const VEHICLE_NUMBERS = [
         "MH15HU8620",
         "MH15JW8620",
@@ -1057,47 +1054,69 @@
 
     let gpsWatchId = null;
     let ownerMap = null;
-    let ownerMarker = null;
+    let vehicleMarkers = {}; 
+
+    // कार आयकॉन (Red Car) Leaflet साठी
+    const createCarIcon = (vehicleNo) => {
+        return L.divIcon({
+            className: 'car-marker-wrapper',
+            html: `<div class="car-marker-icon">🚘</div><div style="font-size:9px; font-weight:bold; background:white; border:1px solid red; border-radius:3px; padding:1px 3px; white-space:nowrap; box-shadow:0 1px 3px rgba(0,0,0,0.3);">${vehicleNo}</div>`,
+            iconSize: [40, 40],
+            iconAnchor: [20, 20]
+        });
+    };
 
     function initOwnerMap() {
         const mapContainer = document.getElementById('owner-live-map');
         if (!mapContainer || ownerMap) return;
 
-        ownerMap = L.map('owner-live-map').setView([19.9975, 73.7898], 12); // Nashik Default
+        ownerMap = L.map('owner-live-map').setView([19.9975, 73.7898], 11); 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
         }).addTo(ownerMap);
+
+        // Firebase वरून सर्व लाईव्ह गाड्यांचे लोकेशन ऐका (Listen)
+        const allGpsRef = ref(database, 'live_gps_tracking/');
+        onValue(allGpsRef, (snapshot) => {
+            const allData = snapshot.val();
+            if (!allData) return;
+
+            Object.keys(allData).forEach((vNo) => {
+                const item = allData[vNo];
+                if (item && item.latitude && item.longitude && item.status === 'TRIP_STARTED') {
+                    const lat = item.latitude;
+                    const lng = item.longitude;
+
+                    if (vehicleMarkers[vNo]) {
+                        vehicleMarkers[vNo].setLatLng([lat, lng]);
+                    } else {
+                        vehicleMarkers[vNo] = L.marker([lat, lng], { icon: createCarIcon(vNo) }).addTo(ownerMap);
+                        vehicleMarkers[vNo].bindPopup(`<b>🚘 ${vNo}</b><br>Live GPS Location`).openPopup();
+                    }
+                } else if (item && item.status === 'TRIP_ENDED') {
+                    if (vehicleMarkers[vNo]) {
+                        ownerMap.removeLayer(vehicleMarkers[vNo]);
+                        delete vehicleMarkers[vNo];
+                    }
+                }
+            });
+        });
     }
 
-    window.trackVehicleOnOwnerMap = function() {
+    window.focusVehicleOnOwnerMap = function() {
         const selectedVehicle = document.getElementById('owner-gps-vehicle-select').value;
         if (!selectedVehicle) return;
 
-        if (!ownerMap) {
-            initOwnerMap();
+        if (vehicleMarkers[selectedVehicle]) {
+            const markerLatLng = vehicleMarkers[selectedVehicle].getLatLng();
+            ownerMap.setView(markerLatLng, 15);
+            vehicleMarkers[selectedVehicle].openPopup();
+        } else {
+            alert(`गाडी ${selectedVehicle} ची ट्रिप सध्या बंद आहे किंवा लोकेशन प्राप्त होत नाही.`);
         }
-
-        const trackRef = ref(database, 'live_gps_tracking/' + selectedVehicle);
-        onValue(trackRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data && data.latitude && data.longitude) {
-                const lat = data.latitude;
-                const lng = data.longitude;
-
-                ownerMap.setView([lat, lng], 15);
-
-                if (ownerMarker) {
-                    ownerMarker.setLatLng([lat, lng]);
-                } else {
-                    ownerMarker = L.marker([lat, lng]).addTo(ownerMap);
-                }
-                ownerMarker.bindPopup(`<b>🚘 ${selectedVehicle}</b><br>Live GPS Tracking ON...`).openPopup();
-            } else {
-                alert(`गाडी ${selectedVehicle} चे GPS बंद आहे किंवा ट्रिप सुरू झालेली नाही.`);
-            }
-        });
     };
 
+    // ड्रायव्हर लाइव्ह लोकेशन ट्रॅकिंग सुरू करा (Realtime High Accuracy Movement)
     window.startDriverGpsTrip = function() {
         const select = document.getElementById('login-driver-vehicle-select');
         const vehicleNo = select ? select.value : '';
@@ -1107,8 +1126,12 @@
         }
 
         if (navigator.geolocation) {
-            alert(`गाडी ${vehicleNo} ची ट्रिप सुरू झाली आहे. Live GPS tracking चालू आहे.`);
+            alert(`गाडी ${vehicleNo} ची ट्रिप सुरू झाली आहे. Live GPS tracking ऑन आहे.`);
             
+            if (gpsWatchId !== null) {
+                navigator.geolocation.clearWatch(gpsWatchId);
+            }
+
             gpsWatchId = navigator.geolocation.watchPosition((position) => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
@@ -1123,7 +1146,9 @@
             }, (err) => {
                 alert('GPS सर्व्हिस मिळवण्यात अडचण: ' + err.message);
             }, {
-                enableHighAccuracy: true
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 10000
             });
         } else {
             alert('तुमच्या मोबाईल/ब्राउझरमध्ये GPS सपोर्ट उपलब्ध नाही.');
@@ -1148,26 +1173,6 @@
         });
 
         alert(`गाडी ${vehicleNo} ची ट्रिप संपली आहे.`);
-    };
-
-    window.startDriverGpsTripFromPortal = function() {
-        const vehicleNo = document.getElementById('drv-vehicle-no').value;
-        if (!vehicleNo) {
-            alert('कृपया ड्रायव्हर फॉर्ममध्ये गाडी नंबर निवडा!');
-            return;
-        }
-        document.getElementById('login-driver-vehicle-select').value = vehicleNo;
-        window.startDriverGpsTrip();
-    };
-
-    window.endDriverGpsTripFromPortal = function() {
-        const vehicleNo = document.getElementById('drv-vehicle-no').value;
-        if (!vehicleNo) {
-            alert('कृपया ड्रायव्हर फॉर्ममध्ये गाडी नंबर निवडा!');
-            return;
-        }
-        document.getElementById('login-driver-vehicle-select').value = vehicleNo;
-        window.endDriverGpsTrip();
     };
 
     function populateDriverVehicleNumbers() {
