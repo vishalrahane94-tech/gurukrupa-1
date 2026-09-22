@@ -848,7 +848,17 @@
             <div class="space-y-2.5 mb-3 text-xs bg-blue-50/60 p-3 rounded-lg border border-blue-200">
                 <div>  
                     <label class="block font-bold text-blue-900 mb-1"><i class="fa-solid fa-car text-blue-700"></i> 🚘 गाडी नंबर (Vehicle Number) *</label>  
-                    <input type="text" id="drv-vehicle-no" placeholder="उदा. MH 15 AB 1234" class="w-full p-2 border border-gray-300 rounded font-bold text-gray-800 bg-white outline-none">  
+                    <select id="drv-vehicle-no" class="w-full p-2 border border-gray-300 rounded font-bold text-gray-800 bg-white outline-none">
+                        <option value="">गाडी नंबर निवडा</option>
+                        <option value="MH15HU8620">MH15HU8620</option>
+                        <option value="MH15JW8620">MH15JW8620</option>
+                        <option value="MH15JX8620">MH15JX8620</option>
+                        <option value="MH15KS8620">MH15KS8620</option>
+                        <option value="MH15LB8620">MH15LB8620</option>
+                        <option value="MH15KH8620">MH15KH8620</option>
+                        <option value="MH15KV8620">MH15KV8620</option>
+                        <option value="MH48BH6315">MH48BH6315</option>
+                    </select>  
                 </div>  
 
                 <div class="grid grid-cols-2 gap-2">  
@@ -948,7 +958,39 @@
     window.selectedRoute = 'Nashik to Pune';  
     window.lastActiveOwnerCategory = 'all';  
 
-    const ownerAuth = { phone: '9890896040', pass: 'shri8620shambhu' };  
+    const ownerAuth = { phone: '9890896040', pass: 'shri8620shambhu' };
+    // गुरुकृपा Tours & Travels - सर्व वाहन क्रमांक
+    const VEHICLE_NUMBERS = [
+        "MH15HU8620",
+        "MH15JW8620",
+        "MH15JX8620",
+        "MH15KS8620",
+        "MH15LB8620",
+        "MH15KH8620",
+        "MH15KV8620",
+        "MH48BH6315"
+    ];
+
+    function populateDriverVehicleNumbers() {
+        const select = document.getElementById('drv-vehicle-no');
+        if (!select) return;
+
+        const currentValue = select.value;
+        select.innerHTML = '<option value="">गाडी नंबर निवडा</option>';
+
+        VEHICLE_NUMBERS.forEach(vehicleNo => {
+            const option = document.createElement('option');
+            option.value = vehicleNo;
+            option.textContent = vehicleNo;
+            select.appendChild(option);
+        });
+
+        // आधी निवडलेला नंबर उपलब्ध असल्यास तो पुन्हा निवडा.
+        if (currentValue && VEHICLE_NUMBERS.includes(currentValue)) {
+            select.value = currentValue;
+        }
+    }
+  
 
     const nashikPoints = ["ठक्कर बाजार", "द्वारका सर्कल", "मुंबई नाका", "गोविंद नगर", "टनेल (Tunnel)", "पवन हॉटेल"];  
     const punePoints = ["चाकण", "मोशी", "भोसरी", "नाशिक फाटा", "वाकडेवाडी"];  
@@ -987,7 +1029,8 @@
 
     window.addEventListener('load', () => {  
         window.scrollTo(0, 0);  
-        setCalendarMinDates();  
+        setCalendarMinDates();
+        populateDriverVehicleNumbers();  
         const savedUser = localStorage.getItem('gk_user');  
         if (savedUser) {  
             window.currentUser = JSON.parse(savedUser);  
@@ -1203,6 +1246,7 @@
             document.getElementById('screen-owner').classList.remove('hidden');  
         } else if (userObj.role === 'driver') {  
             document.getElementById('screen-driver').classList.remove('hidden');  
+            populateDriverVehicleNumbers();  
         }  
     }  
 
@@ -1624,7 +1668,7 @@
         const bal = document.getElementById('drv-balance').innerText;  
 
         if (!vehicleNo) {
-            alert("कृपया गाडी नंबर टाका!");
+            alert("कृपया गाडी नंबर निवडा!");
             return;
         }
 
