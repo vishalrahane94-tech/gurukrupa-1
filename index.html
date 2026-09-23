@@ -234,7 +234,7 @@
 
         /* Map styling for Owner Live Tracking */
         #owner-live-map {
-            height: 280px;
+            height: 300px;
             width: 100%;
             border-radius: 12px;
             margin-top: 10px;
@@ -242,12 +242,33 @@
             z-index: 1;
         }
 
-        /* Custom Car Marker Styling */
+        /* Custom Google-Map Style Car Marker Styling */
+        .car-marker-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.4s ease-out;
+        }
+
         .car-marker-icon {
-            font-size: 24px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.4);
-            text-align: center;
+            font-size: 28px;
             line-height: 1;
+            filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .car-marker-badge {
+            font-size: 9px;
+            font-weight: 900;
+            background: #ffffff;
+            color: #d84e55;
+            border: 1.5px solid #d84e55;
+            border-radius: 4px;
+            padding: 1px 4px;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin-top: -2px;
         }
 
         @media (max-width: 370px) {
@@ -334,7 +355,7 @@
                     <input type="password" id="login-pass" placeholder="पासवर्ड टाका" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
                 </div>  
 
-                <!-- ड्रायव्हर लॉगिनमध्ये गाडी निवडणे आणि Trip Start / End बटन्स -->
+                <!-- ड्रायव्हर लॉगिन: फक्त गाडी निवडणे आणि Trip Start बटण -->
                 <div id="driver-login-vehicle-box" class="hidden space-y-3 bg-blue-50 p-3 rounded-xl border border-blue-200">
                     <div>
                         <label class="block text-xs font-extrabold text-blue-900 mb-1"><i class="fa-solid fa-car text-blue-700"></i> गाडी निवडा (Vehicle Selection) *</label>
@@ -351,19 +372,13 @@
                         </select>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2">
-                        <button type="button" onclick="startDriverGpsTrip()" class="bg-green-600 hover:bg-green-700 text-white p-2.5 rounded-xl font-extrabold text-xs flex flex-col items-center justify-center gap-1 shadow">
-                            <span class="flex items-center gap-1"><i class="fa-solid fa-circle-play text-sm"></i> Trip Start</span>
-                            <span class="text-[10px] font-normal opacity-90">ट्रिप सुरू करा</span>
-                        </button>
-                        <button type="button" onclick="endDriverGpsTrip()" class="bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-xl font-extrabold text-xs flex flex-col items-center justify-center gap-1 shadow">
-                            <span class="flex items-center gap-1"><i class="fa-solid fa-circle-xmark text-sm"></i> Trip End</span>
-                            <span class="text-[10px] font-normal opacity-90">ट्रिप संपवा</span>
-                        </button>
-                    </div>
+                    <button type="button" onclick="startDriverGpsTrip()" class="w-full bg-green-600 hover:bg-green-700 text-white p-3 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 shadow">
+                        <i class="fa-solid fa-play-circle text-base"></i>
+                        <span>Trip Start (ट्रिप सुरू करा)</span>
+                    </button>
                 </div>
 
-                <button onclick="handleLogin()" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-3 rounded-xl text-xs shadow-md mt-2 transition-all">  
+                <button onclick="handleLogin()" id="btn-submit-login" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-3 rounded-xl text-xs shadow-md mt-2 transition-all">  
                     लॉगिन करा (Login)  
                 </button>  
             </div>  
@@ -886,7 +901,7 @@
                             <i class="fa-solid fa-location-dot text-yellow-300 text-xl animate-bounce"></i>
                             <div>
                                 <h3 class="text-sm font-black tracking-wide uppercase">All Vehicle GPS Live Tracking</h3>
-                                <p class="text-[10px] text-blue-100">गाडी सिलेक्ट करून लाईव्ह लोकेशन ट्रॅक करा</p>
+                                <p class="text-[10px] text-blue-100">गाडी सिलेक्ट करून लाईव्ह रस्त्यावरील ट्रॅकिंग पहा</p>
                             </div>
                         </div>
                         <i class="fa-solid fa-circle-down text-lg text-yellow-300"></i>
@@ -918,9 +933,14 @@
     <!-- ड्रायव्हर पोर्टल स्क्रीन -->  
     <div id="screen-driver" class="hidden space-y-4 pt-2">  
         <div class="bg-white p-4 rounded-xl shadow border border-gray-200">  
-            <h2 class="text-sm font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">  
-                <i class="fa-solid fa-id-card text-green-600"></i> ड्रायव्हर दैनिक हिशोब (Driver Daily Log)  
-            </h2>  
+            <div class="flex justify-between items-center border-b pb-2 mb-3">
+                <h2 class="text-sm font-bold text-gray-800 flex items-center gap-2">  
+                    <i class="fa-solid fa-id-card text-green-600"></i> ड्रायव्हर दैनिक हिशोब (Driver Daily Log)  
+                </h2>  
+                <span class="bg-green-100 text-green-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                    <span class="w-2 h-2 bg-green-600 rounded-full"></span> Live GPS Active
+                </span>
+            </div>
 
             <!-- गाडी नंबर, ट्रिपच्या तारखा आणि प्रेझेंटी -->
             <div class="space-y-2.5 mb-3 text-xs bg-blue-50/60 p-3 rounded-lg border border-blue-200">
@@ -984,12 +1004,12 @@
             </div>  
 
             <button type="button" onclick="sendDriverReport()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-xs shadow mt-3 flex items-center justify-center gap-2">  
-                <i class="fa-solid fa-floppy-disk text-base"></i> 💾 हिशोब सेव्ह करा  
+                <i class="fa-solid fa-floppy-disk text-base"></i> 💾 हिशोब सेव्ह करा व पाठवा  
             </button>  
 
-            <div id="whatsapp-buttons" class="hidden text-center mt-4 p-3 bg-gray-50 rounded-lg border border-gray-300">  
-                <p class="text-gray-800 text-xs font-bold mb-2">  
-                    ✅ हिशोब सेव्ह झाला आहे! खालील दोन्ही बटनांवर क्लिक करून व्हॉट्सॲप मेसेज पाठवा:  
+            <div id="whatsapp-buttons" class="hidden text-center mt-4 p-3 bg-gray-50 rounded-lg border border-gray-300 space-y-3">  
+                <p class="text-gray-800 text-xs font-bold">  
+                    ✅ हिशोब सेव्ह झाला आहे! ओनरला व्हॉट्सॲप मेसेज पाठवा:  
                 </p>  
                   
                 <div class="flex gap-2 justify-center flex-wrap">  
@@ -1003,6 +1023,14 @@
                         <span class="text-[10px] opacity-90">(7498502915)</span>  
                     </a>  
                 </div>  
+
+                <!-- हिशोब पाठवल्यानंतर दिसणारे Trip End बटण -->
+                <div class="border-t pt-3 mt-2">
+                    <button type="button" onclick="endDriverGpsTrip()" class="w-full bg-red-600 hover:bg-red-700 text-white p-3 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 shadow">
+                        <i class="fa-solid fa-circle-xmark text-base"></i>
+                        <span>Trip End (ट्रिप संपवा व बाहेर पडा)</span>
+                    </button>
+                </div>
             </div>  
         </div>  
     </div>  
@@ -1055,14 +1083,19 @@
     let gpsWatchId = null;
     let ownerMap = null;
     let vehicleMarkers = {}; 
+    let vehiclePolylines = {}; 
+    let activeVehicleNo = null;
 
-    // कार आयकॉन (Red Car) Leaflet साठी
-    const createCarIcon = (vehicleNo) => {
+    // Google Maps Style Animated Car Marker
+    const createGoogleCarIcon = (vehicleNo, heading = 0) => {
         return L.divIcon({
-            className: 'car-marker-wrapper',
-            html: `<div class="car-marker-icon">🚘</div><div style="font-size:9px; font-weight:bold; background:white; border:1px solid red; border-radius:3px; padding:1px 3px; white-space:nowrap; box-shadow:0 1px 3px rgba(0,0,0,0.3);">${vehicleNo}</div>`,
-            iconSize: [40, 40],
-            iconAnchor: [20, 20]
+            className: 'car-marker-container',
+            html: `
+                <div class="car-marker-icon" style="transform: rotate(${heading}deg);">🚘</div>
+                <div class="car-marker-badge">${vehicleNo}</div>
+            `,
+            iconSize: [45, 45],
+            iconAnchor: [22, 22]
         });
     };
 
@@ -1075,7 +1108,7 @@
             maxZoom: 19
         }).addTo(ownerMap);
 
-        // Firebase वरून सर्व लाईव्ह गाड्यांचे लोकेशन ऐका (Listen)
+        // Firebase वरून रिअल-टाईम Google Maps Movement ऐका
         const allGpsRef = ref(database, 'live_gps_tracking/');
         onValue(allGpsRef, (snapshot) => {
             const allData = snapshot.val();
@@ -1086,17 +1119,36 @@
                 if (item && item.latitude && item.longitude && item.status === 'TRIP_STARTED') {
                     const lat = item.latitude;
                     const lng = item.longitude;
+                    const heading = item.heading || 0;
 
+                    // 1. गाडीचा मार्ग (Polyline Road Track)
+                    if (!vehiclePolylines[vNo]) {
+                        vehiclePolylines[vNo] = L.polyline([], { color: '#2563eb', weight: 4, opacity: 0.8 }).addTo(ownerMap);
+                    }
+                    vehiclePolylines[vNo].addLatLng([lat, lng]);
+
+                    // 2. कार मार्करचे लोकेशन आणि रोटेशन मूव्हमेंट
                     if (vehicleMarkers[vNo]) {
                         vehicleMarkers[vNo].setLatLng([lat, lng]);
+                        vehicleMarkers[vNo].setIcon(createGoogleCarIcon(vNo, heading));
                     } else {
-                        vehicleMarkers[vNo] = L.marker([lat, lng], { icon: createCarIcon(vNo) }).addTo(ownerMap);
-                        vehicleMarkers[vNo].bindPopup(`<b>🚘 ${vNo}</b><br>Live GPS Location`).openPopup();
+                        vehicleMarkers[vNo] = L.marker([lat, lng], { icon: createGoogleCarIcon(vNo, heading) }).addTo(ownerMap);
+                        vehicleMarkers[vNo].bindPopup(`<b>🚘 ${vNo}</b><br>Live Google Movement ON`).openPopup();
+                    }
+
+                    // जर ठराविक गाडी निवडून झूम केली असेल
+                    const selectedVehicle = document.getElementById('owner-gps-vehicle-select').value;
+                    if (selectedVehicle === vNo) {
+                        ownerMap.panTo([lat, lng]);
                     }
                 } else if (item && item.status === 'TRIP_ENDED') {
                     if (vehicleMarkers[vNo]) {
                         ownerMap.removeLayer(vehicleMarkers[vNo]);
                         delete vehicleMarkers[vNo];
+                    }
+                    if (vehiclePolylines[vNo]) {
+                        ownerMap.removeLayer(vehiclePolylines[vNo]);
+                        delete vehiclePolylines[vNo];
                     }
                 }
             });
@@ -1109,25 +1161,37 @@
 
         if (vehicleMarkers[selectedVehicle]) {
             const markerLatLng = vehicleMarkers[selectedVehicle].getLatLng();
-            ownerMap.setView(markerLatLng, 15);
+            ownerMap.setView(markerLatLng, 16);
             vehicleMarkers[selectedVehicle].openPopup();
         } else {
             alert(`गाडी ${selectedVehicle} ची ट्रिप सध्या बंद आहे किंवा लोकेशन प्राप्त होत नाही.`);
         }
     };
 
-    // ड्रायव्हर लाइव्ह लोकेशन ट्रॅकिंग सुरू करा (Realtime High Accuracy Movement)
+    // ड्रायव्हर लाइव्ह लोकेशन ट्रॅकिंग (High-Precision Realtime Movement)
     window.startDriverGpsTrip = function() {
         const select = document.getElementById('login-driver-vehicle-select');
         const vehicleNo = select ? select.value : '';
+        const name = document.getElementById('login-name').value.trim();
+        const phone = document.getElementById('login-phone').value.trim();
+        const pass = document.getElementById('login-pass').value.trim();
+
+        if (!name || !phone) {
+            alert('कृपया आधी तुमचे नाव आणि मोबाईल नंबर टाका!');
+            return;
+        }
+
+        if (pass !== 'driver123') {
+            alert('चुकीचा पासवर्ड!');
+            return;
+        }
+
         if (!vehicleNo) {
-            alert('कृपया आधी गाडी निवडा!');
+            alert('कृपया गाडी निवडा!');
             return;
         }
 
         if (navigator.geolocation) {
-            alert(`गाडी ${vehicleNo} ची ट्रिप सुरू झाली आहे. Live GPS tracking ऑन आहे.`);
-            
             if (gpsWatchId !== null) {
                 navigator.geolocation.clearWatch(gpsWatchId);
             }
@@ -1135,44 +1199,53 @@
             gpsWatchId = navigator.geolocation.watchPosition((position) => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
+                const heading = position.coords.heading || 0;
+
+                activeVehicleNo = vehicleNo;
 
                 set(ref(database, 'live_gps_tracking/' + vehicleNo), {
                     vehicleNo: vehicleNo,
                     latitude: lat,
                     longitude: lng,
+                    heading: heading,
                     status: 'TRIP_STARTED',
                     updatedAt: new Date().toLocaleString('mr-IN')
                 });
             }, (err) => {
-                alert('GPS सर्व्हिस मिळवण्यात अडचण: ' + err.message);
+                alert('GPS लोकेशन मिळवण्यात अडचण: ' + err.message);
             }, {
                 enableHighAccuracy: true,
                 maximumAge: 0,
-                timeout: 10000
+                timeout: 5000
             });
+
+            saveAndApplyUser({ name, phone, role: 'driver', vehicleNo: vehicleNo });
+            alert(`गाडी ${vehicleNo} ची ट्रिप यशस्वीपणे सुरू झाली आहे! Live GPS Tracking ON झाले आहे.`);
         } else {
             alert('तुमच्या मोबाईल/ब्राउझरमध्ये GPS सपोर्ट उपलब्ध नाही.');
         }
     };
 
     window.endDriverGpsTrip = function() {
-        const select = document.getElementById('login-driver-vehicle-select');
-        const vehicleNo = select ? select.value : '';
+        const vehicleNo = activeVehicleNo || document.getElementById('drv-vehicle-no').value;
         if (!vehicleNo) {
-            alert('कृपया आधी गाडी निवडा!');
+            alert('गाडी नंबर सापडला नाही!');
             return;
         }
 
-        if (gpsWatchId !== null) {
-            navigator.geolocation.clearWatch(gpsWatchId);
-            gpsWatchId = null;
+        if (confirm(`तुम्हाला गाडी ${vehicleNo} ची ट्रिप संपवून लॉगआउट करायचे आहे का?`)) {
+            if (gpsWatchId !== null) {
+                navigator.geolocation.clearWatch(gpsWatchId);
+                gpsWatchId = null;
+            }
+
+            update(ref(database, 'live_gps_tracking/' + vehicleNo), {
+                status: 'TRIP_ENDED'
+            });
+
+            alert(`गाडी ${vehicleNo} ची ट्रिप समाप्त झाली आहे.`);
+            logout();
         }
-
-        update(ref(database, 'live_gps_tracking/' + vehicleNo), {
-            status: 'TRIP_ENDED'
-        });
-
-        alert(`गाडी ${vehicleNo} ची ट्रिप संपली आहे.`);
     };
 
     function populateDriverVehicleNumbers() {
@@ -1390,16 +1463,20 @@
         activeCard.classList.remove('bg-gray-50');  
 
         const driverVehicleBox = document.getElementById('driver-login-vehicle-box');
+        const loginBtn = document.getElementById('btn-submit-login');
 
         if (role === 'customer') {  
             document.getElementById('password-field').classList.add('hidden');  
             if (driverVehicleBox) driverVehicleBox.classList.add('hidden');
+            if (loginBtn) loginBtn.classList.remove('hidden');
         } else if (role === 'driver') {  
             document.getElementById('password-field').classList.remove('hidden');  
             if (driverVehicleBox) driverVehicleBox.classList.remove('hidden');
+            if (loginBtn) loginBtn.classList.add('hidden');
         } else {
             document.getElementById('password-field').classList.remove('hidden');  
             if (driverVehicleBox) driverVehicleBox.classList.add('hidden');
+            if (loginBtn) loginBtn.classList.remove('hidden');
         } 
     };  
 
@@ -1425,12 +1502,6 @@
                 saveAndApplyUser({ name, phone, role: 'owner' });  
             } else {  
                 alert('चुकीचा फोन नंबर किंवा पासवर्ड!');  
-            }  
-        } else if (window.currentRole === 'driver') {  
-            if (pass === 'driver123') {  
-                saveAndApplyUser({ name, phone, role: 'driver' });  
-            } else {  
-                alert('चुकीचा पासवर्ड!');  
             }  
         }  
     };  
@@ -1459,6 +1530,10 @@
         } else if (userObj.role === 'driver') {  
             document.getElementById('screen-driver').classList.remove('hidden');  
             populateDriverVehicleNumbers();  
+            if (userObj.vehicleNo) {
+                const drvSelect = document.getElementById('drv-vehicle-no');
+                if (drvSelect) drvSelect.value = userObj.vehicleNo;
+            }
         }  
     }  
 
@@ -1917,7 +1992,7 @@
                 document.getElementById('btn-owner-2').href = `https://api.whatsapp.com/send?phone=917498502915&text=${encodedMsg}`;  
                 document.getElementById('whatsapp-buttons').classList.remove('hidden');  
 
-                alert("हिशोब व प्रेझेंटी यशस्वीपणे सेव्ह झाली! खालील बटनांवर क्लिक करून व्हॉट्सॲपवर पाठवा.");  
+                alert("हिशोब व प्रेझेंटी सेव्ह झाली आहे! आता खालील व्हॉट्सॲप बटनांवर क्लिक करा आणि त्यानंतर ट्रिप एंड करा.");  
             })  
             .catch(err => {  
                 console.error("Firebase Error: ", err);  
