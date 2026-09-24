@@ -284,6 +284,22 @@
 </head>  
 <body class="bg-gray-100 font-sans pb-10">  
 
+<!-- ऑटो-सजेस्ट ऑप्शन्स लिस्ट -->
+<datalist id="location-suggestions">
+    <option value="Kesar Tree Town, Pune"></option>
+    <option value="Kesar Kingston, Pune"></option>
+    <option value="Thakkar Bazar, Nashik"></option>
+    <option value="Dwarka Circle, Nashik"></option>
+    <option value="Mumbai Naka, Nashik"></option>
+    <option value="Govind Nagar, Nashik"></option>
+    <option value="Chakan, Pune"></option>
+    <option value="Bhosari, Pune"></option>
+    <option value="Nashik Phata, Pune"></option>
+    <option value="Wakadewadi, Pune"></option>
+    <option value="Viman Nagar, Pune Airport"></option>
+    <option value="Mumbai Airport Terminal 2"></option>
+</datalist>
+
 <!-- टॉप हेडर -->  
 <header id="app-header" class="gk-app-header">  
     <div class="gk-header-inner">  
@@ -311,7 +327,6 @@
 
     <!-- लॉगिन स्क्रीन -->  
     <div id="screen-login" class="flex flex-col items-center justify-center pt-4 pb-4">  
-          
         <div id="secret-logo-trigger" class="text-center cursor-pointer select-none mb-6">  
             <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-2 border-yellow-500">  
             <h1 class="text-2xl font-black tracking-wider text-gray-900 uppercase">GURUKRUPA</h1>  
@@ -356,7 +371,7 @@
                     <input type="password" id="login-pass" placeholder="पासवर्ड टाका" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
                 </div>  
 
-                <!-- ड्रायव्हर लॉगिन: फक्त गाडी निवडणे आणि Trip Start बटण -->
+                <!-- ड्रायव्हर लॉगिन -->
                 <div id="driver-login-vehicle-box" class="hidden space-y-3 bg-blue-50 p-3 rounded-xl border border-blue-200">
                     <div>
                         <label class="block text-xs font-extrabold text-blue-900 mb-1"><i class="fa-solid fa-car text-blue-700"></i> गाडी निवडा (Vehicle Selection) *</label>
@@ -541,7 +556,7 @@
                 </div>  
             </div>  
 
-            <!-- 2. One Way Section -->  
+            <!-- 2. One Way Section (Updated with Searchable Pickup/Drop) -->  
             <div id="oneway-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>  
                 <div>  
@@ -559,6 +574,19 @@
                         <option value="संभाजीनगर ते पुणे">संभाजीनगर ते पुणे</option>  
                     </select>  
                 </div>  
+
+                <!-- नवीन सर्च-सजेस्ट पिकअप आणि ड्रॉप पॉईंट्स -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
+                        <input type="text" id="oneway-pickup" list="location-suggestions" placeholder="उदा. Kesar Tree Town" class="w-full p-2 border rounded text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
+                        <input type="text" id="oneway-drop" list="location-suggestions" placeholder="उदा. Dwarka Circle" class="w-full p-2 border rounded text-xs">
+                    </div>
+                </div>
+
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व दर *</label>  
                     <select id="oneway-car" class="w-full p-2 border rounded text-xs font-bold text-redbus"></select>  
@@ -575,7 +603,7 @@
                 </div>  
             </div>  
 
-            <!-- 3. Airport Section -->  
+            <!-- 3. Airport Section (Updated with Searchable Pickup/Drop) -->  
             <div id="airport-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>  
                 <div>  
@@ -591,6 +619,19 @@
                         <option value="Pune To Mumbai Airport Drop">Pune To Mumbai Airport Drop</option>  
                     </select>  
                 </div>  
+
+                <!-- नवीन सर्च पिकअप व ड्रॉप -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Location) *</label>
+                        <input type="text" id="airport-pickup" list="location-suggestions" placeholder="उदा. Kesar Kingston" class="w-full p-2 border rounded text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Location) *</label>
+                        <input type="text" id="airport-drop" list="location-suggestions" placeholder="उदा. Pune Airport" class="w-full p-2 border rounded text-xs">
+                    </div>
+                </div>
+
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व दर *</label>  
                     <select id="airport-car" class="w-full p-2 border rounded text-xs font-bold text-redbus"></select>  
@@ -607,7 +648,7 @@
                 </div>  
             </div>  
 
-            <!-- 4. Fleet Section -->  
+            <!-- 4. Fleet Section (Updated: Multi-Stop Map Style Routing) -->  
             <div id="fleet-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>  
                 <div>  
@@ -622,10 +663,26 @@
                         <option value="FORCE URBANIA - ₹35/- Per KM" data-rate="35">FORCE URBANIA - ₹35/- PER KM</option>  
                     </select>  
                 </div>  
-                <div>  
-                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">कुठून कुठे जायचे आहे (रूट / ठिकाण) *</label>  
-                    <input type="text" id="fleet-spot" placeholder="उदा. नाशिक ते गोवा" class="w-full p-2 border rounded text-xs">  
-                </div>  
+
+                <!-- गुगल मॅप्स सारखा रूट डिझाईन -->
+                <div class="space-y-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-200">
+                    <div>
+                        <label class="block text-[11px] font-bold text-blue-900 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Point) *</label>
+                        <input type="text" id="fleet-pickup" list="location-suggestions" placeholder="उदा. नाशिक / घरचे लोकेशन" class="w-full p-2 border rounded text-xs bg-white">
+                    </div>
+
+                    <div id="fleet-extra-stops" class="space-y-2"></div>
+
+                    <button type="button" onclick="addFleetStopPoint('fleet-extra-stops')" class="text-xs font-bold text-blue-700 bg-white border border-blue-400 px-2 py-1 rounded shadow-sm hover:bg-blue-100 flex items-center gap-1">
+                        <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Stop Point)
+                    </button>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-blue-900 mb-1">🏁 शेवटचे ठिकाण (Drop Point) *</label>
+                        <input type="text" id="fleet-drop" list="location-suggestions" placeholder="उदा. गोवा / अंतिम ठिकाण" class="w-full p-2 border rounded text-xs bg-white">
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे किलोमीटर (KM)</label>  
@@ -704,7 +761,7 @@
                 </div>  
             </div>  
 
-            <!-- 7. Buses Section -->  
+            <!-- 7. Buses Section (Updated: Searchable Pickup/Drop & Extra Stops) -->  
             <div id="buses-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">  
                     <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)  
@@ -723,6 +780,26 @@
                             <option value="50 Seater Big Bus">50 Seater Big Bus</option>  
                         </select>  
                     </div>  
+
+                    <!-- बस पोर्टलसाठी सर्च पिकअप / ड्रॉप व स्टॉप पॉईंट्स -->
+                    <div class="space-y-2 bg-white p-2.5 rounded-lg border border-red-200">
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-800 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Point) *</label>
+                            <input type="text" id="bus-pickup" list="location-suggestions" placeholder="उदा. नाशिक" class="w-full p-2 border rounded text-xs">
+                        </div>
+
+                        <div id="bus-extra-stops" class="space-y-2"></div>
+
+                        <button type="button" onclick="addFleetStopPoint('bus-extra-stops')" class="text-xs font-bold text-redbus bg-red-50 border border-red-300 px-2 py-1 rounded shadow-sm hover:bg-red-100 flex items-center gap-1">
+                            <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Stop Point)
+                        </button>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-800 mb-1">🏁 अंतिम ठिकाण (Drop Point) *</label>
+                            <input type="text" id="bus-drop" list="location-suggestions" placeholder="उदा. गोवा" class="w-full p-2 border rounded text-xs">
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-2 gap-2">  
                         <div>  
                             <label class="block text-[11px] font-semibold text-gray-700 mb-1">तारीख *</label>  
@@ -734,8 +811,8 @@
                         </div>  
                     </div>  
                     <div>  
-                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">इतर माहिती / रूट (उदा. नाशिक ते गोवा 3 दिवस)</label>  
-                        <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती किंवा रूट टाका..." class="w-full p-2 border rounded text-xs bg-white"></textarea>  
+                        <label class="block text-[11px] font-semibold text-gray-700 mb-1">इतर माहिती (इतर तपशील)</label>  
+                        <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती किंवा अतिरिक्त नोट्स टाका..." class="w-full p-2 border rounded text-xs bg-white"></textarea>  
                     </div>  
                     <button onclick="submitBusInquiry()" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2.5 rounded-lg text-xs shadow flex justify-center items-center gap-1">  
                         <i class="fa-solid fa-paper-plane"></i> बस इन्क्वायरी पाठवा  
@@ -743,10 +820,17 @@
                 </div>  
             </div>  
 
+            <!-- Payment Section (QR Code & Direct UPI Link Added) -->
             <div id="payment-section" class="mt-5 border-t-2 border-dashed border-gray-300 pt-4 text-center">  
                 <h4 class="text-sm font-bold text-gray-800">Shashiraj Rahane</h4>  
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shash74.s7@oksbi&pn=Shashiraj%20Rahane" alt="UPI QR Code" class="w-36 h-36 mx-auto my-2 rounded-lg shadow-md border p-1 bg-white">  
-                <p class="text-[11px] text-gray-600 mb-3">पेमेंट करण्यासाठी वरील QR Code स्कॅन करा (UPI ID: shash74.s7@oksbi).</p>  
+                
+                <!-- QR Code Touch/Click Deep Link for GPay, PhonePe, Paytm -->
+                <a href="upi://pay?pa=shash74.s7@oksbi&pn=Shashiraj%20Rahane&cu=INR" class="block my-2 inline-block">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shash74.s7@oksbi&pn=Shashiraj%20Rahane" alt="UPI QR Code" class="w-36 h-36 mx-auto rounded-lg shadow-md border p-1 bg-white cursor-pointer hover:opacity-90 active:scale-95 transition-all">
+                    <span class="block text-[10px] text-blue-600 font-extrabold mt-1 underline">📲 QR वर टच करा (GPay / PhonePe उघडा)</span>
+                </a>
+
+                <p class="text-[11px] text-gray-600 mb-3">पेमेंट करण्यासाठी QR वर टच करा किंवा स्कॅन करा (UPI ID: shash74.s7@oksbi).</p>  
                   
                 <div class="text-left bg-red-50 p-3 rounded border border-red-200">  
                     <label class="flex items-center gap-2 cursor-pointer">  
@@ -883,7 +967,6 @@
                     <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>  
                 </button>  
 
-                <!-- ड्रायव्हर हजेरी रिपोर्ट बटण (Owner Panel) -->
                 <button onclick="showOwnerView('driver-attendance')" class="relative p-2.5 border rounded-lg bg-teal-800 text-white font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-teal-900 col-span-3">  
                     <i class="fa-solid fa-calendar-check text-lg text-yellow-400"></i>  
                     <span class="text-xs text-center font-bold">📅 ड्रायव्हर मासिक प्रेझेंटी व ट्रिप रिपोर्ट (Monthly Attendance)</span>  
@@ -895,7 +978,7 @@
                     <span class="text-[10px] text-gray-500 font-normal">ड्रायव्हरने जमा केलेला दररोजचा हिशोब पहा</span>  
                 </button>  
 
-                <!-- All Vehicle GPS Live Tracking सेक्शन ओनर डॅशबोर्डवर -->
+                <!-- GPS Live Tracking -->
                 <div class="col-span-3 bg-blue-700 text-white p-3 rounded-xl shadow-md border border-blue-900 mt-2">
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2">
@@ -943,7 +1026,6 @@
                 </span>
             </div>
 
-            <!-- गाडी नंबर, ट्रिपच्या तारखा आणि प्रेझेंटी -->
             <div class="space-y-2.5 mb-3 text-xs bg-blue-50/60 p-3 rounded-lg border border-blue-200">
                 <div>  
                     <label class="block font-bold text-blue-900 mb-1"><i class="fa-solid fa-car text-blue-700"></i> 🚘 गाडी नंबर (Vehicle Number) *</label>  
@@ -1025,7 +1107,6 @@
                     </a>  
                 </div>  
 
-                <!-- हिशोब पाठवल्यानंतर दिसणारे Trip End बटण -->
                 <div class="border-t pt-3 mt-2">
                     <button type="button" onclick="endDriverGpsTrip()" class="w-full bg-red-600 hover:bg-red-700 text-white p-3 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 shadow">
                         <i class="fa-solid fa-circle-xmark text-base"></i>
@@ -1087,7 +1168,20 @@
     let vehiclePolylines = {}; 
     let activeVehicleNo = null;
 
-    // Google Maps Style Animated Car Marker
+    // Google Map-Like dynamic stop-point adder function
+    window.addFleetStopPoint = function(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const div = document.createElement('div');
+        div.className = "flex gap-2 items-center";
+        div.innerHTML = `
+            <input type="text" list="location-suggestions" placeholder="📍 मध्यंतरीचा स्टॉप / पॉईंट (Via Point)" class="fleet-via-point w-full p-2 border rounded text-xs bg-white">
+            <button type="button" onclick="this.parentElement.remove()" class="bg-red-500 text-white font-bold px-2.5 py-1.5 rounded text-xs">✕</button>
+        `;
+        container.appendChild(div);
+    };
+
     const createGoogleCarIcon = (vehicleNo, heading = 0) => {
         return L.divIcon({
             className: 'car-marker-container',
@@ -1109,7 +1203,6 @@
             maxZoom: 19
         }).addTo(ownerMap);
 
-        // Firebase वरून रिअल-टाईम Google Maps Movement ऐका
         const allGpsRef = ref(database, 'live_gps_tracking/');
         onValue(allGpsRef, (snapshot) => {
             const allData = snapshot.val();
@@ -1122,13 +1215,11 @@
                     const lng = item.longitude;
                     const heading = item.heading || 0;
 
-                    // 1. गाडीचा मार्ग (Polyline Road Track)
                     if (!vehiclePolylines[vNo]) {
                         vehiclePolylines[vNo] = L.polyline([], { color: '#2563eb', weight: 4, opacity: 0.8 }).addTo(ownerMap);
                     }
                     vehiclePolylines[vNo].addLatLng([lat, lng]);
 
-                    // Google Maps Direct Navigation Link
                     const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
 
                     const popupContent = `
@@ -1155,7 +1246,6 @@
                         </div>
                     `;
 
-                    // 2. कार मार्करचे लोकेशन, रोटेशन आणि पॉपअप अपडेट
                     if (vehicleMarkers[vNo]) {
                         vehicleMarkers[vNo].setLatLng([lat, lng]);
                         vehicleMarkers[vNo].setIcon(createGoogleCarIcon(vNo, heading));
@@ -1167,7 +1257,6 @@
                         vehicleMarkers[vNo].bindPopup(popupContent);
                     }
 
-                    // जर ठराविक गाडी निवडून झूम केली असेल
                     const selectedVehicle = document.getElementById('owner-gps-vehicle-select').value;
                     if (selectedVehicle === vNo) {
                         ownerMap.panTo([lat, lng]);
@@ -1199,7 +1288,6 @@
         }
     };
 
-    // ड्रायव्हर लाइव्ह लोकेशन ट्रॅकिंग (High-Precision Realtime Movement)
     window.startDriverGpsTrip = function() {
         const select = document.getElementById('login-driver-vehicle-select');
         const vehicleNo = select ? select.value : '';
@@ -1207,96 +1295,96 @@
         const phone = document.getElementById('login-phone').value.trim();
         const pass = document.getElementById('login-pass').value.trim();
 
-        if (!name || !phone) {
-            alert('कृपया आधी तुमचे नाव आणि मोबाईल नंबर टाका!');
-            return;
-        }
+        if (!name || !phone) {  
+            alert('कृपया आधी तुमचे नाव आणि मोबाईल नंबर टाका!');  
+            return;  
+        }  
 
-        if (pass !== 'driver123') {
-            alert('चुकीचा पासवर्ड!');
-            return;
-        }
+        if (pass !== 'driver123') {  
+            alert('चुकीचा पासवर्ड!');  
+            return;  
+        }  
 
-        if (!vehicleNo) {
-            alert('कृपया गाडी निवडा!');
-            return;
-        }
+        if (!vehicleNo) {  
+            alert('कृपया गाडी निवडा!');  
+            return;  
+        }  
 
-        if (navigator.geolocation) {
-            if (gpsWatchId !== null) {
-                navigator.geolocation.clearWatch(gpsWatchId);
-            }
+        if (navigator.geolocation) {  
+            if (gpsWatchId !== null) {  
+                navigator.geolocation.clearWatch(gpsWatchId);  
+            }  
 
-            gpsWatchId = navigator.geolocation.watchPosition((position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                const heading = position.coords.heading || 0;
+            gpsWatchId = navigator.geolocation.watchPosition((position) => {  
+                const lat = position.coords.latitude;  
+                const lng = position.coords.longitude;  
+                const heading = position.coords.heading || 0;  
 
-                activeVehicleNo = vehicleNo;
+                activeVehicleNo = vehicleNo;  
 
-                set(ref(database, 'live_gps_tracking/' + vehicleNo), {
-                    vehicleNo: vehicleNo,
-                    latitude: lat,
-                    longitude: lng,
-                    heading: heading,
-                    status: 'TRIP_STARTED',
-                    updatedAt: new Date().toLocaleString('mr-IN')
-                });
-            }, (err) => {
-                alert('GPS लोकेशन मिळवण्यात अडचण: ' + err.message);
-            }, {
-                enableHighAccuracy: true,
-                maximumAge: 0,
-                timeout: 5000
-            });
+                set(ref(database, 'live_gps_tracking/' + vehicleNo), {  
+                    vehicleNo: vehicleNo,  
+                    latitude: lat,  
+                    longitude: lng,  
+                    heading: heading,  
+                    status: 'TRIP_STARTED',  
+                    updatedAt: new Date().toLocaleString('mr-IN')  
+                });  
+            }, (err) => {  
+                alert('GPS लोकेशन मिळवण्यात अडचण: ' + err.message);  
+            }, {  
+                enableHighAccuracy: true,  
+                maximumAge: 0,  
+                timeout: 5000  
+            });  
 
-            saveAndApplyUser({ name, phone, role: 'driver', vehicleNo: vehicleNo });
-            alert(`गाडी ${vehicleNo} ची ट्रिप यशस्वीपणे सुरू झाली आहे! Live GPS Tracking ON झाले आहे.`);
-        } else {
-            alert('तुमच्या मोबाईल/ब्राउझरमध्ये GPS सपोर्ट उपलब्ध नाही.');
-        }
-    };
+            saveAndApplyUser({ name, phone, role: 'driver', vehicleNo: vehicleNo });  
+            alert(`गाडी ${vehicleNo} ची ट्रिप यशस्वीपणे सुरू झाली आहे! Live GPS Tracking ON झाले आहे.`);  
+        } else {  
+            alert('तुमच्या मोबाईल/ब्राउझरमध्ये GPS सपोर्ट उपलब्ध नाही.');  
+        }  
+    };  
 
-    window.endDriverGpsTrip = function() {
-        const vehicleNo = activeVehicleNo || document.getElementById('drv-vehicle-no').value;
-        if (!vehicleNo) {
-            alert('गाडी नंबर सापडला नाही!');
-            return;
-        }
+    window.endDriverGpsTrip = function() {  
+        const vehicleNo = activeVehicleNo || document.getElementById('drv-vehicle-no').value;  
+        if (!vehicleNo) {  
+            alert('गाडी नंबर सापडला नाही!');  
+            return;  
+        }  
 
-        if (confirm(`तुम्हाला गाडी ${vehicleNo} ची ट्रिप संपवून लॉगआउट करायचे आहे का?`)) {
-            if (gpsWatchId !== null) {
-                navigator.geolocation.clearWatch(gpsWatchId);
-                gpsWatchId = null;
-            }
+        if (confirm(`तुम्हाला गाडी ${vehicleNo} ची ट्रिप संपवून लॉगआउट करायचे आहे का?`)) {  
+            if (gpsWatchId !== null) {  
+                navigator.geolocation.clearWatch(gpsWatchId);  
+                gpsWatchId = null;  
+            }  
 
-            update(ref(database, 'live_gps_tracking/' + vehicleNo), {
-                status: 'TRIP_ENDED'
-            });
+            update(ref(database, 'live_gps_tracking/' + vehicleNo), {  
+                status: 'TRIP_ENDED'  
+            });  
 
-            alert(`गाडी ${vehicleNo} ची ट्रिप समाप्त झाली आहे.`);
-            logout();
-        }
-    };
+            alert(`गाडी ${vehicleNo} ची ट्रिप समाप्त झाली आहे.`);  
+            logout();  
+        }  
+    };  
 
-    function populateDriverVehicleNumbers() {
-        const select = document.getElementById('drv-vehicle-no');
-        if (!select) return;
+    function populateDriverVehicleNumbers() {  
+        const select = document.getElementById('drv-vehicle-no');  
+        if (!select) return;  
 
-        const currentValue = select.value;
-        select.innerHTML = '<option value="">गाडी नंबर निवडा</option>';
+        const currentValue = select.value;  
+        select.innerHTML = '<option value="">गाडी नंबर निवडा</option>';  
 
-        VEHICLE_NUMBERS.forEach(vehicleNo => {
-            const option = document.createElement('option');
-            option.value = vehicleNo;
-            option.textContent = vehicleNo;
-            select.appendChild(option);
-        });
+        VEHICLE_NUMBERS.forEach(vehicleNo => {  
+            const option = document.createElement('option');  
+            option.value = vehicleNo;  
+            option.textContent = vehicleNo;  
+            select.appendChild(option);  
+        });  
 
-        if (currentValue && VEHICLE_NUMBERS.includes(currentValue)) {
-            select.value = currentValue;
-        }
-    }
+        if (currentValue && VEHICLE_NUMBERS.includes(currentValue)) {  
+            select.value = currentValue;  
+        }  
+    }  
 
     const nashikPoints = ["ठक्कर बाजार", "द्वारका सर्कल", "मुंबई नाका", "गोविंद नगर", "टनेल (Tunnel)", "पवन हॉटेल"];  
     const punePoints = ["चाकण", "मोशी", "भोसरी", "नाशिक फाटा", "वाकडेवाडी"];  
@@ -1327,15 +1415,15 @@
             }  
         });  
 
-        const drvStart = document.getElementById('drv-start-date');
-        const drvEnd = document.getElementById('drv-end-date');
-        if (drvStart && !drvStart.value) drvStart.value = todayStr;
-        if (drvEnd && !drvEnd.value) drvEnd.value = todayStr;
+        const drvStart = document.getElementById('drv-start-date');  
+        const drvEnd = document.getElementById('drv-end-date');  
+        if (drvStart && !drvStart.value) drvStart.value = todayStr;  
+        if (drvEnd && !drvEnd.value) drvEnd.value = todayStr;  
     }  
 
     window.addEventListener('load', () => {  
         window.scrollTo(0, 0);  
-        setCalendarMinDates();
+        setCalendarMinDates();  
         populateDriverVehicleNumbers();  
         const savedUser = localStorage.getItem('gk_user');  
         if (savedUser) {  
@@ -1493,22 +1581,22 @@
         activeCard.classList.add('active', 'border-redbus', 'bg-red-50/50');  
         activeCard.classList.remove('bg-gray-50');  
 
-        const driverVehicleBox = document.getElementById('driver-login-vehicle-box');
-        const loginBtn = document.getElementById('btn-submit-login');
+        const driverVehicleBox = document.getElementById('driver-login-vehicle-box');  
+        const loginBtn = document.getElementById('btn-submit-login');  
 
         if (role === 'customer') {  
             document.getElementById('password-field').classList.add('hidden');  
-            if (driverVehicleBox) driverVehicleBox.classList.add('hidden');
-            if (loginBtn) loginBtn.classList.remove('hidden');
+            if (driverVehicleBox) driverVehicleBox.classList.add('hidden');  
+            if (loginBtn) loginBtn.classList.remove('hidden');  
         } else if (role === 'driver') {  
             document.getElementById('password-field').classList.remove('hidden');  
-            if (driverVehicleBox) driverVehicleBox.classList.remove('hidden');
-            if (loginBtn) loginBtn.classList.add('hidden');
-        } else {
+            if (driverVehicleBox) driverVehicleBox.classList.remove('hidden');  
+            if (loginBtn) loginBtn.classList.add('hidden');  
+        } else {  
             document.getElementById('password-field').classList.remove('hidden');  
-            if (driverVehicleBox) driverVehicleBox.classList.add('hidden');
-            if (loginBtn) loginBtn.classList.remove('hidden');
-        } 
+            if (driverVehicleBox) driverVehicleBox.classList.add('hidden');  
+            if (loginBtn) loginBtn.classList.remove('hidden');  
+        }   
     };  
 
     window.handleLogin = function() {  
@@ -1555,16 +1643,16 @@
             document.getElementById('cust-display-phone').innerText = userObj.phone;  
         } else if (userObj.role === 'owner') {  
             document.getElementById('screen-owner').classList.remove('hidden');  
-            setTimeout(() => {
-                initOwnerMap();
-            }, 500);
+            setTimeout(() => {  
+                initOwnerMap();  
+            }, 500);  
         } else if (userObj.role === 'driver') {  
             document.getElementById('screen-driver').classList.remove('hidden');  
             populateDriverVehicleNumbers();  
-            if (userObj.vehicleNo) {
-                const drvSelect = document.getElementById('drv-vehicle-no');
-                if (drvSelect) drvSelect.value = userObj.vehicleNo;
-            }
+            if (userObj.vehicleNo) {  
+                const drvSelect = document.getElementById('drv-vehicle-no');  
+                if (drvSelect) drvSelect.value = userObj.vehicleNo;  
+            }  
         }  
     }  
 
@@ -1885,27 +1973,38 @@
 
         } else if (window.activeTab === 'oneway') {  
             bookingData.route = document.getElementById('oneway-route').value;  
+            bookingData.pickup = document.getElementById('oneway-pickup').value;
+            bookingData.drop = document.getElementById('oneway-drop').value;
             bookingData.car = document.getElementById('oneway-car').value;  
             bookingData.date = document.getElementById('oneway-date').value;  
             bookingData.time = document.getElementById('oneway-time').value;  
 
-            whatsappText += `प्रकार: वन-वे टॅक्सी\nरूट: ${bookingData.route}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
+            whatsappText += `प्रकार: वन-वे टॅक्सी\nरूट: ${bookingData.route}\nपिकअप: ${bookingData.pickup}\nड्रॉप: ${bookingData.drop}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
         } else if (window.activeTab === 'airport') {  
             bookingData.route = document.getElementById('airport-route').value;  
+            bookingData.pickup = document.getElementById('airport-pickup').value;
+            bookingData.drop = document.getElementById('airport-drop').value;
             bookingData.car = document.getElementById('airport-car').value;  
             bookingData.date = document.getElementById('airport-date').value;  
             bookingData.time = document.getElementById('airport-time').value;  
 
-            whatsappText += `प्रकार: एअरपोर्ट ड्रॉप सर्व्हिस\nरूट: ${bookingData.route}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
+            whatsappText += `प्रकार: एअरपोर्ट ड्रॉप सर्व्हिस\nरूट: ${bookingData.route}\nपिकअप: ${bookingData.pickup}\nड्रॉप: ${bookingData.drop}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
         } else if (window.activeTab === 'fleet') {  
             bookingData.car = document.getElementById('fleet-car').value;  
-            bookingData.spot = document.getElementById('fleet-spot').value;  
+            bookingData.pickup = document.getElementById('fleet-pickup').value;
+            bookingData.drop = document.getElementById('fleet-drop').value;
+            
+            const viaInputs = document.querySelectorAll('#fleet-extra-stops .fleet-via-point');
+            let viaStops = [];
+            viaInputs.forEach(input => { if (input.value.trim()) viaStops.push(input.value.trim()); });
+            bookingData.viaStops = viaStops;
+
             bookingData.km = document.getElementById('fleet-km').value;  
             bookingData.totalEstimate = document.getElementById('fleet-total-display').innerText;  
             bookingData.date = document.getElementById('fleet-date').value;  
             bookingData.time = document.getElementById('fleet-time').value;  
 
-            whatsappText += `प्रकार: Fleet Per KM बुकिंग\nगाडी: ${bookingData.car}\nरूट: ${bookingData.spot}\nएकूण KM: ${bookingData.km}\nअंदाजे भाडे: ${bookingData.totalEstimate}\nतारीख: ${bookingData.date}`;  
+            whatsappText += `प्रकार: Fleet Per KM बुकिंग\nगाडी: ${bookingData.car}\nसुरुवात: ${bookingData.pickup}\n${viaStops.length > 0 ? `वाटेतील स्टॉप्स: ${viaStops.join(' -> ')}\n` : ''}शेवट: ${bookingData.drop}\nएकूण KM: ${bookingData.km}\nअंदाजे भाडे: ${bookingData.totalEstimate}\nतारीख: ${bookingData.date}`;  
         } else if (window.activeTab === 'darshan') {  
             bookingData.car = document.getElementById('darshan-car').value;  
             bookingData.date = document.getElementById('darshan-date').value;  
@@ -1943,12 +2042,19 @@
         }  
 
         const busCap = document.getElementById('bus-capacity').value;  
+        const busPickup = document.getElementById('bus-pickup').value;
+        const busDrop = document.getElementById('bus-drop').value;
+
+        const viaInputs = document.querySelectorAll('#bus-extra-stops .fleet-via-point');
+        let viaStops = [];
+        viaInputs.forEach(input => { if (input.value.trim()) viaStops.push(input.value.trim()); });
+
         const busDate = document.getElementById('bus-date').value;  
         const busTime = document.getElementById('bus-time').value;  
         const busMsg = document.getElementById('bus-msg').value;  
 
-        if (!busDate || !busTime) {  
-            alert("कृपया प्रवासाची तारीख आणि वेळ निवडा!");  
+        if (!busDate || !busTime || !busPickup || !busDrop) {  
+            alert("कृपया सर्व माहिती, पिकअप/ड्रॉप ठिकाण, तारीख व वेळ भरा!");  
             return;  
         }  
 
@@ -1957,13 +2063,16 @@
             customerPhone: window.currentUser.phone,  
             type: 'bus',  
             capacity: busCap,  
+            pickup: busPickup,
+            drop: busDrop,
+            viaStops: viaStops,
             date: busDate,  
             time: busTime,  
             details: busMsg,  
             createdAt: new Date().toLocaleString('mr-IN')  
         };  
 
-        const whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - मोठी बस इन्क्वायरी*\nग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\nबस प्रकार: ${busCap}\nतारीख: ${busDate}\nवेळ: ${busTime}\nमाहिती/रूट: ${busMsg}`;  
+        const whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - मोठी बस इन्क्वायरी*\nग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\nबस प्रकार: ${busCap}\nपिकअप: ${busPickup}\n${viaStops.length > 0 ? `वाटेतील स्टॉप्स: ${viaStops.join(' -> ')}\n` : ''}ड्रॉप: ${busDrop}\nतारीख: ${busDate}\nवेळ: ${busTime}\nमाहिती: ${busMsg}`;  
 
         push(ref(database, 'bookings/'), bookingData)  
             .then(() => {  
@@ -1973,10 +2082,10 @@
     };  
 
     window.sendDriverReport = function() {  
-        const vehicleNo = document.getElementById('drv-vehicle-no').value.trim();
-        const startDate = document.getElementById('drv-start-date').value;
-        const endDate = document.getElementById('drv-end-date').value;
-        const dutyStatus = document.getElementById('drv-duty-status').value;
+        const vehicleNo = document.getElementById('drv-vehicle-no').value.trim();  
+        const startDate = document.getElementById('drv-start-date').value;  
+        const endDate = document.getElementById('drv-end-date').value;  
+        const dutyStatus = document.getElementById('drv-duty-status').value;  
 
         const col = document.getElementById('drv-collection').value;  
         const toll = document.getElementById('drv-toll').value;  
@@ -1984,15 +2093,15 @@
         const other = document.getElementById('drv-other').value;  
         const bal = document.getElementById('drv-balance').innerText;  
 
-        if (!vehicleNo) {
-            alert("कृपया गाडी नंबर निवडा!");
-            return;
-        }
+        if (!vehicleNo) {  
+            alert("कृपया गाडी नंबर निवडा!");  
+            return;  
+        }  
 
-        if (!startDate || !endDate) {
-            alert("कृपया ट्रिपच्या जाण्याच्या आणि येण्याच्या तारखा निवडा!");
-            return;
-        }
+        if (!startDate || !endDate) {  
+            alert("कृपया ट्रिपच्या जाण्याच्या आणि येण्याच्या तारखा निवडा!");  
+            return;  
+        }  
 
         if (!col || col == 0) {  
             alert("कृपया आधी कलेक्शन रक्कम टाका.");  
@@ -2002,10 +2111,10 @@
         const logData = {  
             driverName: window.currentUser ? window.currentUser.name : "Driver",  
             driverPhone: window.currentUser ? window.currentUser.phone : "N/A",  
-            vehicleNo: vehicleNo,
-            startDate: startDate,
-            endDate: endDate,
-            dutyStatus: dutyStatus,
+            vehicleNo: vehicleNo,  
+            startDate: startDate,  
+            endDate: endDate,  
+            dutyStatus: dutyStatus,  
             collection: parseFloat(col) || 0,  
             toll: parseFloat(toll) || 0,  
             fuel: parseFloat(fuel) || 0,  
@@ -2096,7 +2205,7 @@
             contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>माहिती लोड होत आहे...</p>";  
         }  
 
-        if (category === 'driver-attendance') {
+        if (category === 'driver-attendance') {  
             const logsRef = ref(database, 'driver_logs/');  
             onValue(logsRef, (snapshot) => {  
                 const data = snapshot.val();  
@@ -2105,78 +2214,78 @@
                     return;  
                 }  
 
-                let driverSummary = {};
+                let driverSummary = {};  
 
-                Object.values(data).forEach(log => {
-                    const name = log.driverName || 'इतर ड्रायव्हर';
-                    if (!driverSummary[name]) {
-                        driverSummary[name] = {
-                            presentDays: 0,
-                            trips: []
-                        };
-                    }
+                Object.values(data).forEach(log => {  
+                    const name = log.driverName || 'इतर ड्रायव्हर';  
+                    if (!driverSummary[name]) {  
+                        driverSummary[name] = {  
+                            presentDays: 0,  
+                            trips: []  
+                        };  
+                    }  
 
-                    if (log.dutyStatus === 'Present' || !log.dutyStatus) {
-                        if (log.startDate && log.endDate) {
-                            const d1 = new Date(log.startDate);
-                            const d2 = new Date(log.endDate);
-                            const diffDays = Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
-                            driverSummary[name].presentDays += (isNaN(diffDays) ? 1 : diffDays);
-                        } else {
-                            driverSummary[name].presentDays += 1;
-                        }
-                    }
+                    if (log.dutyStatus === 'Present' || !log.dutyStatus) {  
+                        if (log.startDate && log.endDate) {  
+                            const d1 = new Date(log.startDate);  
+                            const d2 = new Date(log.endDate);  
+                            const diffDays = Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24)) + 1;  
+                            driverSummary[name].presentDays += (isNaN(diffDays) ? 1 : diffDays);  
+                        } else {  
+                            driverSummary[name].presentDays += 1;  
+                        }  
+                    }  
 
-                    driverSummary[name].trips.push({
-                        vehicle: log.vehicleNo || 'N/A',
-                        start: log.startDate || log.date,
-                        end: log.endDate || log.date,
-                        status: log.dutyStatus || 'Present',
-                        balance: log.balance || 0
-                    });
-                });
+                    driverSummary[name].trips.push({  
+                        vehicle: log.vehicleNo || 'N/A',  
+                        start: log.startDate || log.date,  
+                        end: log.endDate || log.date,  
+                        status: log.dutyStatus || 'Present',  
+                        balance: log.balance || 0  
+                    });  
+                });  
 
-                let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">
-                    <span>📅 ड्रायव्हर मासिक प्रेझेंटी व ट्रिप रिपोर्ट</span>
-                    <span class="text-xs bg-teal-100 text-teal-800 px-2 py-0.5 rounded font-extrabold">एकूण ड्रायव्हर्स: ${Object.keys(driverSummary).length}</span>
-                </h3>`;
+                let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">  
+                    <span>📅 ड्रायव्हर मासिक प्रेझेंटी व ट्रिप रिपोर्ट</span>  
+                    <span class="text-xs bg-teal-100 text-teal-800 px-2 py-0.5 rounded font-extrabold">एकूण ड्रायव्हर्स: ${Object.keys(driverSummary).length}</span>  
+                </h3>`;  
 
-                Object.keys(driverSummary).forEach(drvName => {
-                    const drv = driverSummary[drvName];
-                    html += `
-                        <div class="mb-4 bg-teal-50/50 border border-teal-200 rounded-xl p-3 shadow-sm">
-                            <div class="flex justify-between items-center border-b border-teal-200 pb-2 mb-2">
-                                <span class="font-black text-sm text-teal-900"><i class="fa-solid fa-user-gear text-teal-700"></i> ${drvName}</span>
-                                <span class="bg-teal-700 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow">
-                                    हजेरी: ${drv.presentDays} दिवस
-                                </span>
-                            </div>
-                            <p class="font-bold text-gray-700 mb-1.5 text-[11px]">ट्रिप विवरण (${drv.trips.length} नोंदी):</p>
-                            <div class="space-y-1.5">
-                    `;
+                Object.keys(driverSummary).forEach(drvName => {  
+                    const drv = driverSummary[drvName];  
+                    html += `  
+                        <div class="mb-4 bg-teal-50/50 border border-teal-200 rounded-xl p-3 shadow-sm">  
+                            <div class="flex justify-between items-center border-b border-teal-200 pb-2 mb-2">  
+                                <span class="font-black text-sm text-teal-900"><i class="fa-solid fa-user-gear text-teal-700"></i> ${drvName}</span>  
+                                <span class="bg-teal-700 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow">  
+                                    हजेरी: ${drv.presentDays} दिवस  
+                                </span>  
+                            </div>  
+                            <p class="font-bold text-gray-700 mb-1.5 text-[11px]">ट्रिप विवरण (${drv.trips.length} नोंदी):</p>  
+                            <div class="space-y-1.5">  
+                    `;  
 
-                    drv.trips.forEach(t => {
-                        html += `
-                            <div class="flex justify-between items-center bg-white p-2 rounded border border-gray-200 text-[11px]">
-                                <div>
-                                    <span class="font-bold text-gray-900">🚘 ${t.vehicle}</span> 
-                                    <span class="text-gray-500">(${t.start} ते ${t.end})</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="font-bold ${t.status === 'Present' ? 'text-green-600' : 'text-red-500'}">${t.status}</span>
-                                    <span class="font-black text-gray-800 bg-gray-100 px-1.5 py-0.5 rounded">₹${t.balance}</span>
-                                </div>
-                            </div>
-                        `;
-                    });
+                    drv.trips.forEach(t => {  
+                        html += `  
+                            <div class="flex justify-between items-center bg-white p-2 rounded border border-gray-200 text-[11px]">  
+                                <div>  
+                                    <span class="font-bold text-gray-900">🚘 ${t.vehicle}</span>   
+                                    <span class="text-gray-500">(${t.start} ते ${t.end})</span>  
+                                </div>  
+                                <div class="flex items-center gap-2">  
+                                    <span class="font-bold ${t.status === 'Present' ? 'text-green-600' : 'text-red-500'}">${t.status}</span>  
+                                    <span class="font-black text-gray-800 bg-gray-100 px-1.5 py-0.5 rounded">₹${t.balance}</span>  
+                                </div>  
+                            </div>  
+                        `;  
+                    });  
 
-                    html += `</div></div>`;
-                });
+                    html += `</div></div>`;  
+                });  
 
-                contentBox.innerHTML = html;
-            }, { onlyOnce: true });
-            return;
-        }
+                contentBox.innerHTML = html;  
+            }, { onlyOnce: true });  
+            return;  
+        }  
 
         if (category === 'driver-balance' || category === 'driver-log') {  
             const logsRef = ref(database, 'driver_logs/');  
@@ -2207,9 +2316,9 @@
                                 <span class="font-bold text-gray-900 text-xs">${log.driverName || 'Driver'} (${log.driverPhone || 'N/A'})</span>  
                                 <span class="text-[10px] bg-gray-200 px-1.5 py-0.5 rounded text-gray-700 font-semibold">${log.date || ''}</span>  
                             </div>  
-                            <div class="text-[11px] text-gray-700 font-medium mb-1">
+                            <div class="text-[11px] text-gray-700 font-medium mb-1">  
                                 🚘 <b>गाडी नंबर:</b> ${log.vehicleNo || 'N/A'} | 📅 <b>कालावधी:</b> ${log.startDate || log.date} ते ${log.endDate || log.date}  
-                            </div>
+                            </div>  
                             <div class="grid grid-cols-4 gap-1 text-[11px] my-2 bg-white p-2 rounded border text-center">  
                                 <div><span class="text-gray-500 block text-[9px]">कलेक्शन</span><b class="text-green-600">₹${log.collection || 0}</b></div>  
                                 <div><span class="text-gray-500 block text-[9px]">टोल</span><b class="text-red-500">₹${log.toll || 0}</b></div>  
@@ -2280,10 +2389,11 @@
                         <div class="text-gray-700 space-y-0.5">  
                             <div><b>प्रकार:</b> <span class="uppercase font-semibold text-redbus">${item.type || 'N/A'}</span> ${item.direction ? `(${item.direction})` : ''}</div>  
                             ${item.pickup ? `<div><b>पिकअप:</b> ${item.pickup} \vert{} <b>ड्रॉप:</b> ${item.drop}</div>` : ''}  
+                            ${item.viaStops && item.viaStops.length > 0 ? `<div><b>वाटेतील स्टॉप्स:</b> ${item.viaStops.join(' -> ')}</div>` : ''}
                             ${item.route ? `<div><b>रूट:</b> ${item.route}</div>` : ''}  
                             ${item.car ? `<div><b>गाडी:</b> ${item.car}</div>` : ''}  
                             ${item.seats ? `<div><b>सीट्स:</b> ${Array.isArray(item.seats) ? item.seats.join(', ') : item.seats}</div>` : ''}  
-                            ${item.spot ? `<div><b>ठिकाण:</b> ${item.spot} \vert{} <b>KM:</b>${item.km}</div>` : ''}  
+                            ${item.km ? `<div><b>KM:</b> ${item.km} \vert{} <b>अंदाजे भाडे:</b> ${item.totalEstimate || 'N/A'}</div>` : ''}  
                             ${item.capacity ? `<div><b>बस क्षमता:</b> ${item.capacity}</div>` : ''}  
                             <div><b>तारीख व वेळ:</b> ${item.date || ''} ${item.time || ''}</div>  
                             ${item.paymentStatus ? `<div class="text-green-700 font-bold"><b>पेमेंट:</b> ${item.paymentStatus}</div>` : ''}  
