@@ -249,6 +249,7 @@
             align-items: center;
             justify-content: center;
             transition: transform 0.4s ease-out;
+            cursor: pointer;
         }
 
         .car-marker-icon {
@@ -1127,13 +1128,43 @@
                     }
                     vehiclePolylines[vNo].addLatLng([lat, lng]);
 
-                    // 2. कार मार्करचे लोकेशन आणि रोटेशन मूव्हमेंट
+                    // Google Maps Direct Navigation Link
+                    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+
+                    const popupContent = `
+                        <div style="text-align: center; padding: 4px; min-width: 140px;">
+                            <b style="font-size: 13px; color: #d84e55;">🚘 ${vNo}</b><br>
+                            <span style="font-size: 10px; color: #16a34a; font-weight: bold;">🟢 Live GPS Active</span><br>
+                            <a href="${googleMapsUrl}" target="_blank" style="
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 4px;
+                                margin-top: 6px;
+                                padding: 6px 10px;
+                                background-color: #2563eb;
+                                color: white;
+                                font-size: 11px;
+                                font-weight: bold;
+                                text-decoration: none;
+                                border-radius: 6px;
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                            ">
+                                📍 Google Maps मध्ये रस्ता पहा
+                            </a>
+                        </div>
+                    `;
+
+                    // 2. कार मार्करचे लोकेशन, रोटेशन आणि पॉपअप अपडेट
                     if (vehicleMarkers[vNo]) {
                         vehicleMarkers[vNo].setLatLng([lat, lng]);
                         vehicleMarkers[vNo].setIcon(createGoogleCarIcon(vNo, heading));
+                        if (vehicleMarkers[vNo].getPopup()) {
+                            vehicleMarkers[vNo].getPopup().setContent(popupContent);
+                        }
                     } else {
                         vehicleMarkers[vNo] = L.marker([lat, lng], { icon: createGoogleCarIcon(vNo, heading) }).addTo(ownerMap);
-                        vehicleMarkers[vNo].bindPopup(`<b>🚘 ${vNo}</b><br>Live Google Movement ON`).openPopup();
+                        vehicleMarkers[vNo].bindPopup(popupContent);
                     }
 
                     // जर ठराविक गाडी निवडून झूम केली असेल
