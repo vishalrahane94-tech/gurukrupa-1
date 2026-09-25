@@ -18,9 +18,6 @@
     <!-- Leaflet CSS for Live GPS Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    <!-- Google Places API for Live Location Search / Autocomplete -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
-
     <script>  
         tailwind.config = {  
             theme: {  
@@ -77,7 +74,6 @@
             padding-bottom: 50px !important;  
         }  
 
-        /* HEADER LOGO & TEXT FIX */
         html, body { width: 100%; max-width: 100%; overflow-x: hidden !important; }
         *, *::before, *::after { box-sizing: border-box; }
 
@@ -245,7 +241,6 @@
             z-index: 1;
         }
 
-        /* Custom Google-Map Style Car Marker Styling */
         .car-marker-container {
             display: flex;
             flex-direction: column;
@@ -275,14 +270,6 @@
             margin-top: -2px;
         }
 
-        /* Google Places Auto-complete Styling Overrides */
-        .pac-container {
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            font-family: inherit;
-            z-index: 9999 !important;
-        }
-
         @media (max-width: 370px) {
             .brand-title h1 { font-size: 13px !important; }
             .brand-title span { font-size: 8px !important; }
@@ -294,6 +281,24 @@
 
 </head>  
 <body class="bg-gray-100 font-sans pb-10">  
+
+<!-- स्वयंचलित लोकेशन सजेशन यादी (Smart Auto Suggest List) -->
+<datalist id="all-locations-list">
+    <option value="Kesar Tree Town, Pune"></option>
+    <option value="Kesar Kingston, Pune"></option>
+    <option value="Dwarka Circle, Nashik"></option>
+    <option value="Thakkar Bazar, Nashik"></option>
+    <option value="Mumbai Naka, Nashik"></option>
+    <option value="Govind Nagar, Nashik"></option>
+    <option value="Chakan, Pune"></option>
+    <option value="Bhosari, Pune"></option>
+    <option value="Wakadewadi, Pune"></option>
+    <option value="Viman Nagar, Pune Airport"></option>
+    <option value="Mumbai Airport Terminal 2"></option>
+    <option value="Shirdi Temple, Shirdi"></option>
+    <option value="Saptashrungi Vani Gad"></option>
+    <option value="Trimbakeshwar Temple, Nashik"></option>
+</datalist>
 
 <!-- टॉप हेडर -->  
 <header id="app-header" class="gk-app-header">  
@@ -355,18 +360,17 @@
             <div class="space-y-4 mt-4 border-t pt-4">  
                 <div>  
                     <label class="block text-xs font-bold text-gray-700 mb-1">पूर्ण नाव (Full Name) *</label>  
-                    <input type="text" id="login-name" placeholder="" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
+                    <input type="text" id="login-name" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
                 </div>  
                 <div>  
                     <label class="block text-xs font-bold text-gray-700 mb-1">मोबाईल नंबर *</label>  
-                    <input type="tel" id="login-phone" placeholder="" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
+                    <input type="tel" id="login-phone" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
                 </div>  
                 <div id="password-field" class="hidden">  
                     <label class="block text-xs font-bold text-gray-700 mb-1">पासवर्ड (Password) *</label>  
-                    <input type="password" id="login-pass" placeholder="" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
+                    <input type="password" id="login-pass" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
                 </div>  
 
-                <!-- ड्रायव्हर लॉगिन -->
                 <div id="driver-login-vehicle-box" class="hidden space-y-3 bg-blue-50 p-3 rounded-xl border border-blue-200">
                     <div>
                         <label class="block text-xs font-extrabold text-blue-900 mb-1"><i class="fa-solid fa-car text-blue-700"></i> गाडी निवडा (Vehicle Selection) *</label>
@@ -551,7 +555,7 @@
                 </div>  
             </div>  
 
-            <!-- 2. One Way Section (Cleaned Placeholders & Google Places Autocomplete) -->  
+            <!-- 2. One Way Section -->  
             <div id="oneway-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>  
                 <div>  
@@ -570,15 +574,14 @@
                     </select>  
                 </div>  
 
-                <!-- सर्च-ऑटोकम्प्लीट पिकअप आणि ड्रॉप पॉईंट्स -->
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
-                        <input type="text" id="oneway-pickup" class="g-autocomplete w-full p-2 border rounded text-xs">
+                        <input type="text" id="oneway-pickup" list="all-locations-list" class="w-full p-2 border rounded text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
-                        <input type="text" id="oneway-drop" class="g-autocomplete w-full p-2 border rounded text-xs">
+                        <input type="text" id="oneway-drop" list="all-locations-list" class="w-full p-2 border rounded text-xs">
                     </div>
                 </div>
 
@@ -598,7 +601,7 @@
                 </div>  
             </div>  
 
-            <!-- 3. Airport Section (Cleaned Placeholders & Google Places Autocomplete) -->  
+            <!-- 3. Airport Section -->  
             <div id="airport-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>  
                 <div>  
@@ -618,11 +621,11 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
-                        <input type="text" id="airport-pickup" class="g-autocomplete w-full p-2 border rounded text-xs">
+                        <input type="text" id="airport-pickup" list="all-locations-list" class="w-full p-2 border rounded text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
-                        <input type="text" id="airport-drop" class="g-autocomplete w-full p-2 border rounded text-xs">
+                        <input type="text" id="airport-drop" list="all-locations-list" class="w-full p-2 border rounded text-xs">
                     </div>
                 </div>
 
@@ -642,7 +645,7 @@
                 </div>  
             </div>  
 
-            <!-- 4. Fleet Section (Cleaned Placeholders & Multi-Stop Search Routing) -->  
+            <!-- 4. Fleet Section -->  
             <div id="fleet-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>  
                 <div>  
@@ -658,11 +661,10 @@
                     </select>  
                 </div>  
 
-                <!-- गूगल मॅप प्रमाणे रूट प्लॅनिंग -->
                 <div class="space-y-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-200">
                     <div>
                         <label class="block text-[11px] font-bold text-blue-900 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
-                        <input type="text" id="fleet-pickup" class="g-autocomplete w-full p-2 border rounded text-xs bg-white">
+                        <input type="text" id="fleet-pickup" list="all-locations-list" class="w-full p-2 border rounded text-xs bg-white">
                     </div>
 
                     <div id="fleet-extra-stops" class="space-y-2"></div>
@@ -673,14 +675,14 @@
 
                     <div>
                         <label class="block text-[11px] font-bold text-blue-900 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
-                        <input type="text" id="fleet-drop" class="g-autocomplete w-full p-2 border rounded text-xs bg-white">
+                        <input type="text" id="fleet-drop" list="all-locations-list" class="w-full p-2 border rounded text-xs bg-white">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे किलोमीटर (KM)</label>  
-                        <input type="number" id="fleet-km" placeholder="" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs">  
+                        <input type="number" id="fleet-km" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs">  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे एकूण रक्कम (₹)</label>  
@@ -726,7 +728,7 @@
                 </div>  
             </div>  
 
-            <!-- 6. Packages Section (Cleaned Placeholders & Google Places Autocomplete) -->  
+            <!-- 6. Packages Section -->  
             <div id="packages-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">खास टुरिझम पॅकेजेस (Special Tour Packages)</h3>  
                 <div>  
@@ -740,15 +742,14 @@
                     </select>  
                 </div>  
 
-                <!-- पॅकेजसाठी पिकअप / ड्रॉप ऑटोकम्प्लीट -->
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
-                        <input type="text" id="package-pickup" class="g-autocomplete w-full p-2 border rounded text-xs">
+                        <input type="text" id="package-pickup" list="all-locations-list" class="w-full p-2 border rounded text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
-                        <input type="text" id="package-drop" class="g-autocomplete w-full p-2 border rounded text-xs">
+                        <input type="text" id="package-drop" list="all-locations-list" class="w-full p-2 border rounded text-xs">
                     </div>
                 </div>
 
@@ -768,7 +769,7 @@
                 </div>  
             </div>  
 
-            <!-- 7. Buses Section (Cleaned Placeholders & Google Places Autocomplete) -->  
+            <!-- 7. Buses Section -->  
             <div id="buses-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">  
                     <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)  
@@ -788,11 +789,10 @@
                         </select>  
                     </div>  
 
-                    <!-- बस पोर्टलसाठी ऑटो-सर्च पिकअप / ड्रॉप -->
                     <div class="space-y-2 bg-white p-2.5 rounded-lg border border-red-200">
                         <div>
                             <label class="block text-[11px] font-bold text-gray-800 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
-                            <input type="text" id="bus-pickup" class="g-autocomplete w-full p-2 border rounded text-xs">
+                            <input type="text" id="bus-pickup" list="all-locations-list" class="w-full p-2 border rounded text-xs">
                         </div>
 
                         <div id="bus-extra-stops" class="space-y-2"></div>
@@ -803,7 +803,7 @@
 
                         <div>
                             <label class="block text-[11px] font-bold text-gray-800 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
-                            <input type="text" id="bus-drop" class="g-autocomplete w-full p-2 border rounded text-xs">
+                            <input type="text" id="bus-drop" list="all-locations-list" class="w-full p-2 border rounded text-xs">
                         </div>
                     </div>
 
@@ -819,7 +819,7 @@
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-700 mb-1">इतर माहिती (इतर तपशील)</label>  
-                        <textarea id="bus-msg" rows="2" placeholder="" class="w-full p-2 border rounded text-xs bg-white"></textarea>  
+                        <textarea id="bus-msg" rows="2" class="w-full p-2 border rounded text-xs bg-white"></textarea>  
                     </div>  
                     <button onclick="submitBusInquiry()" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2.5 rounded-lg text-xs shadow flex justify-center items-center gap-1">  
                         <i class="fa-solid fa-paper-plane"></i> बस इन्क्वायरी पाठवा  
@@ -1174,22 +1174,7 @@
     let vehiclePolylines = {}; 
     let activeVehicleNo = null;
 
-    // Google Places Autocomplete सर्व Input वर जोडणे
-    function initGooglePlacesAutocomplete() {
-        if (typeof google === 'object' && typeof google.maps === 'object' && google.maps.places) {
-            const inputs = document.querySelectorAll('.g-autocomplete');
-            inputs.forEach(input => {
-                if (!input.dataset.autocompleteBound) {
-                    const autocomplete = new google.maps.places.Autocomplete(input, {
-                        componentRestrictions: { country: "in" }
-                    });
-                    input.dataset.autocompleteBound = "true";
-                }
-            });
-        }
-    }
-
-    // Dynamic stop point adder for Fleet & Bus
+    // Dynamic Stop Point Add
     window.addFleetStopPoint = function(containerId) {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -1197,11 +1182,10 @@
         const div = document.createElement('div');
         div.className = "flex gap-2 items-center";
         div.innerHTML = `
-            <input type="text" class="g-autocomplete fleet-via-point w-full p-2 border rounded text-xs bg-white">
+            <input type="text" list="all-locations-list" class="fleet-via-point w-full p-2 border rounded text-xs bg-white">
             <button type="button" onclick="this.parentElement.remove()" class="bg-red-500 text-white font-bold px-2.5 py-1.5 rounded text-xs">✕</button>
         `;
         container.appendChild(div);
-        initGooglePlacesAutocomplete();
     };
 
     const createGoogleCarIcon = (vehicleNo, heading = 0) => {
@@ -1447,7 +1431,6 @@
         window.scrollTo(0, 0);  
         setCalendarMinDates();  
         populateDriverVehicleNumbers();  
-        initGooglePlacesAutocomplete();
         const savedUser = localStorage.getItem('gk_user');  
         if (savedUser) {  
             window.currentUser = JSON.parse(savedUser);  
@@ -1703,8 +1686,6 @@
         if (activeTab) {  
             activeTab.style.display = 'block';  
         }  
-
-        initGooglePlacesAutocomplete();
 
         const submitBtn = document.getElementById('main-submit-btn');  
         const paymentSection = document.getElementById('payment-section');  
