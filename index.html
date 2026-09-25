@@ -231,6 +231,33 @@
             font-size: 20px !important;
         }
 
+        /* Dynamic Search Suggestion List Styling */
+        .search-results-box {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 100%;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            max-height: 220px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+        }
+        .search-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-item:hover {
+            background-color: #f9fafb;
+        }
+
         /* Map styling for Owner Live Tracking */
         #owner-live-map {
             height: 300px;
@@ -281,24 +308,6 @@
 
 </head>  
 <body class="bg-gray-100 font-sans pb-10">  
-
-<!-- स्वयंचलित लोकेशन सजेशन यादी (Smart Auto Suggest List) -->
-<datalist id="all-locations-list">
-    <option value="Kesar Tree Town, Pune"></option>
-    <option value="Kesar Kingston, Pune"></option>
-    <option value="Dwarka Circle, Nashik"></option>
-    <option value="Thakkar Bazar, Nashik"></option>
-    <option value="Mumbai Naka, Nashik"></option>
-    <option value="Govind Nagar, Nashik"></option>
-    <option value="Chakan, Pune"></option>
-    <option value="Bhosari, Pune"></option>
-    <option value="Wakadewadi, Pune"></option>
-    <option value="Viman Nagar, Pune Airport"></option>
-    <option value="Mumbai Airport Terminal 2"></option>
-    <option value="Shirdi Temple, Shirdi"></option>
-    <option value="Saptashrungi Vani Gad"></option>
-    <option value="Trimbakeshwar Temple, Nashik"></option>
-</datalist>
 
 <!-- टॉप हेडर -->  
 <header id="app-header" class="gk-app-header">  
@@ -575,13 +584,15 @@
                 </div>  
 
                 <div class="grid grid-cols-2 gap-2">
-                    <div>
+                    <div class="relative">
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
-                        <input type="text" id="oneway-pickup" list="all-locations-list" class="w-full p-2 border rounded text-xs">
+                        <input type="text" id="oneway-pickup" oninput="searchLocation(this, 'oneway-pickup-results')" placeholder="ठिकाण टाईप करा..." class="w-full p-2 border rounded text-xs" autocomplete="off">
+                        <div id="oneway-pickup-results" class="search-results-box"></div>
                     </div>
-                    <div>
+                    <div class="relative">
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
-                        <input type="text" id="oneway-drop" list="all-locations-list" class="w-full p-2 border rounded text-xs">
+                        <input type="text" id="oneway-drop" oninput="searchLocation(this, 'oneway-drop-results')" placeholder="ठिकाण टाईप करा..." class="w-full p-2 border rounded text-xs" autocomplete="off">
+                        <div id="oneway-drop-results" class="search-results-box"></div>
                     </div>
                 </div>
 
@@ -619,13 +630,15 @@
                 </div>  
 
                 <div class="grid grid-cols-2 gap-2">
-                    <div>
+                    <div class="relative">
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
-                        <input type="text" id="airport-pickup" list="all-locations-list" class="w-full p-2 border rounded text-xs">
+                        <input type="text" id="airport-pickup" oninput="searchLocation(this, 'airport-pickup-results')" placeholder="ठिकाण टाईप करा..." class="w-full p-2 border rounded text-xs" autocomplete="off">
+                        <div id="airport-pickup-results" class="search-results-box"></div>
                     </div>
-                    <div>
+                    <div class="relative">
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
-                        <input type="text" id="airport-drop" list="all-locations-list" class="w-full p-2 border rounded text-xs">
+                        <input type="text" id="airport-drop" oninput="searchLocation(this, 'airport-drop-results')" placeholder="ठिकाण टाईप करा..." class="w-full p-2 border rounded text-xs" autocomplete="off">
+                        <div id="airport-drop-results" class="search-results-box"></div>
                     </div>
                 </div>
 
@@ -662,9 +675,10 @@
                 </div>  
 
                 <div class="space-y-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-200">
-                    <div>
+                    <div class="relative">
                         <label class="block text-[11px] font-bold text-blue-900 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
-                        <input type="text" id="fleet-pickup" list="all-locations-list" class="w-full p-2 border rounded text-xs bg-white">
+                        <input type="text" id="fleet-pickup" oninput="searchLocation(this, 'fleet-pickup-results')" placeholder="ठिकाण टाईप करा..." class="w-full p-2 border rounded text-xs bg-white" autocomplete="off">
+                        <div id="fleet-pickup-results" class="search-results-box"></div>
                     </div>
 
                     <div id="fleet-extra-stops" class="space-y-2"></div>
@@ -673,9 +687,10 @@
                         <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Stop Point)
                     </button>
 
-                    <div>
+                    <div class="relative">
                         <label class="block text-[11px] font-bold text-blue-900 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
-                        <input type="text" id="fleet-drop" list="all-locations-list" class="w-full p-2 border rounded text-xs bg-white">
+                        <input type="text" id="fleet-drop" oninput="searchLocation(this, 'fleet-drop-results')" placeholder="ठिकाण टाईप करा..." class="w-full p-2 border rounded text-xs bg-white" autocomplete="off">
+                        <div id="fleet-drop-results" class="search-results-box"></div>
                     </div>
                 </div>
 
@@ -743,13 +758,15 @@
                 </div>  
 
                 <div class="grid grid-cols-2 gap-2">
-                    <div>
+                    <div class="relative">
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
-                        <input type="text" id="package-pickup" list="all-locations-list" class="w-full p-2 border rounded text-xs">
+                        <input type="text" id="package-pickup" oninput="searchLocation(this, 'pkg-pickup-results')" placeholder="ठिकाण टाईप करा..." class="w-full p-2 border rounded text-xs" autocomplete="off">
+                        <div id="pkg-pickup-results" class="search-results-box"></div>
                     </div>
-                    <div>
+                    <div class="relative">
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
-                        <input type="text" id="package-drop" list="all-locations-list" class="w-full p-2 border rounded text-xs">
+                        <input type="text" id="package-drop" oninput="searchLocation(this, 'pkg-drop-results')" placeholder="ठिकाण टाईप करा..." class="w-full p-2 border rounded text-xs" autocomplete="off">
+                        <div id="pkg-drop-results" class="search-results-box"></div>
                     </div>
                 </div>
 
@@ -790,9 +807,10 @@
                     </div>  
 
                     <div class="space-y-2 bg-white p-2.5 rounded-lg border border-red-200">
-                        <div>
+                        <div class="relative">
                             <label class="block text-[11px] font-bold text-gray-800 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
-                            <input type="text" id="bus-pickup" list="all-locations-list" class="w-full p-2 border rounded text-xs">
+                            <input type="text" id="bus-pickup" oninput="searchLocation(this, 'bus-pickup-results')" placeholder="ठिकाण टाईप करा..." class="w-full p-2 border rounded text-xs" autocomplete="off">
+                            <div id="bus-pickup-results" class="search-results-box"></div>
                         </div>
 
                         <div id="bus-extra-stops" class="space-y-2"></div>
@@ -801,9 +819,10 @@
                             <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Stop Point)
                         </button>
 
-                        <div>
+                        <div class="relative">
                             <label class="block text-[11px] font-bold text-gray-800 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
-                            <input type="text" id="bus-drop" list="all-locations-list" class="w-full p-2 border rounded text-xs">
+                            <input type="text" id="bus-drop" oninput="searchLocation(this, 'bus-drop-results')" placeholder="ठिकाण टाईप करा..." class="w-full p-2 border rounded text-xs" autocomplete="off">
+                            <div id="bus-drop-results" class="search-results-box"></div>
                         </div>
                     </div>
 
@@ -1128,6 +1147,69 @@
 <!-- Leaflet JS for Map -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+<!-- OpenStreetMap Location Autocomplete Dynamic Script -->
+<script>
+    let searchDebounceTimer;
+
+    function searchLocation(inputElem, resultsBoxId) {
+        const query = inputElem.value.trim();
+        const resultsBox = document.getElementById(resultsBoxId);
+
+        if (!resultsBox) return;
+
+        if (query.length < 2) {
+            resultsBox.style.display = 'none';
+            resultsBox.innerHTML = '';
+            return;
+        }
+
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(() => {
+            const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=in&limit=6`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    resultsBox.innerHTML = '';
+                    if (data && data.length > 0) {
+                        resultsBox.style.display = 'block';
+                        data.forEach(item => {
+                            const div = document.createElement('div');
+                            div.className = 'search-item';
+                            
+                            const displayName = item.display_name;
+                            const shortName = displayName.split(',')[0];
+                            
+                            div.innerHTML = `
+                                <i class="fa-solid fa-location-dot text-redbus"></i>
+                                <div class="text-left overflow-hidden">
+                                    <div class="font-bold text-xs text-gray-800 truncate">${shortName}</div>
+                                    <div class="text-[10px] text-gray-500 truncate">${displayName}</div>
+                                </div>
+                            `;
+                            div.onclick = () => {
+                                inputElem.value = displayName;
+                                resultsBox.style.display = 'none';
+                            };
+                            resultsBox.appendChild(div);
+                        });
+                    } else {
+                        resultsBox.style.display = 'none';
+                    }
+                })
+                .catch(() => {
+                    resultsBox.style.display = 'none';
+                });
+        }, 300);
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-results-box') && !e.target.closest('input')) {
+            document.querySelectorAll('.search-results-box').forEach(box => box.style.display = 'none');
+        }
+    });
+</script>
+
 <!-- JavaScript & Firebase Setup -->  
 <script type="module">  
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";  
@@ -1174,15 +1256,19 @@
     let vehiclePolylines = {}; 
     let activeVehicleNo = null;
 
-    // Dynamic Stop Point Add
+    // Dynamic Stop Point Add with Search Autocomplete
     window.addFleetStopPoint = function(containerId) {
         const container = document.getElementById(containerId);
         if (!container) return;
 
+        const stopId = 'stop-' + Date.now();
+        const resultsId = stopId + '-results';
+
         const div = document.createElement('div');
-        div.className = "flex gap-2 items-center";
+        div.className = "flex gap-2 items-center relative";
         div.innerHTML = `
-            <input type="text" list="all-locations-list" class="fleet-via-point w-full p-2 border rounded text-xs bg-white">
+            <input type="text" id="${stopId}" oninput="searchLocation(this, '${resultsId}')" placeholder="स्टॉप पॉईंट टाईप करा..." class="fleet-via-point w-full p-2 border rounded text-xs bg-white" autocomplete="off">
+            <div id="${resultsId}" class="search-results-box"></div>
             <button type="button" onclick="this.parentElement.remove()" class="bg-red-500 text-white font-bold px-2.5 py-1.5 rounded text-xs">✕</button>
         `;
         container.appendChild(div);
