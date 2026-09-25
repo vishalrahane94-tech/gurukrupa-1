@@ -674,7 +674,7 @@
                 </div>  
             </div>  
 
-            <!-- 2. One Way Section (Ola/Uber Search UI Updated) -->  
+            <!-- 2. One Way Section (Free OpenStreetMap Location Autocomplete) -->  
             <div id="oneway-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>  
                 <div>  
@@ -753,7 +753,7 @@
                 </div>  
             </div>  
 
-            <!-- 3. Airport Section (Ola/Uber Search UI Updated) -->  
+            <!-- 3. Airport Section -->  
             <div id="airport-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>  
                 <div>  
@@ -830,7 +830,7 @@
                 </div>  
             </div>  
 
-            <!-- 4. Fleet Section (Multi-Stop Map Style Routing) -->  
+            <!-- 4. Fleet Section -->  
             <div id="fleet-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>  
                 <div>  
@@ -846,7 +846,6 @@
                     </select>  
                 </div>  
 
-                <!-- Ola/Uber Pickup for Fleet -->
                 <div class="space-y-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-200">
                     <div>
                         <div class="uber-location-box">
@@ -994,7 +993,6 @@
                         </select>  
                     </div>  
 
-                    <!-- बस पोर्टलसाठी Ola/Uber सर्च पिकअप / ड्रॉप -->
                     <div class="space-y-2 bg-white p-2.5 rounded-lg border border-red-200">
                         <div>
                             <div class="uber-location-box">
@@ -1365,9 +1363,6 @@
 <!-- Leaflet JS for Map -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<!-- Google Maps Autocomplete & Geocoding API (इथे तुमची API Key टाका) -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
-
 <!-- JavaScript & Firebase Setup -->  
 <script type="module">  
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";  
@@ -1414,70 +1409,78 @@
     let vehiclePolylines = {}; 
     let activeVehicleNo = null;
 
-    let autocompleteService;
-    let geocoder;
-
-    // Google Maps Places Autocomplete setup
-    function initGooglePlaces() {
-        if (window.google && window.google.maps && window.google.maps.places) {
-            autocompleteService = new google.maps.places.AutocompleteService();
-            geocoder = new google.maps.Geocoder();
-        }
-    }
-
-    // Uber-style Location Input Listener Setup
+    // --- FREE OPENSTREETMAP (NOMINATIM API) LOCATION AUTOCOMPLETE & GPS ---
     function setupUberLocationInputs() {
         const uberInputs = document.querySelectorAll('.uber-input');
+        
         uberInputs.forEach(input => {
             const box = input.closest('.uber-location-box');
+            if (!box) return;
+
             const dropdown = box.querySelector('.uber-dropdown');
             const resultsContainer = box.querySelector('.uber-results');
             const clearIcon = box.querySelector('.uber-clear-icon');
+            let debounceTimer;
 
+            // इनपुटवर क्लिक केल्यावर ड्रॉपडाउन दाखवणे
             input.addEventListener('focus', () => {
-                dropdown.style.display = 'block';
+                if (dropdown) dropdown.style.display = 'block';
             });
 
+            // 2 किंवा अधिक अक्षरे टाईप केल्यावर रिअल-टाईम शोध घेणे
             input.addEventListener('input', (e) => {
-                const query = e.target.value;
-                if (query.length > 0) {
-                    clearIcon.style.display = 'block';
-                } else {
-                    clearIcon.style.display = 'none';
-                    resultsContainer.innerHTML = '';
+                const query = e.target.value.trim();
+
+                if (clearIcon) {
+                    clearIcon.style.display = query.length > 0 ? 'block' : 'none';
+                }
+
+                if (query.length < 2) {
+                    if (resultsContainer) resultsContainer.innerHTML = '';
                     return;
                 }
 
-                if (autocompleteService) {
-                    autocompleteService.getPlacePredictions({ input: query }, (predictions, status) => {
-                        resultsContainer.innerHTML = '';
-                        if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
-                            predictions.forEach(p => {
-                                const mainText = p.structured_formatting.main_text;
-                                const subText = p.structured_formatting.secondary_text || '';
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=in&limit=5`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!resultsContainer) return;
+                            resultsContainer.innerHTML = '';
 
-                                const item = document.createElement('div');
-                                item.className = 'uber-item';
-                                item.innerHTML = `
-                                    <div class="uber-item-icon-bg">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                    </div>
-                                    <div class="uber-item-text">
-                                        <span class="uber-main-title">${mainText}</span>
-                                        <span class="uber-sub-title">${subText}</span>
-                                    </div>
-                                `;
+                            if (data && data.length > 0) {
+                                data.forEach(place => {
+                                    const names = place.display_name.split(',');
+                                    const mainTitle = names[0].trim();
+                                    const subTitle = names.slice(1).join(',').trim();
 
-                                item.addEventListener('click', () => {
-                                    input.value = p.description;
-                                    dropdown.style.display = 'none';
+                                    const item = document.createElement('div');
+                                    item.className = 'uber-item';
+                                    item.innerHTML = `
+                                        <div class="uber-item-icon-bg">
+                                            <i class="fa-solid fa-location-dot"></i>
+                                        </div>
+                                        <div class="uber-item-text">
+                                            <span class="uber-main-title">${mainTitle}</span>
+                                            <span class="uber-sub-title">${subTitle}</span>
+                                        </div>
+                                    `;
+
+                                    item.addEventListener('click', () => {
+                                        input.value = place.display_name;
+                                        if (dropdown) dropdown.style.display = 'none';
+                                    });
+
+                                    resultsContainer.appendChild(item);
                                 });
-
-                                resultsContainer.appendChild(item);
-                            });
-                        }
-                    });
-                }
+                            } else {
+                                resultsContainer.innerHTML = `<div class="p-3 text-xs text-gray-500 text-center">कोणतेही ठिकाण सापडले नाही</div>`;
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Location search error:", err);
+                        });
+                }, 300);
             });
         });
 
@@ -1488,11 +1491,50 @@
         });
     }
 
+    // Current Location (GPS) वर क्लिक केल्यावर स्थान शोधणे
+    window.useCurrentLocation = function(inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+
+        if (navigator.geolocation) {
+            input.value = "Detecting location...";
+            
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data && data.display_name) {
+                                input.value = data.display_name;
+                            } else {
+                                input.value = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+                            }
+                            document.querySelectorAll('.uber-dropdown').forEach(d => d.style.display = 'none');
+                        })
+                        .catch(err => {
+                            input.value = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+                            document.querySelectorAll('.uber-dropdown').forEach(d => d.style.display = 'none');
+                        });
+                },
+                (err) => {
+                    alert("GPS लोकेशन मिळवण्यात अडचण आली. कृपया तुमच्या मोबाईलचे Location (GPS) चालू करा.");
+                    input.value = "";
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        } else {
+            alert("तुमच्या ब्राऊजरमध्ये जिओलोकेशन सपोर्ट उपलब्ध नाही.");
+        }
+    };
+
     window.clearUberInput = function(inputId, clearIconEl) {
         const input = document.getElementById(inputId);
         if (input) {
             input.value = '';
-            clearIconEl.style.display = 'none';
+            if (clearIconEl) clearIconEl.style.display = 'none';
             const box = input.closest('.uber-location-box');
             if (box) {
                 const resultsContainer = box.querySelector('.uber-results');
@@ -1502,40 +1544,6 @@
         }
     };
 
-    window.useCurrentLocation = function(inputId) {
-        const input = document.getElementById(inputId);
-        if (!input) return;
-
-        if (navigator.geolocation) {
-            input.value = "Detecting location...";
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const latLng = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                    if (geocoder) {
-                        geocoder.geocode({ location: latLng }, (results, status) => {
-                            if (status === "OK" && results[0]) {
-                                input.value = results[0].formatted_address;
-                            } else {
-                                input.value = `${latLng.lat}, ${latLng.lng}`;
-                            }
-                            document.querySelectorAll('.uber-dropdown').forEach(d => d.style.display = 'none');
-                        });
-                    } else {
-                        input.value = `${latLng.lat}, ${latLng.lng}`;
-                        document.querySelectorAll('.uber-dropdown').forEach(d => d.style.display = 'none');
-                    }
-                },
-                (err) => {
-                    alert("GPS लोकेशन मिळवण्यात अडचण आली. कृपया लोकेशन परमिशन तपासा.");
-                    input.value = "";
-                }
-            );
-        } else {
-            alert("तुमच्या ब्राऊजरमध्ये जिओलोकेशन सपोर्ट उपलब्ध नाही.");
-        }
-    };
-
-    // Stop Point Adder for Multi-Stop
     window.addFleetStopPoint = function(containerId) {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -1801,7 +1809,6 @@
         window.scrollTo(0, 0);  
         setCalendarMinDates();  
         populateDriverVehicleNumbers();  
-        initGooglePlaces();
         setupUberLocationInputs();
 
         const savedUser = localStorage.getItem('gk_user');  
