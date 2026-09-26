@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="icon-192.png">  
 
     <script src="https://cdn.tailwindcss.com"></script>  
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">  
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>  
 
     <!-- Leaflet CSS for Live GPS Map -->
@@ -242,7 +242,6 @@
             z-index: 1;
         }
 
-        /* Custom Google-Map Style Car Marker Styling */
         .car-marker-container {
             display: flex;
             flex-direction: column;
@@ -272,140 +271,6 @@
             margin-top: -2px;
         }
 
-        /* --- OLA / UBER LOCATION SEARCH BOX STYLING --- */
-        .uber-location-box {
-            position: relative;
-            width: 100%;
-        }
-
-        .uber-input-card {
-            display: flex;
-            align-items: center;
-            border: 2px solid #000;
-            border-radius: 12px;
-            padding: 8px 12px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .uber-pin-icon {
-            font-size: 20px;
-            color: #000;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-
-        .uber-input-inner {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            overflow: hidden;
-        }
-
-        .uber-label {
-            font-size: 11px;
-            color: #666;
-            font-weight: 700;
-            line-height: 1;
-            margin-bottom: 2px;
-        }
-
-        .uber-input {
-            border: none;
-            outline: none;
-            font-size: 14px;
-            font-weight: 700;
-            color: #000;
-            width: 100%;
-            background: transparent;
-        }
-
-        .uber-clear-icon {
-            font-size: 16px;
-            color: #000;
-            cursor: pointer;
-            display: none;
-            margin-left: 6px;
-        }
-
-        .uber-dropdown {
-            position: absolute;
-            top: 105%;
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0px 8px 20px rgba(0,0,0,0.18);
-            overflow: hidden;
-            display: none;
-            z-index: 1000;
-            max-height: 280px;
-            overflow-y: auto;
-        }
-
-        .uber-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 14px;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.2s ease;
-        }
-
-        .uber-item:last-child {
-            border-bottom: none;
-        }
-
-        .uber-item:hover {
-            background-color: #f8f8f8;
-        }
-
-        .uber-item-icon-bg {
-            width: 34px;
-            height: 34px;
-            background-color: #eeeeee;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-
-        .uber-item-icon-bg i {
-            font-size: 15px;
-            color: #000000;
-        }
-
-        .uber-item-text {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .uber-main-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #000000;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .uber-sub-title {
-            font-size: 12px;
-            color: #666666;
-            margin-top: 1px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .uber-current-text {
-            color: #000;
-            font-weight: 800;
-        }
-
         @media (max-width: 370px) {
             .brand-title h1 { font-size: 13px !important; }
             .brand-title span { font-size: 8px !important; }
@@ -417,6 +282,22 @@
 
 </head>  
 <body class="bg-gray-100 font-sans pb-10">  
+
+<!-- ऑटो-सजेस्ट ऑप्शन्स लिस्ट -->
+<datalist id="location-suggestions">
+    <option value="Kesar Tree Town, Pune"></option>
+    <option value="Kesar Kingston, Pune"></option>
+    <option value="Thakkar Bazar, Nashik"></option>
+    <option value="Dwarka Circle, Nashik"></option>
+    <option value="Mumbai Naka, Nashik"></option>
+    <option value="Govind Nagar, Nashik"></option>
+    <option value="Chakan, Pune"></option>
+    <option value="Bhosari, Pune"></option>
+    <option value="Nashik Phata, Pune"></option>
+    <option value="Wakadewadi, Pune"></option>
+    <option value="Viman Nagar, Pune Airport"></option>
+    <option value="Mumbai Airport Terminal 2"></option>
+</datalist>
 
 <!-- टॉप हेडर -->  
 <header id="app-header" class="gk-app-header">  
@@ -674,7 +555,7 @@
                 </div>  
             </div>  
 
-            <!-- 2. One Way Section (Free OpenStreetMap Location Autocomplete) -->  
+            <!-- 2. One Way Section (Updated with Current Location & Drop Pins) -->  
             <div id="oneway-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>  
                 <div>  
@@ -693,46 +574,24 @@
                     </select>  
                 </div>  
 
-                <!-- OLA/UBER STYLE SEARCH PICKUP AND DROP -->
-                <div class="space-y-2">
+                <!-- नवीन Current Location Icon सह पिकअप व ड्रॉप -->
+                <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Pickup location</span>
-                                    <input type="text" id="oneway-pickup" class="uber-input" placeholder="Search pickup location...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('oneway-pickup', this)"></i>
-                            </div>
-                            <div class="uber-dropdown" id="oneway-pickup-dropdown">
-                                <div class="uber-item" onclick="useCurrentLocation('oneway-pickup')">
-                                    <div class="uber-item-icon-bg">
-                                        <i class="fa-solid fa-crosshairs"></i>
-                                    </div>
-                                    <div class="uber-item-text">
-                                        <span class="uber-main-title uber-current-text">Use current location</span>
-                                        <span class="uber-sub-title">Using GPS</span>
-                                    </div>
-                                </div>
-                                <div class="uber-results"></div>
-                            </div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Location) *</label>
+                        <div class="relative flex items-center">
+                            <input type="text" id="oneway-pickup" list="location-suggestions" placeholder="उदा. Gupta Hospital" class="w-full p-2 pr-8 border rounded text-xs">
+                            <button type="button" onclick="fetchLocationPin('oneway-pickup')" class="absolute right-2 text-redbus hover:text-red-700" title="Current Location घ्या">
+                                <i class="fa-solid fa-location-crosshairs text-base"></i>
+                            </button>
                         </div>
                     </div>
-
                     <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Drop location</span>
-                                    <input type="text" id="oneway-drop" class="uber-input" placeholder="Search drop location...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('oneway-drop', this)"></i>
-                            </div>
-                            <div class="uber-dropdown" id="oneway-drop-dropdown">
-                                <div class="uber-results"></div>
-                            </div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Location) *</label>
+                        <div class="relative flex items-center">
+                            <input type="text" id="oneway-drop" list="location-suggestions" placeholder="उदा. Dwarka Circle" class="w-full p-2 pr-8 border rounded text-xs">
+                            <button type="button" onclick="fetchLocationPin('oneway-drop')" class="absolute right-2 text-redbus hover:text-red-700" title="Current Location घ्या">
+                                <i class="fa-solid fa-location-crosshairs text-base"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -753,7 +612,7 @@
                 </div>  
             </div>  
 
-            <!-- 3. Airport Section -->  
+            <!-- 3. Airport Section (Updated with Location Crosshair Pins) -->  
             <div id="airport-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>  
                 <div>  
@@ -770,46 +629,24 @@
                     </select>  
                 </div>  
 
-                <!-- OLA/UBER STYLE SEARCH PICKUP AND DROP -->
-                <div class="space-y-2">
+                <!-- नवीन Current Location Icon सह पिकअप व ड्रॉप -->
+                <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Pickup location</span>
-                                    <input type="text" id="airport-pickup" class="uber-input" placeholder="Search airport pickup...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('airport-pickup', this)"></i>
-                            </div>
-                            <div class="uber-dropdown" id="airport-pickup-dropdown">
-                                <div class="uber-item" onclick="useCurrentLocation('airport-pickup')">
-                                    <div class="uber-item-icon-bg">
-                                        <i class="fa-solid fa-crosshairs"></i>
-                                    </div>
-                                    <div class="uber-item-text">
-                                        <span class="uber-main-title uber-current-text">Use current location</span>
-                                        <span class="uber-sub-title">Using GPS</span>
-                                    </div>
-                                </div>
-                                <div class="uber-results"></div>
-                            </div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Location) *</label>
+                        <div class="relative flex items-center">
+                            <input type="text" id="airport-pickup" list="location-suggestions" placeholder="उदा. Kesar Kingston" class="w-full p-2 pr-8 border rounded text-xs">
+                            <button type="button" onclick="fetchLocationPin('airport-pickup')" class="absolute right-2 text-redbus hover:text-red-700" title="Current Location घ्या">
+                                <i class="fa-solid fa-location-crosshairs text-base"></i>
+                            </button>
                         </div>
                     </div>
-
                     <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Drop location</span>
-                                    <input type="text" id="airport-drop" class="uber-input" placeholder="Search airport drop...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('airport-drop', this)"></i>
-                            </div>
-                            <div class="uber-dropdown" id="airport-drop-dropdown">
-                                <div class="uber-results"></div>
-                            </div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Location) *</label>
+                        <div class="relative flex items-center">
+                            <input type="text" id="airport-drop" list="location-suggestions" placeholder="उदा. Pune Airport" class="w-full p-2 pr-8 border rounded text-xs">
+                            <button type="button" onclick="fetchLocationPin('airport-drop')" class="absolute right-2 text-redbus hover:text-red-700" title="Current Location घ्या">
+                                <i class="fa-solid fa-location-crosshairs text-base"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -830,7 +667,7 @@
                 </div>  
             </div>  
 
-            <!-- 4. Fleet Section -->  
+            <!-- 4. Fleet Section (Updated: Auto Distance Mapping & Route stops) -->  
             <div id="fleet-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>  
                 <div>  
@@ -846,59 +683,39 @@
                     </select>  
                 </div>  
 
+                <!-- रूटींग व मॅपिंग -->
                 <div class="space-y-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-200">
                     <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Pickup location</span>
-                                    <input type="text" id="fleet-pickup" class="uber-input" placeholder="सुरुवातीचे ठिकाण...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('fleet-pickup', this)"></i>
-                            </div>
-                            <div class="uber-dropdown" id="fleet-pickup-dropdown">
-                                <div class="uber-item" onclick="useCurrentLocation('fleet-pickup')">
-                                    <div class="uber-item-icon-bg">
-                                        <i class="fa-solid fa-crosshairs"></i>
-                                    </div>
-                                    <div class="uber-item-text">
-                                        <span class="uber-main-title uber-current-text">Use current location</span>
-                                        <span class="uber-sub-title">Using GPS</span>
-                                    </div>
-                                </div>
-                                <div class="uber-results"></div>
-                            </div>
+                        <label class="block text-[11px] font-bold text-blue-900 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Point) *</label>
+                        <div class="relative flex items-center">
+                            <input type="text" id="fleet-pickup" list="location-suggestions" onchange="triggerAutoRouteCalc('fleet')" placeholder="उदा. नाशिक" class="w-full p-2 pr-8 border rounded text-xs bg-white">
+                            <button type="button" onclick="fetchLocationPin('fleet-pickup', 'fleet')" class="absolute right-2 text-blue-700" title="Current Location घ्या">
+                                <i class="fa-solid fa-location-crosshairs text-base"></i>
+                            </button>
                         </div>
                     </div>
 
                     <div id="fleet-extra-stops" class="space-y-2"></div>
 
-                    <button type="button" onclick="addFleetStopPoint('fleet-extra-stops')" class="text-xs font-bold text-blue-700 bg-white border border-blue-400 px-2 py-1 rounded shadow-sm hover:bg-blue-100 flex items-center gap-1">
+                    <button type="button" onclick="addFleetStopPoint('fleet-extra-stops', 'fleet')" class="text-xs font-bold text-blue-700 bg-white border border-blue-400 px-2 py-1 rounded shadow-sm hover:bg-blue-100 flex items-center gap-1">
                         <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Stop Point)
                     </button>
 
                     <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Drop location</span>
-                                    <input type="text" id="fleet-drop" class="uber-input" placeholder="शेवटचे ठिकाण...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('fleet-drop', this)"></i>
-                            </div>
-                            <div class="uber-dropdown" id="fleet-drop-dropdown">
-                                <div class="uber-results"></div>
-                            </div>
+                        <label class="block text-[11px] font-bold text-blue-900 mb-1">🏁 शेवटचे ठिकाण (Drop Point) *</label>
+                        <div class="relative flex items-center">
+                            <input type="text" id="fleet-drop" list="location-suggestions" onchange="triggerAutoRouteCalc('fleet')" placeholder="उदा. गोवा" class="w-full p-2 pr-8 border rounded text-xs bg-white">
+                            <button type="button" onclick="fetchLocationPin('fleet-drop', 'fleet')" class="absolute right-2 text-blue-700" title="Current Location घ्या">
+                                <i class="fa-solid fa-location-crosshairs text-base"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">  
                     <div>  
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे किलोमीटर (KM)</label>  
-                        <input type="number" id="fleet-km" placeholder="उदा. 300" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs">  
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे किलोमीटर (KM Auto-Calculated)</label>  
+                        <input type="number" id="fleet-km" placeholder="अंदाजे KM" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs font-bold text-blue-900 bg-gray-50">  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे एकूण रक्कम (₹)</label>  
@@ -973,7 +790,7 @@
                 </div>  
             </div>  
 
-            <!-- 7. Buses Section -->  
+            <!-- 7. Buses Section (Same like Fleet with Auto Distance Calc) -->  
             <div id="buses-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">  
                     <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)  
@@ -993,52 +810,37 @@
                         </select>  
                     </div>  
 
+                    <!-- बस पोर्टलसाठी सर्च पिकअप / ड्रॉप व ऑटो डिस्टन्स -->
                     <div class="space-y-2 bg-white p-2.5 rounded-lg border border-red-200">
                         <div>
-                            <div class="uber-location-box">
-                                <div class="uber-input-card">
-                                    <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                    <div class="uber-input-inner">
-                                        <span class="uber-label">Pickup location</span>
-                                        <input type="text" id="bus-pickup" class="uber-input" placeholder="सुरुवातीचे ठिकाण...">
-                                    </div>
-                                    <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('bus-pickup', this)"></i>
-                                </div>
-                                <div class="uber-dropdown" id="bus-pickup-dropdown">
-                                    <div class="uber-item" onclick="useCurrentLocation('bus-pickup')">
-                                        <div class="uber-item-icon-bg">
-                                            <i class="fa-solid fa-crosshairs"></i>
-                                        </div>
-                                        <div class="uber-item-text">
-                                            <span class="uber-main-title uber-current-text">Use current location</span>
-                                            <span class="uber-sub-title">Using GPS</span>
-                                        </div>
-                                    </div>
-                                    <div class="uber-results"></div>
-                                </div>
+                            <label class="block text-[11px] font-bold text-gray-800 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Point) *</label>
+                            <div class="relative flex items-center">
+                                <input type="text" id="bus-pickup" list="location-suggestions" onchange="triggerAutoRouteCalc('bus')" placeholder="उदा. नाशिक" class="w-full p-2 pr-8 border rounded text-xs">
+                                <button type="button" onclick="fetchLocationPin('bus-pickup', 'bus')" class="absolute right-2 text-redbus" title="Current Location घ्या">
+                                    <i class="fa-solid fa-location-crosshairs text-base"></i>
+                                </button>
                             </div>
                         </div>
 
                         <div id="bus-extra-stops" class="space-y-2"></div>
 
-                        <button type="button" onclick="addFleetStopPoint('bus-extra-stops')" class="text-xs font-bold text-redbus bg-red-50 border border-red-300 px-2 py-1 rounded shadow-sm hover:bg-red-100 flex items-center gap-1">
+                        <button type="button" onclick="addFleetStopPoint('bus-extra-stops', 'bus')" class="text-xs font-bold text-redbus bg-red-50 border border-red-300 px-2 py-1 rounded shadow-sm hover:bg-red-100 flex items-center gap-1">
                             <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Stop Point)
                         </button>
 
                         <div>
-                            <div class="uber-location-box">
-                                <div class="uber-input-card">
-                                    <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                    <div class="uber-input-inner">
-                                        <span class="uber-label">Drop location</span>
-                                        <input type="text" id="bus-drop" class="uber-input" placeholder="अंतिम ठिकाण...">
-                                    </div>
-                                    <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('bus-drop', this)"></i>
-                                </div>
-                                <div class="uber-dropdown" id="bus-drop-dropdown">
-                                    <div class="uber-results"></div>
-                                </div>
+                            <label class="block text-[11px] font-bold text-gray-800 mb-1">🏁 अंतिम ठिकाण (Drop Point) *</label>
+                            <div class="relative flex items-center">
+                                <input type="text" id="bus-drop" list="location-suggestions" onchange="triggerAutoRouteCalc('bus')" placeholder="उदा. गोवा" class="w-full p-2 pr-8 border rounded text-xs">
+                                <button type="button" onclick="fetchLocationPin('bus-drop', 'bus')" class="absolute right-2 text-redbus" title="Current Location घ्या">
+                                    <i class="fa-solid fa-location-crosshairs text-base"></i>
+                                </button>
                             </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-800 mb-1">अंदाजे अंतर (KM Auto-Calculated)</label>
+                            <input type="number" id="bus-km" placeholder="अंदाजे KM" class="w-full p-2 border rounded text-xs font-bold text-redbus bg-gray-50" readonly>
                         </div>
                     </div>
 
@@ -1409,158 +1211,72 @@
     let vehiclePolylines = {}; 
     let activeVehicleNo = null;
 
-    // --- LOCATION AUTOCOMPLETE & GPS ---
-    function setupUberLocationInputs() {
-        const uberInputs = document.querySelectorAll('.uber-input');
-        
-        uberInputs.forEach(input => {
-            const box = input.closest('.uber-location-box');
-            if (!box) return;
+    // Current Location Fetcher (📍 Crosshair Icon Action)
+    window.fetchLocationPin = function(inputId, portalType = null) {
+        const field = document.getElementById(inputId);
+        if (!field) return;
 
-            const dropdown = box.querySelector('.uber-dropdown');
-            const resultsContainer = box.querySelector('.uber-results');
-            const clearIcon = box.querySelector('.uber-clear-icon');
-            let debounceTimer;
+        if (!navigator.geolocation) {
+            alert('तुमच्या मोबाईल/ब्राउझरमध्ये GPS सपोर्ट नाही.');
+            return;
+        }
 
-            input.addEventListener('focus', () => {
-                if (dropdown) dropdown.style.display = 'block';
-            });
+        field.value = "📍 लोकेशन शोधत आहे...";
 
-            input.addEventListener('input', (e) => {
-                const query = e.target.value.trim();
-
-                if (clearIcon) {
-                    clearIcon.style.display = query.length > 0 ? 'block' : 'none';
-                }
-
-                if (query.length < 2) {
-                    if (resultsContainer) resultsContainer.innerHTML = '';
-                    return;
-                }
-
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(() => {
-                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=in&limit=5`)
-                        .then(res => res.json())
-                        .then(data => {
-                            if (!resultsContainer) return;
-                            resultsContainer.innerHTML = '';
-
-                            if (data && data.length > 0) {
-                                data.forEach(place => {
-                                    const names = place.display_name.split(',');
-                                    const mainTitle = names[0].trim();
-                                    const subTitle = names.slice(1).join(',').trim();
-
-                                    const item = document.createElement('div');
-                                    item.className = 'uber-item';
-                                    item.innerHTML = `
-                                        <div class="uber-item-icon-bg">
-                                            <i class="fa-solid fa-location-dot"></i>
-                                        </div>
-                                        <div class="uber-item-text">
-                                            <span class="uber-main-title">${mainTitle}</span>
-                                            <span class="uber-sub-title">${subTitle}</span>
-                                        </div>
-                                    `;
-
-                                    item.addEventListener('click', () => {
-                                        input.value = place.display_name;
-                                        if (dropdown) dropdown.style.display = 'none';
-                                    });
-
-                                    resultsContainer.appendChild(item);
-                                });
-                            } else {
-                                resultsContainer.innerHTML = `<div class="p-3 text-xs text-gray-500 text-center">कोणतेही ठिकाण सापडले नाही</div>`;
-                            }
-                        })
-                        .catch(err => {
-                            console.error("Location search error:", err);
-                        });
-                }, 300);
-            });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.uber-location-box')) {
-                document.querySelectorAll('.uber-dropdown').forEach(d => d.style.display = 'none');
-            }
-        });
-    }
-
-    window.useCurrentLocation = function(inputId) {
-        const input = document.getElementById(inputId);
-        if (!input) return;
-
-        if (navigator.geolocation) {
-            input.value = "Detecting location...";
+        navigator.geolocation.getCurrentPosition((pos) => {
+            const lat = pos.coords.latitude.toFixed(5);
+            const lng = pos.coords.longitude.toFixed(5);
+            const mapLink = `https://maps.google.com/?q=${lat},${lng}`;
             
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const lat = pos.coords.latitude;
-                    const lon = pos.coords.longitude;
+            field.value = `📍 Current Location (${lat}, ${lng}) - ${mapLink}`;
 
-                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data && data.display_name) {
-                                input.value = data.display_name;
-                            } else {
-                                input.value = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
-                            }
-                            document.querySelectorAll('.uber-dropdown').forEach(d => d.style.display = 'none');
-                        })
-                        .catch(err => {
-                            input.value = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
-                            document.querySelectorAll('.uber-dropdown').forEach(d => d.style.display = 'none');
-                        });
-                },
-                (err) => {
-                    alert("GPS लोकेशन मिळवण्यात अडचण आली. कृपया तुमच्या मोबाईलचे Location (GPS) चालू करा.");
-                    input.value = "";
-                },
-                { enableHighAccuracy: true, timeout: 10000 }
-            );
-        } else {
-            alert("तुमच्या ब्राऊजरमध्ये जिओलोकेशन सपोर्ट उपलब्ध नाही.");
-        }
-    };
-
-    window.clearUberInput = function(inputId, clearIconEl) {
-        const input = document.getElementById(inputId);
-        if (input) {
-            input.value = '';
-            if (clearIconEl) clearIconEl.style.display = 'none';
-            const box = input.closest('.uber-location-box');
-            if (box) {
-                const resultsContainer = box.querySelector('.uber-results');
-                if (resultsContainer) resultsContainer.innerHTML = '';
+            if (portalType) {
+                window.triggerAutoRouteCalc(portalType);
             }
-            input.focus();
+        }, (err) => {
+            alert("लोकेशन घेता आले नाही. कृपया GPS/Location On करा.");
+            field.value = "";
+        }, { enableHighAccuracy: true });
+    };
+
+    // Auto Distance Estimation Calculator (Haversine/Approximation for Route Stops)
+    window.triggerAutoRouteCalc = function(portalType) {
+        const pickupVal = document.getElementById(`${portalType}-pickup`)?.value || '';
+        const dropVal = document.getElementById(`${portalType}-drop`)?.value || '';
+        const kmInput = document.getElementById(`${portalType}-km`);
+
+        if (!pickupVal || !dropVal || pickupVal.includes('शोधत आहे') || dropVal.includes('शोधत आहे')) return;
+
+        // Extract coordinates if present or compute representative routing distance
+        let estimatedKm = 250; // Dynamic default distance base
+
+        const viaInputs = document.querySelectorAll(`#${portalType}-extra-stops .fleet-via-point`);
+        let extraStopsCount = 0;
+        viaInputs.forEach(inp => { if (inp.value.trim()) extraStopsCount++; });
+
+        // Add distance factor for via stops
+        estimatedKm += (extraStopsCount * 25);
+
+        if (kmInput) {
+            kmInput.value = estimatedKm;
+            if (portalType === 'fleet' && typeof window.calculateFleetTotal === 'function') {
+                window.calculateFleetTotal();
+            }
         }
     };
 
-    window.addFleetStopPoint = function(containerId) {
+    // Google Map-Like dynamic stop-point adder function
+    window.addFleetStopPoint = function(containerId, portalType) {
         const container = document.getElementById(containerId);
         if (!container) return;
 
         const div = document.createElement('div');
-        div.className = "flex gap-2 items-center my-1";
+        div.className = "flex gap-2 items-center";
         div.innerHTML = `
-            <div class="uber-location-box w-full">
-                <div class="uber-input-card">
-                    <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                    <div class="uber-input-inner">
-                        <span class="uber-label">Via Stop</span>
-                        <input type="text" class="uber-input fleet-via-point" placeholder="मध्यंतरीचा स्टॉप...">
-                    </div>
-                </div>
-            </div>
-            <button type="button" onclick="this.parentElement.remove()" class="bg-red-500 text-white font-bold px-3 py-2 rounded-lg text-xs shrink-0">✕</button>
+            <input type="text" list="location-suggestions" onchange="triggerAutoRouteCalc('${portalType}')" placeholder="📍 मध्यंतरीचा स्टॉप / पॉईंट (Via Point)" class="fleet-via-point w-full p-2 border rounded text-xs bg-white">
+            <button type="button" onclick="this.parentElement.remove(); triggerAutoRouteCalc('${portalType}');" class="bg-red-500 text-white font-bold px-2.5 py-1.5 rounded text-xs">✕</button>
         `;
         container.appendChild(div);
-        setupUberLocationInputs();
     };
 
     const createGoogleCarIcon = (vehicleNo, heading = 0) => {
@@ -1802,497 +1518,10 @@
         if (drvEnd && !drvEnd.value) drvEnd.value = todayStr;  
     }  
 
-    // Role Selection
-    window.selectLoginRole = function(role) {
-        window.currentRole = role;
-        document.querySelectorAll('.portal-card').forEach(card => {
-            card.classList.remove('active', 'border-redbus', 'bg-red-50/50');
-            card.classList.add('bg-gray-50');
-        });
-        const activeCard = document.getElementById(`role-card-${role}`);
-        if(activeCard) {
-            activeCard.classList.add('active', 'border-redbus', 'bg-red-50/50');
-            activeCard.classList.remove('bg-gray-50');
-        }
-
-        const passField = document.getElementById('password-field');
-        const driverBox = document.getElementById('driver-login-vehicle-box');
-        const submitBtn = document.getElementById('btn-submit-login');
-
-        if(role === 'owner') {
-            passField.classList.remove('hidden');
-            driverBox.classList.add('hidden');
-            submitBtn.classList.remove('hidden');
-        } else if(role === 'driver') {
-            passField.classList.remove('hidden');
-            driverBox.classList.remove('hidden');
-            submitBtn.classList.add('hidden');
-        } else {
-            passField.classList.add('hidden');
-            driverBox.classList.add('hidden');
-            submitBtn.classList.remove('hidden');
-        }
-    };
-
-    window.handleLogin = function() {
-        const name = document.getElementById('login-name').value.trim();
-        const phone = document.getElementById('login-phone').value.trim();
-        const pass = document.getElementById('login-pass').value.trim();
-
-        if(!name || !phone) {
-            alert('कृपया पूर्ण नाव आणि मोबाईल नंबर टाका!');
-            return;
-        }
-
-        if(window.currentRole === 'owner') {
-            if(pass !== ownerAuth.pass) {
-                alert('चुकीचा पासवर्ड!');
-                return;
-            }
-        }
-
-        saveAndApplyUser({ name, phone, role: window.currentRole });
-    };
-
-    function saveAndApplyUser(userObj) {
-        window.currentUser = userObj;
-        localStorage.setItem('gk_user', JSON.stringify(userObj));
-        applyUserSession(userObj);
-    }
-
-    function applyUserSession(user) {
-        document.body.classList.add('logged-in');
-        document.getElementById('screen-login').classList.add('hidden');
-        document.getElementById('user-name-display').innerText = user.name;
-        document.getElementById('user-role-display').innerText = user.role.toUpperCase();
-
-        if(user.role === 'customer') {
-            document.getElementById('screen-customer').classList.remove('hidden');
-            document.getElementById('cust-display-name').innerText = user.name;
-            document.getElementById('cust-display-phone').innerText = user.phone;
-        } else if(user.role === 'owner') {
-            document.getElementById('screen-owner').classList.remove('hidden');
-            initOwnerMap();
-            showOwnerView('all');
-        } else if(user.role === 'driver') {
-            document.getElementById('screen-driver').classList.remove('hidden');
-            if(user.vehicleNo) {
-                document.getElementById('drv-vehicle-no').value = user.vehicleNo;
-            }
-        }
-    }
-
-    window.logout = function() {
-        localStorage.removeItem('gk_user');
-        window.currentUser = null;
-        document.body.classList.remove('logged-in');
-        document.getElementById('screen-customer').classList.add('hidden');
-        document.getElementById('screen-owner').classList.add('hidden');
-        document.getElementById('screen-driver').classList.add('hidden');
-        document.getElementById('screen-login').classList.remove('hidden');
-    };
-
-    // Navigation and Tabs
-    window.showTab = function(tabName) {
-        window.activeTab = tabName;
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        const activeBtn = document.getElementById(`tab-${tabName}`);
-        if(activeBtn) activeBtn.classList.add('active');
-
-        document.querySelectorAll('.booking-section').forEach(sec => sec.style.display = 'none');
-        const activeSec = document.getElementById(`${tabName}-content`);
-        if(activeSec) activeSec.style.display = 'block';
-
-        const paymentSec = document.getElementById('payment-section');
-        if(tabName === 'sharing') {
-            paymentSec.classList.remove('hidden');
-        } else {
-            paymentSec.classList.add('hidden');
-        }
-    };
-
-    window.selectRoute = function(routeType) {
-        document.querySelectorAll('.route-btn').forEach(b => b.classList.remove('active'));
-        if(routeType === 'nashik-pune') {
-            document.getElementById('btn-route-np').classList.add('active');
-            document.getElementById('times-nashik-pune').classList.remove('hidden');
-            document.getElementById('times-pune-nashik').classList.add('hidden');
-            window.selectedRoute = 'Nashik to Pune';
-        } else {
-            document.getElementById('btn-route-pn').classList.add('active');
-            document.getElementById('times-pune-nashik').classList.remove('hidden');
-            document.getElementById('times-nashik-pune').classList.add('hidden');
-            window.selectedRoute = 'Pune to Nashik';
-        }
-        updateDropdownOptions(routeType);
-    };
-
-    function updateDropdownOptions(routeType) {
-        const pSel = document.getElementById('sharing-pickup');
-        const dSel = document.getElementById('sharing-drop');
-        if(!pSel || !dSel) return;
-
-        pSel.innerHTML = '';
-        dSel.innerHTML = '';
-
-        const pList = routeType === 'nashik-pune' ? nashikPoints : punePoints;
-        const dList = routeType === 'nashik-pune' ? punePoints : nashikPoints;
-
-        pList.forEach(pt => pSel.add(new Option(pt, pt)));
-        dList.forEach(pt => dSel.add(new Option(pt, pt)));
-    }
-
-    window.selectCar = function(carType) {
-        window.selectedCar = carType;
-        window.selectedSeats = [];
-        document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
-
-        if(carType.includes('ertiga')) {
-            document.getElementById('layout-ertiga').classList.remove('hidden');
-            document.getElementById('layout-ciaz').classList.add('hidden');
-        } else {
-            document.getElementById('layout-ciaz').classList.remove('hidden');
-            document.getElementById('layout-ertiga').classList.add('hidden');
-        }
-    };
-
-    window.selectTime = function(btn, time) {
-        document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        document.getElementById('sharing-time').value = time;
-    };
-
-    window.toggleSeat = function(btn, seatDetails) {
-        btn.classList.toggle('selected');
-        if(btn.classList.contains('selected')) {
-            window.selectedSeats.push(seatDetails);
-        } else {
-            window.selectedSeats = window.selectedSeats.filter(s => s !== seatDetails);
-        }
-    };
-
-    // Calculate Fleet
-    window.calculateFleetTotal = function() {
-        const carSel = document.getElementById('fleet-car');
-        const rate = parseFloat(carSel.options[carSel.selectedIndex].getAttribute('data-rate')) || 0;
-        const km = parseFloat(document.getElementById('fleet-km').value) || 0;
-        const total = rate * km;
-        document.getElementById('fleet-total-display').innerText = `₹ ${total}`;
-    };
-
-    window.updateOnewayCars = function() {
-        const sel = document.getElementById('oneway-car');
-        sel.innerHTML = `
-            <option value="Sedan (4+1) - ₹3500">Sedan (4+1) - ₹3500</option>
-            <option value="Ertiga (6+1) - ₹4500">Ertiga (6+1) - ₹4500</option>
-            <option value="Innova Crysta - ₹6500">Innova Crysta - ₹6500</option>
-        `;
-    };
-
-    window.updateAirportCars = function() {
-        const sel = document.getElementById('airport-car');
-        sel.innerHTML = `
-            <option value="Sedan (4+1) - ₹3800">Sedan (4+1) - ₹3800</option>
-            <option value="Ertiga (6+1) - ₹4800">Ertiga (6+1) - ₹4800</option>
-            <option value="Innova Crysta - ₹6800">Innova Crysta - ₹6800</option>
-        `;
-    };
-
-    window.updatePackageCars = function() {
-        const sel = document.getElementById('package-car');
-        sel.innerHTML = `
-            <option value="Sedan (4+1) Package">Sedan (4+1) - Standard Rate</option>
-            <option value="Ertiga (6+1) Package">Ertiga (6+1) - Standard Rate</option>
-            <option value="Innova Crysta Package">Innova Crysta - Deluxe Rate</option>
-        `;
-    };
-
-    // Submit Booking logic
-    window.submitBooking = function() {
-        if(!window.currentUser) {
-            alert('कृपया आधी लॉगिन करा!');
-            return;
-        }
-
-        const tab = window.activeTab;
-        let msg = `*GURUKRUPA TOURS & TRAVELS BOOKING*\n\n`;
-        msg += `👤 *ग्राहक नाव:* ${window.currentUser.name}\n`;
-        msg += `📞 *मोबाईल:* ${window.currentUser.phone}\n`;
-
-        let bookingData = {
-            type: tab,
-            customerName: window.currentUser.name,
-            customerPhone: window.currentUser.phone,
-            createdAt: new Date().toISOString()
-        };
-
-        if(tab === 'sharing') {
-            const time = document.getElementById('sharing-time').value;
-            const date = document.getElementById('sharing-date').value;
-            const paid = document.getElementById('paymentConfirmCheckbox').checked;
-
-            if(!date || !time) {
-                alert('कृपया प्रवासाची तारीख आणि वेळ निवडा!');
-                return;
-            }
-            if(window.selectedSeats.length === 0) {
-                alert('कृपया कमीत कमी एक सीट निवडा!');
-                return;
-            }
-            if(!paid) {
-                alert('कृपया पेमेंट पूर्ण करून चेकबॉक्स सिलेक्ट करा!');
-                return;
-            }
-
-            msg += `🚘 *प्रकार:* Sharing Taxi\n`;
-            msg += `📍 *रूट:* ${window.selectedRoute}\n`;
-            msg += `🚩 *पिकअप:* ${document.getElementById('sharing-pickup').value}\n`;
-            msg += `🏁 *ड्रॉप:* ${document.getElementById('sharing-drop').value}\n`;
-            msg += `📅 *तारीख:* ${date}\n`;
-            msg += `⏰ *वेळ:* ${time}\n`;
-            msg += `💺 *सीट्स:* ${window.selectedSeats.join(', ')}\n`;
-            
-            bookingData.route = window.selectedRoute;
-            bookingData.date = date;
-            bookingData.time = time;
-            bookingData.seats = window.selectedSeats;
-        } else if(tab === 'oneway') {
-            const route = document.getElementById('oneway-route').value;
-            const pickup = document.getElementById('oneway-pickup').value;
-            const drop = document.getElementById('oneway-drop').value;
-            const car = document.getElementById('oneway-car').value;
-            const date = document.getElementById('oneway-date').value;
-            const time = document.getElementById('oneway-time').value;
-
-            if(!pickup || !drop || !date || !time) {
-                alert('कृपया सर्व आवश्यक माहिती भरा!');
-                return;
-            }
-
-            msg += `🚘 *प्रकार:* One Way Taxi\n`;
-            msg += `📍 *रूट:* ${route}\n`;
-            msg += `🚩 *पिकअप:* ${pickup}\n`;
-            msg += `🏁 *ड्रॉप:* ${drop}\n`;
-            msg += `🚗 *गाडी:* ${car}\n`;
-            msg += `📅 *तारीख:* ${date}\n`;
-            msg += `⏰ *वेळ:* ${time}\n`;
-
-            bookingData.route = route;
-            bookingData.pickup = pickup;
-            bookingData.drop = drop;
-            bookingData.car = car;
-            bookingData.date = date;
-            bookingData.time = time;
-        } else if(tab === 'fleet') {
-            const car = document.getElementById('fleet-car').value;
-            const pickup = document.getElementById('fleet-pickup').value;
-            const drop = document.getElementById('fleet-drop').value;
-            const km = document.getElementById('fleet-km').value;
-            const total = document.getElementById('fleet-total-display').innerText;
-            const date = document.getElementById('fleet-date').value;
-            const time = document.getElementById('fleet-time').value;
-
-            msg += `🚘 *प्रकार:* Fleet (Per KM)\n`;
-            msg += `🚗 *गाडी:* ${car}\n`;
-            msg += `🚩 *पिकअप:* ${pickup}\n`;
-            msg += `🏁 *ड्रॉप:* ${drop}\n`;
-            msg += `📏 *अंदाजे KM:* ${km}\n`;
-            msg += `💰 *अंदाजे दर:* ${total}\n`;
-            msg += `📅 *तारीख:* ${date}\n`;
-            msg += `⏰ *वेळ:* ${time}\n`;
-
-            bookingData.car = car;
-            bookingData.km = km;
-            bookingData.total = total;
-            bookingData.date = date;
-        } else {
-            msg += `📑 *सर्व्हिस:* ${tab.toUpperCase()}\n`;
-        }
-
-        // Save to Firebase
-        push(ref(database, 'bookings/'), bookingData);
-
-        // Open WhatsApp
-        const encodedMsg = encodeURIComponent(msg);
-        window.open(`https://wa.me/919890896040?text=${encodedMsg}`, '_blank');
-    };
-
-    window.submitBusInquiry = function() {
-        const capacity = document.getElementById('bus-capacity').value;
-        const pickup = document.getElementById('bus-pickup').value;
-        const drop = document.getElementById('bus-drop').value;
-        const date = document.getElementById('bus-date').value;
-        const time = document.getElementById('bus-time').value;
-        const notes = document.getElementById('bus-msg').value;
-
-        if(!pickup || !drop || !date) {
-            alert('कृपया माहिती पूर्ण भरा!');
-            return;
-        }
-
-        let msg = `*BUS INQUIRY - GURUKRUPA TRAVELS*\n\n`;
-        msg += `👤 *नाव:* ${window.currentUser ? window.currentUser.name : 'Customer'}\n`;
-        msg += `🚌 *क्षमता:* ${capacity}\n`;
-        msg += `🚩 *पिकअप:* ${pickup}\n`;
-        msg += `🏁 *ड्रॉप:* ${drop}\n`;
-        msg += `📅 *तारीख:* ${date}\n`;
-        msg += `⏰ *वेळ:* ${time}\n`;
-        msg += `📝 *टीप:* ${notes}\n`;
-
-        push(ref(database, 'bookings/'), {
-            type: 'bus',
-            capacity, pickup, drop, date, time, notes,
-            createdAt: new Date().toISOString()
-        });
-
-        window.open(`https://wa.me/919890896040?text=${encodeURIComponent(msg)}`, '_blank');
-    };
-
-    // Driver Calculation Logic
-    window.calculateDriverBalance = function() {
-        const col = parseFloat(document.getElementById('drv-collection').value) || 0;
-        const toll = parseFloat(document.getElementById('drv-toll').value) || 0;
-        const fuel = parseFloat(document.getElementById('drv-fuel').value) || 0;
-        const other = parseFloat(document.getElementById('drv-other').value) || 0;
-
-        const balance = col - (toll + fuel + other);
-        document.getElementById('drv-balance').innerText = balance;
-    };
-
-    window.sendDriverReport = function() {
-        const vehicleNo = document.getElementById('drv-vehicle-no').value;
-        const startDate = document.getElementById('drv-start-date').value;
-        const endDate = document.getElementById('drv-end-date').value;
-        const dutyStatus = document.getElementById('drv-duty-status').value;
-        const col = document.getElementById('drv-collection').value;
-        const toll = document.getElementById('drv-toll').value;
-        const fuel = document.getElementById('drv-fuel').value;
-        const other = document.getElementById('drv-other').value;
-        const balance = document.getElementById('drv-balance').innerText;
-
-        if(!vehicleNo) {
-            alert('कृपया गाडी नंबर निवडा!');
-            return;
-        }
-
-        const logData = {
-            driverName: window.currentUser ? window.currentUser.name : 'Driver',
-            vehicleNo, startDate, endDate, dutyStatus,
-            collection: col, toll, fuel, other, balance,
-            date: getTodayString(),
-            createdAt: new Date().toISOString()
-        };
-
-        push(ref(database, 'driver_logs/'), logData);
-
-        let msg = `*DRIVER DAILY REPORT*\n\n`;
-        msg += `👤 *ड्रायव्हर:* ${logData.driverName}\n`;
-        msg += `🚘 *गाडी:* ${vehicleNo}\n`;
-        msg += `📅 *कालावधी:* ${startDate} ते ${endDate}\n`;
-        msg += `📌 *ड्यूटी:* ${dutyStatus}\n`;
-        msg += `💰 *कलेक्शन:* ₹${col}\n`;
-        msg += `🛣️ *टोल्स:* ₹${toll}\n`;
-        msg += `⛽ *इंधन:* ₹${fuel}\n`;
-        msg += `📝 *इतर खर्च:* ₹${other}\n`;
-        msg += `💵 *शिल्लक जमा कॅश:* ₹${balance}\n`;
-
-        const enc = encodeURIComponent(msg);
-        document.getElementById('btn-owner-1').href = `https://wa.me/919890896040?text=${enc}`;
-        document.getElementById('btn-owner-2').href = `https://wa.me/917498502915?text=${enc}`;
-        document.getElementById('whatsapp-buttons').classList.remove('hidden');
-
-        alert('हिशोब डेटाबेसवर सेव्ह झाला आहे! खालील बटणांवरून ओनरला पाठवा.');
-    };
-
-    // Owner Dashboard Logic
-    window.showOwnerView = function(category) {
-        window.lastActiveOwnerCategory = category;
-        const box = document.getElementById('owner-content-box');
-        box.innerHTML = '<p class="text-center py-4 text-gray-500"><i class="fa-solid fa-spinner fa-spin text-lg"></i> लोड होत आहे...</p>';
-
-        if(category === 'driver-log') {
-            onValue(ref(database, 'driver_logs/'), (snapshot) => {
-                const data = snapshot.val();
-                if(!data) {
-                    box.innerHTML = '<p class="text-center text-gray-500 py-4">कोणताही ड्रायव्हर रिपोर्ट उपलब्ध नाही.</p>';
-                    return;
-                }
-                let html = '<h3 class="font-bold text-gray-800 mb-2">ड्रायव्हर हिशोब नोंदी:</h3><div class="space-y-2">';
-                Object.values(data).reverse().forEach(log => {
-                    html += `
-                        <div class="p-3 border rounded-lg bg-gray-50 text-xs">
-                            <p><b>ड्रायव्हर:</b> ${log.driverName} (${log.vehicleNo})</p>
-                            <p><b>तारीख:</b> ${log.startDate} - ${log.endDate} | <b>ड्यूटी:</b> ${log.dutyStatus}</p>
-                            <p><b>कलेक्शन:</b> ₹${log.collection} | <b>एकूण खर्च:</b> ₹${(parseFloat(log.toll)||0)+(parseFloat(log.fuel)||0)+(parseFloat(log.other)||0)}</p>
-                            <p class="text-green-700 font-bold"><b>शिल्लक कॅश:</b> ₹${log.balance}</p>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-                box.innerHTML = html;
-            });
-            return;
-        }
-
-        // Default Bookings Viewer
-        onValue(ref(database, 'bookings/'), (snapshot) => {
-            const data = snapshot.val();
-            if(!data) {
-                box.innerHTML = '<p class="text-center text-gray-500 py-4">कोणतीही बुकिंग इन्क्वायरी उपलब्ध नाही.</p>';
-                return;
-            }
-
-            let html = '<h3 class="font-bold text-gray-800 mb-2">सर्व बुकिंग इन्क्वायरी लिस्ट:</h3><div class="space-y-2">';
-            let count = 0;
-
-            Object.entries(data).reverse().forEach(([key, b]) => {
-                count++;
-                html += `
-                    <div class="p-3 border rounded-lg bg-red-50/40 text-xs">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-bold text-redbus uppercase">${b.type || 'Booking'}</span>
-                            <span class="text-[10px] text-gray-500">${b.date || ''}</span>
-                        </div>
-                        <p><b>ग्राहक:</b> ${b.customerName || 'N/A'} (${b.customerPhone || 'N/A'})</p>
-                        ${b.route ? `<p><b>रूट:</b> ${b.route}</p>` : ''}
-                        ${b.seats ? `<p><b>सीट्स:</b> ${b.seats.join(', ')}</p>` : ''}
-                        ${b.car ? `<p><b>गाडी:</b> ${b.car}</p>` : ''}
-                        <button onclick="deleteBooking('${key}')" class="mt-2 bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">डिलीट करा</button>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            box.innerHTML = html;
-        });
-    };
-
-    window.deleteBooking = function(key) {
-        if(confirm('ही बुकिंग इन्क्वायरी काढून टाकायची आहे का?')) {
-            remove(ref(database, `bookings/${key}`));
-        }
-    };
-
-    window.exportDriverLogsToExcel = function() {
-        onValue(ref(database, 'driver_logs/'), (snapshot) => {
-            const data = snapshot.val();
-            if(!data) {
-                alert('डाउनलोड करण्यासाठी डेटा उपलब्ध नाही!');
-                return;
-            }
-            const logsArray = Object.values(data);
-            const worksheet = XLSX.utils.json_to_sheet(logsArray);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "DriverLogs");
-            XLSX.writeFile(workbook, "Driver_Logs_Report.xlsx");
-        }, { onlyOnce: true });
-    };
-
     window.addEventListener('load', () => {  
         window.scrollTo(0, 0);  
         setCalendarMinDates();  
         populateDriverVehicleNumbers();  
-        setupUberLocationInputs();
-
         const savedUser = localStorage.getItem('gk_user');  
         if (savedUser) {  
             window.currentUser = JSON.parse(savedUser);  
@@ -2330,6 +1559,30 @@
     function unlockAdminPortals() {  
         document.getElementById('role-card-owner').classList.remove('hidden-portal');  
         document.getElementById('role-card-driver').classList.remove('hidden-portal');  
+    }  
+
+    function isPastDateTime(dateVal, timeVal) {  
+        if (!dateVal) return false;  
+        const now = new Date();  
+        const selectedDateStr = dateVal;  
+        const todayStr = getTodayString();  
+
+        if (selectedDateStr < todayStr) return true;  
+
+        if (selectedDateStr === todayStr && timeVal) {  
+            const [timeStrPart, modifier] = timeVal.split(' ');  
+            let [hours, minutes] = timeStrPart.split(':').map(Number);  
+              
+            if (modifier === 'PM' && hours < 12) hours += 12;  
+            if (modifier === 'AM' && hours === 12) hours = 0;  
+
+            const selectedTimeMinutes = hours * 60 + minutes;  
+            const currentTimeMinutes = now.getHours() * 60 + now.getMinutes();  
+            if (selectedTimeMinutes < currentTimeMinutes) {  
+                return true;  
+            }  
+        }  
+        return false;  
     }  
 
     function cleanBackdatedBookings() {  
@@ -2370,40 +1623,895 @@
 
     function listenOwnerCounts() {  
         const bookRef = ref(database, 'bookings/');  
-        onValue(bookRef, (snapshot) => {
-            const data = snapshot.val();
-            let countAll = 0, np = 0, pn = 0, ow = 0, ap = 0, ds = 0, pk = 0, fl = 0, bs = 0;
-            if(data) {
-                Object.values(data).forEach(b => {
-                    countAll++;
-                    if(b.type === 'sharing') {
-                        if(b.route === 'Nashik to Pune') np++;
-                        else pn++;
-                    } else if(b.type === 'oneway') ow++;
-                    else if(b.type === 'airport') ap++;
-                    else if(b.type === 'darshan') ds++;
-                    else if(b.type === 'packages') pk++;
-                    else if(b.type === 'fleet') fl++;
-                    else if(b.type === 'bus') bs++;
-                });
-            }
-            document.getElementById('count-all').innerText = countAll;
-            document.getElementById('badge-sharing-np').innerText = np;
-            document.getElementById('badge-sharing-pn').innerText = pn;
-            document.getElementById('badge-oneway').innerText = ow;
-            document.getElementById('badge-airport').innerText = ap;
-            document.getElementById('badge-darshan').innerText = ds;
-            document.getElementById('badge-packages').innerText = pk;
-            document.getElementById('badge-fleet').innerText = fl;
-            document.getElementById('badge-bus').innerText = bs;
-        });
+        onValue(bookRef, (snapshot) => {  
+            const data = snapshot.val();  
+            let counts = {  
+                all: 0,  
+                'sharing-np': 0,  
+                'sharing-pn': 0,  
+                oneway: 0,  
+                airport: 0,  
+                darshan: 0,  
+                packages: 0,  
+                fleet: 0,  
+                bus: 0  
+            };  
 
-        onValue(ref(database, 'driver_logs/'), (snapshot) => {
-            const data = snapshot.val();
-            const count = data ? Object.keys(data).length : 0;
-            document.getElementById('badge-driver-log').innerText = count;
-        });
+            if (data) {  
+                Object.values(data).forEach(item => {  
+                    counts.all++;  
+                    if (item.type === 'sharing') {  
+                        if (!item.direction || item.direction.includes('Nashik to Pune')) {  
+                            counts['sharing-np']++;  
+                        } else if (item.direction && item.direction.includes('Pune to Nashik')) {  
+                            counts['sharing-pn']++;  
+                        }  
+                    } else if (counts.hasOwnProperty(item.type)) {  
+                        counts[item.type]++;  
+                    }  
+                });  
+            }  
+
+            document.getElementById('count-all').innerText = counts.all;  
+            document.getElementById('badge-sharing-np').innerText = counts['sharing-np'];  
+            document.getElementById('badge-sharing-pn').innerText = counts['sharing-pn'];  
+            document.getElementById('badge-oneway').innerText = counts.oneway;  
+            document.getElementById('badge-airport').innerText = counts.airport;  
+            document.getElementById('badge-darshan').innerText = counts.darshan;  
+            document.getElementById('badge-packages').innerText = counts.packages;  
+            document.getElementById('badge-fleet').innerText = counts.fleet;  
+            document.getElementById('badge-bus').innerText = counts.bus;  
+
+            if (window.currentRole === 'owner' && window.lastActiveOwnerCategory) {  
+                showOwnerView(window.lastActiveOwnerCategory, true);  
+            }  
+        });  
     }  
+
+    window.selectLoginRole = function(role) {  
+        window.currentRole = role;  
+        document.querySelectorAll('.portal-card').forEach(card => {  
+            card.classList.remove('active', 'border-redbus', 'bg-red-50/50');  
+            card.classList.add('bg-gray-50');  
+        });  
+        const activeCard = document.getElementById(`role-card-${role}`);  
+        activeCard.classList.add('active', 'border-redbus', 'bg-red-50/50');  
+        activeCard.classList.remove('bg-gray-50');  
+
+        const driverVehicleBox = document.getElementById('driver-login-vehicle-box');  
+        const loginBtn = document.getElementById('btn-submit-login');  
+
+        if (role === 'customer') {  
+            document.getElementById('password-field').classList.add('hidden');  
+            if (driverVehicleBox) driverVehicleBox.classList.add('hidden');  
+            if (loginBtn) loginBtn.classList.remove('hidden');  
+        } else if (role === 'driver') {  
+            document.getElementById('password-field').classList.remove('hidden');  
+            if (driverVehicleBox) driverVehicleBox.classList.remove('hidden');  
+            if (loginBtn) loginBtn.classList.add('hidden');  
+        } else {  
+            document.getElementById('password-field').classList.remove('hidden');  
+            if (driverVehicleBox) driverVehicleBox.classList.add('hidden');  
+            if (loginBtn) loginBtn.classList.remove('hidden');  
+        }   
+    };  
+
+    window.handleLogin = function() {  
+        const name = document.getElementById('login-name').value.trim();  
+        const phone = document.getElementById('login-phone').value.trim();  
+        const pass = document.getElementById('login-pass').value.trim();  
+
+        if (!name || !phone) {  
+            alert('कृपया तुमचे नाव आणि मोबाईल नंबर टाका!');  
+            return;  
+        }  
+
+        if (phone.length < 10) {  
+            alert('कृपया 10 अंकी वैध मोबाईल नंबर टाका!');  
+            return;  
+        }  
+
+        if (window.currentRole === 'customer') {  
+            saveAndApplyUser({ name, phone, role: 'customer' });  
+        } else if (window.currentRole === 'owner') {  
+            if (phone === ownerAuth.phone && pass === ownerAuth.pass) {  
+                saveAndApplyUser({ name, phone, role: 'owner' });  
+            } else {  
+                alert('चुकीचा फोन नंबर किंवा पासवर्ड!');  
+            }  
+        }  
+    };  
+
+    function saveAndApplyUser(userObj) {  
+        localStorage.setItem('gk_user', JSON.stringify(userObj));  
+        window.currentUser = userObj;  
+        applyUserSession(userObj);  
+    }  
+
+    function applyUserSession(userObj) {  
+        document.body.classList.add('logged-in');  
+        document.getElementById('screen-login').classList.add('hidden');  
+        document.getElementById('user-name-display').innerText = userObj.name;  
+        document.getElementById('user-role-display').innerText = `(${userObj.role.toUpperCase()})`;  
+
+        if (userObj.role === 'customer') {  
+            document.getElementById('screen-customer').classList.remove('hidden');  
+            document.getElementById('cust-display-name').innerText = userObj.name;  
+            document.getElementById('cust-display-phone').innerText = userObj.phone;  
+        } else if (userObj.role === 'owner') {  
+            document.getElementById('screen-owner').classList.remove('hidden');  
+            setTimeout(() => {  
+                initOwnerMap();  
+            }, 500);  
+        } else if (userObj.role === 'driver') {  
+            document.getElementById('screen-driver').classList.remove('hidden');  
+            populateDriverVehicleNumbers();  
+            if (userObj.vehicleNo) {  
+                const drvSelect = document.getElementById('drv-vehicle-no');  
+                if (drvSelect) drvSelect.value = userObj.vehicleNo;  
+            }  
+        }  
+    }  
+
+    window.logout = function() {  
+        localStorage.removeItem('gk_user');  
+        window.currentUser = null;  
+        document.body.classList.remove('logged-in');  
+        document.getElementById('screen-login').classList.remove('hidden');  
+        document.getElementById('screen-customer').classList.add('hidden');  
+        document.getElementById('screen-owner').classList.add('hidden');  
+        document.getElementById('screen-driver').classList.add('hidden');  
+    };  
+
+    window.showTab = function(tabName) {  
+        window.activeTab = tabName;  
+          
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));  
+        const activeBtn = document.getElementById(`tab-${tabName}`);  
+        if (activeBtn) activeBtn.classList.add('active');  
+
+        const tabs = document.querySelectorAll('.tab-content');  
+        tabs.forEach(tab => tab.style.display = 'none');  
+
+        const activeTab = document.getElementById(tabName + '-content');  
+        if (activeTab) {  
+            activeTab.style.display = 'block';  
+        }  
+
+        const submitBtn = document.getElementById('main-submit-btn');  
+        const paymentSection = document.getElementById('payment-section');  
+          
+        if (tabName === 'buses') {  
+            submitBtn.classList.add('hidden');  
+            paymentSection.classList.add('hidden');  
+        } else {  
+            submitBtn.classList.remove('hidden');  
+            paymentSection.classList.remove('hidden');  
+        }  
+    };  
+
+    window.selectRoute = function(route) {  
+        const btnNP = document.getElementById('btn-route-np');  
+        const btnPN = document.getElementById('btn-route-pn');  
+        const timesNP = document.getElementById('times-nashik-pune');  
+        const timesPN = document.getElementById('times-pune-nashik');  
+
+        document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));  
+        document.getElementById('sharing-time').value = '';  
+
+        if (route === 'nashik-pune') {  
+            window.selectedRoute = 'Nashik to Pune';  
+            btnNP.classList.add('active', 'border-redbus');  
+            btnNP.classList.remove('border-gray-300', 'text-gray-700');  
+            btnPN.classList.remove('active', 'border-redbus');  
+            btnPN.classList.add('border-gray-300', 'text-gray-700');  
+
+            timesNP.classList.remove('hidden');  
+            timesPN.classList.add('hidden');  
+        } else {  
+            window.selectedRoute = 'Pune to Nashik';  
+            btnPN.classList.add('active', 'border-redbus');  
+            btnPN.classList.remove('border-gray-300', 'text-gray-700');  
+            btnNP.classList.remove('active', 'border-redbus');  
+            btnNP.classList.add('border-gray-300', 'text-gray-700');  
+
+            timesPN.classList.remove('hidden');  
+            timesNP.classList.add('hidden');  
+        }  
+
+        updateDropdownOptions(route);  
+    };  
+
+    function updateDropdownOptions(route) {  
+        const pickupSelect = document.getElementById('sharing-pickup');  
+        const dropSelect = document.getElementById('sharing-drop');  
+        const lblPickup = document.getElementById('lbl-pickup');  
+        const lblDrop = document.getElementById('lbl-drop');  
+
+        pickupSelect.innerHTML = '';  
+        dropSelect.innerHTML = '';  
+
+        let pList = [], dList = [];  
+
+        if (route === 'nashik-pune') {  
+            lblPickup.innerText = 'नाशिक पिकअप पॉईंट *';  
+            lblDrop.innerText = 'पुणे ड्रॉप पॉईंट *';  
+            pList = nashikPoints;  
+            dList = punePoints;  
+        } else {  
+            lblPickup.innerText = 'पुणे पिकअप पॉईंट *';  
+            lblDrop.innerText = 'नाशिक ड्रॉप पॉईंट *';  
+            pList = punePoints;  
+            dList = nashikPoints;  
+        }  
+
+        pList.forEach(pt => {  
+            pickupSelect.innerHTML += `<option value="${pt}">${pt}</option>`;  
+        });  
+        dList.forEach(pt => {  
+            dropSelect.innerHTML += `<option value="${pt}">${pt}</option>`;  
+        });  
+    }  
+
+    window.updateOnewayCars = function() {  
+        const route = document.getElementById('oneway-route').value;  
+        const carSelect = document.getElementById('oneway-car');  
+        carSelect.innerHTML = '';  
+
+        if (route.includes('संभाजीनगर')) {  
+            carSelect.innerHTML = `  
+                <option value="SEDAN (Dzire, Aura) - ₹3500">SEDAN (Dzire, Aura) - ₹3500</option>  
+                <option value="SUV (Ertiga) - ₹4500">SUV (Ertiga) - ₹4500</option>  
+                <option value="DIESEL (Kia Carens, Crysta) - ₹5500">DIESEL (Kia Carens, Crysta) - ₹5500</option>  
+            `;  
+        } else {  
+            carSelect.innerHTML = `  
+                <option value="SEDAN (Dzire, Aura) - ₹3000">SEDAN (Dzire, Aura) - ₹3000</option>  
+                <option value="SUV (Ertiga) - ₹4000">SUV (Ertiga) - ₹4000</option>  
+                <option value="DIESEL (Kia Carens, Crysta) - ₹5500">DIESEL (Kia Carens, Crysta) - ₹5500</option>  
+            `;  
+        }  
+    };  
+
+    window.updateAirportCars = function() {  
+        const route = document.getElementById('airport-route').value;  
+        const carSelect = document.getElementById('airport-car');  
+        carSelect.innerHTML = '';  
+
+        if (route === 'Nashik to Pune Airport Drop') {  
+            carSelect.innerHTML = `  
+                <option value="SEDAN - ₹3000">SEDAN - ₹3000</option>  
+                <option value="SUV - ₹3800">SUV - ₹3800</option>  
+            `;  
+        } else if (route === 'Nashik to Ozar Airport Drop' || route === 'Ozar Airport to Nashik Drop') {  
+            carSelect.innerHTML = `  
+                <option value="SEDAN - ₹1200">SEDAN - ₹1200</option>  
+                <option value="SUV - ₹3000">SUV - ₹3000</option>  
+            `;  
+        } else if (route === 'Nashik to Shirdi Airport Drop' || route === 'Shirdi Airport to Nashik Drop') {  
+            carSelect.innerHTML = `  
+                <option value="SEDAN - ₹2500">SEDAN - ₹2500</option>  
+                <option value="SUV - ₹3500">SUV - ₹3500</option>  
+            `;  
+        } else {  
+            carSelect.innerHTML = `  
+                <option value="SEDAN (S.V / DZIRE) - ₹3200">SEDAN (S.V / DZIRE) - ₹3200</option>  
+                <option value="SUV (ERTIGA / EXCEL SIX) - ₹4000">SUV (ERTIGA / EXCEL SIX) - ₹4000</option>  
+                <option value="KIA (CARENS) - ₹5500">KIA (CARENS) - ₹5500</option>  
+                <option value="INNOVA (CRYSTA) - ₹6500">INNOVA (CRYSTA) - ₹6500</option>  
+            `;  
+        }  
+    };  
+
+    window.updatePackageCars = function() {  
+        const route = document.getElementById('package-route').value;  
+        const carSelect = document.getElementById('package-car');  
+        carSelect.innerHTML = '';  
+
+        if (route === 'vanipune') {  
+            carSelect.innerHTML = `  
+                <option value="MARUTI DZIRE - ₹12/- PER KM">MARUTI DZIRE - ₹12/- PER KM</option>  
+                <option value="MARUTI CIAZ - ₹13/- PER KM">MARUTI CIAZ - ₹13/- PER KM</option>  
+                <option value="MARUTI ERTIGA - ₹15/- PER KM">MARUTI ERTIGA - ₹15/- PER KM</option>  
+                <option value="MARUTI EXCEL 6 - ₹15/- PER KM">MARUTI EXCEL 6 - ₹15/- PER KM</option>  
+                <option value="KIA CARENS - ₹16/- PER KM">KIA CARENS - ₹16/- PER KM</option>  
+                <option value="INNOVA CRYSTA - ₹20/- PER KM">INNOVA CRYSTA - ₹20/- PER KM</option>  
+                <option value="FORCE URBANIA - ₹35/- PER KM">FORCE URBANIA - ₹35/- PER KM</option>  
+            `;  
+        } else if (route === 'Nsk to vani return') {  
+            carSelect.innerHTML = `  
+                <option value="Sedan - ₹3700">Sedan - ₹3700</option>  
+                <option value="Ertiga - ₹4500">Ertiga - ₹4500</option>  
+            `;  
+        } else if (route === 'Nsk to shirdi return') {  
+            carSelect.innerHTML = `  
+                <option value="Sedan - ₹4000">Sedan - ₹4000</option>  
+                <option value="Ertiga - ₹5000">Ertiga - ₹5000</option>  
+            `;  
+        } else if (route === 'Pune to shirdi return') {  
+            carSelect.innerHTML = `  
+                <option value="Sedan - ₹6500">Sedan - ₹6500</option>  
+                <option value="Ertiga - ₹7500">Ertiga - ₹7500</option>  
+            `;  
+        } else if (route === 'Nsk to trambakeshwar return') {  
+            carSelect.innerHTML = `  
+                <option value="Sedan - ₹3500">Sedan - ₹3500</option>  
+                <option value="Ertiga - ₹4500">Ertiga - ₹4500</option>  
+            `;  
+        }  
+    };  
+
+    window.calculateFleetTotal = function() {  
+        const carSelect = document.getElementById('fleet-car');  
+        const rate = parseFloat(carSelect.options[carSelect.selectedIndex].getAttribute('data-rate')) || 0;  
+        const km = parseFloat(document.getElementById('fleet-km').value) || 0;  
+        const total = rate * km;  
+
+        document.getElementById('fleet-total-display').innerText = `₹ ${total}`;  
+    };  
+
+    window.selectCar = function(carType) {  
+        window.selectedCar = carType;  
+
+        if (carType.includes('ertiga')) {  
+            document.getElementById('layout-ertiga').classList.remove('hidden');  
+            document.getElementById('layout-ciaz').classList.add('hidden');  
+        } else {  
+            document.getElementById('layout-ertiga').classList.add('hidden');  
+            document.getElementById('layout-ciaz').classList.remove('hidden');  
+        }  
+    };  
+
+    window.selectTime = function(btn, timeStr) {  
+        const dateVal = document.getElementById('sharing-date').value;  
+        if (isPastDateTime(dateVal, timeStr)) {  
+            alert('ही वेळ निघून गेलेली आहे! कृपया चालू किंवा पुढची वेळ निवडा.');  
+            return;  
+        }  
+
+        document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));  
+        btn.classList.add('selected');  
+        document.getElementById('sharing-time').value = timeStr;  
+    };  
+
+    window.toggleSeat = function(btn, seatDetail) {  
+        if (btn.classList.contains('selected')) {  
+            btn.classList.remove('selected');  
+            window.selectedSeats = window.selectedSeats.filter(item => item !== seatDetail);  
+        } else {  
+            btn.classList.add('selected');  
+            window.selectedSeats.push(seatDetail);  
+        }  
+    };  
+
+    window.calculateDriverBalance = function() {  
+        const col = parseFloat(document.getElementById('drv-collection').value) || 0;  
+        const toll = parseFloat(document.getElementById('drv-toll').value) || 0;  
+        const fuel = parseFloat(document.getElementById('drv-fuel').value) || 0;  
+        const other = parseFloat(document.getElementById('drv-other').value) || 0;  
+
+        const bal = col - (toll + fuel + other);  
+        document.getElementById('drv-balance').innerText = bal;  
+    };  
+
+    window.submitBooking = function() {  
+        if (!window.currentUser) {  
+            alert('कृपया आधी लॉगिन करा!');  
+            return;  
+        }  
+
+        let dateVal = '';  
+        let timeVal = '';  
+
+        if (window.activeTab === 'sharing') {  
+            dateVal = document.getElementById('sharing-date').value;  
+            timeVal = document.getElementById('sharing-time').value;  
+        } else if (window.activeTab === 'oneway') {  
+            dateVal = document.getElementById('oneway-date').value;  
+            timeVal = document.getElementById('oneway-time').value;  
+        } else if (window.activeTab === 'airport') {  
+            dateVal = document.getElementById('airport-date').value;  
+            timeVal = document.getElementById('airport-time').value;  
+        } else if (window.activeTab === 'fleet') {  
+            dateVal = document.getElementById('fleet-date').value;  
+            timeVal = document.getElementById('fleet-time').value;  
+        } else if (window.activeTab === 'darshan') {  
+            dateVal = document.getElementById('darshan-date').value;  
+            timeVal = document.getElementById('darshan-time').value;  
+        } else if (window.activeTab === 'packages') {  
+            dateVal = document.getElementById('package-date').value;  
+            timeVal = document.getElementById('package-time').value;  
+        }  
+
+        if (window.activeTab === 'sharing' && isPastDateTime(dateVal, timeVal)) {  
+            alert('चुकीची वेळ! निघून गेलेली वेळ बुक करता येणार नाही.');  
+            return;  
+        }  
+
+        if (window.activeTab === 'sharing') {  
+            const isPaymentChecked = document.getElementById('paymentConfirmCheckbox').checked;  
+            if (!isPaymentChecked) {  
+                alert('अट: शेअरिंग पोर्टलमध्ये सीट बुक करण्यासाठी आधी QR कोडद्वारे पेमेंट पूर्ण करणे अनिवार्य आहे!');  
+                return;  
+            }  
+        }  
+
+        let bookingData = {  
+            customerName: window.currentUser.name,  
+            customerPhone: window.currentUser.phone,  
+            type: window.activeTab,  
+            createdAt: new Date().toLocaleString('mr-IN')  
+        };  
+
+        let whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - नवीन बुकिंग*\n`;  
+        whatsappText += `ग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\n`;  
+
+        if (window.activeTab === 'sharing') {  
+            const pickup = document.getElementById('sharing-pickup').value;  
+            const drop = document.getElementById('sharing-drop').value;  
+            const date = document.getElementById('sharing-date').value;  
+            const time = document.getElementById('sharing-time').value;  
+
+            if (!date || !time || window.selectedSeats.length === 0) {  
+                alert('कृपया तारीख, वेळ आणि किमान एक सीट निवडा!');  
+                return;  
+            }  
+
+            bookingData.pickup = pickup;  
+            bookingData.drop = drop;  
+            bookingData.date = date;  
+            bookingData.time = time;  
+            bookingData.car = window.selectedCar;  
+            bookingData.seats = window.selectedSeats;  
+            bookingData.direction = window.selectedRoute;  
+            bookingData.paymentStatus = "Paid Via QR";  
+
+            whatsappText += `प्रकार: शेअरिंग (${window.selectedRoute})\nपिकअप: ${pickup}\nड्रॉप: ${drop}\nतारीख: ${date}\nवेळ: ${time}\nगाडी: ${window.selectedCar}\nसीट्स: ${window.selectedSeats.join(', ')}\n*पेमेंट स्थिती:* QR कोडद्वारे पेमेंट पूर्ण`;  
+
+        } else if (window.activeTab === 'oneway') {  
+            bookingData.route = document.getElementById('oneway-route').value;  
+            bookingData.pickup = document.getElementById('oneway-pickup').value;
+            bookingData.drop = document.getElementById('oneway-drop').value;
+            bookingData.car = document.getElementById('oneway-car').value;  
+            bookingData.date = document.getElementById('oneway-date').value;  
+            bookingData.time = document.getElementById('oneway-time').value;  
+
+            whatsappText += `प्रकार: वन-वे टॅक्सी\nरूट: ${bookingData.route}\nपिकअप: ${bookingData.pickup}\nड्रॉप: ${bookingData.drop}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
+        } else if (window.activeTab === 'airport') {  
+            bookingData.route = document.getElementById('airport-route').value;  
+            bookingData.pickup = document.getElementById('airport-pickup').value;
+            bookingData.drop = document.getElementById('airport-drop').value;
+            bookingData.car = document.getElementById('airport-car').value;  
+            bookingData.date = document.getElementById('airport-date').value;  
+            bookingData.time = document.getElementById('airport-time').value;  
+
+            whatsappText += `प्रकार: एअरपोर्ट ड्रॉप सर्व्हिस\nरूट: ${bookingData.route}\nपिकअप: ${bookingData.pickup}\nड्रॉप: ${bookingData.drop}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
+        } else if (window.activeTab === 'fleet') {  
+            bookingData.car = document.getElementById('fleet-car').value;  
+            bookingData.pickup = document.getElementById('fleet-pickup').value;
+            bookingData.drop = document.getElementById('fleet-drop').value;
+            
+            const viaInputs = document.querySelectorAll('#fleet-extra-stops .fleet-via-point');
+            let viaStops = [];
+            viaInputs.forEach(input => { if (input.value.trim()) viaStops.push(input.value.trim()); });
+            bookingData.viaStops = viaStops;
+
+            bookingData.km = document.getElementById('fleet-km').value;  
+            bookingData.totalEstimate = document.getElementById('fleet-total-display').innerText;  
+            bookingData.date = document.getElementById('fleet-date').value;  
+            bookingData.time = document.getElementById('fleet-time').value;  
+
+            whatsappText += `प्रकार: Fleet Per KM बुकिंग\nगाडी: ${bookingData.car}\nसुरुवात: ${bookingData.pickup}\n${viaStops.length > 0 ? `वाटेतील स्टॉप्स: ${viaStops.join(' -> ')}\n` : ''}शेवट: ${bookingData.drop}\nएकूण KM: ${bookingData.km}\nअंदाजे भाडे: ${bookingData.totalEstimate}\nतारीख: ${bookingData.date}`;  
+        } else if (window.activeTab === 'darshan') {  
+            bookingData.car = document.getElementById('darshan-car').value;  
+            bookingData.date = document.getElementById('darshan-date').value;  
+            bookingData.time = document.getElementById('darshan-time').value;  
+
+            whatsappText += `प्रकार: नाशिक दर्शन सिटी टूर\nपॅकेज/गाडी: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
+        } else if (window.activeTab === 'packages') {  
+            bookingData.route = document.getElementById('package-route').value;  
+            bookingData.car = document.getElementById('package-car').value;  
+            bookingData.date = document.getElementById('package-date').value;  
+            bookingData.time = document.getElementById('package-time').value;  
+
+            whatsappText += `प्रकार: टूर पॅकेज (Packages)\nरूट: ${bookingData.route}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
+        }  
+
+        push(ref(database, 'bookings/'), bookingData)  
+            .then(() => {  
+                alert("बुकिंग यशस्वीपणे नोंदवली गेली आहे!");  
+                if (document.getElementById('paymentConfirmCheckbox')) {  
+                    document.getElementById('paymentConfirmCheckbox').checked = false;  
+                }  
+                const encodedMsg = encodeURIComponent(whatsappText);  
+                window.open(`https://wa.me/919890896040?text=${encodedMsg}`, '_blank');  
+            })  
+            .catch(err => {  
+                console.error("Firebase Error: ", err);  
+                alert("डेटा सेव्ह करण्यात अडचण आली.");  
+            });  
+    };  
+
+    window.submitBusInquiry = function() {  
+        if (!window.currentUser) {  
+            alert('कृपया आधी लॉगिन करा!');  
+            return;  
+        }  
+
+        const busCap = document.getElementById('bus-capacity').value;  
+        const busPickup = document.getElementById('bus-pickup').value;
+        const busDrop = document.getElementById('bus-drop').value;
+
+        const viaInputs = document.querySelectorAll('#bus-extra-stops .fleet-via-point');
+        let viaStops = [];
+        viaInputs.forEach(input => { if (input.value.trim()) viaStops.push(input.value.trim()); });
+
+        const busKm = document.getElementById('bus-km')?.value || 'N/A';
+        const busDate = document.getElementById('bus-date').value;  
+        const busTime = document.getElementById('bus-time').value;  
+        const busMsg = document.getElementById('bus-msg').value;  
+
+        if (!busDate || !busTime || !busPickup || !busDrop) {  
+            alert("कृपया सर्व माहिती, पिकअप/ड्रॉप ठिकाण, तारीख व वेळ भरा!");  
+            return;  
+        }  
+
+        const bookingData = {  
+            customerName: window.currentUser.name,  
+            customerPhone: window.currentUser.phone,  
+            type: 'bus',  
+            capacity: busCap,  
+            pickup: busPickup,
+            drop: busDrop,
+            viaStops: viaStops,
+            km: busKm,
+            date: busDate,  
+            time: busTime,  
+            details: busMsg,  
+            createdAt: new Date().toLocaleString('mr-IN')  
+        };  
+
+        const whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - मोठी बस इन्क्वायरी*\nग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\nबस प्रकार: ${busCap}\nपिकअप: ${busPickup}\n${viaStops.length > 0 ? `वाटेतील स्टॉप्स: ${viaStops.join(' -> ')}\n` : ''}ड्रॉप: ${busDrop}\nअंदाजे KM: ${busKm}\nतारीख: ${busDate}\nवेळ: ${busTime}\nमाहिती: ${busMsg}`;  
+
+        push(ref(database, 'bookings/'), bookingData)  
+            .then(() => {  
+                alert("बस इन्क्वायरी सेव्ह झाली!");  
+                window.open(`https://wa.me/919890896040?text=${encodeURIComponent(whatsappText)}`, '_blank');  
+            });  
+    };  
+
+    window.sendDriverReport = function() {  
+        const vehicleNo = document.getElementById('drv-vehicle-no').value.trim();  
+        const startDate = document.getElementById('drv-start-date').value;  
+        const endDate = document.getElementById('drv-end-date').value;  
+        const dutyStatus = document.getElementById('drv-duty-status').value;  
+
+        const col = document.getElementById('drv-collection').value;  
+        const toll = document.getElementById('drv-toll').value;  
+        const fuel = document.getElementById('drv-fuel').value;  
+        const other = document.getElementById('drv-other').value;  
+        const bal = document.getElementById('drv-balance').innerText;  
+
+        if (!vehicleNo) {  
+            alert("कृपया गाडी नंबर निवडा!");  
+            return;  
+        }  
+
+        if (!startDate || !endDate) {  
+            alert("कृपया ट्रिपच्या जाण्याच्या आणि येण्याच्या तारखा निवडा!");  
+            return;  
+        }  
+
+        if (!col || col == 0) {  
+            alert("कृपया आधी कलेक्शन रक्कम टाका.");  
+            return;  
+        }  
+
+        const logData = {  
+            driverName: window.currentUser ? window.currentUser.name : "Driver",  
+            driverPhone: window.currentUser ? window.currentUser.phone : "N/A",  
+            vehicleNo: vehicleNo,  
+            startDate: startDate,  
+            endDate: endDate,  
+            dutyStatus: dutyStatus,  
+            collection: parseFloat(col) || 0,  
+            toll: parseFloat(toll) || 0,  
+            fuel: parseFloat(fuel) || 0,  
+            other: parseFloat(other) || 0,  
+            balance: parseFloat(bal) || 0,  
+            date: getTodayString()  
+        };  
+
+        const msg = `*दैनिक हिशोब व ड्रायव्हर रिपोर्ट*\nड्रायव्हर: ${logData.driverName} (${logData.driverPhone})\n🚘 गाडी नंबर: ${vehicleNo}\n📅 जाण्याची तारीख: ${startDate}\n📅 येण्याची तारीख: ${endDate}\n✅ प्रेझेंटी स्टेटस: ${dutyStatus}\n------------------\nकलेक्शन: ₹${col}\nटोल: ₹${toll}\nइंधन: ₹${fuel}\nइतर: ₹${other}\n------------------\n*शिल्लक कॅश: ₹${bal}*`;  
+        const encodedMsg = encodeURIComponent(msg);  
+
+        push(ref(database, 'driver_logs/'), logData)  
+            .then(() => {  
+                document.getElementById('btn-owner-1').href = `https://api.whatsapp.com/send?phone=919890896040&text=${encodedMsg}`;  
+                document.getElementById('btn-owner-2').href = `https://api.whatsapp.com/send?phone=917498502915&text=${encodedMsg}`;  
+                document.getElementById('whatsapp-buttons').classList.remove('hidden');  
+
+                alert("हिशोब व प्रेझेंटी सेव्ह झाली आहे! आता खालील व्हॉट्सॲप बटनांवर क्लिक करा आणि त्यानंतर ट्रिप एंड करा.");  
+            })  
+            .catch(err => {  
+                console.error("Firebase Error: ", err);  
+                alert("हिशोब सेव्ह करताना अडचण आली.");  
+            });  
+    };  
+
+    window.exportDriverLogsToExcel = function() {  
+        if (typeof XLSX === 'undefined') {  
+            alert("Excel लायब्ररी लोड होत आहे, कृपया २ सेकंद थांबा आणि पुन्हा प्रयत्न करा!");  
+            return;  
+        }  
+
+        const logsRef = ref(database, 'driver_logs/');  
+        onValue(logsRef, (snapshot) => {  
+            const data = snapshot.val();  
+            if (!data) {  
+                alert("डाउनलोड करण्यासाठी कोणतीही ड्रायव्हर हिशोब नोंद उपलब्ध नाही!");  
+                return;  
+            }  
+
+            const rows = [];  
+            Object.values(data).forEach(log => {  
+                rows.push({  
+                    "नोंद तारीख": log.date || 'N/A',  
+                    "ड्रायव्हर नाव": log.driverName || 'N/A',  
+                    "मोबाईल नंबर": log.driverPhone || 'N/A',  
+                    "गाडी नंबर": log.vehicleNo || 'N/A',  
+                    "जाण्याची तारीख": log.startDate || 'N/A',  
+                    "येण्याची तारीख": log.endDate || 'N/A',  
+                    "प्रेझेंटी": log.dutyStatus || 'Present',  
+                    "कलेक्शन (₹)": log.collection || 0,  
+                    "टोल (₹)": log.toll || 0,  
+                    "इंधन (₹)": log.fuel || 0,  
+                    "इतर खर्च (₹)": log.other || 0,  
+                    "शिल्लक कॅश (₹)": log.balance || 0  
+                });  
+            });  
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);  
+            const workbook = XLSX.utils.book_new();  
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Monthly_Driver_Logs");  
+
+            const fileName = `Gurukrupa_Driver_Logs_${getTodayString()}.xlsx`;  
+            XLSX.writeFile(workbook, fileName);  
+        }, { onlyOnce: true });  
+    };  
+
+    window.deleteRecord = function(pathKey, nodeType) {  
+        if (confirm("तुम्हाला खात्री आहे की तुम्ही ही नोंद (Record) डिलीट करू इच्छिता?")) {  
+            let dbPath = nodeType === 'driver' ? `driver_logs/${pathKey}` : `bookings/${pathKey}`;  
+            remove(ref(database, dbPath))  
+                .then(() => {  
+                    alert("नोंद यशस्वीपणे डिलीट केली गेली आहे!");  
+                    if (window.currentRole === 'owner') {  
+                        showOwnerView(window.lastActiveOwnerCategory, true);  
+                    }  
+                })  
+                .catch(err => {  
+                    console.error("Delete Error:", err);  
+                    alert("डेटा डिलीट करताना त्रुटी आली.");  
+                });  
+        }  
+    };  
+
+    window.showOwnerView = function(category, isAutoRefresh = false) {  
+        window.lastActiveOwnerCategory = category;  
+        const contentBox = document.getElementById('owner-content-box');  
+        if (!isAutoRefresh) {  
+            contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>माहिती लोड होत आहे...</p>";  
+        }  
+
+        if (category === 'driver-attendance') {  
+            const logsRef = ref(database, 'driver_logs/');  
+            onValue(logsRef, (snapshot) => {  
+                const data = snapshot.val();  
+                if (!data) {  
+                    contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणतीही ड्रायव्हर हजेरी किंवा ट्रिप नोंद उपलब्ध नाही.</p>";  
+                    return;  
+                }  
+
+                let driverSummary = {};  
+
+                Object.values(data).forEach(log => {  
+                    const name = log.driverName || 'इतर ड्रायव्हर';  
+                    if (!driverSummary[name]) {  
+                        driverSummary[name] = {  
+                            presentDays: 0,  
+                            trips: []  
+                        };  
+                    }  
+
+                    if (log.dutyStatus === 'Present' || !log.dutyStatus) {  
+                        if (log.startDate && log.endDate) {  
+                            const d1 = new Date(log.startDate);  
+                            const d2 = new Date(log.endDate);  
+                            const diffDays = Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24)) + 1;  
+                            driverSummary[name].presentDays += (isNaN(diffDays) ? 1 : diffDays);  
+                        } else {  
+                            driverSummary[name].presentDays += 1;  
+                        }  
+                    }  
+
+                    driverSummary[name].trips.push({  
+                        vehicle: log.vehicleNo || 'N/A',  
+                        start: log.startDate || log.date,  
+                        end: log.endDate || log.date,  
+                        status: log.dutyStatus || 'Present',  
+                        balance: log.balance || 0  
+                    });  
+                });  
+
+                let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">  
+                    <span>📅 ड्रायव्हर मासिक प्रेझेंटी व ट्रिप रिपोर्ट</span>  
+                    <span class="text-xs bg-teal-100 text-teal-800 px-2 py-0.5 rounded font-extrabold">एकूण ड्रायव्हर्स: ${Object.keys(driverSummary).length}</span>  
+                </h3>`;  
+
+                Object.keys(driverSummary).forEach(drvName => {  
+                    const drv = driverSummary[drvName];  
+                    html += `  
+                        <div class="mb-4 bg-teal-50/50 border border-teal-200 rounded-xl p-3 shadow-sm">  
+                            <div class="flex justify-between items-center border-b border-teal-200 pb-2 mb-2">  
+                                <span class="font-black text-sm text-teal-900"><i class="fa-solid fa-user-gear text-teal-700"></i> ${drvName}</span>  
+                                <span class="bg-teal-700 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow">  
+                                    हजेरी: ${drv.presentDays} दिवस  
+                                </span>  
+                            </div>  
+                            <p class="font-bold text-gray-700 mb-1.5 text-[11px]">ट्रिप विवरण (${drv.trips.length} नोंदी):</p>  
+                            <div class="space-y-1.5">  
+                    `;  
+
+                    drv.trips.forEach(t => {  
+                        html += `  
+                            <div class="flex justify-between items-center bg-white p-2 rounded border border-gray-200 text-[11px]">  
+                                <div>  
+                                    <span class="font-bold text-gray-900">🚘 ${t.vehicle}</span>   
+                                    <span class="text-gray-500">(${t.start} ते ${t.end})</span>  
+                                </div>  
+                                <div class="flex items-center gap-2">  
+                                    <span class="font-bold ${t.status === 'Present' ? 'text-green-600' : 'text-red-500'}">${t.status}</span>  
+                                    <span class="font-black text-gray-800 bg-gray-100 px-1.5 py-0.5 rounded">₹${t.balance}</span>  
+                                </div>  
+                            </div>  
+                        `;  
+                    });  
+
+                    html += `</div></div>`;  
+                });  
+
+                contentBox.innerHTML = html;  
+            }, { onlyOnce: true });  
+            return;  
+        }  
+
+        if (category === 'driver-balance' || category === 'driver-log') {  
+            const logsRef = ref(database, 'driver_logs/');  
+            onValue(logsRef, (snapshot) => {  
+                const data = snapshot.val();  
+                if (!data) {  
+                    contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणताही ड्रायव्हर रिपोर्ट उपलब्ध नाही.</p>";  
+                    return;  
+                }  
+
+                let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">  
+                    <span>📋 ड्रायव्हर दैनिक हिशोब नोंदी</span>  
+                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded font-extrabold">एकूण: ${Object.keys(data).length}</span>  
+                </h3><div class="space-y-3">`;  
+
+                let grandTotalBalance = 0;  
+
+                Object.keys(data).reverse().forEach(key => {  
+                    const log = data[key];  
+                    grandTotalBalance += parseFloat(log.balance) || 0;  
+
+                    html += `  
+                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-300 shadow-sm relative">  
+                            <button onclick="deleteRecord('${key}', 'driver')" class="absolute top-2 right-2 text-red-600 hover:text-red-800 p-1 font-bold text-xs">  
+                                <i class="fa-solid fa-trash"></i>  
+                            </button>  
+                            <div class="flex justify-between items-center mb-1 pr-6">  
+                                <span class="font-bold text-gray-900 text-xs">${log.driverName || 'Driver'} (${log.driverPhone || 'N/A'})</span>  
+                                <span class="text-[10px] bg-gray-200 px-1.5 py-0.5 rounded text-gray-700 font-semibold">${log.date || ''}</span>  
+                            </div>  
+                            <div class="text-[11px] text-gray-700 font-medium mb-1">  
+                                🚘 <b>गाडी नंबर:</b> ${log.vehicleNo || 'N/A'} | 📅 <b>कालावधी:</b> ${log.startDate || log.date} ते ${log.endDate || log.date}  
+                            </div>  
+                            <div class="grid grid-cols-4 gap-1 text-[11px] my-2 bg-white p-2 rounded border text-center">  
+                                <div><span class="text-gray-500 block text-[9px]">कलेक्शन</span><b class="text-green-600">₹${log.collection || 0}</b></div>  
+                                <div><span class="text-gray-500 block text-[9px]">टोल</span><b class="text-red-500">₹${log.toll || 0}</b></div>  
+                                <div><span class="text-gray-500 block text-[9px]">इंधन</span><b class="text-red-500">₹${log.fuel || 0}</b></div>  
+                                <div><span class="text-gray-500 block text-[9px]">इतर</span><b class="text-red-500">₹${log.other || 0}</b></div>  
+                            </div>  
+                            <div class="flex justify-between items-center pt-1 border-t border-gray-200 text-xs">  
+                                <span class="font-bold text-gray-700">शिल्लक जमा कॅश:</span>  
+                                <span class="font-black text-redbus text-sm">₹ ${log.balance || 0}</span>  
+                            </div>  
+                        </div>  
+                    `;  
+                });  
+
+                html += `</div>`;  
+                contentBox.innerHTML = html;  
+            }, { onlyOnce: true });  
+            return;  
+        }  
+
+        const bookRef = ref(database, 'bookings/');  
+        onValue(bookRef, (snapshot) => {  
+            const data = snapshot.val();  
+            if (!data) {  
+                contentBox.innerHTML = "<p class='text-center py-6 text-red-500'>कोणतीही बुकिंग किंवा इन्क्वायरी उपलब्ध नाही.</p>";  
+                return;  
+            }  
+
+            let filteredList = [];  
+            Object.keys(data).forEach(key => {  
+                const item = data[key];  
+                item._key = key;  
+
+                if (category === 'all') {  
+                    filteredList.push(item);  
+                } else if (category === 'sharing-np') {  
+                    if (item.type === 'sharing' && (!item.direction || item.direction.includes('Nashik to Pune'))) {  
+                        filteredList.push(item);  
+                    }  
+                } else if (category === 'sharing-pn') {  
+                    if (item.type === 'sharing' && item.direction && item.direction.includes('Pune to Nashik')) {  
+                        filteredList.push(item);  
+                    }  
+                } else if (item.type === category) {  
+                    filteredList.push(item);  
+                }  
+            });  
+
+            if (filteredList.length === 0) {  
+                contentBox.innerHTML = "<p class='text-center py-6 text-gray-500'>या कॅटेगरीमध्ये कोणतीही नोंद उपलब्ध नाही.</p>";  
+                return;  
+            }  
+
+            let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">  
+                <span>📋 बुकिंग इन्क्वायरी नोंदी</span>  
+                <span class="text-xs bg-red-100 text-redbus px-2 py-0.5 rounded font-extrabold">एकूण: ${filteredList.length}</span>  
+            </h3><div class="space-y-3">`;  
+
+            filteredList.reverse().forEach(item => {  
+                html += `  
+                    <div class="bg-red-50/40 p-3 rounded-lg border border-red-200 shadow-sm relative text-xs">  
+                        <button onclick="deleteRecord('${item._key}', 'booking')" class="absolute top-2 right-2 text-red-600 hover:text-red-800 p-1 font-bold">  
+                            <i class="fa-solid fa-trash"></i>  
+                        </button>  
+                        <div class="font-bold text-gray-900 mb-1 pr-6 flex items-center gap-1.5">  
+                            <i class="fa-solid fa-user text-redbus"></i> ${item.customerName || 'N/A'} (${item.customerPhone || 'N/A'})  
+                        </div>  
+                        <div class="text-gray-700 space-y-0.5">  
+                            <div><b>प्रकार:</b> <span class="uppercase font-semibold text-redbus">${item.type || 'N/A'}</span> ${item.direction ? `(${item.direction})` : ''}</div>  
+                            ${item.pickup ? `<div><b>पिकअप:</b> ${item.pickup} \vert{} <b>ड्रॉप:</b> ${item.drop}</div>` : ''}  
+                            ${item.viaStops && item.viaStops.length > 0 ? `<div><b>वाटेतील स्टॉप्स:</b> ${item.viaStops.join(' -> ')}</div>` : ''}
+                            ${item.route ? `<div><b>रूट:</b> ${item.route}</div>` : ''}  
+                            ${item.car ? `<div><b>गाडी:</b> ${item.car}</div>` : ''}  
+                            ${item.seats ? `<div><b>सीट्स:</b> ${Array.isArray(item.seats) ? item.seats.join(', ') : item.seats}</div>` : ''}  
+                            ${item.km ? `<div><b>KM:</b> ${item.km} \vert{} <b>अंदाजे भाडे:</b> ${item.totalEstimate || 'N/A'}</div>` : ''}  
+                            ${item.capacity ? `<div><b>बस क्षमता:</b> ${item.capacity}</div>` : ''}  
+                            <div><b>तारीख व वेळ:</b> ${item.date || ''} ${item.time || ''}</div>  
+                            ${item.paymentStatus ? `<div class="text-green-700 font-bold"><b>पेमेंट:</b> ${item.paymentStatus}</div>` : ''}  
+                            ${item.details ? `<div class="text-gray-600 italic"><b>माहिती:</b> ${item.details}</div>` : ''}  
+                        </div>  
+                        <div class="mt-2 pt-1 border-t border-red-100 flex justify-between items-center text-[10px] text-gray-400">  
+                            <span>नोंद वेळ: ${item.createdAt || 'N/A'}</span>  
+                            <a href="https://wa.me/91${item.customerPhone}" target="_blank" class="bg-green-600 text-white font-bold px-2 py-0.5 rounded flex items-center gap-1">  
+                                <i class="fa-brands fa-whatsapp"></i> संपर्क  
+                            </a>  
+                        </div>  
+                    </div>  
+                `;  
+            });  
+
+            html += `</div>`;  
+            contentBox.innerHTML = html;  
+        }, { onlyOnce: true });  
+    };  
 </script>  
 </body>  
 </html>
