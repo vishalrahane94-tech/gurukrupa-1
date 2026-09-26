@@ -922,7 +922,7 @@
                 </h2>  
                 <div class="flex gap-1.5">  
                     <button onclick="downloadAndShareExcelFile()" class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1.5 rounded shadow hover:bg-emerald-700 flex items-center gap-1.5">  
-                        <i class="fa-solid fa-file-excel text-sm"></i> Excel File WhatsApp
+                        <i class="fa-solid fa-file-excel text-sm"></i> Download Excel
                     </button>  
                     <button onclick="showOwnerView('all')" class="bg-redbus text-white text-[10px] font-bold px-2 py-1 rounded shadow hover:bg-redbusDark">  
                         <i class="fa-solid fa-list-check"></i> Inquire All (<span id="count-all">0</span>)  
@@ -1204,7 +1204,6 @@
             
             field.value = `📍 Current Location (${lat}, ${lng}) - ${mapLink}`;
             
-            // कस्टमरला दिसेल असा स्टेटस बॉक्स अपडेट करणे
             const statusBox = document.getElementById(`${portalType}-location-status`);
             const statusText = document.getElementById(`${portalType}-location-text`);
             if (statusBox && statusText) {
@@ -2273,49 +2272,55 @@
             });  
     };  
 
+    // डाऊनलोड एक्सेल फंक्शन (बुकिंग्स व ड्रायव्हर प्रेझेंटी/शिल्लक रिपोर्ट दोन्हीसाठी)
     window.downloadAndShareExcelFile = function() {
-        const bookRef = ref(database, 'bookings/');
-        onValue(bookRef, async (snapshot) => {
+        const logsRef = ref(database, 'driver_logs/');
+        onValue(logsRef, async (snapshot) => {
             const data = snapshot.val();
             if (!data) {
-                alert("डाउनलोड करण्यासाठी कोणतीही बुकिंग नोंद उपलब्ध नाही!");
+                alert("डाऊनलोड करण्यासाठी कोणतीही ड्रायव्हर हजेरी नोंद उपलब्ध नाही!");
                 return;
             }
 
             let excelRows = [];
             let counter = 1;
 
-            Object.values(data).forEach(item => {
+            Object.values(data).forEach(log => {
+                let monthName = "N/A";
+                if (log.startDate) {
+                    const dateObj = new Date(log.startDate);
+                    monthName = dateObj.toLocaleString('default', { month: 'long', year: 'numeric' });
+                }
+
                 excelRows.push({
                     "अ.क्र.": counter,
-                    "ग्राहक नाव": item.customerName || 'N/A',
-                    "मोबाईल नंबर": item.customerPhone || 'N/A',
-                    "बुकिंग प्रकार": item.type || 'N/A',
-                    "रूट / दिशा": item.direction || item.route || 'N/A',
-                    "पिकअप": item.pickup || item.location || 'N/A',
-                    "ड्रॉप": item.drop || 'N/A',
-                    "गाडी": item.car || item.capacity || 'N/A',
-                    "तारीख": item.date || 'N/A',
-                    "वेळ": item.time || 'N/A',
-                    "इतर माहिती": item.details || item.paymentStatus || 'N/A'
+                    "महिना (Month)": monthName,
+                    "ड्रायव्हर नाव": log.driverName || 'N/A',
+                    "मोबाईल नंबर": log.driverPhone || 'N/A',
+                    "गाडी नंबर": log.vehicleNo || 'N/A',
+                    "जाण्याची तारीख": log.startDate || 'N/A',
+                    "येण्याची तारीख": log.endDate || 'N/A',
+                    "प्रेझेंटी स्टेटस": log.dutyStatus || 'Present',
+                    "कलेक्शन (₹)": log.collection || 0,
+                    "शिल्लक शिल्लक (₹)": log.balance || 0
                 });
                 counter++;
             });
 
             const worksheet = XLSX.utils.json_to_sheet(excelRows);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Bookings_Data");
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Driver_Monthly_Report");
             
             const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
             const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            const file = new File([blob], "Gurukrupa_Bookings_Report.xlsx", { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const file = new File([blob], "Gurukrupa_Driver_Monthly_Report.xlsx", { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 try {
                     await navigator.share({
                         files: [file],
-                        title: 'Gurukrupa Bookings Report',
-                        text: 'येथे गुरुकृपा टूर अँड ट्रॅव्हल्सचा सर्व बुकिंग डेटा एक्सेल फाईलमध्ये आहे.'
+                        title: 'Gurukrupa Driver Monthly Report',
+                        text: 'येथे ड्रायव्हरच्या महिनानिहाय प्रेझेंटी व शिल्लक रकमेचा एक्सेल रिपोर्ट आहे.'
                     });
                     return;
                 } catch (error) {
@@ -2326,12 +2331,12 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = "Gurukrupa_Bookings_Report.xlsx";
+            a.download = "Gurukrupa_Driver_Monthly_Report.xlsx";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
 
-            alert("✅ फाईल डाउनलोड झाली आहे! तुम्ही ती WhatsApp द्वारे फाईल म्हणून पाठवू शकता.");
+            alert("✅ फाईल यशस्वीपणे डाऊनलोड झाली आहे!");
         }, { onlyOnce: true });
     };
 
@@ -2367,13 +2372,25 @@
                     return;  
                 }  
 
-                let driverSummary = {};  
+                let monthlySummary = {};  
 
                 Object.values(data).forEach(log => {  
-                    const name = log.driverName || 'इतर ड्रायव्हर';  
-                    if (!driverSummary[name]) {  
-                        driverSummary[name] = {  
+                    let monthName = "इतर महिना";  
+                    if (log.startDate) {  
+                        const dObj = new Date(log.startDate);  
+                        monthName = dObj.toLocaleString('default', { month: 'long', year: 'numeric' });  
+                    }  
+
+                    const drvName = log.driverName || 'इतर ड्रायव्हर';  
+
+                    if (!monthlySummary[monthName]) {  
+                        monthlySummary[monthName] = {};  
+                    }  
+
+                    if (!monthlySummary[monthName][drvName]) {  
+                        monthlySummary[monthName][drvName] = {  
                             presentDays: 0,  
+                            totalBalance: 0,  
                             trips: []  
                         };  
                     }  
@@ -2383,13 +2400,15 @@
                             const d1 = new Date(log.startDate);  
                             const d2 = new Date(log.endDate);  
                             const diffDays = Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24)) + 1;  
-                            driverSummary[name].presentDays += (isNaN(diffDays) ? 1 : diffDays);  
+                            monthlySummary[monthName][drvName].presentDays += (isNaN(diffDays) ? 1 : diffDays);  
                         } else {  
-                            driverSummary[name].presentDays += 1;  
+                            monthlySummary[monthName][drvName].presentDays += 1;  
                         }  
                     }  
 
-                    driverSummary[name].trips.push({  
+                    monthlySummary[monthName][drvName].totalBalance += parseFloat(log.balance) || 0;  
+
+                    monthlySummary[monthName][drvName].trips.push({  
                         vehicle: log.vehicleNo || 'N/A',  
                         start: log.startDate || log.date,  
                         end: log.endDate || log.date,  
@@ -2399,40 +2418,52 @@
                 });  
 
                 let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">  
-                    <span>📅 ड्रायव्हर मासिक प्रेझेंटी व ट्रिप रिपोर्ट</span>  
-                    <span class="text-xs bg-teal-100 text-teal-800 px-2 py-0.5 rounded font-extrabold">एकूण ड्रायव्हर्स: ${Object.keys(driverSummary).length}</span>  
+                    <span>📅 महिनानिहाय ड्रायव्हर प्रेझेंटी व शिल्लक रिपोर्ट</span>  
+                    <button onclick="downloadAndShareExcelFile()" class="bg-emerald-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow hover:bg-emerald-700">  
+                        <i class="fa-solid fa-file-excel"></i> Excel Download  
+                    </button>  
                 </h3>`;  
 
-                Object.keys(driverSummary).forEach(drvName => {  
-                    const drv = driverSummary[drvName];  
-                    html += `  
-                        <div class="mb-4 bg-teal-50/50 border border-teal-200 rounded-xl p-3 shadow-sm">  
-                            <div class="flex justify-between items-center border-b border-teal-200 pb-2 mb-2">  
-                                <span class="font-black text-sm text-teal-900"><i class="fa-solid fa-user-gear text-teal-700"></i> ${drvName}</span>  
-                                <span class="bg-teal-700 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow">  
-                                    हजेरी: ${drv.presentDays} दिवस  
-                                </span>  
-                            </div>  
-                            <p class="font-bold text-gray-700 mb-1.5 text-[11px]">ट्रिप विवरण (${drv.trips.length} नोंदी):</p>  
-                            <div class="space-y-1.5">  
-                    `;  
-
-                    drv.trips.forEach(t => {  
+                Object.keys(monthlySummary).forEach(month => {  
+                    html += `<div class="mb-4"><h4 class="font-black text-xs text-redbus uppercase bg-red-50 p-2 rounded mb-2 border border-red-200">🗓️ महिना: ${month}</h4>`;  
+                    
+                    const drivers = monthlySummary[month];  
+                    Object.keys(drivers).forEach(drvName => {  
+                        const drv = drivers[drvName];  
                         html += `  
-                            <div class="flex justify-between items-center bg-white p-2 rounded border border-gray-200 text-[11px]">  
-                                <div>  
-                                    <span class="font-bold text-gray-900">🚘 ${t.vehicle}</span>   
-                                    <span class="text-gray-500">(${t.start} ते ${t.end})</span>  
+                            <div class="mb-3 bg-teal-50/50 border border-teal-200 rounded-xl p-3 shadow-sm">  
+                                <div class="flex justify-between items-center border-b border-teal-200 pb-2 mb-2">  
+                                    <span class="font-black text-sm text-teal-900"><i class="fa-solid fa-user-gear text-teal-700"></i> ${drvName}</span>  
+                                    <div class="flex gap-1.5">  
+                                        <span class="bg-teal-700 text-white font-bold text-[10px] px-2 py-0.5 rounded shadow">  
+                                            हजेरी: ${drv.presentDays} दिवस  
+                                        </span>  
+                                        <span class="bg-red-600 text-white font-bold text-[10px] px-2 py-0.5 rounded shadow">  
+                                            शिल्लक: ₹${drv.totalBalance}  
+                                        </span>  
+                                    </div>  
                                 </div>  
-                                <div class="flex items-center gap-2">  
-                                    <span class="font-bold ${t.status === 'Present' ? 'text-green-600' : 'text-red-500'}">${t.status}</span>  
-                                    <span class="font-black text-gray-800 bg-gray-100 px-1.5 py-0.5 rounded">₹${t.balance}</span>  
-                                </div>  
-                            </div>  
+                                <div class="space-y-1.5">  
                         `;  
-                    });  
 
-                    html += `</div></div>`;  
+                        drv.trips.forEach(t => {  
+                            html += `  
+                                <div class="flex justify-between items-center bg-white p-2 rounded border border-gray-200 text-[11px]">  
+                                    <div>  
+                                        <span class="font-bold text-gray-900">🚘 ${t.vehicle}</span>   
+                                        <span class="text-gray-500">(${t.start} ते ${t.end})</span>  
+                                    </div>  
+                                    <div class="flex items-center gap-2">  
+                                        <span class="font-bold ${t.status === 'Present' ? 'text-green-600' : 'text-red-500'}">${t.status}</span>  
+                                        <span class="font-black text-gray-800 bg-gray-100 px-1.5 py-0.5 rounded">₹${t.balance}</span>  
+                                    </div>  
+                                </div>  
+                            `;  
+                        });  
+
+                        html += `</div></div>`;  
+                    });  
+                    html += `</div>`;  
                 });  
 
                 contentBox.innerHTML = html;  
