@@ -911,8 +911,8 @@
                     <i class="fa-solid fa-gauge-high text-redbus"></i> ओनर डॅशबोर्ड (Owner Control Center)  
                 </h2>  
                 <div class="flex gap-1.5">  
-                    <button onclick="exportDriverLogsToWhatsApp()" class="bg-emerald-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow hover:bg-emerald-700 flex items-center gap-1">  
-                        <i class="fa-brands fa-whatsapp text-sm"></i> Excel Data WhatsApp
+                    <button onclick="downloadAndSendExcelToWhatsApp()" class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1.5 rounded shadow hover:bg-emerald-700 flex items-center gap-1.5">  
+                        <i class="fa-solid fa-file-excel text-sm"></i> Excel Download & WhatsApp
                     </button>  
                     <button onclick="showOwnerView('all')" class="bg-redbus text-white text-[10px] font-bold px-2 py-1 rounded shadow hover:bg-redbusDark">  
                         <i class="fa-solid fa-list-check"></i> Inquire All (<span id="count-all">0</span>)  
@@ -2252,33 +2252,55 @@
             });  
     };  
 
-    window.exportDriverLogsToWhatsApp = function() {  
-        const logsRef = ref(database, 'driver_logs/');  
-        onValue(logsRef, (snapshot) => {  
-            const data = snapshot.val();  
-            if (!data) {  
-                alert("कोणतीही ड्रायव्हर हिशोब नोंद उपलब्ध नाही!");  
-                return;  
-            }  
+    // नवीन फंक्शन: Excel फाईल डाउनलोड होईल आणि व्हॉट्सॲपवर डेटा पाठवला जाईल
+    window.downloadAndSendExcelToWhatsApp = function() {
+        const bookRef = ref(database, 'bookings/');
+        onValue(bookRef, (snapshot) => {
+            const data = snapshot.val();
+            if (!data) {
+                alert("डाउनलोड करण्यासाठी कोणतीही बुकिंग नोंद उपलब्ध नाही!");
+                return;
+            }
 
-            let msg = `*📊 गुरुकृपा टूर अँड ट्रॅव्हल्स - सर्व ड्रायव्हर हिशोब रिपोर्ट*\n\n`;  
-            let count = 1;  
+            let excelRows = [];
+            let whatsappMsg = `*📊 गुरुकृपा टूर अँड ट्रॅव्हल्स - बुकिंग व इन्क्वायरी डेटा*\n\n`;
+            let counter = 1;
 
-            Object.values(data).forEach(log => {  
-                msg += `${count}. *ड्रायव्हर:* ${log.driverName || 'N/A'} (${log.driverPhone || 'N/A'})\n`;  
-                msg += `   🚘 गाडी: ${log.vehicleNo || 'N/A'}\n`;  
-                msg += `   📅 कालावधी: ${log.startDate || 'N/A'} ते ${log.endDate || 'N/A'}\n`;  
-                msg += `   💵 कलेक्शन: ₹${log.collection || 0} | टोल: ₹${log.toll || 0}\n`;  
-                msg += `   ⛽ इंधन: ₹${log.fuel || 0} | इतर: ₹${log.other || 0}\n`;  
-                msg += `   💰 *शिल्लक कॅश:* ₹${log.balance || 0}\n\n`;  
-                count++;  
-            });  
+            Object.values(data).forEach(item => {
+                excelRows.push({
+                    "अ.क्र.": counter,
+                    "ग्राहक नाव": item.customerName || 'N/A',
+                    "मोबाईल नंबर": item.customerPhone || 'N/A',
+                    "बुकिंग प्रकार": item.type || 'N/A',
+                    "रूट / दिशा": item.direction || item.route || 'N/A',
+                    "पिकअप": item.pickup || item.location || 'N/A',
+                    "ड्रॉप": item.drop || 'N/A',
+                    "गाडी": item.car || item.capacity || 'N/A',
+                    "तारीख": item.date || 'N/A',
+                    "वेळ": item.time || 'N/A',
+                    "इतर माहिती": item.details || item.paymentStatus || 'N/A'
+                });
 
-            const ownerPhone = "919890896040"; // ओनरचा मुख्य मोबाईल नंबर
-            const encodedMsg = encodeURIComponent(msg);  
-            window.open(`https://wa.me/${ownerPhone}?text=${encodedMsg}`, '_blank');  
-        }, { onlyOnce: true });  
-    };  
+                whatsappMsg += `${counter}. *ग्राहक:* ${item.customerName || 'N/A'} (${item.customerPhone || 'N/A'})\n`;
+                whatsappMsg += `   🚗 *प्रकार:* ${item.type || 'N/A'} | *तारीख:* ${item.date || 'N/A'}\n`;
+                whatsappMsg += `   📍 *पिकअप/ड्रॉप:* ${item.pickup || 'N/A'} ते ${item.drop || 'N/A'}\n\n`;
+                counter++;
+            });
+
+            // 1. एक्सेल फाईल तयार करून डाउनलोड करणे
+            const worksheet = XLSX.utils.json_to_sheet(excelRows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Bookings_Data");
+            XLSX.writeFile(workbook, "Gurukrupa_Bookings_Report.xlsx");
+
+            // 2. ओनरच्या व्हॉट्सॲपवर मजकूर पाठवणे
+            const ownerPhone = "919890896040"; 
+            const encodedMsg = encodeURIComponent(whatsappMsg);
+            window.open(`https://wa.me/${ownerPhone}?text=${encodedMsg}`, '_blank');
+
+            alert("✅ एक्सेल फाईल यशस्वीपणे डाउनलोड झाली आहे आणि व्हॉट्सॲप चॅट उघडले आहे!");
+        }, { onlyOnce: true });
+    };
 
     window.deleteRecord = function(pathKey, nodeType) {  
         if (confirm("तुम्हाला खात्री आहे की तुम्ही ही नोंद डिलीट करू इच्छिता?")) {  
