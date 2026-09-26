@@ -552,7 +552,7 @@
                 </div>  
             </div>  
 
-            <!-- 2. One Way Section (Clean Inputs without wrapper box) -->  
+            <!-- 2. One Way Section (Only route dropdown & current location button) -->  
             <div id="oneway-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>  
                 <div>  
@@ -571,21 +571,12 @@
                     </select>  
                 </div>  
 
-                <!-- क्लीन इनपुट्स (चौकट काढलेले) -->
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
-                        <input type="text" id="oneway-pickup" list="location-suggestions" placeholder="पत्ता टाका" class="w-full p-2 border rounded text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
-                        <input type="text" id="oneway-drop" list="location-suggestions" placeholder="ड्रॉप पत्ता टाका" class="w-full p-2 border rounded text-xs">
-                    </div>
-                </div>
+                <!-- फक्त Current Location Send बटण -->
                 <div>
-                    <button type="button" onclick="fetchLocationPinForBoth('oneway-pickup', 'oneway-drop')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-1.5 px-3 rounded text-xs flex items-center justify-center gap-1 hover:bg-blue-100">
-                        <i class="fa-solid fa-location-crosshairs"></i> Current Location Send (सध्याचे ठिकाण पाठवा)
+                    <button type="button" onclick="fetchSingleLocationPin('oneway-location', 'oneway')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-blue-100 shadow-sm">
+                        <i class="fa-solid fa-location-crosshairs text-base"></i> Current Location Send (सध्याचे ठिकाण पाठवा)
                     </button>
+                    <input type="hidden" id="oneway-location">
                 </div>
 
                 <div>  
@@ -604,7 +595,7 @@
                 </div>  
             </div>  
 
-            <!-- 3. Airport Section (Clean Inputs without wrapper box) -->  
+            <!-- 3. Airport Section (Only route dropdown & current location button) -->  
             <div id="airport-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>  
                 <div>  
@@ -621,21 +612,12 @@
                     </select>  
                 </div>  
 
-                <!-- क्लीन इनपुट्स (चौकट काढलेले) -->
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Location) *</label>
-                        <input type="text" id="airport-pickup" list="location-suggestions" placeholder="पत्ता टाका" class="w-full p-2 border rounded text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Location) *</label>
-                        <input type="text" id="airport-drop" list="location-suggestions" placeholder="ड्रॉप पत्ता टाका" class="w-full p-2 border rounded text-xs">
-                    </div>
-                </div>
+                <!-- फक्त Current Location Send बटण -->
                 <div>
-                    <button type="button" onclick="fetchLocationPinForBoth('airport-pickup', 'airport-drop')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-1.5 px-3 rounded text-xs flex items-center justify-center gap-1 hover:bg-blue-100">
-                        <i class="fa-solid fa-location-crosshairs"></i> Current Location Send (सध्याचे ठिकाण पाठवा)
+                    <button type="button" onclick="fetchSingleLocationPin('airport-location', 'airport')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-blue-100 shadow-sm">
+                        <i class="fa-solid fa-location-crosshairs text-base"></i> Current Location Send (सध्याचे ठिकाण पाठवा)
                     </button>
+                    <input type="hidden" id="airport-location">
                 </div>
 
                 <div>  
@@ -654,7 +636,7 @@
                 </div>  
             </div>  
 
-            <!-- 4. Fleet Section (Button text updated to "Calculate KM") -->  
+            <!-- 4. Fleet Section -->  
             <div id="fleet-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>  
                 <div>  
@@ -693,7 +675,6 @@
                         </div>
                     </div>
 
-                    <!-- अपडेट केलेले बटण नाव: Calculate KM -->
                     <button type="button" onclick="calculateActualRouteDistance('fleet')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded text-xs shadow flex items-center justify-center gap-1">
                         <i class="fa-solid fa-calculator"></i> Calculate KM
                     </button>
@@ -777,7 +758,7 @@
                 </div>  
             </div>  
 
-            <!-- 7. Buses Section (Button text updated to "Calculate KM") -->  
+            <!-- 7. Buses Section -->  
             <div id="buses-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">  
                     <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)  
@@ -820,7 +801,6 @@
                             </div>
                         </div>
 
-                        <!-- अपडेट केलेले बटण नाव: Calculate KM -->
                         <button type="button" onclick="calculateActualRouteDistance('bus')" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2 rounded text-xs shadow flex items-center justify-center gap-1">
                             <i class="fa-solid fa-calculator"></i> Calculate KM
                         </button>
@@ -1198,31 +1178,6 @@
     let vehiclePolylines = {}; 
     let activeVehicleNo = null;
 
-    window.fetchLocationPinForBoth = function(pickupInputId, dropInputId) {
-        const pickupField = document.getElementById(pickupInputId);
-        const dropField = document.getElementById(dropInputId);
-        if (!pickupField || !dropField) return;
-
-        if (!navigator.geolocation) {
-            alert('तुमच्या मोबाईल/ब्राउझरमध्ये GPS सपोर्ट नाही.');
-            return;
-        }
-
-        pickupField.value = "📍 वर्तमान स्थान शोधत आहे...";
-
-        navigator.geolocation.getCurrentPosition((pos) => {
-            const lat = pos.coords.latitude.toFixed(5);
-            const lng = pos.coords.longitude.toFixed(5);
-            const mapLink = `https://maps.google.com/?q=${lat},${lng}`;
-            
-            pickupField.value = `📍 Current Location (${lat}, ${lng}) - ${mapLink}`;
-            dropField.value = `📍 Destination Pin (${lat}, ${lng})`;
-        }, (err) => {
-            alert("लोकेशन घेता आले नाही. कृपया GPS/Location On करा.");
-            pickupField.value = "";
-        }, { enableHighAccuracy: true });
-    };
-
     window.fetchSingleLocationPin = function(inputId, portalType = null) {
         const field = document.getElementById(inputId);
         if (!field) return;
@@ -1232,19 +1187,17 @@
             return;
         }
 
-        field.value = "📍 लोकेशन शोधत आहे...";
+        alert("📍 वर्तमान स्थान शोधत आहे...");
 
         navigator.geolocation.getCurrentPosition((pos) => {
             const lat = pos.coords.latitude.toFixed(5);
             const lng = pos.coords.longitude.toFixed(5);
             const mapLink = `https://maps.google.com/?q=${lat},${lng}`;
             
-            field.value = `📍 Location (${lat}, ${lng}) - ${mapLink}`;
-            if (portalType) {
-                window.calculateActualRouteDistance(portalType);
-            }
+            field.value = `📍 Current Location (${lat}, ${lng}) - ${mapLink}`;
+            alert(`✅ लोकेशन यशस्वीपणे मिळाले!\n(${lat}, ${lng})`);
         }, (err) => {
-            alert("लोकेशन घेता आले नाही.");
+            alert("लोकेशन घेता आले नाही. कृपया GPS/Location On करा.");
             field.value = "";
         }, { enableHighAccuracy: true });
     };
@@ -2134,22 +2087,20 @@
 
         } else if (window.activeTab === 'oneway') {  
             bookingData.route = document.getElementById('oneway-route').value;  
-            bookingData.pickup = document.getElementById('oneway-pickup').value;
-            bookingData.drop = document.getElementById('oneway-drop').value;
+            bookingData.location = document.getElementById('oneway-location').value || 'User Current Location Sent';
             bookingData.car = document.getElementById('oneway-car').value;  
             bookingData.date = document.getElementById('oneway-date').value;  
             bookingData.time = document.getElementById('oneway-time').value;  
 
-            whatsappText += `प्रकार: वन-वे टॅक्सी\nरूट: ${bookingData.route}\nपिकअप: ${bookingData.pickup}\nड्रॉप: ${bookingData.drop}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
+            whatsappText += `प्रकार: वन-वे टॅक्सी\nरूट: ${bookingData.route}\nवर्तमान स्थान (Location): ${bookingData.location}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
         } else if (window.activeTab === 'airport') {  
             bookingData.route = document.getElementById('airport-route').value;  
-            bookingData.pickup = document.getElementById('airport-pickup').value;
-            bookingData.drop = document.getElementById('airport-drop').value;
+            bookingData.location = document.getElementById('airport-location').value || 'User Current Location Sent';
             bookingData.car = document.getElementById('airport-car').value;  
             bookingData.date = document.getElementById('airport-date').value;  
             bookingData.time = document.getElementById('airport-time').value;  
 
-            whatsappText += `प्रकार: एअरपोर्ट ड्रॉप सर्व्हिस\nरूट: ${bookingData.route}\nपिकअप: ${bookingData.pickup}\nड्रॉप: ${bookingData.drop}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
+            whatsappText += `प्रकार: एअरपोर्ट ड्रॉप सर्व्हिस\nरूट: ${bookingData.route}\nवर्तमान स्थान (Location): ${bookingData.location}\nगाडी/दर: ${bookingData.car}\nतारीख: ${bookingData.date}\nवेळ: ${bookingData.time}`;  
         } else if (window.activeTab === 'fleet') {  
             bookingData.car = document.getElementById('fleet-car').value;  
             bookingData.pickup = document.getElementById('fleet-pickup').value;
@@ -2547,15 +2498,12 @@
                         <div class="text-gray-700 space-y-0.5">  
                             <div><b>प्रकार:</b> <span class="uppercase font-semibold text-redbus">${item.type || 'N/A'}</span> ${item.direction ? `(${item.direction})` : ''}</div>  
                             ${item.pickup ? `<div><b>पिकअप:</b> ${item.pickup} \vert{} <b>ड्रॉप:</b> ${item.drop}</div>` : ''}  
-                            ${item.viaStops && item.viaStops.length > 0 ? `<div><b>वाटेतील स्टॉप्स:</b> ${item.viaStops.join(' -> ')}</div>` : ''}
+                            ${item.location ? `<div><b>वर्तमान स्थान (Location):</b> ${item.location}</div>` : ''}  
                             ${item.route ? `<div><b>रूट:</b> ${item.route}</div>` : ''}  
                             ${item.car ? `<div><b>गाडी:</b> ${item.car}</div>` : ''}  
                             ${item.seats ? `<div><b>सीट्स:</b> ${Array.isArray(item.seats) ? item.seats.join(', ') : item.seats}</div>` : ''}  
-                            ${item.km ? `<div><b>KM:</b> ${item.km} \vert{} <b>अंदाजे भाडे:</b> ${item.totalEstimate || 'N/A'}</div>` : ''}  
-                            ${item.capacity ? `<div><b>बस क्षमता:</b> ${item.capacity}</div>` : ''}  
                             <div><b>तारीख व वेळ:</b> ${item.date || ''} ${item.time || ''}</div>  
                             ${item.paymentStatus ? `<div class="text-green-700 font-bold"><b>पेमेंट:</b> ${item.paymentStatus}</div>` : ''}  
-                            ${item.details ? `<div class="text-gray-600 italic"><b>माहिती:</b> ${item.details}</div>` : ''}  
                         </div>  
                         <div class="mt-2 pt-1 border-t border-red-100 flex justify-between items-center text-[10px] text-gray-400">  
                             <span>नोंद वेळ: ${item.createdAt || 'N/A'}</span>  
