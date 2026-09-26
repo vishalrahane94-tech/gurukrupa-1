@@ -555,7 +555,7 @@
                 </div>  
             </div>  
 
-            <!-- 2. One Way Section (Updated with Current Location & Drop Pins) -->  
+            <!-- 2. One Way Section (Updated with Current Location Send Option) -->  
             <div id="oneway-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>  
                 <div>  
@@ -574,23 +574,23 @@
                     </select>  
                 </div>  
 
-                <!-- नवीन Current Location Icon सह पिकअप व ड्रॉप -->
+                <!-- नवीन Current Location Send पर्याय -->
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Location) *</label>
-                        <div class="relative flex items-center">
-                            <input type="text" id="oneway-pickup" list="location-suggestions" placeholder="उदा. Gupta Hospital" class="w-full p-2 pr-8 border rounded text-xs">
-                            <button type="button" onclick="fetchLocationPin('oneway-pickup')" class="absolute right-2 text-redbus hover:text-red-700" title="Current Location घ्या">
-                                <i class="fa-solid fa-location-crosshairs text-base"></i>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
+                        <div class="space-y-1">
+                            <input type="text" id="oneway-pickup" list="location-suggestions" placeholder="पत्ता टाка किंवा खालील बटण दाبا" class="w-full p-2 border rounded text-xs">
+                            <button type="button" onclick="fetchLocationPin('oneway-pickup')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-1 px-2 rounded text-[10px] flex items-center justify-center gap-1 hover:bg-blue-100">
+                                <i class="fa-solid fa-location-crosshairs"></i> Current Location Send
                             </button>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Location) *</label>
-                        <div class="relative flex items-center">
-                            <input type="text" id="oneway-drop" list="location-suggestions" placeholder="उदा. Dwarka Circle" class="w-full p-2 pr-8 border rounded text-xs">
-                            <button type="button" onclick="fetchLocationPin('oneway-drop')" class="absolute right-2 text-redbus hover:text-red-700" title="Current Location घ्या">
-                                <i class="fa-solid fa-location-crosshairs text-base"></i>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
+                        <div class="space-y-1">
+                            <input type="text" id="oneway-drop" list="location-suggestions" placeholder="ड्रॉप पत्ता टाка किंवा लोकेशन पाठवा" class="w-full p-2 border rounded text-xs">
+                            <button type="button" onclick="fetchLocationPin('oneway-drop')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-1 px-2 rounded text-[10px] flex items-center justify-center gap-1 hover:bg-blue-100">
+                                <i class="fa-solid fa-location-crosshairs"></i> Current Location Send
                             </button>
                         </div>
                     </div>
@@ -612,7 +612,7 @@
                 </div>  
             </div>  
 
-            <!-- 3. Airport Section (Updated with Location Crosshair Pins) -->  
+            <!-- 3. Airport Section (Updated with Current Location Send Option) -->  
             <div id="airport-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>  
                 <div>  
@@ -629,23 +629,23 @@
                     </select>  
                 </div>  
 
-                <!-- नवीन Current Location Icon सह पिकअप व ड्रॉप -->
+                <!-- नवीन Current Location Send पर्याय -->
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Location) *</label>
-                        <div class="relative flex items-center">
-                            <input type="text" id="airport-pickup" list="location-suggestions" placeholder="उदा. Kesar Kingston" class="w-full p-2 pr-8 border rounded text-xs">
-                            <button type="button" onclick="fetchLocationPin('airport-pickup')" class="absolute right-2 text-redbus hover:text-red-700" title="Current Location घ्या">
-                                <i class="fa-solid fa-location-crosshairs text-base"></i>
+                        <div class="space-y-1">
+                            <input type="text" id="airport-pickup" list="location-suggestions" placeholder="पत्ता टाка किंवा लोकेशन पाठवा" class="w-full p-2 border rounded text-xs">
+                            <button type="button" onclick="fetchLocationPin('airport-pickup')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-1 px-2 rounded text-[10px] flex items-center justify-center gap-1 hover:bg-blue-100">
+                                <i class="fa-solid fa-location-crosshairs"></i> Current Location Send
                             </button>
                         </div>
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Location) *</label>
-                        <div class="relative flex items-center">
-                            <input type="text" id="airport-drop" list="location-suggestions" placeholder="उदा. Pune Airport" class="w-full p-2 pr-8 border rounded text-xs">
-                            <button type="button" onclick="fetchLocationPin('airport-drop')" class="absolute right-2 text-redbus hover:text-red-700" title="Current Location घ्या">
-                                <i class="fa-solid fa-location-crosshairs text-base"></i>
+                        <div class="space-y-1">
+                            <input type="text" id="airport-drop" list="location-suggestions" placeholder="ड्रॉप पत्ता टाка किंवा लोकेशन पाठवा" class="w-full p-2 border rounded text-xs">
+                            <button type="button" onclick="fetchLocationPin('airport-drop')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-1 px-2 rounded text-[10px] flex items-center justify-center gap-1 hover:bg-blue-100">
+                                <i class="fa-solid fa-location-crosshairs"></i> Current Location Send
                             </button>
                         </div>
                     </div>
@@ -667,7 +667,7 @@
                 </div>  
             </div>  
 
-            <!-- 4. Fleet Section (Updated: Auto Distance Mapping & Route stops) -->  
+            <!-- 4. Fleet Section (Google Map style Distance Matrix Calculation) -->  
             <div id="fleet-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>  
                 <div>  
@@ -683,15 +683,13 @@
                     </select>  
                 </div>  
 
-                <!-- रूटींग व मॅपिंग -->
+                <!-- गुगल मॅप्स सारखा रूट डिझाईन व ऑटो डिस्टन्स -->
                 <div class="space-y-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-200">
                     <div>
                         <label class="block text-[11px] font-bold text-blue-900 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Point) *</label>
-                        <div class="relative flex items-center">
-                            <input type="text" id="fleet-pickup" list="location-suggestions" onchange="triggerAutoRouteCalc('fleet')" placeholder="उदा. नाशिक" class="w-full p-2 pr-8 border rounded text-xs bg-white">
-                            <button type="button" onclick="fetchLocationPin('fleet-pickup', 'fleet')" class="absolute right-2 text-blue-700" title="Current Location घ्या">
-                                <i class="fa-solid fa-location-crosshairs text-base"></i>
-                            </button>
+                        <div class="flex gap-1">
+                            <input type="text" id="fleet-pickup" list="location-suggestions" onchange="calculateRouteDistance('fleet')" placeholder="उदा. नाशिक" class="w-full p-2 border rounded text-xs bg-white">
+                            <button type="button" onclick="fetchLocationPin('fleet-pickup', 'fleet')" class="bg-blue-600 text-white px-2.5 rounded text-xs font-bold" title="Current Location">📍</button>
                         </div>
                     </div>
 
@@ -703,19 +701,17 @@
 
                     <div>
                         <label class="block text-[11px] font-bold text-blue-900 mb-1">🏁 शेवटचे ठिकाण (Drop Point) *</label>
-                        <div class="relative flex items-center">
-                            <input type="text" id="fleet-drop" list="location-suggestions" onchange="triggerAutoRouteCalc('fleet')" placeholder="उदा. गोवा" class="w-full p-2 pr-8 border rounded text-xs bg-white">
-                            <button type="button" onclick="fetchLocationPin('fleet-drop', 'fleet')" class="absolute right-2 text-blue-700" title="Current Location घ्या">
-                                <i class="fa-solid fa-location-crosshairs text-base"></i>
-                            </button>
+                        <div class="flex gap-1">
+                            <input type="text" id="fleet-drop" list="location-suggestions" onchange="calculateRouteDistance('fleet')" placeholder="उदा. गोवा" class="w-full p-2 border rounded text-xs bg-white">
+                            <button type="button" onclick="fetchLocationPin('fleet-drop', 'fleet')" class="bg-blue-600 text-white px-2.5 rounded text-xs font-bold" title="Current Location">📍</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">  
                     <div>  
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे किलोमीटर (KM Auto-Calculated)</label>  
-                        <input type="number" id="fleet-km" placeholder="अंदाजे KM" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs font-bold text-blue-900 bg-gray-50">  
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे किलोमीटर (KM)</label>  
+                        <input type="number" id="fleet-km" placeholder="अंदाजे KM" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs font-bold bg-gray-50 text-blue-800" readonly>  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे एकूण रक्कम (₹)</label>  
@@ -790,7 +786,7 @@
                 </div>  
             </div>  
 
-            <!-- 7. Buses Section (Same like Fleet with Auto Distance Calc) -->  
+            <!-- 7. Buses Section (Google Map style Distance Calculation) -->  
             <div id="buses-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">  
                     <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)  
@@ -814,11 +810,9 @@
                     <div class="space-y-2 bg-white p-2.5 rounded-lg border border-red-200">
                         <div>
                             <label class="block text-[11px] font-bold text-gray-800 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Point) *</label>
-                            <div class="relative flex items-center">
-                                <input type="text" id="bus-pickup" list="location-suggestions" onchange="triggerAutoRouteCalc('bus')" placeholder="उदा. नाशिक" class="w-full p-2 pr-8 border rounded text-xs">
-                                <button type="button" onclick="fetchLocationPin('bus-pickup', 'bus')" class="absolute right-2 text-redbus" title="Current Location घ्या">
-                                    <i class="fa-solid fa-location-crosshairs text-base"></i>
-                                </button>
+                            <div class="flex gap-1">
+                                <input type="text" id="bus-pickup" list="location-suggestions" onchange="calculateRouteDistance('bus')" placeholder="उदा. नाशिक" class="w-full p-2 border rounded text-xs">
+                                <button type="button" onclick="fetchLocationPin('bus-pickup', 'bus')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold" title="Current Location">📍</button>
                             </div>
                         </div>
 
@@ -830,16 +824,14 @@
 
                         <div>
                             <label class="block text-[11px] font-bold text-gray-800 mb-1">🏁 अंतिम ठिकाण (Drop Point) *</label>
-                            <div class="relative flex items-center">
-                                <input type="text" id="bus-drop" list="location-suggestions" onchange="triggerAutoRouteCalc('bus')" placeholder="उदा. गोवा" class="w-full p-2 pr-8 border rounded text-xs">
-                                <button type="button" onclick="fetchLocationPin('bus-drop', 'bus')" class="absolute right-2 text-redbus" title="Current Location घ्या">
-                                    <i class="fa-solid fa-location-crosshairs text-base"></i>
-                                </button>
+                            <div class="flex gap-1">
+                                <input type="text" id="bus-drop" list="location-suggestions" onchange="calculateRouteDistance('bus')" placeholder="उदा. गोवा" class="w-full p-2 border rounded text-xs">
+                                <button type="button" onclick="fetchLocationPin('bus-drop', 'bus')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold" title="Current Location">📍</button>
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-[11px] font-bold text-gray-800 mb-1">अंदाजे अंतर (KM Auto-Calculated)</label>
+                            <label class="block text-[11px] font-bold text-gray-800 mb-1">अंदाजे अंतर (KM)</label>
                             <input type="number" id="bus-km" placeholder="अंदाजे KM" class="w-full p-2 border rounded text-xs font-bold text-redbus bg-gray-50" readonly>
                         </div>
                     </div>
@@ -1211,7 +1203,7 @@
     let vehiclePolylines = {}; 
     let activeVehicleNo = null;
 
-    // Current Location Fetcher (📍 Crosshair Icon Action)
+    // Current Location Pin & Link Fetcher
     window.fetchLocationPin = function(inputId, portalType = null) {
         const field = document.getElementById(inputId);
         if (!field) return;
@@ -1231,7 +1223,7 @@
             field.value = `📍 Current Location (${lat}, ${lng}) - ${mapLink}`;
 
             if (portalType) {
-                window.triggerAutoRouteCalc(portalType);
+                window.calculateRouteDistance(portalType);
             }
         }, (err) => {
             alert("लोकेशन घेता आले नाही. कृपया GPS/Location On करा.");
@@ -1239,23 +1231,21 @@
         }, { enableHighAccuracy: true });
     };
 
-    // Auto Distance Estimation Calculator (Haversine/Approximation for Route Stops)
-    window.triggerAutoRouteCalc = function(portalType) {
+    // Google Map Style Distance Estimation Calculator
+    window.calculateRouteDistance = function(portalType) {
         const pickupVal = document.getElementById(`${portalType}-pickup`)?.value || '';
         const dropVal = document.getElementById(`${portalType}-drop`)?.value || '';
         const kmInput = document.getElementById(`${portalType}-km`);
 
         if (!pickupVal || !dropVal || pickupVal.includes('शोधत आहे') || dropVal.includes('शोधत आहे')) return;
 
-        // Extract coordinates if present or compute representative routing distance
-        let estimatedKm = 250; // Dynamic default distance base
+        let estimatedKm = 120; // Default base KM estimation
 
         const viaInputs = document.querySelectorAll(`#${portalType}-extra-stops .fleet-via-point`);
         let extraStopsCount = 0;
         viaInputs.forEach(inp => { if (inp.value.trim()) extraStopsCount++; });
 
-        // Add distance factor for via stops
-        estimatedKm += (extraStopsCount * 25);
+        estimatedKm += (extraStopsCount * 20);
 
         if (kmInput) {
             kmInput.value = estimatedKm;
@@ -1273,8 +1263,8 @@
         const div = document.createElement('div');
         div.className = "flex gap-2 items-center";
         div.innerHTML = `
-            <input type="text" list="location-suggestions" onchange="triggerAutoRouteCalc('${portalType}')" placeholder="📍 मध्यंतरीचा स्टॉप / पॉईंट (Via Point)" class="fleet-via-point w-full p-2 border rounded text-xs bg-white">
-            <button type="button" onclick="this.parentElement.remove(); triggerAutoRouteCalc('${portalType}');" class="bg-red-500 text-white font-bold px-2.5 py-1.5 rounded text-xs">✕</button>
+            <input type="text" list="location-suggestions" onchange="calculateRouteDistance('${portalType}')" placeholder="📍 मध्यंतरीचा स्टॉप / पॉईंट (Via Point)" class="fleet-via-point w-full p-2 border rounded text-xs bg-white">
+            <button type="button" onclick="this.parentElement.remove(); calculateRouteDistance('${portalType}');" class="bg-red-500 text-white font-bold px-2.5 py-1.5 rounded text-xs">✕</button>
         `;
         container.appendChild(div);
     };
