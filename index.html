@@ -552,7 +552,7 @@
                 </div>  
             </div>  
 
-            <!-- 2. One Way Section (Only route dropdown & current location button) -->  
+            <!-- 2. One Way Section -->  
             <div id="oneway-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>  
                 <div>  
@@ -571,11 +571,15 @@
                     </select>  
                 </div>  
 
-                <!-- फक्त Current Location Send बटण -->
                 <div>
                     <button type="button" onclick="fetchSingleLocationPin('oneway-location', 'oneway')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-blue-100 shadow-sm">
                         <i class="fa-solid fa-location-crosshairs text-base"></i> Current Location Send (सध्याचे ठिकाण पाठवा)
                     </button>
+                    <!-- कस्टमरला दिसणारा लोकेशन स्टेटस बॉक्स -->
+                    <div id="oneway-location-status" class="mt-1.5 p-2 bg-green-50 border border-green-300 rounded-lg text-[11px] font-bold text-green-800 hidden flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-check text-green-600 text-sm"></i>
+                        <span id="oneway-location-text">लोकेशन मिळाले नाही</span>
+                    </div>
                     <input type="hidden" id="oneway-location">
                 </div>
 
@@ -595,7 +599,7 @@
                 </div>  
             </div>  
 
-            <!-- 3. Airport Section (Only route dropdown & current location button) -->  
+            <!-- 3. Airport Section -->  
             <div id="airport-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>  
                 <div>  
@@ -612,11 +616,15 @@
                     </select>  
                 </div>  
 
-                <!-- फक्त Current Location Send बटण -->
                 <div>
                     <button type="button" onclick="fetchSingleLocationPin('airport-location', 'airport')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-blue-100 shadow-sm">
                         <i class="fa-solid fa-location-crosshairs text-base"></i> Current Location Send (सध्याचे ठिकाण पाठवा)
                     </button>
+                    <!-- कस्टमरला दिसणारा लोकेशन स्टेटस बॉक्स -->
+                    <div id="airport-location-status" class="mt-1.5 p-2 bg-green-50 border border-green-300 rounded-lg text-[11px] font-bold text-green-800 hidden flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-check text-green-600 text-sm"></i>
+                        <span id="airport-location-text">लोकेशन मिळाले नाही</span>
+                    </div>
                     <input type="hidden" id="airport-location">
                 </div>
 
@@ -913,8 +921,8 @@
                     <i class="fa-solid fa-gauge-high text-redbus"></i> ओनर डॅशबोर्ड (Owner Control Center)  
                 </h2>  
                 <div class="flex gap-1.5">  
-                    <button onclick="exportDriverLogsToExcel()" class="bg-emerald-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow hover:bg-emerald-700 flex items-center gap-1">  
-                        <i class="fa-solid fa-file-excel"></i> Excel Download  
+                    <button onclick="downloadAndShareExcelFile()" class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1.5 rounded shadow hover:bg-emerald-700 flex items-center gap-1.5">  
+                        <i class="fa-solid fa-file-excel text-sm"></i> Excel File WhatsApp
                     </button>  
                     <button onclick="showOwnerView('all')" class="bg-redbus text-white text-[10px] font-bold px-2 py-1 rounded shadow hover:bg-redbusDark">  
                         <i class="fa-solid fa-list-check"></i> Inquire All (<span id="count-all">0</span>)  
@@ -1195,10 +1203,21 @@
             const mapLink = `https://maps.google.com/?q=${lat},${lng}`;
             
             field.value = `📍 Current Location (${lat}, ${lng}) - ${mapLink}`;
+            
+            // कस्टमरला दिसेल असा स्टेटस बॉक्स अपडेट करणे
+            const statusBox = document.getElementById(`${portalType}-location-status`);
+            const statusText = document.getElementById(`${portalType}-location-text`);
+            if (statusBox && statusText) {
+                statusText.innerHTML = `✅ लोकेशन यशस्वीपणे मिळाले! (${lat}, ${lng}) <br><a href="${mapLink}" target="_blank" class="underline text-blue-600 font-bold">मॅपमध्ये पहा</a>`;
+                statusBox.classList.remove('hidden');
+            }
+
             alert(`✅ लोकेशन यशस्वीपणे मिळाले!\n(${lat}, ${lng})`);
         }, (err) => {
             alert("लोकेशन घेता आले नाही. कृपया GPS/Location On करा.");
             field.value = "";
+            const statusBox = document.getElementById(`${portalType}-location-status`);
+            if (statusBox) statusBox.classList.add('hidden');
         }, { enableHighAccuracy: true });
     };
 
@@ -2254,46 +2273,67 @@
             });  
     };  
 
-    window.exportDriverLogsToExcel = function() {  
-        if (typeof XLSX === 'undefined') {  
-            alert("कोणतीही ड्रायव्हर हिशोब नोंद उपलब्ध नाही!");  
-            return;  
-        }  
+    window.downloadAndShareExcelFile = function() {
+        const bookRef = ref(database, 'bookings/');
+        onValue(bookRef, async (snapshot) => {
+            const data = snapshot.val();
+            if (!data) {
+                alert("डाउनलोड करण्यासाठी कोणतीही बुकिंग नोंद उपलब्ध नाही!");
+                return;
+            }
 
-        const logsRef = ref(database, 'driver_logs/');  
-        onValue(logsRef, (snapshot) => {  
-            const data = snapshot.val();  
-            if (!data) {  
-                alert("कोणतीही ड्रायव्हर हिशोब नोंद उपलब्ध नाही!");  
-                return;  
-            }  
+            let excelRows = [];
+            let counter = 1;
 
-            const rows = [];  
-            Object.values(data).forEach(log => {  
-                rows.push({  
-                    "नोंद तारीख": log.date || 'N/A',  
-                    "ड्रायव्हर नाव": log.driverName || 'N/A',  
-                    "मोबाईल नंबर": log.driverPhone || 'N/A',  
-                    "गाडी नंबर": log.vehicleNo || 'N/A',  
-                    "जाण्याची तारीख": log.startDate || 'N/A',  
-                    "येण्याची तारीख": log.endDate || 'N/A',  
-                    "प्रेझेंटी": log.dutyStatus || 'Present',  
-                    "कलेक्शन (₹)": log.collection || 0,  
-                    "टोल (₹)": log.toll || 0,  
-                    "इंधन (₹)": log.fuel || 0,  
-                    "इतर खर्च (₹)": log.other || 0,  
-                    "शिल्लक कॅश (₹)": log.balance || 0  
-                });  
-            });  
+            Object.values(data).forEach(item => {
+                excelRows.push({
+                    "अ.क्र.": counter,
+                    "ग्राहक नाव": item.customerName || 'N/A',
+                    "मोबाईल नंबर": item.customerPhone || 'N/A',
+                    "बुकिंग प्रकार": item.type || 'N/A',
+                    "रूट / दिशा": item.direction || item.route || 'N/A',
+                    "पिकअप": item.pickup || item.location || 'N/A',
+                    "ड्रॉप": item.drop || 'N/A',
+                    "गाडी": item.car || item.capacity || 'N/A',
+                    "तारीख": item.date || 'N/A',
+                    "वेळ": item.time || 'N/A',
+                    "इतर माहिती": item.details || item.paymentStatus || 'N/A'
+                });
+                counter++;
+            });
 
-            const worksheet = XLSX.utils.json_to_sheet(rows);  
-            const workbook = XLSX.utils.book_new();  
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Monthly_Driver_Logs");  
+            const worksheet = XLSX.utils.json_to_sheet(excelRows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Bookings_Data");
+            
+            const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const file = new File([blob], "Gurukrupa_Bookings_Report.xlsx", { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-            const fileName = `Gurukrupa_Driver_Logs_${getTodayString()}.xlsx`;  
-            XLSX.writeFile(workbook, fileName);  
-        }, { onlyOnce: true });  
-    };  
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Gurukrupa Bookings Report',
+                        text: 'येथे गुरुकृपा टूर अँड ट्रॅव्हल्सचा सर्व बुकिंग डेटा एक्सेल फाईलमध्ये आहे.'
+                    });
+                    return;
+                } catch (error) {
+                    console.log('Share canceled or failed', error);
+                }
+            }
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "Gurukrupa_Bookings_Report.xlsx";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            alert("✅ फाईल डाउनलोड झाली आहे! तुम्ही ती WhatsApp द्वारे फाईल म्हणून पाठवू शकता.");
+        }, { onlyOnce: true });
+    };
 
     window.deleteRecord = function(pathKey, nodeType) {  
         if (confirm("तुम्हाला खात्री आहे की तुम्ही ही नोंद डिलीट करू इच्छिता?")) {  
