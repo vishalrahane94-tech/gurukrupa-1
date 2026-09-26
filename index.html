@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="icon-192.png">  
 
     <script src="https://cdn.tailwindcss.com"></script>  
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">  
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>  
 
     <!-- Leaflet CSS for Live GPS Map -->
@@ -242,6 +242,7 @@
             z-index: 1;
         }
 
+        /* Custom Google-Map Style Car Marker Styling */
         .car-marker-container {
             display: flex;
             flex-direction: column;
@@ -271,62 +272,6 @@
             margin-top: -2px;
         }
 
-        /* --- SEARCH BOX STYLING --- */
-        .uber-location-box {
-            position: relative;
-            width: 100%;
-        }
-
-        .uber-input-card {
-            display: flex;
-            align-items: center;
-            border: 2px solid #000;
-            border-radius: 12px;
-            padding: 8px 12px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .uber-pin-icon {
-            font-size: 20px;
-            color: #000;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-
-        .uber-input-inner {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            overflow: hidden;
-        }
-
-        .uber-label {
-            font-size: 11px;
-            color: #666;
-            font-weight: 700;
-            line-height: 1;
-            margin-bottom: 2px;
-        }
-
-        .uber-input {
-            border: none;
-            outline: none;
-            font-size: 14px;
-            font-weight: 700;
-            color: #000;
-            width: 100%;
-            background: transparent;
-        }
-
-        .uber-clear-icon {
-            font-size: 16px;
-            color: #000;
-            cursor: pointer;
-            display: none;
-            margin-left: 6px;
-        }
-
         @media (max-width: 370px) {
             .brand-title h1 { font-size: 13px !important; }
             .brand-title span { font-size: 8px !important; }
@@ -338,6 +283,22 @@
 
 </head>  
 <body class="bg-gray-100 font-sans pb-10">  
+
+<!-- ऑटो-सजेस्ट ऑप्शन्स लिस्ट -->
+<datalist id="location-suggestions">
+    <option value="Kesar Tree Town, Pune"></option>
+    <option value="Kesar Kingston, Pune"></option>
+    <option value="Thakkar Bazar, Nashik"></option>
+    <option value="Dwarka Circle, Nashik"></option>
+    <option value="Mumbai Naka, Nashik"></option>
+    <option value="Govind Nagar, Nashik"></option>
+    <option value="Chakan, Pune"></option>
+    <option value="Bhosari, Pune"></option>
+    <option value="Nashik Phata, Pune"></option>
+    <option value="Wakadewadi, Pune"></option>
+    <option value="Viman Nagar, Pune Airport"></option>
+    <option value="Mumbai Airport Terminal 2"></option>
+</datalist>
 
 <!-- टॉप हेडर -->  
 <header id="app-header" class="gk-app-header">  
@@ -595,7 +556,7 @@
                 </div>  
             </div>  
 
-            <!-- 2. One Way Section -->  
+            <!-- 2. One Way Section (Updated with Searchable Pickup/Drop) -->  
             <div id="oneway-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>  
                 <div>  
@@ -614,28 +575,15 @@
                     </select>  
                 </div>  
 
-                <!-- AUTOCOMPLETE SEARCH PICKUP AND DROP -->
-                <div class="space-y-2">
-                    <div class="uber-location-box">
-                        <div class="uber-input-card">
-                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                            <div class="uber-input-inner">
-                                <span class="uber-label">Pickup location</span>
-                                <input type="text" id="oneway-pickup" class="uber-input" placeholder="Search pickup location...">
-                            </div>
-                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('oneway-pickup', this)"></i>
-                        </div>
+                <!-- नवीन सर्च-सजेस्ट पिकअप आणि ड्रॉप पॉईंट्स -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Point) *</label>
+                        <input type="text" id="oneway-pickup" list="location-suggestions" placeholder="उदा. Kesar Tree Town" class="w-full p-2 border rounded text-xs">
                     </div>
-
-                    <div class="uber-location-box">
-                        <div class="uber-input-card">
-                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                            <div class="uber-input-inner">
-                                <span class="uber-label">Drop location</span>
-                                <input type="text" id="oneway-drop" class="uber-input" placeholder="Search drop location...">
-                            </div>
-                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('oneway-drop', this)"></i>
-                        </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Point) *</label>
+                        <input type="text" id="oneway-drop" list="location-suggestions" placeholder="उदा. Dwarka Circle" class="w-full p-2 border rounded text-xs">
                     </div>
                 </div>
 
@@ -655,7 +603,7 @@
                 </div>  
             </div>  
 
-            <!-- 3. Airport Section -->  
+            <!-- 3. Airport Section (Updated with Searchable Pickup/Drop) -->  
             <div id="airport-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>  
                 <div>  
@@ -672,28 +620,15 @@
                     </select>  
                 </div>  
 
-                <!-- AUTOCOMPLETE SEARCH PICKUP AND DROP -->
-                <div class="space-y-2">
-                    <div class="uber-location-box">
-                        <div class="uber-input-card">
-                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                            <div class="uber-input-inner">
-                                <span class="uber-label">Pickup location</span>
-                                <input type="text" id="airport-pickup" class="uber-input" placeholder="Search airport pickup...">
-                            </div>
-                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('airport-pickup', this)"></i>
-                        </div>
+                <!-- नवीन सर्च पिकअप व ड्रॉप -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">पिकअप पॉईंट (Pickup Location) *</label>
+                        <input type="text" id="airport-pickup" list="location-suggestions" placeholder="उदा. Kesar Kingston" class="w-full p-2 border rounded text-xs">
                     </div>
-
-                    <div class="uber-location-box">
-                        <div class="uber-input-card">
-                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                            <div class="uber-input-inner">
-                                <span class="uber-label">Drop location</span>
-                                <input type="text" id="airport-drop" class="uber-input" placeholder="Search airport drop...">
-                            </div>
-                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('airport-drop', this)"></i>
-                        </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">ड्रॉप पॉईंट (Drop Location) *</label>
+                        <input type="text" id="airport-drop" list="location-suggestions" placeholder="उदा. Pune Airport" class="w-full p-2 border rounded text-xs">
                     </div>
                 </div>
 
@@ -713,7 +648,7 @@
                 </div>  
             </div>  
 
-            <!-- 4. Fleet Section (AUTO KM CALCULATION) -->  
+            <!-- 4. Fleet Section (Updated: Multi-Stop Map Style Routing) -->  
             <div id="fleet-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>  
                 <div>  
@@ -729,16 +664,11 @@
                     </select>  
                 </div>  
 
+                <!-- गुगल मॅप्स सारखा रूट डिझाईन -->
                 <div class="space-y-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-200">
-                    <div class="uber-location-box">
-                        <div class="uber-input-card">
-                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                            <div class="uber-input-inner">
-                                <span class="uber-label">Pickup location</span>
-                                <input type="text" id="fleet-pickup" class="uber-input" placeholder="सुरुवातीचे ठिकाण...">
-                            </div>
-                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('fleet-pickup', this)"></i>
-                        </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-blue-900 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Point) *</label>
+                        <input type="text" id="fleet-pickup" list="location-suggestions" placeholder="उदा. नाशिक / घरचे लोकेशन" class="w-full p-2 border rounded text-xs bg-white">
                     </div>
 
                     <div id="fleet-extra-stops" class="space-y-2"></div>
@@ -747,22 +677,16 @@
                         <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Stop Point)
                     </button>
 
-                    <div class="uber-location-box">
-                        <div class="uber-input-card">
-                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                            <div class="uber-input-inner">
-                                <span class="uber-label">Drop location</span>
-                                <input type="text" id="fleet-drop" class="uber-input" placeholder="शेवटचे ठिकाण...">
-                            </div>
-                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('fleet-drop', this)"></i>
-                        </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-blue-900 mb-1">🏁 शेवटचे ठिकाण (Drop Point) *</label>
+                        <input type="text" id="fleet-drop" list="location-suggestions" placeholder="उदा. गोवा / अंतिम ठिकाण" class="w-full p-2 border rounded text-xs bg-white">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे किलोमीटर (KM)</label>  
-                        <input type="number" id="fleet-km" placeholder="ऑटो-मॅटिक KM येईल..." oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs font-extrabold text-blue-700 bg-yellow-50">  
+                        <input type="number" id="fleet-km" placeholder="उदा. 300" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs">  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे एकूण रक्कम (₹)</label>  
@@ -837,7 +761,7 @@
                 </div>  
             </div>  
 
-            <!-- 7. Buses Section -->  
+            <!-- 7. Buses Section (Updated: Searchable Pickup/Drop & Extra Stops) -->  
             <div id="buses-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">  
                     <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)  
@@ -857,16 +781,11 @@
                         </select>  
                     </div>  
 
+                    <!-- बस पोर्टलसाठी सर्च पिकअप / ड्रॉप व स्टॉप पॉईंट्स -->
                     <div class="space-y-2 bg-white p-2.5 rounded-lg border border-red-200">
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Pickup location</span>
-                                    <input type="text" id="bus-pickup" class="uber-input" placeholder="सुरुवातीचे ठिकाण...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('bus-pickup', this)"></i>
-                            </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-800 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Point) *</label>
+                            <input type="text" id="bus-pickup" list="location-suggestions" placeholder="उदा. नाशिक" class="w-full p-2 border rounded text-xs">
                         </div>
 
                         <div id="bus-extra-stops" class="space-y-2"></div>
@@ -875,15 +794,9 @@
                             <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Stop Point)
                         </button>
 
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Drop location</span>
-                                    <input type="text" id="bus-drop" class="uber-input" placeholder="अंतिम ठिकाण...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('bus-drop', this)"></i>
-                            </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-800 mb-1">🏁 अंतिम ठिकाण (Drop Point) *</label>
+                            <input type="text" id="bus-drop" list="location-suggestions" placeholder="उदा. गोवा" class="w-full p-2 border rounded text-xs">
                         </div>
                     </div>
 
@@ -907,10 +820,11 @@
                 </div>  
             </div>  
 
-            <!-- Payment Section -->
+            <!-- Payment Section (QR Code & Direct UPI Link Added) -->
             <div id="payment-section" class="mt-5 border-t-2 border-dashed border-gray-300 pt-4 text-center">  
                 <h4 class="text-sm font-bold text-gray-800">Shashiraj Rahane</h4>  
                 
+                <!-- QR Code Touch/Click Deep Link for GPay, PhonePe, Paytm -->
                 <a href="upi://pay?pa=shash74.s7@oksbi&pn=Shashiraj%20Rahane&cu=INR" class="block my-2 inline-block">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shash74.s7@oksbi&pn=Shashiraj%20Rahane" alt="UPI QR Code" class="w-36 h-36 mx-auto rounded-lg shadow-md border p-1 bg-white cursor-pointer hover:opacity-90 active:scale-95 transition-all">
                     <span class="block text-[10px] text-blue-600 font-extrabold mt-1 underline">📲 QR वर टच करा (GPay / PhonePe उघडा)</span>
@@ -1254,132 +1168,18 @@
     let vehiclePolylines = {}; 
     let activeVehicleNo = null;
 
-    // --- OPENSTREETMAP (NOMINATIM) LOCATION AUTOCOMPLETE (100% FREE) ---
-    function setupUberLocationInputs() {
-        const uberInputs = document.querySelectorAll('.uber-input');
-
-        uberInputs.forEach(input => {
-            if (input.dataset.autocompleteInitialized) return;
-            input.dataset.autocompleteInitialized = "true";
-
-            let dropdown = input.parentElement.parentElement.querySelector('.uber-dropdown');
-            if (!dropdown) {
-                dropdown = document.createElement('div');
-                dropdown.className = 'uber-dropdown bg-white border border-gray-300 rounded-b-lg shadow-lg absolute left-0 right-0 z-50 max-h-48 overflow-y-auto hidden';
-                input.parentElement.parentElement.appendChild(dropdown);
-            }
-
-            let timeout = null;
-            input.addEventListener('input', function() {
-                clearTimeout(timeout);
-                const query = this.value.trim();
-                const clearIcon = this.parentElement.parentElement.querySelector('.uber-clear-icon');
-                if (clearIcon) clearIcon.style.display = query.length > 0 ? 'block' : 'none';
-
-                if (query.length < 3) {
-                    dropdown.innerHTML = '';
-                    dropdown.classList.add('hidden');
-                    return;
-                }
-
-                timeout = setTimeout(() => {
-                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=in&limit=6`)
-                        .then(res => res.json())
-                        .then(data => {
-                            dropdown.innerHTML = '';
-                            if (data.length === 0) {
-                                dropdown.innerHTML = '<div class="p-2 text-xs text-gray-500">कोणतेही ठिकाण सापडले नाही</div>';
-                            } else {
-                                data.forEach(item => {
-                                    const option = document.createElement('div');
-                                    option.className = 'p-2 text-xs hover:bg-gray-100 cursor-pointer border-b border-gray-100 font-semibold text-gray-800';
-                                    option.innerText = item.display_name;
-                                    option.onclick = function() {
-                                        input.value = item.display_name;
-                                        input.dataset.lat = item.lat;
-                                        input.dataset.lon = item.lon;
-                                        dropdown.innerHTML = '';
-                                        dropdown.classList.add('hidden');
-                                        if (input.id.startsWith('fleet-') || input.classList.contains('fleet-via-point')) {
-                                            autoCalculateFleetKM();
-                                        }
-                                    };
-                                    dropdown.appendChild(option);
-                                });
-                            }
-                            dropdown.classList.remove('hidden');
-                        })
-                        .catch(() => {
-                            dropdown.classList.add('hidden');
-                        });
-                }, 400);
-            });
-        });
-    }
-
-    // --- AUTO CALCULATE KM FOR FLEET PORTAL ---
-    window.autoCalculateFleetKM = function() {
-        const pickupInput = document.getElementById('fleet-pickup');
-        const dropInput = document.getElementById('fleet-drop');
-
-        const pLat = pickupInput.dataset.lat;
-        const pLon = pickupInput.dataset.lon;
-        const dLat = dropInput.dataset.lat;
-        const dLon = dropInput.dataset.lon;
-
-        if (pLat && pLon && dLat && dLon) {
-            // Formula to calculate distance between two lat/lon in KM
-            const R = 6371; // Radius of earth in KM
-            const dLatRad = (dLat - pLat) * Math.PI / 180;
-            const dLonRad = (dLon - pLon) * Math.PI / 180;
-            const a = Math.sin(dLatRad/2) * Math.sin(dLatRad/2) +
-                      Math.cos(pLat * Math.PI / 180) * Math.cos(dLat * Math.PI / 180) *
-                      Math.sin(dLonRad/2) * Math.sin(dLonRad/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            const straightDistance = R * c;
-
-            // Road Factor (Approx 1.25x of straight distance)
-            const approxRoadKM = Math.round(straightDistance * 1.28);
-            
-            document.getElementById('fleet-km').value = approxRoadKM;
-            calculateFleetTotal();
-        }
-    };
-
-    window.clearUberInput = function(inputId, clearIconEl) {
-        const input = document.getElementById(inputId);
-        if (input) {
-            input.value = '';
-            delete input.dataset.lat;
-            delete input.dataset.lon;
-            if (clearIconEl) clearIconEl.style.display = 'none';
-            input.focus();
-            if (inputId.startsWith('fleet-')) {
-                autoCalculateFleetKM();
-            }
-        }
-    };
-
+    // Google Map-Like dynamic stop-point adder function
     window.addFleetStopPoint = function(containerId) {
         const container = document.getElementById(containerId);
         if (!container) return;
 
         const div = document.createElement('div');
-        div.className = "flex gap-2 items-center my-1";
+        div.className = "flex gap-2 items-center";
         div.innerHTML = `
-            <div class="uber-location-box w-full">
-                <div class="uber-input-card">
-                    <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                    <div class="uber-input-inner">
-                        <span class="uber-label">Via Stop</span>
-                        <input type="text" class="uber-input fleet-via-point" placeholder="मध्यंतरीचा स्टॉप...">
-                    </div>
-                </div>
-            </div>
-            <button type="button" onclick="this.parentElement.remove(); autoCalculateFleetKM();" class="bg-red-500 text-white font-bold px-3 py-2 rounded-lg text-xs shrink-0">✕</button>
+            <input type="text" list="location-suggestions" placeholder="📍 मध्यंतरीचा स्टॉप / पॉईंट (Via Point)" class="fleet-via-point w-full p-2 border rounded text-xs bg-white">
+            <button type="button" onclick="this.parentElement.remove()" class="bg-red-500 text-white font-bold px-2.5 py-1.5 rounded text-xs">✕</button>
         `;
         container.appendChild(div);
-        setupUberLocationInputs();
     };
 
     const createGoogleCarIcon = (vehicleNo, heading = 0) => {
@@ -1625,8 +1425,6 @@
         window.scrollTo(0, 0);  
         setCalendarMinDates();  
         populateDriverVehicleNumbers();  
-        setupUberLocationInputs();
-
         const savedUser = localStorage.getItem('gk_user');  
         if (savedUser) {  
             window.currentUser = JSON.parse(savedUser);  
