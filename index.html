@@ -18,6 +18,10 @@
     <!-- Leaflet CSS for Live GPS Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
+    <!-- Google Maps Places & Distance Matrix API Script -->
+    <!-- ⚠️ YOUR_GOOGLE_MAPS_API_KEY च्या जागी तुमची खरी API Key टाका -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+
     <script>  
         tailwind.config = {  
             theme: {  
@@ -328,84 +332,6 @@
             margin-left: 6px;
         }
 
-        .uber-dropdown {
-            position: absolute;
-            top: 105%;
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0px 8px 20px rgba(0,0,0,0.18);
-            overflow: hidden;
-            display: none;
-            z-index: 1000;
-            max-height: 280px;
-            overflow-y: auto;
-        }
-
-        .uber-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 14px;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.2s ease;
-        }
-
-        .uber-item:last-child {
-            border-bottom: none;
-        }
-
-        .uber-item:hover {
-            background-color: #f8f8f8;
-        }
-
-        .uber-item-icon-bg {
-            width: 34px;
-            height: 34px;
-            background-color: #eeeeee;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-
-        .uber-item-icon-bg i {
-            font-size: 15px;
-            color: #000000;
-        }
-
-        .uber-item-text {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .uber-main-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #000000;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .uber-sub-title {
-            font-size: 12px;
-            color: #666666;
-            margin-top: 1px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .uber-current-text {
-            color: #000;
-            font-weight: 800;
-        }
-
         @media (max-width: 370px) {
             .brand-title h1 { font-size: 13px !important; }
             .brand-title span { font-size: 8px !important; }
@@ -674,7 +600,7 @@
                 </div>  
             </div>  
 
-            <!-- 2. One Way Section (Free OpenStreetMap Location Autocomplete) -->  
+            <!-- 2. One Way Section -->  
             <div id="oneway-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>  
                 <div>  
@@ -693,46 +619,27 @@
                     </select>  
                 </div>  
 
-                <!-- OLA/UBER STYLE SEARCH PICKUP AND DROP -->
+                <!-- GOOGLE AUTOCOMPLETE SEARCH PICKUP AND DROP -->
                 <div class="space-y-2">
-                    <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Pickup location</span>
-                                    <input type="text" id="oneway-pickup" class="uber-input" placeholder="Search pickup location...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('oneway-pickup', this)"></i>
+                    <div class="uber-location-box">
+                        <div class="uber-input-card">
+                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
+                            <div class="uber-input-inner">
+                                <span class="uber-label">Pickup location</span>
+                                <input type="text" id="oneway-pickup" class="uber-input" placeholder="Search pickup location...">
                             </div>
-                            <div class="uber-dropdown" id="oneway-pickup-dropdown">
-                                <div class="uber-item" onclick="useCurrentLocation('oneway-pickup')">
-                                    <div class="uber-item-icon-bg">
-                                        <i class="fa-solid fa-crosshairs"></i>
-                                    </div>
-                                    <div class="uber-item-text">
-                                        <span class="uber-main-title uber-current-text">Use current location</span>
-                                        <span class="uber-sub-title">Using GPS</span>
-                                    </div>
-                                </div>
-                                <div class="uber-results"></div>
-                            </div>
+                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('oneway-pickup', this)"></i>
                         </div>
                     </div>
 
-                    <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Drop location</span>
-                                    <input type="text" id="oneway-drop" class="uber-input" placeholder="Search drop location...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('oneway-drop', this)"></i>
+                    <div class="uber-location-box">
+                        <div class="uber-input-card">
+                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
+                            <div class="uber-input-inner">
+                                <span class="uber-label">Drop location</span>
+                                <input type="text" id="oneway-drop" class="uber-input" placeholder="Search drop location...">
                             </div>
-                            <div class="uber-dropdown" id="oneway-drop-dropdown">
-                                <div class="uber-results"></div>
-                            </div>
+                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('oneway-drop', this)"></i>
                         </div>
                     </div>
                 </div>
@@ -770,46 +677,27 @@
                     </select>  
                 </div>  
 
-                <!-- OLA/UBER STYLE SEARCH PICKUP AND DROP -->
+                <!-- GOOGLE AUTOCOMPLETE SEARCH PICKUP AND DROP -->
                 <div class="space-y-2">
-                    <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Pickup location</span>
-                                    <input type="text" id="airport-pickup" class="uber-input" placeholder="Search airport pickup...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('airport-pickup', this)"></i>
+                    <div class="uber-location-box">
+                        <div class="uber-input-card">
+                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
+                            <div class="uber-input-inner">
+                                <span class="uber-label">Pickup location</span>
+                                <input type="text" id="airport-pickup" class="uber-input" placeholder="Search airport pickup...">
                             </div>
-                            <div class="uber-dropdown" id="airport-pickup-dropdown">
-                                <div class="uber-item" onclick="useCurrentLocation('airport-pickup')">
-                                    <div class="uber-item-icon-bg">
-                                        <i class="fa-solid fa-crosshairs"></i>
-                                    </div>
-                                    <div class="uber-item-text">
-                                        <span class="uber-main-title uber-current-text">Use current location</span>
-                                        <span class="uber-sub-title">Using GPS</span>
-                                    </div>
-                                </div>
-                                <div class="uber-results"></div>
-                            </div>
+                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('airport-pickup', this)"></i>
                         </div>
                     </div>
 
-                    <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Drop location</span>
-                                    <input type="text" id="airport-drop" class="uber-input" placeholder="Search airport drop...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('airport-drop', this)"></i>
+                    <div class="uber-location-box">
+                        <div class="uber-input-card">
+                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
+                            <div class="uber-input-inner">
+                                <span class="uber-label">Drop location</span>
+                                <input type="text" id="airport-drop" class="uber-input" placeholder="Search airport drop...">
                             </div>
-                            <div class="uber-dropdown" id="airport-drop-dropdown">
-                                <div class="uber-results"></div>
-                            </div>
+                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('airport-drop', this)"></i>
                         </div>
                     </div>
                 </div>
@@ -830,7 +718,7 @@
                 </div>  
             </div>  
 
-            <!-- 4. Fleet Section -->  
+            <!-- 4. Fleet Section (AUTO KM CALCULATION) -->  
             <div id="fleet-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>  
                 <div>  
@@ -847,28 +735,14 @@
                 </div>  
 
                 <div class="space-y-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-200">
-                    <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Pickup location</span>
-                                    <input type="text" id="fleet-pickup" class="uber-input" placeholder="सुरुवातीचे ठिकाण...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('fleet-pickup', this)"></i>
+                    <div class="uber-location-box">
+                        <div class="uber-input-card">
+                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
+                            <div class="uber-input-inner">
+                                <span class="uber-label">Pickup location</span>
+                                <input type="text" id="fleet-pickup" class="uber-input" placeholder="सुरुवातीचे ठिकाण...">
                             </div>
-                            <div class="uber-dropdown" id="fleet-pickup-dropdown">
-                                <div class="uber-item" onclick="useCurrentLocation('fleet-pickup')">
-                                    <div class="uber-item-icon-bg">
-                                        <i class="fa-solid fa-crosshairs"></i>
-                                    </div>
-                                    <div class="uber-item-text">
-                                        <span class="uber-main-title uber-current-text">Use current location</span>
-                                        <span class="uber-sub-title">Using GPS</span>
-                                    </div>
-                                </div>
-                                <div class="uber-results"></div>
-                            </div>
+                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('fleet-pickup', this)"></i>
                         </div>
                     </div>
 
@@ -878,19 +752,14 @@
                         <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Stop Point)
                     </button>
 
-                    <div>
-                        <div class="uber-location-box">
-                            <div class="uber-input-card">
-                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                <div class="uber-input-inner">
-                                    <span class="uber-label">Drop location</span>
-                                    <input type="text" id="fleet-drop" class="uber-input" placeholder="शेवटचे ठिकाण...">
-                                </div>
-                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('fleet-drop', this)"></i>
+                    <div class="uber-location-box">
+                        <div class="uber-input-card">
+                            <i class="fa-solid fa-location-dot uber-pin-icon"></i>
+                            <div class="uber-input-inner">
+                                <span class="uber-label">Drop location</span>
+                                <input type="text" id="fleet-drop" class="uber-input" placeholder="शेवटचे ठिकाण...">
                             </div>
-                            <div class="uber-dropdown" id="fleet-drop-dropdown">
-                                <div class="uber-results"></div>
-                            </div>
+                            <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('fleet-drop', this)"></i>
                         </div>
                     </div>
                 </div>
@@ -898,7 +767,7 @@
                 <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे किलोमीटर (KM)</label>  
-                        <input type="number" id="fleet-km" placeholder="उदा. 300" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs">  
+                        <input type="number" id="fleet-km" placeholder="ऑटो-मॅटिक KM येईल..." oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs font-extrabold text-blue-700 bg-yellow-50">  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे एकूण रक्कम (₹)</label>  
@@ -994,28 +863,14 @@
                     </div>  
 
                     <div class="space-y-2 bg-white p-2.5 rounded-lg border border-red-200">
-                        <div>
-                            <div class="uber-location-box">
-                                <div class="uber-input-card">
-                                    <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                    <div class="uber-input-inner">
-                                        <span class="uber-label">Pickup location</span>
-                                        <input type="text" id="bus-pickup" class="uber-input" placeholder="सुरुवातीचे ठिकाण...">
-                                    </div>
-                                    <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('bus-pickup', this)"></i>
+                        <div class="uber-location-box">
+                            <div class="uber-input-card">
+                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
+                                <div class="uber-input-inner">
+                                    <span class="uber-label">Pickup location</span>
+                                    <input type="text" id="bus-pickup" class="uber-input" placeholder="सुरुवातीचे ठिकाण...">
                                 </div>
-                                <div class="uber-dropdown" id="bus-pickup-dropdown">
-                                    <div class="uber-item" onclick="useCurrentLocation('bus-pickup')">
-                                        <div class="uber-item-icon-bg">
-                                            <i class="fa-solid fa-crosshairs"></i>
-                                        </div>
-                                        <div class="uber-item-text">
-                                            <span class="uber-main-title uber-current-text">Use current location</span>
-                                            <span class="uber-sub-title">Using GPS</span>
-                                        </div>
-                                    </div>
-                                    <div class="uber-results"></div>
-                                </div>
+                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('bus-pickup', this)"></i>
                             </div>
                         </div>
 
@@ -1025,19 +880,14 @@
                             <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Stop Point)
                         </button>
 
-                        <div>
-                            <div class="uber-location-box">
-                                <div class="uber-input-card">
-                                    <i class="fa-solid fa-location-dot uber-pin-icon"></i>
-                                    <div class="uber-input-inner">
-                                        <span class="uber-label">Drop location</span>
-                                        <input type="text" id="bus-drop" class="uber-input" placeholder="अंतिम ठिकाण...">
-                                    </div>
-                                    <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('bus-drop', this)"></i>
+                        <div class="uber-location-box">
+                            <div class="uber-input-card">
+                                <i class="fa-solid fa-location-dot uber-pin-icon"></i>
+                                <div class="uber-input-inner">
+                                    <span class="uber-label">Drop location</span>
+                                    <input type="text" id="bus-drop" class="uber-input" placeholder="अंतिम ठिकाण...">
                                 </div>
-                                <div class="uber-dropdown" id="bus-drop-dropdown">
-                                    <div class="uber-results"></div>
-                                </div>
+                                <i class="fa-solid fa-circle-xmark uber-clear-icon" onclick="clearUberInput('bus-drop', this)"></i>
                             </div>
                         </div>
                     </div>
@@ -1409,125 +1259,111 @@
     let vehiclePolylines = {}; 
     let activeVehicleNo = null;
 
-    // --- FREE OPENSTREETMAP (NOMINATIM API) LOCATION AUTOCOMPLETE & GPS ---
+    // --- GOOGLE AUTOCOMPLETE WITH CITY & GPS PRIORITY ---
+    const CITY_BOUNDS = {
+        'नाशिक': { lat: 19.9975, lng: 73.7898 },
+        'पुणे': { lat: 18.5204, lng: 73.8567 },
+        'मुंबई': { lat: 19.0760, lng: 72.8777 },
+        'संभाजीनगर': { lat: 19.8762, lng: 75.3433 },
+        'शिर्डी': { lat: 19.7645, lng: 74.4762 },
+        'वणी': { lat: 20.3237, lng: 73.8967 }
+    };
+
     function setupUberLocationInputs() {
         const uberInputs = document.querySelectorAll('.uber-input');
-        
+
         uberInputs.forEach(input => {
-            const box = input.closest('.uber-location-box');
-            if (!box) return;
+            if (input.dataset.autocompleteInitialized) return;
+            input.dataset.autocompleteInitialized = "true";
 
-            const dropdown = box.querySelector('.uber-dropdown');
-            const resultsContainer = box.querySelector('.uber-results');
-            const clearIcon = box.querySelector('.uber-clear-icon');
-            let debounceTimer;
+            const autocomplete = new google.maps.places.Autocomplete(input, {
+                componentRestrictions: { country: 'in' },
+                fields: ['formatted_address', 'geometry', 'name']
+            });
 
-            // इनपुटवर क्लिक केल्यावर ड्रॉपडाउन दाखवणे
             input.addEventListener('focus', () => {
-                if (dropdown) dropdown.style.display = 'block';
+                updateAutocompleteBounds(input, autocomplete);
             });
 
-            // 2 किंवा अधिक अक्षरे टाईप केल्यावर रिअल-टाईम शोध घेणे
-            input.addEventListener('input', (e) => {
-                const query = e.target.value.trim();
-
-                if (clearIcon) {
-                    clearIcon.style.display = query.length > 0 ? 'block' : 'none';
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+                if (place && place.formatted_address) {
+                    input.value = place.formatted_address;
+                } else if (place && place.name) {
+                    input.value = place.name;
                 }
 
-                if (query.length < 2) {
-                    if (resultsContainer) resultsContainer.innerHTML = '';
-                    return;
+                if (input.id.startsWith('fleet-') || input.classList.contains('fleet-via-point')) {
+                    autoCalculateFleetKM();
                 }
-
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(() => {
-                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=in&limit=5`)
-                        .then(res => res.json())
-                        .then(data => {
-                            if (!resultsContainer) return;
-                            resultsContainer.innerHTML = '';
-
-                            if (data && data.length > 0) {
-                                data.forEach(place => {
-                                    const names = place.display_name.split(',');
-                                    const mainTitle = names[0].trim();
-                                    const subTitle = names.slice(1).join(',').trim();
-
-                                    const item = document.createElement('div');
-                                    item.className = 'uber-item';
-                                    item.innerHTML = `
-                                        <div class="uber-item-icon-bg">
-                                            <i class="fa-solid fa-location-dot"></i>
-                                        </div>
-                                        <div class="uber-item-text">
-                                            <span class="uber-main-title">${mainTitle}</span>
-                                            <span class="uber-sub-title">${subTitle}</span>
-                                        </div>
-                                    `;
-
-                                    item.addEventListener('click', () => {
-                                        input.value = place.display_name;
-                                        if (dropdown) dropdown.style.display = 'none';
-                                    });
-
-                                    resultsContainer.appendChild(item);
-                                });
-                            } else {
-                                resultsContainer.innerHTML = `<div class="p-3 text-xs text-gray-500 text-center">कोणतेही ठिकाण सापडले नाही</div>`;
-                            }
-                        })
-                        .catch(err => {
-                            console.error("Location search error:", err);
-                        });
-                }, 300);
             });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.uber-location-box')) {
-                document.querySelectorAll('.uber-dropdown').forEach(d => d.style.display = 'none');
-            }
         });
     }
 
-    // Current Location (GPS) वर क्लिक केल्यावर स्थान शोधणे
-    window.useCurrentLocation = function(inputId) {
-        const input = document.getElementById(inputId);
-        if (!input) return;
+    function updateAutocompleteBounds(inputEl, autocompleteObj) {
+        let targetCity = '';
+        const onewayRoute = document.getElementById('oneway-route');
+        const airportRoute = document.getElementById('airport-route');
+        const inputId = inputEl.id || '';
 
-        if (navigator.geolocation) {
-            input.value = "Detecting location...";
-            
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const lat = pos.coords.latitude;
-                    const lon = pos.coords.longitude;
-
-                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data && data.display_name) {
-                                input.value = data.display_name;
-                            } else {
-                                input.value = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
-                            }
-                            document.querySelectorAll('.uber-dropdown').forEach(d => d.style.display = 'none');
-                        })
-                        .catch(err => {
-                            input.value = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
-                            document.querySelectorAll('.uber-dropdown').forEach(d => d.style.display = 'none');
-                        });
-                },
-                (err) => {
-                    alert("GPS लोकेशन मिळवण्यात अडचण आली. कृपया तुमच्या मोबाईलचे Location (GPS) चालू करा.");
-                    input.value = "";
-                },
-                { enableHighAccuracy: true, timeout: 10000 }
-            );
-        } else {
-            alert("तुमच्या ब्राऊजरमध्ये जिओलोकेशन सपोर्ट उपलब्ध नाही.");
+        if (inputId.includes('pickup')) {
+            if (onewayRoute && onewayRoute.value) targetCity = onewayRoute.value.split('ते')[0].trim();
+            else if (airportRoute && airportRoute.value) targetCity = airportRoute.value.split('to')[0].trim();
+        } else if (inputId.includes('drop')) {
+            if (onewayRoute && onewayRoute.value) targetCity = onewayRoute.value.split('ते')[1]?.trim() || '';
+            else if (airportRoute && airportRoute.value) targetCity = airportRoute.value.split('to')[1]?.trim() || '';
         }
+
+        let centerLocation = null;
+        Object.keys(CITY_BOUNDS).forEach(cityName => {
+            if (targetCity.includes(cityName)) centerLocation = CITY_BOUNDS[cityName];
+        });
+
+        if (centerLocation) {
+            const circle = new google.maps.Circle({ center: centerLocation, radius: 25000 });
+            autocompleteObj.setBounds(circle.getBounds());
+        } else if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const circle = new google.maps.Circle({
+                    center: { lat: pos.coords.latitude, lng: pos.coords.longitude },
+                    radius: 25000
+                });
+                autocompleteObj.setBounds(circle.getBounds());
+            });
+        }
+    }
+
+    // --- AUTO CALCULATE FLEET KM USING GOOGLE DISTANCE MATRIX ---
+    window.autoCalculateFleetKM = function() {
+        const origin = document.getElementById('fleet-pickup').value;
+        const destination = document.getElementById('fleet-drop').value;
+
+        if (!origin || !destination) return;
+
+        const viaInputs = document.querySelectorAll('#fleet-extra-stops .fleet-via-point');
+        let waypoints = [];
+        viaInputs.forEach(input => {
+            if (input.value.trim()) waypoints.push({ location: input.value.trim(), stopover: true });
+        });
+
+        const directionsService = new google.maps.DirectionsService();
+        directionsService.route({
+            origin: origin,
+            destination: destination,
+            waypoints: waypoints,
+            travelMode: google.maps.TravelMode.DRIVING
+        }, (response, status) => {
+            if (status === 'OK' && response.routes[0]) {
+                let totalMeters = 0;
+                const legs = response.routes[0].legs;
+                for (let i = 0; i < legs.length; i++) {
+                    totalMeters += legs[i].distance.value;
+                }
+                const totalKM = Math.round(totalMeters / 1000);
+                document.getElementById('fleet-km').value = totalKM;
+                calculateFleetTotal();
+            }
+        });
     };
 
     window.clearUberInput = function(inputId, clearIconEl) {
@@ -1535,12 +1371,10 @@
         if (input) {
             input.value = '';
             if (clearIconEl) clearIconEl.style.display = 'none';
-            const box = input.closest('.uber-location-box');
-            if (box) {
-                const resultsContainer = box.querySelector('.uber-results');
-                if (resultsContainer) resultsContainer.innerHTML = '';
-            }
             input.focus();
+            if (inputId.startsWith('fleet-')) {
+                autoCalculateFleetKM();
+            }
         }
     };
 
@@ -1560,7 +1394,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" onclick="this.parentElement.remove()" class="bg-red-500 text-white font-bold px-3 py-2 rounded-lg text-xs shrink-0">✕</button>
+            <button type="button" onclick="this.parentElement.remove(); autoCalculateFleetKM();" class="bg-red-500 text-white font-bold px-3 py-2 rounded-lg text-xs shrink-0">✕</button>
         `;
         container.appendChild(div);
         setupUberLocationInputs();
