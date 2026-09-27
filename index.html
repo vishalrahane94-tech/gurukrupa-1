@@ -39,11 +39,50 @@
         }  
         .seat.selected .price-tag { color: white !important; }  
           
-        .tab-btn.active {  
-            background-color: #d84e55;  
-            color: white;  
-            border-color: #d84e55;  
-        }  
+        /* मुख्य पानातील सर्व्हिस बटन्ससाठी आकर्षक मॉडर्न डिझाइन */
+        .sticky-customer-nav .tab-btn {
+            background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%) !important;
+            border: 1.5px solid #f3d0d2 !important;
+            border-radius: 14px !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 6px -1px rgba(216, 78, 85, 0.1), 0 2px 4px -1px rgba(216, 78, 85, 0.06) !important;
+            color: #1f2937 !important;
+        }
+
+        .sticky-customer-nav .tab-btn:hover {
+            transform: translateY(-2px);
+            border-color: #d84e55 !important;
+            box-shadow: 0 8px 12px -2px rgba(216, 78, 85, 0.2) !important;
+        }
+
+        .sticky-customer-nav .tab-btn.active {  
+            background: linear-gradient(135deg, #d84e55 0%, #b83238 100%) !important;  
+            color: white !important;  
+            border-color: #b83238 !important;  
+            box-shadow: 0 6px 15px rgba(216, 78, 85, 0.4) !important;
+        }
+
+        .sticky-customer-nav .tab-btn .tab-icon {
+            font-size: 20px !important;
+            margin-bottom: 2px;
+            color: #d84e55;
+            transition: color 0.3s ease;
+        }
+
+        .sticky-customer-nav .tab-btn.active .tab-icon {
+            color: #ffffff !important;
+        }
+
+        #tab-buses {
+            background: linear-gradient(135deg, #d84e55 0%, #b83238 100%) !important;
+            color: white !important;
+            border: 1.5px solid #b83238 !important;
+            box-shadow: 0 6px 15px rgba(216, 78, 85, 0.4) !important;
+        }
+        #tab-buses .tab-icon {
+            color: white !important;
+        }
+
         .time-btn.selected {  
             background-color: #d84e55;  
             color: white;  
@@ -209,7 +248,6 @@
             align-items: center !important;
             justify-content: center !important;
             text-align: center !important;
-            border-radius: 8px !important;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
             font-size: 12px !important;
             font-weight: 700 !important;
@@ -400,14 +438,14 @@
     <!-- कस्टमर पोर्टल स्क्रीन -->  
     <div id="screen-customer" class="hidden pt-1">  
         <div class="sticky-customer-nav">  
-            <div class="grid grid-cols-3 gap-1.5 mb-2 text-xs font-semibold">  
-                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active border bg-white"><span class="tab-icon"><i class="fa-solid fa-car-side"></i></span><span>1. Sharing</span></button>  
-                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-route"></i></span><span>2. One Way</span></button>  
-                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-plane"></i></span><span>3. Airport Drop</span></button>  
-                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-car"></i></span><span>4. Fleet (Per KM)</span></button>  
-                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-landmark"></i></span><span>5. नाशिक दर्शन</span></button>  
-                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-cube"></i></span><span>6. Packages</span></button>  
-                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 border bg-white text-redbus font-bold"><span class="tab-icon"><i class="fa-solid fa-bus"></i></span><span>7. Buses Inquiry</span></button>  
+            <div class="grid grid-cols-3 gap-2 mb-2 text-xs font-semibold">  
+                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active"><span class="tab-icon"><i class="fa-solid fa-car-side"></i></span><span>1. Sharing</span></button>  
+                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-route"></i></span><span>2. One Way</span></button>  
+                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-plane"></i></span><span>3. Airport Drop</span></button>  
+                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-car"></i></span><span>4. Fleet (Per KM)</span></button>  
+                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-landmark"></i></span><span>5. नाशिक दर्शन</span></button>  
+                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-cube"></i></span><span>6. Packages</span></button>  
+                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 font-bold"><span class="tab-icon"><i class="fa-solid fa-bus"></i></span><span>7. Buses Inquiry</span></button>  
             </div>  
 
             <div class="border-b pb-2 flex justify-between items-center bg-white p-2.5 rounded-lg shadow-sm border border-gray-200">  
@@ -572,7 +610,7 @@
                 </div>  
 
                 <div>
-                    <button type="button" onclick="fetchSingleLocationPin('oneway-location', 'oneway')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-blue-100 shadow-sm">
+                    <button type="button" onclick="fetchSingleLocationPin('oneway-location', 'oneway')" class="w-full bg-red-50 text-redbus border border-red-300 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-red-100 shadow-sm">
                         <i class="fa-solid fa-location-crosshairs text-base"></i> Current Location Send (सध्याचे ठिकाण पाठवा)
                     </button>
                     <!-- कस्टमरला दिसणारा लोकेशन स्टेटस बॉक्स -->
@@ -617,7 +655,7 @@
                 </div>  
 
                 <div>
-                    <button type="button" onclick="fetchSingleLocationPin('airport-location', 'airport')" class="w-full bg-blue-50 text-blue-700 border border-blue-300 font-bold py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-blue-100 shadow-sm">
+                    <button type="button" onclick="fetchSingleLocationPin('airport-location', 'airport')" class="w-full bg-red-50 text-redbus border border-red-300 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-red-100 shadow-sm">
                         <i class="fa-solid fa-location-crosshairs text-base"></i> Current Location Send (सध्याचे ठिकाण पाठवा)
                     </button>
                     <!-- कस्टमरला दिसणारा लोकेशन स्टेटस बॉक्स -->
@@ -660,30 +698,30 @@
                     </select>  
                 </div>  
 
-                <div class="space-y-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-200">
+                <div class="space-y-2 bg-red-50/50 p-2.5 rounded-lg border border-red-200">
                     <div>
-                        <label class="block text-[11px] font-bold text-blue-900 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Location) *</label>
+                        <label class="block text-[11px] font-bold text-gray-800 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Location) *</label>
                         <div class="flex gap-1">
                             <input type="text" id="fleet-pickup" list="location-suggestions" placeholder="उदा. नाशिक किंवा पत्ता" class="w-full p-2 border rounded text-xs bg-white">
-                            <button type="button" onclick="fetchSingleLocationPin('fleet-pickup', 'fleet')" class="bg-blue-600 text-white px-2.5 rounded text-xs font-bold" title="Current Location">📍</button>
+                            <button type="button" onclick="fetchSingleLocationPin('fleet-pickup', 'fleet')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold shadow" title="Current Location">📍</button>
                         </div>
                     </div>
 
                     <div id="fleet-extra-stops" class="space-y-2"></div>
 
-                    <button type="button" onclick="addFleetStopPoint('fleet-extra-stops', 'fleet')" class="text-xs font-bold text-blue-700 bg-white border border-blue-400 px-2 py-1 rounded shadow-sm hover:bg-blue-100 flex items-center gap-1">
+                    <button type="button" onclick="addFleetStopPoint('fleet-extra-stops', 'fleet')" class="text-xs font-bold text-redbus bg-white border border-red-300 px-2.5 py-1.5 rounded shadow-sm hover:bg-red-50 flex items-center gap-1">
                         <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Location)
                     </button>
 
                     <div>
-                        <label class="block text-[11px] font-bold text-blue-900 mb-1">🏁 शेवटचे ठिकाण (Drop Location) *</label>
+                        <label class="block text-[11px] font-bold text-gray-800 mb-1">🏁 शेवटचे ठिकाण (Drop Location) *</label>
                         <div class="flex gap-1">
                             <input type="text" id="fleet-drop" list="location-suggestions" placeholder="उदा. मुंबई किंवा गोवा" class="w-full p-2 border rounded text-xs bg-white">
-                            <button type="button" onclick="fetchSingleLocationPin('fleet-drop', 'fleet')" class="bg-blue-600 text-white px-2.5 rounded text-xs font-bold" title="Current Location">📍</button>
+                            <button type="button" onclick="fetchSingleLocationPin('fleet-drop', 'fleet')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold shadow" title="Current Location">📍</button>
                         </div>
                     </div>
 
-                    <button type="button" onclick="calculateActualRouteDistance('fleet')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded text-xs shadow flex items-center justify-center gap-1">
+                    <button type="button" onclick="calculateActualRouteDistance('fleet')" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2 rounded text-xs shadow flex items-center justify-center gap-1">
                         <i class="fa-solid fa-calculator"></i> Calculate KM
                     </button>
                 </div>
@@ -691,7 +729,7 @@
                 <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे किलोमीटर (KM)</label>  
-                        <input type="number" id="fleet-km" placeholder="KM मोजा" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs font-bold bg-gray-50 text-blue-800" readonly>  
+                        <input type="number" id="fleet-km" placeholder="KM मोजा" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs font-bold bg-gray-50 text-redbus" readonly>  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे एकूण रक्कम (₹)</label>  
@@ -791,13 +829,13 @@
                             <label class="block text-[11px] font-bold text-gray-800 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Location) *</label>
                             <div class="flex gap-1">
                                 <input type="text" id="bus-pickup" list="location-suggestions" placeholder="उदा. नाशिक" class="w-full p-2 border rounded text-xs">
-                                <button type="button" onclick="fetchSingleLocationPin('bus-pickup', 'bus')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold" title="Current Location">📍</button>
+                                <button type="button" onclick="fetchSingleLocationPin('bus-pickup', 'bus')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold shadow" title="Current Location">📍</button>
                             </div>
                         </div>
 
                         <div id="bus-extra-stops" class="space-y-2"></div>
 
-                        <button type="button" onclick="addFleetStopPoint('bus-extra-stops', 'bus')" class="text-xs font-bold text-redbus bg-red-50 border border-red-300 px-2 py-1 rounded shadow-sm hover:bg-red-100 flex items-center gap-1">
+                        <button type="button" onclick="addFleetStopPoint('bus-extra-stops', 'bus')" class="text-xs font-bold text-redbus bg-red-50 border border-red-300 px-2.5 py-1.5 rounded shadow-sm hover:bg-red-100 flex items-center gap-1">
                             <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Location)
                         </button>
 
@@ -805,7 +843,7 @@
                             <label class="block text-[11px] font-bold text-gray-800 mb-1">🏁 अंतिम ठिकाण (Drop Location) *</label>
                             <div class="flex gap-1">
                                 <input type="text" id="bus-drop" list="location-suggestions" placeholder="उदा. गोवा" class="w-full p-2 border rounded text-xs">
-                                <button type="button" onclick="fetchSingleLocationPin('bus-drop', 'bus')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold" title="Current Location">📍</button>
+                                <button type="button" onclick="fetchSingleLocationPin('bus-drop', 'bus')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold shadow" title="Current Location">📍</button>
                             </div>
                         </div>
 
@@ -2068,7 +2106,7 @@
         if (window.activeTab === 'sharing') {  
             const isPaymentChecked = document.getElementById('paymentConfirmCheckbox').checked;  
             if (!isPaymentChecked) {  
-                alert('अट: शेअरिंग पोर्टलमध्ये सीट बुक करण्यासाठी आधी QR कोडद्वारे पेमेंट पूर्ण करणे अनिवार्य आहे!');  
+                alert('अट: शेअरिंग पोर्टलमध्ये सीट बुक करण्यासाठी आधी QR कोडद्वारे पेमेंट करणे अनिवार्य आहे!');  
                 return;  
             }  
         }  
