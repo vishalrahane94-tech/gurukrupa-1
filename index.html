@@ -39,50 +39,11 @@
         }  
         .seat.selected .price-tag { color: white !important; }  
           
-        /* मुख्य पानातील सर्व्हिस बटन्ससाठी आकर्षक मॉडर्न डिझाइन */
-        .sticky-customer-nav .tab-btn {
-            background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%) !important;
-            border: 1.5px solid #f3d0d2 !important;
-            border-radius: 14px !important;
-            transition: all 0.3s ease !important;
-            box-shadow: 0 4px 6px -1px rgba(216, 78, 85, 0.1), 0 2px 4px -1px rgba(216, 78, 85, 0.06) !important;
-            color: #1f2937 !important;
-        }
-
-        .sticky-customer-nav .tab-btn:hover {
-            transform: translateY(-2px);
-            border-color: #d84e55 !important;
-            box-shadow: 0 8px 12px -2px rgba(216, 78, 85, 0.2) !important;
-        }
-
-        .sticky-customer-nav .tab-btn.active {  
-            background: linear-gradient(135deg, #d84e55 0%, #b83238 100%) !important;  
-            color: white !important;  
-            border-color: #b83238 !important;  
-            box-shadow: 0 6px 15px rgba(216, 78, 85, 0.4) !important;
-        }
-
-        .sticky-customer-nav .tab-btn .tab-icon {
-            font-size: 20px !important;
-            margin-bottom: 2px;
-            color: #d84e55;
-            transition: color 0.3s ease;
-        }
-
-        .sticky-customer-nav .tab-btn.active .tab-icon {
-            color: #ffffff !important;
-        }
-
-        #tab-buses {
-            background: linear-gradient(135deg, #d84e55 0%, #b83238 100%) !important;
-            color: white !important;
-            border: 1.5px solid #b83238 !important;
-            box-shadow: 0 6px 15px rgba(216, 78, 85, 0.4) !important;
-        }
-        #tab-buses .tab-icon {
-            color: white !important;
-        }
-
+        .tab-btn.active {  
+            background-color: #d84e55;  
+            color: white;  
+            border-color: #d84e55;  
+        }  
         .time-btn.selected {  
             background-color: #d84e55;  
             color: white;  
@@ -248,6 +209,7 @@
             align-items: center !important;
             justify-content: center !important;
             text-align: center !important;
+            border-radius: 8px !important;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
             font-size: 12px !important;
             font-weight: 700 !important;
@@ -438,14 +400,14 @@
     <!-- कस्टमर पोर्टल स्क्रीन -->  
     <div id="screen-customer" class="hidden pt-1">  
         <div class="sticky-customer-nav">  
-            <div class="grid grid-cols-3 gap-2 mb-2 text-xs font-semibold">  
-                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active"><span class="tab-icon"><i class="fa-solid fa-car-side"></i></span><span>1. Sharing</span></button>  
-                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-route"></i></span><span>2. One Way</span></button>  
-                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-plane"></i></span><span>3. Airport Drop</span></button>  
-                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-car"></i></span><span>4. Fleet (Per KM)</span></button>  
-                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-landmark"></i></span><span>5. नाशिक दर्शन</span></button>  
-                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-cube"></i></span><span>6. Packages</span></button>  
-                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 font-bold"><span class="tab-icon"><i class="fa-solid fa-bus"></i></span><span>7. Buses Inquiry</span></button>  
+            <div class="grid grid-cols-3 gap-1.5 mb-2 text-xs font-semibold">  
+                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active border bg-white"><span class="tab-icon"><i class="fa-solid fa-car-side"></i></span><span>1. Sharing</span></button>  
+                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-route"></i></span><span>2. One Way</span></button>  
+                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-plane"></i></span><span>3. Airport Drop</span></button>  
+                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-car"></i></span><span>4. Fleet (Per KM)</span></button>  
+                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-landmark"></i></span><span>5. नाशिक दर्शन</span></button>  
+                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn border bg-white"><span class="tab-icon"><i class="fa-solid fa-cube"></i></span><span>6. Packages</span></button>  
+                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 border bg-white text-redbus font-bold"><span class="tab-icon"><i class="fa-solid fa-bus"></i></span><span>7. Buses Inquiry</span></button>  
             </div>  
 
             <div class="border-b pb-2 flex justify-between items-center bg-white p-2.5 rounded-lg shadow-sm border border-gray-200">  
