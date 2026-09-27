@@ -39,49 +39,48 @@
         }  
         .seat.selected .price-tag { color: white !important; }  
           
-        /* फोटोमधील डिझाइनसारखे 3D न्यूमॉर्फिक रेड सर्व्हिस बटन्स */
+        /* मुख्य पानातील सर्व्हिस बटन्ससाठी आकर्षक मॉडर्न डिझाइन */
         .sticky-customer-nav .tab-btn {
-            background: linear-gradient(145deg, #e65c63, #bf3f46) !important;
-            border: none !important;
-            border-radius: 18px !important;
+            background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%) !important;
+            border: 1.5px solid #f3d0d2 !important;
+            border-radius: 14px !important;
             transition: all 0.3s ease !important;
-            box-shadow: 0 8px 16px rgba(216, 78, 85, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.3) !important;
-            color: white !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
-            padding: 12px 6px !important;
-            min-height: 85px !important;
+            box-shadow: 0 4px 6px -1px rgba(216, 78, 85, 0.1), 0 2px 4px -1px rgba(216, 78, 85, 0.06) !important;
+            color: #1f2937 !important;
         }
 
         .sticky-customer-nav .tab-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(216, 78, 85, 0.4), inset 0 2px 3px rgba(255, 255, 255, 0.4) !important;
+            border-color: #d84e55 !important;
+            box-shadow: 0 8px 12px -2px rgba(216, 78, 85, 0.2) !important;
         }
 
         .sticky-customer-nav .tab-btn.active {  
-            background: linear-gradient(145deg, #b83238, #96252c) !important;  
-            box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+            background: linear-gradient(135deg, #d84e55 0%, #b83238 100%) !important;  
+            color: white !important;  
+            border-color: #b83238 !important;  
+            box-shadow: 0 6px 15px rgba(216, 78, 85, 0.4) !important;
         }
 
         .sticky-customer-nav .tab-btn .tab-icon {
-            font-size: 26px !important;
-            margin-bottom: 6px;
+            font-size: 20px !important;
+            margin-bottom: 2px;
+            color: #d84e55;
+            transition: color 0.3s ease;
+        }
+
+        .sticky-customer-nav .tab-btn.active .tab-icon {
             color: #ffffff !important;
         }
 
-        .sticky-customer-nav .tab-btn span:not(.tab-icon) {
-            font-size: 11px !important;
-            font-weight: 800 !important;
-            letter-spacing: 0.3px;
-        }
-
         #tab-buses {
-            grid-column: span 2 / span 2 !important;
-            min-height: 65px !important;
-            flex-direction: row !important;
-            gap: 10px !important;
+            background: linear-gradient(135deg, #d84e55 0%, #b83238 100%) !important;
+            color: white !important;
+            border: 1.5px solid #b83238 !important;
+            box-shadow: 0 6px 15px rgba(216, 78, 85, 0.4) !important;
+        }
+        #tab-buses .tab-icon {
+            color: white !important;
         }
 
         .time-btn.selected {  
@@ -111,8 +110,7 @@
         .hidden-portal { display: none !important; }  
 
         body {  
-            padding-bottom: 70px !important;  
-            background-color: #f8fafc !important;
+            padding-bottom: 50px !important;  
         }  
 
         html, body { width: 100%; max-width: 100%; overflow-x: hidden !important; }
@@ -121,12 +119,12 @@
         .gk-app-header {
             display: none !important;
             width: 100% !important;
-            background-color: #ffffff !important;
-            padding: 10px 14px !important;
+            background-color: #d9383a !important;
+            padding: 6px 8px !important;
             position: sticky !important;
             top: 0 !important;
             z-index: 100 !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
         }
 
         body.logged-in .gk-app-header {
@@ -138,73 +136,145 @@
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
+            gap: 4px !important;
         }
 
         .gk-header-brand {
             display: flex !important;
             align-items: center !important;
-            gap: 10px !important;
+            gap: 6px !important;
+            min-width: 0 !important;
+            flex: 1 1 auto !important;
         }
 
         .gk-header-logo-img {
-            width: 48px !important;
-            height: 48px !important;
-            min-width: 48px !important;
+            width: 40px !important;
+            height: 40px !important;
+            min-width: 40px !important;
+            max-width: 40px !important;
             border-radius: 50% !important;
             border: 2px solid #facc15 !important;
             object-fit: cover !important;
+            flex-shrink: 0 !important;
+        }
+
+        .brand-title {
+            display: flex !important;
+            flex-direction: column !important;
+            min-width: 0 !important;
         }
 
         .brand-title h1 {
-            font-size: 16px !important;
+            font-size: 15px !important;
             font-weight: 900 !important;
-            color: #1f2937 !important;
+            color: #f3ab26 !important;
             text-transform: uppercase !important;
-            margin: 0 !important;
+            letter-spacing: 0.2px !important;
             line-height: 1.1 !important;
+            margin: 0 !important;
+            white-space: nowrap !important;
+            overflow: visible !important;
         }
 
         .brand-title span {
-            font-size: 10px !important;
+            font-size: 9px !important;
             font-weight: 800 !important;
-            color: #d84e55 !important;
-            letter-spacing: 0.5px !important;
+            color: #ffffff !important;
+            letter-spacing: 0.2px !important;
+            white-space: nowrap !important;
+            overflow: visible !important;
         }
 
         .gk-header-actions {
             display: flex !important;
             align-items: center !important;
+            gap: 4px !important;
+            flex-shrink: 0 !important;
+        }
+
+        .gk-user-badge {
+            border: 1px solid #f3ab26 !important;
+            border-radius: 6px !important;
+            padding: 3px 5px !important;
+            text-align: center !important;
+            background-color: rgba(0, 0, 0, 0.15) !important;
+            line-height: 1.1 !important;
+        }
+
+        .gk-user-badge #user-name-display {
+            font-size: 10px !important;
+            font-weight: bold !important;
+            color: #ffffff !important;
+            display: block !important;
+            white-space: nowrap !important;
+        }
+
+        .gk-user-badge #user-role-display {
+            font-size: 8px !important;
+            font-weight: bold !important;
+            color: #ffffff !important;
+            display: block !important;
+        }
+
+        .gk-logout-btn {
+            background-color: #f1c40f !important;
+            color: #000 !important;
+            border: none !important;
+            padding: 5px 6px !important;
+            border-radius: 6px !important;
+            font-size: 10px !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 3px !important;
+            flex-shrink: 0 !important;
+            white-space: nowrap !important;
+        }
+
+        .sticky-customer-nav { width: 100% !important; margin-top: 8px !important; }
+        .sticky-customer-nav > .grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
             gap: 8px !important;
         }
 
-        .top-icon-btn {
-            width: 38px;
-            height: 38px;
-            background: #fff5f5;
-            border: 1px solid #f3d0d2;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #d84e55;
-            font-size: 16px;
-            box-shadow: 0 2px 5px rgba(216,78,85,0.1);
-            cursor: pointer;
+        .sticky-customer-nav .tab-btn {
+            min-height: 58px !important;
+            height: auto !important;
+            padding: 6px 2px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            gap: 3px !important;
         }
 
-        .sticky-customer-nav { width: 100% !important; margin-top: 12px !important; }
-        .sticky-customer-nav > .grid {
-            display: grid !important;
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 12px !important;
+        .sticky-customer-nav .tab-btn .tab-icon {
+            font-size: 18px !important;
+            line-height: 1 !important;
         }
 
-        #customer-live-map, #owner-live-map {
-            height: 220px;
+        #tab-buses {
+            flex-direction: row !important;
+            gap: 6px !important;
+            min-height: 44px !important;
+        }
+
+        #tab-buses .tab-icon {
+            font-size: 20px !important;
+        }
+
+        #owner-live-map {
+            height: 300px;
             width: 100%;
-            border-radius: 16px;
-            margin-top: 8px;
-            border: 2px solid #d84e55;
+            border-radius: 12px;
+            margin-top: 10px;
+            border: 2px solid #3b82f6;
             z-index: 1;
         }
 
@@ -221,6 +291,7 @@
             font-size: 28px;
             line-height: 1;
             filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.5));
+            transition: transform 0.3s ease;
         }
 
         .car-marker-badge {
@@ -236,42 +307,17 @@
             margin-top: -2px;
         }
 
-        /* बॉटम नॅव्हिगेशन बार (फोटोप्रमाणे) */
-        .app-bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.08);
-            z-index: 1000;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-        .bottom-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #9ca3af;
-            font-size: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            background: none;
-            border: none;
-        }
-        .bottom-nav-item.active {
-            color: #d84e55;
-        }
-        .bottom-nav-item i {
-            font-size: 20px;
-            margin-bottom: 3px;
+        @media (max-width: 370px) {
+            .brand-title h1 { font-size: 13px !important; }
+            .brand-title span { font-size: 8px !important; }
+            .gk-header-logo-img { width: 34px !important; height: 34px !important; min-width: 34px !important; }
+            .gk-user-badge #user-name-display { font-size: 9px !important; }
+            .gk-logout-btn { font-size: 9px !important; padding: 4px 5px !important; }
         }
     </style>  
+
 </head>  
-<body class="font-sans">  
+<body class="bg-gray-100 font-sans pb-10">  
 
 <!-- ऑटो-सजेस्ट ऑप्शन्स लिस्ट -->
 <datalist id="location-suggestions">
@@ -289,39 +335,40 @@
     <option value="Mumbai Airport Terminal 2"></option>
 </datalist>
 
-<!-- टॉप हेडर (फोटोमधील डिझाइननुसार) -->  
+<!-- टॉप हेडर -->  
 <header id="app-header" class="gk-app-header">  
     <div class="gk-header-inner">  
         <div class="gk-header-brand">  
             <img src="icon-192.png" alt="GK Logo" class="gk-header-logo-img">
             <div class="brand-title">  
-                <h1>Gurukrupa</h1>  
-                <span>Tours & Travels</span>  
+                <h1>GURUKRUPA</h1>  
+                <span>TOURS AND TRAVELS</span>  
             </div>  
         </div>  
 
         <div class="gk-header-actions">  
-            <div class="top-icon-btn" title="Notifications">
-                <i class="fa-solid fa-bell"></i>
-            </div>
-            <div class="top-icon-btn" onclick="logout()" title="Profile / Logout">
-                <i class="fa-solid fa-user"></i>
-            </div>
+            <div id="user-badge" class="gk-user-badge">  
+                <span id="user-name-display"></span>
+                <span id="user-role-display"></span>  
+            </div>  
+            <button id="logout-btn" onclick="logout()" class="gk-logout-btn">  
+                <i class="fa-solid fa-right-from-bracket"></i> बाहेर पडा  
+            </button>  
         </div>  
     </div>  
 </header>  
 
-<div class="container mx-auto p-4 max-w-xl pb-24">  
+<div class="container mx-auto p-3 max-w-xl">  
 
     <!-- लॉगिन स्क्रीन -->  
-    <div id="screen-login" class="flex flex-col items-center justify-center pt-6 pb-6">  
+    <div id="screen-login" class="flex flex-col items-center justify-center pt-4 pb-4">  
         <div id="secret-logo-trigger" class="text-center cursor-pointer select-none mb-6">  
-            <img src="icon-192.png" alt="Gurukrupa Logo" class="w-32 h-32 mx-auto mb-3 rounded-full object-cover shadow-xl border-4 border-yellow-500">  
+            <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-2 border-yellow-500">  
             <h1 class="text-2xl font-black tracking-wider text-gray-900 uppercase">GURUKRUPA</h1>  
-            <p class="text-xs font-extrabold tracking-[0.2em] text-red-600 uppercase mt-1">SINCE 1991 • Trusted Travel Partner</p>  
+            <p class="text-xs font-extrabold tracking-[0.2em] text-yellow-600 uppercase mt-0.5">TOURS AND TRAVELS</p>  
         </div>  
 
-        <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100 w-full">  
+        <div class="bg-white p-5 rounded-2xl shadow-xl border border-gray-200 w-full">  
             <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 px-1 role-scroll-container w-full">  
                 <div id="role-card-customer" onclick="selectLoginRole('customer')" class="portal-card active role-card-item w-full p-4 border-2 border-redbus rounded-2xl text-center cursor-pointer transition-all bg-red-50/50 shadow-sm shrink-0">  
                     <div class="w-14 h-14 bg-white text-gray-800 rounded-full border-2 border-gray-800 flex items-center justify-center mx-auto mb-2">  
@@ -345,24 +392,24 @@
                 </div>  
             </div>  
 
-            <div class="space-y-4 mt-5 border-t pt-4">  
+            <div class="space-y-4 mt-4 border-t pt-4">  
                 <div>  
                     <label class="block text-xs font-bold text-gray-700 mb-1">पूर्ण नाव (Full Name) *</label>  
-                    <input type="text" id="login-name" placeholder="तुमचे नाव टाका" class="w-full p-3.5 border border-gray-200 bg-gray-50 rounded-2xl text-xs outline-none focus:ring-2 focus:ring-redbus">  
+                    <input type="text" id="login-name" placeholder="तुमचे नाव टाका" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
                 </div>  
                 <div>  
                     <label class="block text-xs font-bold text-gray-700 mb-1">मोबाईल नंबर *</label>  
-                    <input type="tel" id="login-phone" placeholder="१० अंकी मोबाईल नंबर टाका" class="w-full p-3.5 border border-gray-200 bg-gray-50 rounded-2xl text-xs outline-none focus:ring-2 focus:ring-redbus">  
+                    <input type="tel" id="login-phone" placeholder="१० अंकी मोबाईल नंबर टाका" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
                 </div>  
                 <div id="password-field" class="hidden">  
                     <label class="block text-xs font-bold text-gray-700 mb-1">पासवर्ड (Password) *</label>  
-                    <input type="password" id="login-pass" placeholder="पासवर्ड टाका" class="w-full p-3.5 border border-gray-200 bg-gray-50 rounded-2xl text-xs outline-none focus:ring-2 focus:ring-redbus">  
+                    <input type="password" id="login-pass" placeholder="पासवर्ड टाका" class="w-full p-3 border border-gray-300 rounded-xl text-xs outline-none focus:ring-1 focus:ring-redbus focus:border-redbus">  
                 </div>  
 
-                <div id="driver-login-vehicle-box" class="hidden space-y-3 bg-blue-50 p-4 rounded-2xl border border-blue-200">
+                <div id="driver-login-vehicle-box" class="hidden space-y-3 bg-blue-50 p-3 rounded-xl border border-blue-200">
                     <div>
                         <label class="block text-xs font-extrabold text-blue-900 mb-1"><i class="fa-solid fa-car text-blue-700"></i> गाडी निवडा (Vehicle Selection) *</label>
-                        <select id="login-driver-vehicle-select" class="w-full p-3 border border-blue-300 rounded-xl text-xs font-bold bg-white outline-none">
+                        <select id="login-driver-vehicle-select" class="w-full p-2.5 border border-blue-300 rounded-xl text-xs font-bold bg-white outline-none">
                             <option value="">गाडी निवडा</option>
                             <option value="MH15HU8620">गाडी १: MH15HU8620</option>
                             <option value="MH15JW8620">गाडी २: MH15JW8620</option>
@@ -375,13 +422,13 @@
                         </select>
                     </div>
 
-                    <button type="button" onclick="startDriverGpsTrip()" class="w-full bg-green-600 hover:bg-green-700 text-white p-3.5 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 shadow">
+                    <button type="button" onclick="startDriverGpsTrip()" class="w-full bg-green-600 hover:bg-green-700 text-white p-3 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 shadow">
                         <i class="fa-solid fa-play-circle text-base"></i>
                         <span>Trip Start (ट्रिप सुरू करा)</span>
                     </button>
                 </div>
 
-                <button onclick="handleLogin()" id="btn-submit-login" class="w-full bg-redbus hover:bg-redbusDark text-white font-black py-3.5 rounded-2xl text-xs shadow-lg mt-2 transition-all uppercase tracking-wider">  
+                <button onclick="handleLogin()" id="btn-submit-login" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-3 rounded-xl text-xs shadow-md mt-2 transition-all">  
                     लॉगिन करा (Login)  
                 </button>  
             </div>  
@@ -390,130 +437,56 @@
 
     <!-- कस्टमर पोर्टल स्क्रीन -->  
     <div id="screen-customer" class="hidden pt-1">  
-
-        <!-- Welcome & Search Bar (फोटोमधील डिझाईननुसार) -->
-        <div class="mb-4 mt-2">
-            <h2 class="text-xl font-black text-gray-900" id="welcome-user-heading">Welcome Back!</h2>
-            <div class="flex items-center gap-1 text-xs font-bold text-gray-500 mt-0.5">
-                <i class="fa-solid fa-location-dot text-redbus"></i>
-                <span>Nashik, Maharashtra</span>
-                <i class="fa-solid fa-chevron-down text-[10px]"></i>
-            </div>
-        </div>
-
-        <div class="relative mb-5">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-redbus">
-                <i class="fa-solid fa-magnifying-glass text-sm"></i>
-            </span>
-            <input type="text" placeholder="Where to travel today?" class="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-2xl text-xs font-bold text-gray-700 shadow-sm outline-none focus:border-redbus">
-            <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-redbus cursor-pointer">
-                <i class="fa-solid fa-microphone text-sm"></i>
-            </span>
-        </div>
-
-        <div class="flex justify-between items-center mb-3">
-            <h3 class="text-base font-black text-gray-900">Our Services</h3>
-            <span class="text-xs font-extrabold text-redbus cursor-pointer">See All</span>
-        </div>
-
-        <!-- 3D न्यूमॉर्फिक सर्व्हिस बटन्स (फोटोप्रमाणे ग्रिड) -->
-        <div class="sticky-customer-nav mb-6">  
-            <div class="grid grid-cols-2 gap-3 text-xs font-semibold">  
-                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active">
-                    <span class="tab-icon"><i class="fa-solid fa-car-side"></i></span>
-                    <span>1. Sharing</span>
-                </button>  
-                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn">
-                    <span class="tab-icon"><i class="fa-solid fa-route"></i></span>
-                    <span>2. One Way</span>
-                </button>  
-                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn">
-                    <span class="tab-icon"><i class="fa-solid fa-plane"></i></span>
-                    <span>3. Airport Drop</span>
-                </button>  
-                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn">
-                    <span class="tab-icon"><i class="fa-solid fa-car"></i></span>
-                    <span>4. Fleet (Per KM)</span>
-                </button>  
-                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn">
-                    <span class="tab-icon"><i class="fa-solid fa-landmark"></i></span>
-                    <span>5. नाशिक दर्शन</span>
-                </button>  
-                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn">
-                    <span class="tab-icon"><i class="fa-solid fa-cube"></i></span>
-                    <span>6. Packages</span>
-                </button>  
-                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-2 font-bold">
-                    <span class="tab-icon"><i class="fa-solid fa-bus"></i></span>
-                    <span>7. Buses Inquiry</span>
-                </button>  
+        <div class="sticky-customer-nav">  
+            <div class="grid grid-cols-3 gap-2 mb-2 text-xs font-semibold">  
+                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active"><span class="tab-icon"><i class="fa-solid fa-car-side"></i></span><span>1. Sharing</span></button>  
+                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-route"></i></span><span>2. One Way</span></button>  
+                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-plane"></i></span><span>3. Airport Drop</span></button>  
+                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-car"></i></span><span>4. Fleet (Per KM)</span></button>  
+                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-landmark"></i></span><span>5. नाशिक दर्शन</span></button>  
+                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn"><span class="tab-icon"><i class="fa-solid fa-cube"></i></span><span>6. Packages</span></button>  
+                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-3 font-bold"><span class="tab-icon"><i class="fa-solid fa-bus"></i></span><span>7. Buses Inquiry</span></button>  
             </div>  
 
-            <div class="mt-3 flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-gray-100">  
+            <div class="border-b pb-2 flex justify-between items-center bg-white p-2.5 rounded-lg shadow-sm border border-gray-200">  
                 <div class="text-xs">  
-                    <span class="font-bold text-gray-700">ग्राहक:</span> <span id="cust-display-name" class="font-bold text-redbus"></span>   
-                    (<span id="cust-display-phone" class="text-gray-500"></span>)  
+                    <span class="font-bold text-gray-700">ग्राहक:</span> <span id="cust-display-name" class="font-semibold text-redbus"></span>   
+                    (<span id="cust-display-phone" class="text-gray-600"></span>)  
                 </div>  
             </div>  
         </div>  
 
-        <!-- कस्टमरसाठी लाईव्ह मॅप ट्रॅकिंग सेक्शन (फोटोप्रमाणे) -->
-        <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100 mb-6">
-            <div class="flex justify-between items-center mb-2">
-                <h3 class="text-base font-black text-gray-900">Live Tracking Map</h3>
-                <span class="flex items-center gap-1 bg-red-100 text-red-600 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold animate-pulse">
-                    <span class="w-2 h-2 bg-red-600 rounded-full"></span> LIVE
-                </span>
-            </div>
-            <p class="text-[11px] text-gray-500 mb-2">ड्रायव्हरने ट्रिप सुरू केल्यावर गाडीचे अचूक लाईव्ह लोकेशन येथे दिसेल.</p>
-            
-            <div id="customer-live-map"></div>
-
-            <div class="mt-3 flex items-center justify-between bg-gray-50 p-3 rounded-2xl border border-gray-200">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-car-side text-redbus text-lg"></i>
-                    <div>
-                        <span id="customer-map-route-text" class="text-xs font-black text-gray-800 block">Nashik → Live Tracking</span>
-                        <span class="text-[10px] text-gray-500">Gurukrupa Travel Partner</span>
-                    </div>
-                </div>
-                <button onclick="initCustomerMap()" class="bg-redbus text-white text-[11px] font-extrabold px-3.5 py-2 rounded-xl shadow hover:bg-redbusDark">
-                    Track Ride ➔
-                </button>
-            </div>
-        </div>
-
-        <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 mt-2">  
+        <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200 mt-2">  
             <!-- 1. Sharing Section -->  
             <div id="sharing-content" class="tab-content booking-section">  
                 <div class="flex gap-2 mb-3">  
-                    <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active flex-1 p-2.5 text-xs font-bold border rounded-xl shadow-sm border-redbus text-center">  
+                    <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active flex-1 p-2 text-xs font-bold border rounded-lg shadow-sm border-redbus text-center">  
                         नाशिक ते पुणे (Nashik to Pune)  
                     </button>  
-                    <button type="button" id="btn-route-pn" onclick="selectRoute('pune-nashik')" class="route-btn flex-1 p-2.5 text-xs font-bold border rounded-xl shadow-sm border-gray-200 text-gray-700 text-center">  
+                    <button type="button" id="btn-route-pn" onclick="selectRoute('pune-nashik')" class="route-btn flex-1 p-2 text-xs font-bold border rounded-lg shadow-sm border-gray-300 text-gray-700 text-center">  
                         पुणे ते नाशिक (Pune to Nashik)  
                     </button>  
                 </div>  
 
-                <div class="grid grid-cols-2 gap-2.5 mb-3">  
+                <div class="grid grid-cols-2 gap-2 mb-3">  
                     <div>  
-                        <label id="lbl-pickup" class="block text-[11px] font-bold text-gray-600 mb-1">नाशिक पिकअप पॉईंट *</label>  
-                        <select id="sharing-pickup" class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl text-xs font-semibold"></select>  
+                        <label id="lbl-pickup" class="block text-[11px] font-semibold text-gray-600 mb-1">नाशिक पिकअप पॉईंट *</label>  
+                        <select id="sharing-pickup" class="w-full p-1.5 border rounded text-xs font-semibold bg-white"></select>  
                     </div>  
                     <div>  
-                        <label id="lbl-drop" class="block text-[11px] font-bold text-gray-600 mb-1">पुणे ड्रॉप पॉईंट *</label>  
-                        <select id="sharing-drop" class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl text-xs font-semibold"></select>  
+                        <label id="lbl-drop" class="block text-[11px] font-semibold text-gray-600 mb-1">पुणे ड्रॉप पॉईंट *</label>  
+                        <select id="sharing-drop" class="w-full p-1.5 border rounded text-xs font-semibold bg-white"></select>  
                     </div>  
                 </div>  
 
-                <div class="grid grid-cols-2 gap-2.5 mb-3">  
+                <div class="grid grid-cols-2 gap-2 mb-3">  
                     <div>  
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1">प्रवासाची तारीख *</label>  
-                        <input type="date" id="sharing-date" class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl text-xs date-picker-min">  
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची तारीख *</label>  
+                        <input type="date" id="sharing-date" class="w-full p-1.5 border rounded text-xs date-picker-min">  
                     </div>  
                     <div>  
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1">गाडी / सर्व्हिस *</label>  
-                        <select onchange="selectCar(this.value)" id="car-select" class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl text-xs font-bold text-redbus">  
+                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी / सर्व्हिस *</label>  
+                        <select onchange="selectCar(this.value)" id="car-select" class="w-full p-1.5 border rounded text-xs font-bold text-redbus">  
                             <option value="ertiga">Ertiga (6 Seater)</option>  
                             <option value="ciaz">Ciaz (4 Seater)</option>  
                             <option value="ladies-ertiga">👩‍🦰 लेडीज स्पेशल (Ertiga)</option>  
@@ -523,28 +496,28 @@
                 </div>  
 
                 <div class="mb-3">  
-                    <label class="block text-[11px] font-bold text-gray-600 mb-1">प्रवासाची वेळ निवडा *</label>  
-                    <div id="times-nashik-pune" class="grid grid-cols-3 gap-2">  
-                        <button type="button" onclick="selectTime(this, '04:00 AM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">04:00 AM</button>  
-                        <button type="button" onclick="selectTime(this, '04:30 AM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">04:30 AM</button>  
-                        <button type="button" onclick="selectTime(this, '04:45 AM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">04:45 AM</button>  
-                        <button type="button" onclick="selectTime(this, '01:00 PM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">01:00 PM</button>  
-                        <button type="button" onclick="selectTime(this, '01:15 PM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">01:15 PM</button>  
-                        <button type="button" onclick="selectTime(this, '01:30 PM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">01:30 PM</button>  
+                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">प्रवासाची वेळ निवडा *</label>  
+                    <div id="times-nashik-pune" class="grid grid-cols-3 gap-1.5">  
+                        <button type="button" onclick="selectTime(this, '04:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">04:00 AM</button>  
+                        <button type="button" onclick="selectTime(this, '04:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">04:30 AM</button>  
+                        <button type="button" onclick="selectTime(this, '04:45 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">04:45 AM</button>  
+                        <button type="button" onclick="selectTime(this, '01:00 PM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">01:00 PM</button>  
+                        <button type="button" onclick="selectTime(this, '01:15 PM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">01:15 PM</button>  
+                        <button type="button" onclick="selectTime(this, '01:30 PM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">01:30 PM</button>  
                     </div>  
 
-                    <div id="times-pune-nashik" class="grid grid-cols-3 gap-2 hidden">  
-                        <button type="button" onclick="selectTime(this, '08:30 AM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">08:30 AM</button>  
-                        <button type="button" onclick="selectTime(this, '08:45 AM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">08:45 AM</button>  
-                        <button type="button" onclick="selectTime(this, '09:00 AM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">09:00 AM</button>  
-                        <button type="button" onclick="selectTime(this, '06:00 PM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">06:00 PM</button>  
-                        <button type="button" onclick="selectTime(this, '06:15 PM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">06:15 PM</button>  
-                        <button type="button" onclick="selectTime(this, '06:30 PM')" class="time-btn p-2 text-[11px] border border-gray-200 bg-gray-50 rounded-xl hover:border-redbus font-medium">06:30 PM</button>  
+                    <div id="times-pune-nashik" class="grid grid-cols-3 gap-1.5 hidden">  
+                        <button type="button" onclick="selectTime(this, '08:30 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">08:30 AM</button>  
+                        <button type="button" onclick="selectTime(this, '08:45 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">08:45 AM</button>  
+                        <button type="button" onclick="selectTime(this, '09:00 AM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">09:00 AM</button>  
+                        <button type="button" onclick="selectTime(this, '06:00 PM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">06:00 PM</button>  
+                        <button type="button" onclick="selectTime(this, '06:15 PM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">06:15 PM</button>  
+                        <button type="button" onclick="selectTime(this, '06:30 PM')" class="time-btn p-1.5 text-[11px] border rounded hover:border-redbus font-medium">06:30 PM</button>  
                     </div>  
                     <input type="hidden" id="sharing-time">  
                 </div>  
 
-                <div class="bg-gray-50 p-3.5 rounded-2xl border border-gray-200">  
+                <div class="bg-gray-50 p-3 rounded-lg border-2 border-gray-300">  
                     <div class="flex justify-between items-center mb-3 pb-2 border-b">  
                         <span class="text-[11px] font-bold text-gray-500 uppercase">समोरची बाजू (Front)</span>  
                         <div class="flex gap-2 text-[10px]">  
@@ -554,35 +527,35 @@
                     </div>  
 
                     <div id="layout-ertiga" class="space-y-3">  
-                        <div class="flex justify-between items-center bg-gray-200 p-2 rounded-xl">  
-                            <button type="button" data-seat-code="F1" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded-lg flex flex-col items-center justify-center shadow-sm">  
+                        <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">  
+                            <button type="button" data-seat-code="F1" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">  
                                 <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>  
                                 <span class="text-xs font-black">F1 (Front)</span>  
                             </button>  
-                            <div class="w-16 h-10 bg-gray-400 text-white rounded-lg flex items-center justify-center text-xs font-bold gap-1 shadow-inner">  
+                            <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">  
                                 <i class="fa-solid fa-wheel"></i> Driver  
                             </div>  
                         </div>  
-                        <div class="grid grid-cols-3 gap-2 bg-gray-200 p-2 rounded-xl">  
-                            <button type="button" data-seat-code="M1" onclick="toggleSeat(this, 'Middle Left (M1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded-lg flex flex-col items-center justify-center shadow-sm">  
+                        <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">  
+                            <button type="button" data-seat-code="M1" onclick="toggleSeat(this, 'Middle Left (M1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">  
                                 <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>  
                                 <span class="text-xs font-bold">M1 (Left)</span>  
                             </button>  
-                            <button type="button" data-seat-code="M2" onclick="toggleSeat(this, 'Middle Center (M2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded-lg flex flex-col items-center justify-center shadow-sm">  
+                            <button type="button" data-seat-code="M2" onclick="toggleSeat(this, 'Middle Center (M2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">  
                                 <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>  
                                 <span class="text-xs font-bold">M2 (Mid)</span>  
                             </button>  
-                            <button type="button" data-seat-code="M3" onclick="toggleSeat(this, 'Middle Right (M3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded-lg flex flex-col items-center justify-center shadow-sm">  
+                            <button type="button" data-seat-code="M3" onclick="toggleSeat(this, 'Middle Right (M3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">  
                                 <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>  
                                 <span class="text-xs font-bold">M3 (Right)</span>  
                             </button>  
                         </div>  
-                        <div class="grid grid-cols-2 gap-3 bg-gray-200 p-2 rounded-xl">  
-                            <button type="button" data-seat-code="B1" onclick="toggleSeat(this, 'Back Left (B1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded-lg flex flex-col items-center justify-center shadow-sm">  
+                        <div class="grid grid-cols-2 gap-3 bg-gray-200 p-1.5 rounded-md">  
+                            <button type="button" data-seat-code="B1" onclick="toggleSeat(this, 'Back Left (B1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">  
                                 <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>  
                                 <span class="text-xs font-bold">B1 (Back L)</span>  
                             </button>  
-                            <button type="button" data-seat-code="B2" onclick="toggleSeat(this, 'Back Right (B2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded-lg flex flex-col items-center justify-center shadow-sm">  
+                            <button type="button" data-seat-code="B2" onclick="toggleSeat(this, 'Back Right (B2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">  
                                 <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>  
                                 <span class="text-xs font-bold">B2 (Back R)</span>  
                             </button>  
@@ -590,25 +563,25 @@
                     </div>  
 
                     <div id="layout-ciaz" class="space-y-3 hidden">  
-                        <div class="flex justify-between items-center bg-gray-200 p-2 rounded-xl">  
-                            <button type="button" data-seat-code="F1" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded-lg flex flex-col items-center justify-center shadow-sm">  
+                        <div class="flex justify-between items-center bg-gray-200 p-1.5 rounded-md">  
+                            <button type="button" data-seat-code="F1" onclick="toggleSeat(this, 'Front Seat (F1) - ₹750')" class="seat w-20 h-12 bg-white border-2 border-green-600 rounded flex flex-col items-center justify-center shadow-sm">  
                                 <span class="price-tag text-[10px] font-bold text-green-700">₹750</span>  
                                 <span class="text-xs font-black">F1 (Front)</span>  
                             </button>  
-                            <div class="w-16 h-10 bg-gray-400 text-white rounded-lg flex items-center justify-center text-xs font-bold gap-1 shadow-inner">  
+                            <div class="w-16 h-10 bg-gray-400 text-white rounded flex items-center justify-center text-xs font-bold gap-1 shadow-inner">  
                                 <i class="fa-solid fa-wheel"></i> Driver  
                             </div>  
                         </div>  
-                        <div class="grid grid-cols-3 gap-2 bg-gray-200 p-2 rounded-xl">  
-                            <button type="button" data-seat-code="R1" onclick="toggleSeat(this, 'Rear Left (R1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded-lg flex flex-col items-center justify-center shadow-sm">  
+                        <div class="grid grid-cols-3 gap-1.5 bg-gray-200 p-1.5 rounded-md">  
+                            <button type="button" data-seat-code="R1" onclick="toggleSeat(this, 'Rear Left (R1) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">  
                                 <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>  
                                 <span class="text-xs font-bold">R1 (Left)</span>  
                             </button>  
-                            <button type="button" data-seat-code="R2" onclick="toggleSeat(this, 'Rear Center (R2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded-lg flex flex-col items-center justify-center shadow-sm">  
+                            <button type="button" data-seat-code="R2" onclick="toggleSeat(this, 'Rear Center (R2) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">  
                                 <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>  
                                 <span class="text-xs font-bold">R2 (Mid)</span>  
                             </button>  
-                            <button type="button" data-seat-code="R3" onclick="toggleSeat(this, 'Rear Right (R3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded-lg flex flex-col items-center justify-center shadow-sm">  
+                            <button type="button" data-seat-code="R3" onclick="toggleSeat(this, 'Rear Right (R3) - ₹550')" class="seat h-12 bg-white border border-gray-400 rounded flex flex-col items-center justify-center shadow-sm">  
                                 <span class="price-tag text-[10px] font-bold text-gray-600">₹550</span>  
                                 <span class="text-xs font-bold">R3 (Right)</span>  
                             </button>  
@@ -622,7 +595,7 @@
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>  
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>  
-                    <select id="oneway-route" onchange="updateOnewayCars()" class="w-full p-2.5 border rounded-xl text-xs font-bold bg-gray-50">  
+                    <select id="oneway-route" onchange="updateOnewayCars()" class="w-full p-2 border rounded text-xs font-bold">  
                         <option value="नाशिक ते पुणे">नाशिक ते पुणे</option>  
                         <option value="पुणे ते नाशिक">पुणे ते नाशिक</option>  
                         <option value="नाशिक ते मुंबई">नाशिक ते मुंबई</option>  
@@ -640,6 +613,7 @@
                     <button type="button" onclick="fetchSingleLocationPin('oneway-location', 'oneway')" class="w-full bg-red-50 text-redbus border border-red-300 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-red-100 shadow-sm">
                         <i class="fa-solid fa-location-crosshairs text-base"></i> Current Location Send (सध्याचे ठिकाण पाठवा)
                     </button>
+                    <!-- कस्टमरला दिसणारा लोकेशन स्टेटस बॉक्स -->
                     <div id="oneway-location-status" class="mt-1.5 p-2 bg-green-50 border border-green-300 rounded-lg text-[11px] font-bold text-green-800 hidden flex items-center gap-1.5">
                         <i class="fa-solid fa-circle-check text-green-600 text-sm"></i>
                         <span id="oneway-location-text">लोकेशन मिळाले नाही</span>
@@ -649,16 +623,16 @@
 
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व दर *</label>  
-                    <select id="oneway-car" class="w-full p-2.5 border rounded-xl text-xs font-bold text-redbus bg-gray-50"></select>  
+                    <select id="oneway-car" class="w-full p-2 border rounded text-xs font-bold text-redbus"></select>  
                 </div>  
-                <div class="grid grid-cols-2 gap-2.5">  
+                <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>  
-                        <input type="date" id="oneway-date" class="w-full p-2.5 border rounded-xl text-xs date-picker-min bg-gray-50">  
+                        <input type="date" id="oneway-date" class="w-full p-2 border rounded text-xs date-picker-min">  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>  
-                        <input type="time" id="oneway-time" class="w-full p-2.5 border rounded-xl text-xs bg-gray-50">  
+                        <input type="time" id="oneway-time" class="w-full p-2 border rounded text-xs">  
                     </div>  
                 </div>  
             </div>  
@@ -668,7 +642,7 @@
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>  
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>  
-                    <select id="airport-route" onchange="updateAirportCars()" class="w-full p-2.5 border rounded-xl text-xs font-bold bg-gray-50">  
+                    <select id="airport-route" onchange="updateAirportCars()" class="w-full p-2 border rounded text-xs font-bold">  
                         <option value="Nashik to Pune Airport Drop">Nashik to Pune Airport Drop</option>  
                         <option value="Nashik to Ozar Airport Drop">Nashik to Ozar Airport Drop</option>  
                         <option value="Ozar Airport to Nashik Drop">Ozar Airport to Nashik Drop</option>  
@@ -684,6 +658,7 @@
                     <button type="button" onclick="fetchSingleLocationPin('airport-location', 'airport')" class="w-full bg-red-50 text-redbus border border-red-300 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-red-100 shadow-sm">
                         <i class="fa-solid fa-location-crosshairs text-base"></i> Current Location Send (सध्याचे ठिकाण पाठवा)
                     </button>
+                    <!-- कस्टमरला दिसणारा लोकेशन स्टेटस बॉक्स -->
                     <div id="airport-location-status" class="mt-1.5 p-2 bg-green-50 border border-green-300 rounded-lg text-[11px] font-bold text-green-800 hidden flex items-center gap-1.5">
                         <i class="fa-solid fa-circle-check text-green-600 text-sm"></i>
                         <span id="airport-location-text">लोकेशन मिळाले नाही</span>
@@ -693,16 +668,16 @@
 
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व दर *</label>  
-                    <select id="airport-car" class="w-full p-2.5 border rounded-xl text-xs font-bold text-redbus bg-gray-50"></select>  
+                    <select id="airport-car" class="w-full p-2 border rounded text-xs font-bold text-redbus"></select>  
                 </div>  
-                <div class="grid grid-cols-2 gap-2.5">  
+                <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>  
-                        <input type="date" id="airport-date" class="w-full p-2.5 border rounded-xl text-xs date-picker-min bg-gray-50">  
+                        <input type="date" id="airport-date" class="w-full p-2 border rounded text-xs date-picker-min">  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>  
-                        <input type="time" id="airport-time" class="w-full p-2.5 border rounded-xl text-xs bg-gray-50">  
+                        <input type="time" id="airport-time" class="w-full p-2 border rounded text-xs">  
                     </div>  
                 </div>  
             </div>  
@@ -712,7 +687,7 @@
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>  
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी निवडा *</label>  
-                    <select id="fleet-car" onchange="calculateFleetTotal()" class="w-full p-2.5 border rounded-xl text-xs font-bold text-redbus bg-gray-50">  
+                    <select id="fleet-car" onchange="calculateFleetTotal()" class="w-full p-2 border rounded text-xs font-bold text-redbus">  
                         <option value="MARUTI DZIRE - ₹12/- Per KM" data-rate="12">MARUTI DZIRE - ₹12/- PER KM</option>  
                         <option value="MARUTI CIAZ - ₹13/- Per KM" data-rate="13">MARUTI CIAZ - ₹13/- PER KM</option>  
                         <option value="MARUTI ERTIGA - ₹15/- Per KM" data-rate="15">MARUTI ERTIGA - ₹15/- PER KM</option>  
@@ -723,52 +698,52 @@
                     </select>  
                 </div>  
 
-                <div class="space-y-2.5 bg-red-50/50 p-3 rounded-2xl border border-red-200">
+                <div class="space-y-2 bg-red-50/50 p-2.5 rounded-lg border border-red-200">
                     <div>
                         <label class="block text-[11px] font-bold text-gray-800 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Location) *</label>
-                        <div class="flex gap-1.5">
-                            <input type="text" id="fleet-pickup" list="location-suggestions" placeholder="उदा. नाशिक किंवा पत्ता" class="w-full p-2.5 border rounded-xl text-xs bg-white">
-                            <button type="button" onclick="fetchSingleLocationPin('fleet-pickup', 'fleet')" class="bg-redbus text-white px-3 rounded-xl text-xs font-bold shadow" title="Current Location">📍</button>
+                        <div class="flex gap-1">
+                            <input type="text" id="fleet-pickup" list="location-suggestions" placeholder="उदा. नाशिक किंवा पत्ता" class="w-full p-2 border rounded text-xs bg-white">
+                            <button type="button" onclick="fetchSingleLocationPin('fleet-pickup', 'fleet')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold shadow" title="Current Location">📍</button>
                         </div>
                     </div>
 
                     <div id="fleet-extra-stops" class="space-y-2"></div>
 
-                    <button type="button" onclick="addFleetStopPoint('fleet-extra-stops', 'fleet')" class="text-xs font-bold text-redbus bg-white border border-red-300 px-3 py-2 rounded-xl shadow-sm hover:bg-red-50 flex items-center gap-1">
+                    <button type="button" onclick="addFleetStopPoint('fleet-extra-stops', 'fleet')" class="text-xs font-bold text-redbus bg-white border border-red-300 px-2.5 py-1.5 rounded shadow-sm hover:bg-red-50 flex items-center gap-1">
                         <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Location)
                     </button>
 
                     <div>
                         <label class="block text-[11px] font-bold text-gray-800 mb-1">🏁 शेवटचे ठिकाण (Drop Location) *</label>
-                        <div class="flex gap-1.5">
-                            <input type="text" id="fleet-drop" list="location-suggestions" placeholder="उदा. मुंबई किंवा गोवा" class="w-full p-2.5 border rounded-xl text-xs bg-white">
-                            <button type="button" onclick="fetchSingleLocationPin('fleet-drop', 'fleet')" class="bg-redbus text-white px-3 rounded-xl text-xs font-bold shadow" title="Current Location">📍</button>
+                        <div class="flex gap-1">
+                            <input type="text" id="fleet-drop" list="location-suggestions" placeholder="उदा. मुंबई किंवा गोवा" class="w-full p-2 border rounded text-xs bg-white">
+                            <button type="button" onclick="fetchSingleLocationPin('fleet-drop', 'fleet')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold shadow" title="Current Location">📍</button>
                         </div>
                     </div>
 
-                    <button type="button" onclick="calculateActualRouteDistance('fleet')" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2.5 rounded-xl text-xs shadow flex items-center justify-center gap-1">
+                    <button type="button" onclick="calculateActualRouteDistance('fleet')" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2 rounded text-xs shadow flex items-center justify-center gap-1">
                         <i class="fa-solid fa-calculator"></i> Calculate KM
                     </button>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2.5">  
+                <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे किलोमीटर (KM)</label>  
-                        <input type="number" id="fleet-km" placeholder="KM मोजा" oninput="calculateFleetTotal()" class="w-full p-2.5 border rounded-xl text-xs font-bold bg-gray-50 text-redbus" readonly>  
+                        <input type="number" id="fleet-km" placeholder="KM मोजा" oninput="calculateFleetTotal()" class="w-full p-2 border rounded text-xs font-bold bg-gray-50 text-redbus" readonly>  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">अंदाजे एकूण रक्कम (₹)</label>  
-                        <div id="fleet-total-display" class="p-2.5 border rounded-xl bg-gray-100 font-bold text-redbus text-xs flex items-center h-[38px]">₹ 0</div>  
+                        <div id="fleet-total-display" class="p-2 border rounded bg-gray-100 font-bold text-redbus text-xs flex items-center h-[34px]">₹ 0</div>  
                     </div>  
                 </div>  
-                <div class="grid grid-cols-2 gap-2.5">  
+                <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>  
-                        <input type="date" id="fleet-date" class="w-full p-2.5 border rounded-xl text-xs date-picker-min bg-gray-50">  
+                        <input type="date" id="fleet-date" class="w-full p-2 border rounded text-xs date-picker-min">  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>  
-                        <input type="time" id="fleet-time" class="w-full p-2.5 border rounded-xl text-xs bg-gray-50">  
+                        <input type="time" id="fleet-time" class="w-full p-2 border rounded text-xs">  
                     </div>  
                 </div>  
             </div>  
@@ -776,26 +751,26 @@
             <!-- 5. Darshan Section -->  
             <div id="darshan-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
                 <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट प्रेक्षणीय स्थळे</h3>  
-                <div class="bg-red-50 p-3 rounded-2xl border border-red-200 text-[11px] text-gray-700 leading-relaxed">  
+                <div class="bg-red-50 p-2.5 rounded border border-red-200 text-[11px] text-gray-700 leading-relaxed">  
                     <p class="font-bold text-redbus mb-1">समाविष्ट स्थळे:</p>  
                     • त्र्यंबकेश्वर ज्योतिर्लिंग • श्री स्वामी समर्थ गुरुपीठ • अंजनेरी हनुमानजी टेम्पल • सोमेश्वर • साधना मिसळ / ग्रेप अंबेसि • पंचवटी • तपोवन • स्वामिनारायण टेम्पल • अण्णा गणपती • मुक्तिधाम  
                 </div>  
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडीचा प्रकार व पॅकेज रेट *</label>  
-                    <select id="darshan-car" class="w-full p-2.5 border rounded-xl text-xs font-bold text-redbus bg-gray-50">  
+                    <select id="darshan-car" class="w-full p-2 border rounded text-xs font-bold text-redbus">  
                         <option value="सिडान कार 4+1 (Sedan) - ₹3600">सिडान कार (Sedan 4+1) - ₹3600</option>  
                         <option value="ईर्टीका 6+1 (Ertiga) - ₹4500">ईर्टीका (Ertiga 6+1) - ₹4500</option>  
                         <option value="इनोव्हा / किया करेन्स 7+1 - ₹5500">इनोव्हा / किया करेन्स (Innova/Carens 7+1) - ₹5500</option>  
                     </select>  
                 </div>  
-                <div class="grid grid-cols-2 gap-2.5">  
+                <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>  
-                        <input type="date" id="darshan-date" class="w-full p-2.5 border rounded-xl text-xs date-picker-min bg-gray-50">  
+                        <input type="date" id="darshan-date" class="w-full p-2 border rounded text-xs date-picker-min">  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>  
-                        <input type="time" id="darshan-time" class="w-full p-2.5 border rounded-xl text-xs bg-gray-50">  
+                        <input type="time" id="darshan-time" class="w-full p-2 border rounded text-xs">  
                     </div>  
                 </div>  
             </div>  
@@ -805,7 +780,7 @@
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">खास टुरिझम पॅकेजेस (Special Tour Packages)</h3>  
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">पॅकेज रूट निवडा *</label>  
-                    <select id="package-route" onchange="updatePackageCars()" class="w-full p-2.5 border rounded-xl text-xs font-bold bg-gray-50">  
+                    <select id="package-route" onchange="updatePackageCars()" class="w-full p-2 border rounded text-xs font-bold">  
                         <option value="vanipune">पुणे ते वणी रिटर्न (Vanipune Return)</option>  
                         <option value="Nsk to vani return">नाशिक ते वणी रिटर्न (Nsk to vani return)</option>  
                         <option value="Nsk to shirdi return">नाशिक ते शिर्डी रिटर्न (Nsk to shirdi return)</option>  
@@ -815,16 +790,16 @@
                 </div>  
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी चा प्रकार व दर *</label>  
-                    <select id="package-car" class="w-full p-2.5 border rounded-xl text-xs font-bold text-redbus bg-gray-50"></select>  
+                    <select id="package-car" class="w-full p-2 border rounded text-xs font-bold text-redbus"></select>  
                 </div>  
-                <div class="grid grid-cols-2 gap-2.5">  
+                <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">तारीख *</label>  
-                        <input type="date" id="package-date" class="w-full p-2.5 border rounded-xl text-xs date-picker-min bg-gray-50">  
+                        <input type="date" id="package-date" class="w-full p-2 border rounded text-xs date-picker-min">  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">वेळ *</label>  
-                        <input type="time" id="package-time" class="w-full p-2.5 border rounded-xl text-xs bg-gray-50">  
+                        <input type="time" id="package-time" class="w-full p-2 border rounded text-xs">  
                     </div>  
                 </div>  
             </div>  
@@ -834,10 +809,10 @@
                 <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">  
                     <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)  
                 </h3>  
-                <div class="space-y-3 bg-red-50 p-3.5 rounded-2xl border border-red-200">  
+                <div class="space-y-3 bg-red-50 p-3 rounded-lg border border-red-200">  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-700 mb-1">बसची क्षमता (Seater Capacity) *</label>  
-                        <select id="bus-capacity" class="w-full p-2.5 border rounded-xl text-xs font-bold text-gray-800 bg-white">  
+                        <select id="bus-capacity" class="w-full p-2 border rounded text-xs font-bold text-gray-800 bg-white">  
                             <option value="17 Seater Mini Bus">17 Seater (मिनी बस)</option>  
                             <option value="20 to 24 Seater Bus">20 ते 24 Seater Bus</option>  
                             <option value="27 Seater Bus">27 Seater Bus</option>  
@@ -849,71 +824,71 @@
                         </select>  
                     </div>  
 
-                    <div class="space-y-2.5 bg-white p-3 rounded-2xl border border-red-200">
+                    <div class="space-y-2 bg-white p-2.5 rounded-lg border border-red-200">
                         <div>
                             <label class="block text-[11px] font-bold text-gray-800 mb-1">📍 सुरुवातीचे ठिकाण (Pickup Location) *</label>
-                            <div class="flex gap-1.5">
-                                <input type="text" id="bus-pickup" list="location-suggestions" placeholder="उदा. नाशिक" class="w-full p-2.5 border rounded-xl text-xs">
-                                <button type="button" onclick="fetchSingleLocationPin('bus-pickup', 'bus')" class="bg-redbus text-white px-3 rounded-xl text-xs font-bold shadow" title="Current Location">📍</button>
+                            <div class="flex gap-1">
+                                <input type="text" id="bus-pickup" list="location-suggestions" placeholder="उदा. नाशिक" class="w-full p-2 border rounded text-xs">
+                                <button type="button" onclick="fetchSingleLocationPin('bus-pickup', 'bus')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold shadow" title="Current Location">📍</button>
                             </div>
                         </div>
 
                         <div id="bus-extra-stops" class="space-y-2"></div>
 
-                        <button type="button" onclick="addFleetStopPoint('bus-extra-stops', 'bus')" class="text-xs font-bold text-redbus bg-red-50 border border-red-300 px-3 py-2 rounded-xl shadow-sm hover:bg-red-100 flex items-center gap-1">
+                        <button type="button" onclick="addFleetStopPoint('bus-extra-stops', 'bus')" class="text-xs font-bold text-redbus bg-red-50 border border-red-300 px-2.5 py-1.5 rounded shadow-sm hover:bg-red-100 flex items-center gap-1">
                             <i class="fa-solid fa-plus-circle"></i> + पॉईंट / स्टॉप जोडा (Add Location)
                         </button>
 
                         <div>
                             <label class="block text-[11px] font-bold text-gray-800 mb-1">🏁 अंतिम ठिकाण (Drop Location) *</label>
-                            <div class="flex gap-1.5">
-                                <input type="text" id="bus-drop" list="location-suggestions" placeholder="उदा. गोवा" class="w-full p-2.5 border rounded-xl text-xs">
-                                <button type="button" onclick="fetchSingleLocationPin('bus-drop', 'bus')" class="bg-redbus text-white px-3 rounded-xl text-xs font-bold shadow" title="Current Location">📍</button>
+                            <div class="flex gap-1">
+                                <input type="text" id="bus-drop" list="location-suggestions" placeholder="उदा. गोवा" class="w-full p-2 border rounded text-xs">
+                                <button type="button" onclick="fetchSingleLocationPin('bus-drop', 'bus')" class="bg-redbus text-white px-2.5 rounded text-xs font-bold shadow" title="Current Location">📍</button>
                             </div>
                         </div>
 
-                        <button type="button" onclick="calculateActualRouteDistance('bus')" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2.5 rounded-xl text-xs shadow flex items-center justify-center gap-1">
+                        <button type="button" onclick="calculateActualRouteDistance('bus')" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2 rounded text-xs shadow flex items-center justify-center gap-1">
                             <i class="fa-solid fa-calculator"></i> Calculate KM
                         </button>
 
                         <div>
                             <label class="block text-[11px] font-bold text-gray-800 mb-1">अंदाजे अंतर (KM)</label>
-                            <input type="number" id="bus-km" placeholder="KM मोजा" class="w-full p-2.5 border rounded-xl text-xs font-bold text-redbus bg-gray-50" readonly>
+                            <input type="number" id="bus-km" placeholder="KM मोजा" class="w-full p-2 border rounded text-xs font-bold text-redbus bg-gray-50" readonly>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2.5">  
+                    <div class="grid grid-cols-2 gap-2">  
                         <div>  
                             <label class="block text-[11px] font-semibold text-gray-700 mb-1">तारीख *</label>  
-                            <input type="date" id="bus-date" class="w-full p-2.5 border rounded-xl text-xs bg-white date-picker-min">  
+                            <input type="date" id="bus-date" class="w-full p-2 border rounded text-xs bg-white date-picker-min">  
                         </div>  
                         <div>  
                             <label class="block text-[11px] font-semibold text-gray-700 mb-1">वेळ *</label>  
-                            <input type="time" id="bus-time" class="w-full p-2.5 border rounded-xl text-xs bg-white">  
+                            <input type="time" id="bus-time" class="w-full p-2 border rounded text-xs bg-white">  
                         </div>  
                     </div>  
                     <div>  
                         <label class="block text-[11px] font-semibold text-gray-700 mb-1">इतर माहिती (इतर तपशील)</label>  
-                        <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती किंवा अतिरिक्त नोट्स टाका..." class="w-full p-2.5 border rounded-xl text-xs bg-white"></textarea>  
+                        <textarea id="bus-msg" rows="2" placeholder="प्रवासाची माहिती किंवा अतिरिक्त नोट्स टाका..." class="w-full p-2 border rounded text-xs bg-white"></textarea>  
                     </div>  
-                    <button onclick="submitBusInquiry()" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-3 rounded-xl text-xs shadow flex justify-center items-center gap-1">  
+                    <button onclick="submitBusInquiry()" class="w-full bg-redbus hover:bg-redbusDark text-white font-bold py-2.5 rounded-lg text-xs shadow flex justify-center items-center gap-1">  
                         <i class="fa-solid fa-paper-plane"></i> बस इन्क्वायरी पाठवा  
                     </button>  
                 </div>  
             </div>  
 
             <!-- Payment Section -->
-            <div id="payment-section" class="mt-5 border-t-2 border-dashed border-gray-200 pt-4 text-center">  
+            <div id="payment-section" class="mt-5 border-t-2 border-dashed border-gray-300 pt-4 text-center">  
                 <h4 class="text-sm font-bold text-gray-800">Shashiraj Rahane</h4>  
                 
                 <a href="upi://pay?pa=shash74.s7@oksbi&pn=Shashiraj%20Rahane&cu=INR" class="block my-2 inline-block">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shash74.s7@oksbi&pn=Shashiraj%20Rahane" alt="UPI QR Code" class="w-36 h-36 mx-auto rounded-2xl shadow-md border p-1 bg-white cursor-pointer hover:opacity-90 active:scale-95 transition-all">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=shash74.s7@oksbi&pn=Shashiraj%20Rahane" alt="UPI QR Code" class="w-36 h-36 mx-auto rounded-lg shadow-md border p-1 bg-white cursor-pointer hover:opacity-90 active:scale-95 transition-all">
                     <span class="block text-[10px] text-blue-600 font-extrabold mt-1 underline">📲 QR वर टच करा (GPay / PhonePe उघडा)</span>
                 </a>
 
-                <p class="text-[11px] text-gray-500 mb-3">पेमेंट करण्यासाठी QR वर टच करा किंवा स्कॅन करा (UPI ID: shash74.s7@oksbi).</p>  
+                <p class="text-[11px] text-gray-600 mb-3">पेमेंट करण्यासाठी QR वर टच करा किंवा स्कॅन करा (UPI ID: shash74.s7@oksbi).</p>  
                   
-                <div class="text-left bg-red-50 p-3 rounded-2xl border border-red-200">  
+                <div class="text-left bg-red-50 p-3 rounded border border-red-200">  
                     <label class="flex items-center gap-2 cursor-pointer">  
                         <input type="checkbox" id="paymentConfirmCheckbox" class="w-4 h-4 text-redbus rounded focus:ring-redbus">  
                         <span class="text-[11px] font-bold text-red-600">मी QR कोडद्वारे पेमेंट पूर्ण केले आहे. (Sharing पोर्टलमध्ये पेमेंट केल्याशिवाय सीट बुक होणार नाही) *</span>  
@@ -921,145 +896,146 @@
                 </div>  
             </div>  
 
-            <button id="main-submit-btn" onclick="submitBooking()" class="w-full bg-green-600 hover:bg-green-700 text-white font-extrabold py-3.5 rounded-2xl shadow-lg flex justify-center items-center gap-2 mt-4 text-xs uppercase tracking-wider">  
-                <i class="fa-brands fa-whatsapp text-base"></i> बुकिंग व्हॉट्सॲपवर पाठवा  
+            <button id="main-submit-btn" onclick="submitBooking()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg flex justify-center items-center gap-2 mt-4 text-sm">  
+                <i class="fa-brands fa-whatsapp text-lg"></i> बुकिंग व्हॉट्सॲपवर पाठवा  
             </button>  
 
             <!-- ट्रॅव्हल्सची वैशिष्ट्ये -->  
-            <div class="mt-6 bg-red-50/50 border border-red-100 p-4 rounded-3xl shadow-sm">  
+            <div class="mt-6 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm">  
                 <div class="text-center mb-4">  
-                    <img src="icon-192.png" alt="GK Logo" class="w-16 h-16 rounded-full border-2 border-yellow-500 mx-auto shadow-md object-cover">  
-                    <h3 class="text-red-600 font-black text-xs mt-2 uppercase">Gurukrupa Tours & Travels (Since 1991)</h3>  
+                    <img src="icon-192.png" alt="GK Logo" class="w-20 h-20 rounded-full border-2 border-yellow-500 mx-auto shadow-md object-cover">  
+                    <h3 class="text-red-600 font-bold text-sm mt-2">आमच्या ट्रॅव्हल्सची वैशिष्ट्ये</h3>  
                 </div>  
                   
                 <div class="grid grid-cols-2 gap-2 text-[11px] text-gray-700 font-semibold">  
                     <div class="space-y-2">  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
+                        <div class="flex items-start gap-1.5 bg-white p-1.5 rounded border border-red-100 shadow-2xs">  
                             <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
                             <span>1. १०+ वर्षे अनुभवी ड्रायव्हर्स</span>  
                         </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
+                        <div class="flex items-start gap-1.5 bg-white p-1.5 rounded border border-red-100 shadow-2xs">  
                             <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
                             <span>2. रस्त्याची संपूर्ण माहिती</span>  
                         </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
+                        <div class="flex items-start gap-1.5 bg-white p-1.5 rounded border border-red-100 shadow-2xs">  
                             <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
                             <span>3. स्वच्छ व अपग्रेड AC वाहने</span>  
                         </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
+                        <div class="flex items-start gap-1.5 bg-white p-1.5 rounded border border-red-100 shadow-2xs">  
                             <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
                             <span>4. १० मिनिटे आधी हजर</span>  
                         </div>  
                     </div>  
 
                     <div class="space-y-2">  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
+                        <div class="flex items-start gap-1.5 bg-white p-1.5 rounded border border-red-100 shadow-2xs">  
                             <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
                             <span>5. GPS ट्रॅकींग सुविधा</span>  
                         </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
+                        <div class="flex items-start gap-1.5 bg-white p-1.5 rounded border border-red-100 shadow-2xs">  
                             <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
                             <span>6. महिला स्पेशल शेरींग कॅब</span>  
                         </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
+                        <div class="flex items-start gap-1.5 bg-white p-1.5 rounded border border-red-100 shadow-2xs">  
                             <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
                             <span>7. जलद पार्सल सुविधा</span>  
                         </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
+                        <div class="flex items-start gap-1.5 bg-white p-1.5 rounded border border-red-100 shadow-2xs">  
                             <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
                             <span>8. गेली दोन पिढ्या सेवेत</span>  
                         </div>  
                     </div>  
                 </div>  
             </div>  
+
         </div>  
     </div>  
 
     <!-- ओनर पोर्टल स्क्रीन -->  
     <div id="screen-owner" class="hidden space-y-4 pt-2">  
-        <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100">  
+        <div class="bg-white p-4 rounded-xl shadow border border-gray-200">  
             <div class="flex justify-between items-center border-b pb-2 mb-3">  
                 <h2 class="text-sm font-bold text-gray-800 flex items-center gap-2">  
                     <i class="fa-solid fa-gauge-high text-redbus"></i> ओनर डॅशबोर्ड (Owner Control Center)  
                 </h2>  
                 <div class="flex gap-1.5">  
-                    <button onclick="downloadAndShareExcelFile()" class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-xl shadow hover:bg-emerald-700 flex items-center gap-1.5">  
+                    <button onclick="downloadAndShareExcelFile()" class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1.5 rounded shadow hover:bg-emerald-700 flex items-center gap-1.5">  
                         <i class="fa-solid fa-file-excel text-sm"></i> Download Excel
                     </button>  
-                    <button onclick="showOwnerView('all')" class="bg-redbus text-white text-[10px] font-bold px-2.5 py-1.5 rounded-xl shadow hover:bg-redbusDark">  
-                        Inquire All (<span id="count-all">0</span>)  
+                    <button onclick="showOwnerView('all')" class="bg-redbus text-white text-[10px] font-bold px-2 py-1 rounded shadow hover:bg-redbusDark">  
+                        <i class="fa-solid fa-list-check"></i> Inquire All (<span id="count-all">0</span>)  
                     </button>  
                 </div>  
             </div>  
 
             <div class="grid grid-cols-3 gap-2 text-xs">  
-                <button onclick="showOwnerView('sharing-np')" class="relative p-2.5 border rounded-2xl bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">  
+                <button onclick="showOwnerView('sharing-np')" class="relative p-2.5 border rounded-lg bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">  
                     <span id="badge-sharing-np" class="absolute -top-1.5 -right-1.5 bg-redbus text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow">0</span>  
                     <i class="fa-solid fa-car text-lg"></i>  
                     <span class="text-[10px] text-center">नाशिक ते पुणे</span>  
                 </button>  
                   
-                <button onclick="showOwnerView('sharing-pn')" class="relative p-2.5 border rounded-2xl bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">  
+                <button onclick="showOwnerView('sharing-pn')" class="relative p-2.5 border rounded-lg bg-red-50 text-redbus font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-red-100">  
                     <span id="badge-sharing-pn" class="absolute -top-1.5 -right-1.5 bg-redbus text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow">0</span>  
                     <i class="fa-solid fa-car-side text-lg"></i>  
                     <span class="text-[10px] text-center">पुणे ते नाशिक</span>  
                 </button>  
                   
-                <button onclick="showOwnerView('oneway')" class="relative p-2.5 border rounded-2xl bg-emerald-50 text-emerald-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-emerald-100">  
+                <button onclick="showOwnerView('oneway')" class="relative p-2.5 border rounded-lg bg-emerald-50 text-emerald-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-emerald-100">  
                     <span id="badge-oneway" class="absolute -top-1.5 -right-1.5 bg-emerald-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow">0</span>  
                     <i class="fa-solid fa-route text-lg"></i>  
                     <span class="text-[10px] text-center">वनवे बुकिंग</span>  
                 </button>  
                   
-                <button onclick="showOwnerView('airport')" class="relative p-2.5 border rounded-2xl bg-purple-50 text-purple-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-purple-100">  
+                <button onclick="showOwnerView('airport')" class="relative p-2.5 border rounded-lg bg-purple-50 text-purple-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-purple-100">  
                     <span id="badge-airport" class="absolute -top-1.5 -right-1.5 bg-purple-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow">0</span>  
                     <i class="fa-solid fa-plane-departure text-lg"></i>  
                     <span class="text-[10px] text-center">एअरपोर्ट ड्रॉप</span>  
                 </button>  
                   
-                <button onclick="showOwnerView('darshan')" class="relative p-2.5 border rounded-2xl bg-amber-50 text-amber-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-amber-100">  
+                <button onclick="showOwnerView('darshan')" class="relative p-2.5 border rounded-lg bg-amber-50 text-amber-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-amber-100">  
                     <span id="badge-darshan" class="absolute -top-1.5 -right-1.5 bg-amber-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow">0</span>  
                     <i class="fa-solid fa-gopuram text-lg"></i>  
                     <span class="text-[10px] text-center">नाशिक दर्शन</span>  
                 </button>  
                   
-                <button onclick="showOwnerView('packages')" class="relative p-2.5 border rounded-2xl bg-pink-50 text-pink-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-pink-100">  
+                <button onclick="showOwnerView('packages')" class="relative p-2.5 border rounded-lg bg-pink-50 text-pink-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-pink-100">  
                     <span id="badge-packages" class="absolute -top-1.5 -right-1.5 bg-pink-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow">0</span>  
                     <i class="fa-solid fa-box-open text-lg"></i>  
                     <span class="text-[10px] text-center">टूर पॅकेजेस</span>  
                 </button>  
                   
-                <button onclick="showOwnerView('fleet')" class="relative p-2.5 border rounded-2xl bg-blue-50 text-blue-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-blue-100">  
+                <button onclick="showOwnerView('fleet')" class="relative p-2.5 border rounded-lg bg-blue-50 text-blue-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-blue-100">  
                     <span id="badge-fleet" class="absolute -top-1.5 -right-1.5 bg-blue-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow">0</span>  
                     <i class="fa-solid fa-calculator text-lg"></i>  
                     <span class="text-[10px] text-center">km प्रमाणे इन्क्वायरी</span>  
                 </button>  
                   
-                <button onclick="showOwnerView('bus')" class="relative p-2.5 border rounded-2xl bg-indigo-50 text-indigo-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-indigo-100">  
+                <button onclick="showOwnerView('bus')" class="relative p-2.5 border rounded-lg bg-indigo-50 text-indigo-700 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-indigo-100">  
                     <span id="badge-bus" class="absolute -top-1.5 -right-1.5 bg-indigo-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow">0</span>  
                     <i class="fa-solid fa-bus text-lg"></i>  
                     <span class="text-[10px] text-center">बसेस इन्क्वायरी</span>  
                 </button>  
                   
-                <button onclick="showOwnerView('driver-log')" class="relative p-2.5 border rounded-2xl bg-gray-800 text-yellow-400 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-black">  
+                <button onclick="showOwnerView('driver-log')" class="relative p-2.5 border rounded-lg bg-gray-800 text-yellow-400 font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-black">  
                     <span id="badge-driver-log" class="absolute -top-1.5 -right-1.5 bg-yellow-500 text-black text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow">0</span>  
                     <i class="fa-solid fa-id-card-clip text-lg"></i>  
                     <span class="text-[10px] text-center text-white">ड्रायव्हर डिटेल्स</span>  
                 </button>  
 
-                <button onclick="showOwnerView('driver-attendance')" class="relative p-2.5 border rounded-2xl bg-teal-800 text-white font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-teal-900 col-span-3">  
+                <button onclick="showOwnerView('driver-attendance')" class="relative p-2.5 border rounded-lg bg-teal-800 text-white font-bold flex flex-col items-center gap-1 shadow-sm hover:bg-teal-900 col-span-3">  
                     <i class="fa-solid fa-calendar-check text-lg text-yellow-400"></i>  
                     <span class="text-xs text-center font-bold">📅 ड्रायव्हर मासिक प्रेझेंटी व ट्रिप रिपोर्ट (Monthly Attendance)</span>  
                 </button>  
 
-                <button onclick="showOwnerView('driver-balance')" class="p-3 border-2 border-green-600 rounded-2xl bg-green-50 text-green-800 font-bold flex flex-col items-center gap-1 shadow-md hover:bg-green-100 col-span-3">  
+                <button onclick="showOwnerView('driver-balance')" class="p-2.5 border-2 border-green-600 rounded-lg bg-green-50 text-green-800 font-bold flex flex-col items-center gap-1 shadow-md hover:bg-green-100 col-span-3">  
                     <i class="fa-solid fa-wallet text-xl text-green-600"></i>  
                     <span class="text-xs font-black text-green-900">💰 आजची शिल्लक जमा कॅश: <span id="owner-today-balance-text" class="text-base text-redbus font-extrabold">₹ 0</span></span>  
                     <span class="text-[10px] text-gray-500 font-normal">ड्रायव्हरने जमा केलेला दररोजचा हिशोब पहा</span>  
                 </button>  
 
                 <!-- GPS Live Tracking -->
-                <div class="col-span-3 bg-blue-700 text-white p-3.5 rounded-2xl shadow-md border border-blue-900 mt-2">
+                <div class="col-span-3 bg-blue-700 text-white p-3 rounded-xl shadow-md border border-blue-900 mt-2">
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2">
                             <i class="fa-solid fa-location-dot text-yellow-300 text-xl animate-bounce"></i>
@@ -1068,9 +1044,10 @@
                                 <p class="text-[10px] text-blue-100">गाडी सिलेक्ट करून लाईव्ह रस्त्यावरील ट्रॅकिंग पहा</p>
                             </div>
                         </div>
+                        <i class="fa-solid fa-circle-down text-lg text-yellow-300"></i>
                     </div>
 
-                    <select id="owner-gps-vehicle-select" onchange="focusVehicleOnOwnerMap()" class="w-full p-2.5 rounded-xl text-xs font-black text-gray-900 bg-white border border-gray-300 outline-none">
+                    <select id="owner-gps-vehicle-select" onchange="focusVehicleOnOwnerMap()" class="w-full p-2 rounded-lg text-xs font-black text-gray-900 bg-white border border-gray-300 outline-none">
                         <option value="">सर्व चालू गाड्या पहा (All Live Vehicles)</option>
                         <option value="MH15HU8620">MH15HU8620</option>
                         <option value="MH15JW8620">MH15JW8620</option>
@@ -1084,17 +1061,18 @@
 
                     <div id="owner-live-map" class="shadow-inner"></div>
                 </div>
+
             </div>  
         </div>  
 
-        <div id="owner-content-box" class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100 min-h-[160px] text-xs">  
+        <div id="owner-content-box" class="bg-white p-4 rounded-xl shadow border border-gray-200 min-h-[160px] text-xs">  
             <p class="text-gray-500 text-center py-8">कृपया माहिती पाहण्यासाठी वरील कोणत्याही आयकॉनवर क्लिक करा.</p>  
         </div>  
     </div>  
 
     <!-- ड्रायव्हर पोर्टल स्क्रीन -->  
     <div id="screen-driver" class="hidden space-y-4 pt-2">  
-        <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100">  
+        <div class="bg-white p-4 rounded-xl shadow border border-gray-200">  
             <div class="flex justify-between items-center border-b pb-2 mb-3">
                 <h2 class="text-sm font-bold text-gray-800 flex items-center gap-2">  
                     <i class="fa-solid fa-id-card text-green-600"></i> ड्रायव्हर दैनिक हिशोब (Driver Daily Log)  
@@ -1104,10 +1082,10 @@
                 </span>
             </div>
 
-            <div class="space-y-2.5 mb-3 text-xs bg-blue-50/60 p-3.5 rounded-2xl border border-blue-200">
+            <div class="space-y-2.5 mb-3 text-xs bg-blue-50/60 p-3 rounded-lg border border-blue-200">
                 <div>  
                     <label class="block font-bold text-blue-900 mb-1"><i class="fa-solid fa-car text-blue-700"></i> 🚘 गाडी नंबर (Vehicle Number) *</label>  
-                    <select id="drv-vehicle-no" class="w-full p-2.5 border border-gray-300 rounded-xl font-bold text-gray-800 bg-white outline-none">
+                    <select id="drv-vehicle-no" class="w-full p-2 border border-gray-300 rounded font-bold text-gray-800 bg-white outline-none">
                         <option value="">गाडी नंबर निवडा</option>
                         <option value="MH15HU8620">MH15HU8620</option>
                         <option value="MH15JW8620">MH15JW8620</option>
@@ -1120,20 +1098,20 @@
                     </select>  
                 </div>  
 
-                <div class="grid grid-cols-2 gap-2.5">  
+                <div class="grid grid-cols-2 gap-2">  
                     <div>  
                         <label class="block font-bold text-blue-900 mb-1"><i class="fa-solid fa-calendar-days text-blue-700"></i> 📅 जाण्याची तारीख *</label>  
-                        <input type="date" id="drv-start-date" class="w-full p-2 border border-gray-300 rounded-xl text-xs font-semibold bg-white outline-none">  
+                        <input type="date" id="drv-start-date" class="w-full p-1.5 border border-gray-300 rounded text-xs font-semibold bg-white outline-none">  
                     </div>  
                     <div>  
                         <label class="block font-bold text-blue-900 mb-1"><i class="fa-solid fa-calendar-check text-blue-700"></i> 📅 येण्याची तारीख *</label>  
-                        <input type="date" id="drv-end-date" class="w-full p-2 border border-gray-300 rounded-xl text-xs font-semibold bg-white outline-none">  
+                        <input type="date" id="drv-end-date" class="w-full p-1.5 border border-gray-300 rounded text-xs font-semibold bg-white outline-none">  
                     </div>  
                 </div>  
 
                 <div>  
                     <label class="block font-bold text-blue-900 mb-1"><i class="fa-solid fa-user-check text-blue-700"></i> ✅ आजचे प्रेझेंटी स्टेटस (Duty Status) *</label>  
-                    <select id="drv-duty-status" class="w-full p-2.5 border border-gray-300 rounded-xl font-bold text-gray-800 bg-white outline-none">
+                    <select id="drv-duty-status" class="w-full p-2 border border-gray-300 rounded font-bold text-gray-800 bg-white outline-none">
                         <option value="Present">Present (कामावर हजर)</option>
                         <option value="Off-Duty">Off-Duty (सुट्टी)</option>
                     </select>
@@ -1141,52 +1119,52 @@
             </div>
 
             <div class="grid grid-cols-2 gap-2.5 mb-3 text-xs">  
-                <div class="bg-green-50 p-2.5 rounded-2xl border border-green-200">  
+                <div class="bg-green-50 p-2 rounded border border-green-200">  
                     <label class="block font-bold text-green-800 mb-1"><i class="fa-solid fa-wallet"></i> 1. कलेक्शन (Collection) ₹</label>  
-                    <input type="number" id="drv-collection" value="0" oninput="calculateDriverBalance()" class="w-full p-2 border rounded-xl font-bold text-green-700 bg-white outline-none">  
+                    <input type="number" id="drv-collection" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-green-700 bg-white outline-none">  
                 </div>  
-                <div class="bg-red-50 p-2.5 rounded-2xl border border-red-200">  
+                <div class="bg-red-50 p-2 rounded border border-red-200">  
                     <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-road"></i> 2. टोल्स (Tolls) ₹</label>  
-                    <input type="number" id="drv-toll" value="0" oninput="calculateDriverBalance()" class="w-full p-2 border rounded-xl font-bold text-red-600 bg-white outline-none">  
+                    <input type="number" id="drv-toll" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-600 bg-white outline-none">  
                 </div>  
-                <div class="bg-red-50 p-2.5 rounded-2xl border border-red-200">  
+                <div class="bg-red-50 p-2 rounded border border-red-200">  
                     <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-gas-pump"></i> 3. पेट्रोल / CNG ₹</label>  
-                    <input type="number" id="drv-fuel" value="0" oninput="calculateDriverBalance()" class="w-full p-2 border rounded-xl font-bold text-red-600 bg-white outline-none">  
+                    <input type="number" id="drv-fuel" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-600 bg-white outline-none">  
                 </div>  
-                <div class="bg-red-50 p-2.5 rounded-2xl border border-red-200">  
+                <div class="bg-red-50 p-2 rounded border border-red-200">  
                     <label class="block font-bold text-red-800 mb-1"><i class="fa-solid fa-receipt"></i> 4. इतर खर्च (Other) ₹</label>  
-                    <input type="number" id="drv-other" value="0" oninput="calculateDriverBalance()" class="w-full p-2 border rounded-xl font-bold text-red-600 bg-white outline-none">  
+                    <input type="number" id="drv-other" value="0" oninput="calculateDriverBalance()" class="w-full p-1.5 border rounded font-bold text-red-600 bg-white outline-none">  
                 </div>  
             </div>  
 
-            <div class="bg-yellow-100 border-2 border-yellow-400 p-3.5 rounded-2xl text-center shadow-inner">  
+            <div class="bg-yellow-100 border-2 border-yellow-400 p-3 rounded-lg text-center shadow-inner">  
                 <p class="text-xs font-bold text-gray-700 uppercase">शिल्लक रक्कम (Net Cash Balance)</p>  
                 <p class="text-2xl font-black text-gray-900 mt-1">₹ <span id="drv-balance">0</span></p>  
             </div>  
 
-            <button type="button" onclick="sendDriverReport()" class="w-full bg-green-600 hover:bg-green-700 text-white font-extrabold py-3.5 rounded-2xl text-xs shadow mt-3 flex items-center justify-center gap-2">  
+            <button type="button" onclick="sendDriverReport()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-xs shadow mt-3 flex items-center justify-center gap-2">  
                 <i class="fa-solid fa-floppy-disk text-base"></i> 💾 हिशोब सेव्ह करा व पाठवा  
             </button>  
 
-            <div id="whatsapp-buttons" class="hidden text-center mt-4 p-3.5 bg-gray-50 rounded-2xl border border-gray-300 space-y-3">  
+            <div id="whatsapp-buttons" class="hidden text-center mt-4 p-3 bg-gray-50 rounded-lg border border-gray-300 space-y-3">  
                 <p class="text-gray-800 text-xs font-bold">  
                     ✅ हिशोब सेव्ह झाला आहे! ओनरला व्हॉट्सॲप मेसेज पाठवा:  
                 </p>  
                   
                 <div class="flex gap-2 justify-center flex-wrap">  
-                    <a id="btn-owner-1" href="#" target="_blank" class="flex-1 min-w-[130px] bg-[#25D366] hover:bg-green-600 text-white p-2.5 text-xs rounded-xl font-bold text-center shadow flex flex-col items-center justify-center">  
+                    <a id="btn-owner-1" href="#" target="_blank" class="flex-1 min-w-[130px] bg-[#25D366] hover:bg-green-600 text-white p-2 text-xs rounded-lg font-bold text-center shadow flex flex-col items-center justify-center">  
                         <span>📲 ओनर १ ला पाठवा</span>  
                         <span class="text-[10px] opacity-90">(9890896040)</span>  
                     </a>  
 
-                    <a id="btn-owner-2" href="#" target="_blank" class="flex-1 min-w-[130px] bg-[#128C7E] hover:bg-teal-700 text-white p-2.5 text-xs rounded-xl font-bold text-center shadow flex flex-col items-center justify-center">  
+                    <a id="btn-owner-2" href="#" target="_blank" class="flex-1 min-w-[130px] bg-[#128C7E] hover:bg-teal-700 text-white p-2 text-xs rounded-lg font-bold text-center shadow flex flex-col items-center justify-center">  
                         <span>📲 ओनर २ ला पाठवा</span>  
                         <span class="text-[10px] opacity-90">(7498502915)</span>  
                     </a>  
                 </div>  
 
                 <div class="border-t pt-3 mt-2">
-                    <button type="button" onclick="endDriverGpsTrip()" class="w-full bg-red-600 hover:bg-red-700 text-white p-3.5 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 shadow">
+                    <button type="button" onclick="endDriverGpsTrip()" class="w-full bg-red-600 hover:bg-red-700 text-white p-3 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 shadow">
                         <i class="fa-solid fa-circle-xmark text-base"></i>
                         <span>Trip End (ट्रिप संपवा व बाहेर पडा)</span>
                     </button>
@@ -1196,30 +1174,6 @@
     </div>  
 
 </div>  
-
-<!-- फोटोमधील डिझाईननुसार बॉटम नॅव्हिगेशन बार -->
-<div class="app-bottom-nav">
-    <button class="bottom-nav-item active" onclick="navigateBottomTab('home')">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
-    </button>
-    <button class="bottom-nav-item" onclick="navigateBottomTab('rides')">
-        <i class="fa-solid fa-car"></i>
-        <span>Rides</span>
-    </button>
-    <button class="bottom-nav-item" onclick="navigateBottomTab('bookings')">
-        <i class="fa-solid fa-calendar-days"></i>
-        <span>Bookings</span>
-    </button>
-    <button class="bottom-nav-item" onclick="navigateBottomTab('packages')">
-        <i class="fa-solid fa-cube"></i>
-        <span>Packages</span>
-    </button>
-    <button class="bottom-nav-item" onclick="navigateBottomTab('profile')">
-        <i class="fa-solid fa-user"></i>
-        <span>Profile</span>
-    </button>
-</div>
 
 <!-- Leaflet JS for Map -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1266,10 +1220,8 @@
 
     let gpsWatchId = null;
     let ownerMap = null;
-    let customerMap = null;
     let vehicleMarkers = {}; 
     let vehiclePolylines = {}; 
-    let customerVehicleMarker = null;
     let activeVehicleNo = null;
 
     window.fetchSingleLocationPin = function(inputId, portalType = null) {
@@ -1394,8 +1346,8 @@
         const div = document.createElement('div');
         div.className = "flex gap-2 items-center";
         div.innerHTML = `
-            <input type="text" list="location-suggestions" placeholder="📍 मध्यंतरीचा स्टॉप / पॉईंट (Via Location)" class="fleet-via-point w-full p-2.5 border rounded-xl text-xs bg-white">
-            <button type="button" onclick="this.parentElement.remove();" class="bg-red-500 text-white font-bold px-3 py-2 rounded-xl text-xs">✕</button>
+            <input type="text" list="location-suggestions" placeholder="📍 मध्यंतरीचा स्टॉप / पॉईंट (Via Location)" class="fleet-via-point w-full p-2 border rounded text-xs bg-white">
+            <button type="button" onclick="this.parentElement.remove();" class="bg-red-500 text-white font-bold px-2.5 py-1.5 rounded text-xs">✕</button>
         `;
         container.appendChild(div);
     };
@@ -1411,85 +1363,6 @@
             iconAnchor: [22, 22]
         });
     };
-
-    // कस्टमरसाठी लाईव्ह मॅप ट्रॅकिंग इनिशाईल करणे
-    function initCustomerMap() {
-        const mapContainer = document.getElementById('customer-live-map');
-        if (!mapContainer) return;
-
-        if (!customerMap) {
-            customerMap = L.map('customer-live-map').setView([19.9975, 73.7898], 12); 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19
-            }).addTo(customerMap);
-        }
-
-        const allGpsRef = ref(database, 'live_gps_tracking/');
-        onValue(allGpsRef, (snapshot) => {
-            const allData = snapshot.val();
-            if (!allData) return;
-
-            // कोणतीही चालू ट्रىप शोधा
-            let activeTripFound = false;
-            Object.keys(allData).forEach((vNo) => {
-                const item = allData[vNo];
-                if (item && item.latitude && item.longitude && item.status === 'TRIP_STARTED') {
-                    activeTripFound = true;
-                    const lat = item.latitude;
-                    const lng = item.longitude;
-                    const heading = item.heading || 0;
-
-                    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
-                    const popupContent = `
-                        <div style="text-align: center; padding: 4px; min-width: 130px;">
-                            <b style="font-size: 13px; color: #d84e55;">🚘 गाडी: ${vNo}</b><br>
-                            <span style="font-size: 10px; color: #16a34a; font-weight: bold;">🟢 लाईव्ह प्रवासात आहे</span><br>
-                            <a href="${googleMapsUrl}" target="_blank" style="
-                                display: inline-flex;
-                                align-items: center;
-                                justify-content: center;
-                                gap: 4px;
-                                margin-top: 6px;
-                                padding: 5px 8px;
-                                background-color: #2563eb;
-                                color: white;
-                                font-size: 10px;
-                                font-weight: bold;
-                                text-decoration: none;
-                                border-radius: 6px;
-                            ">
-                                📍 Google Maps वर पहा
-                            </a>
-                        </div>
-                    `;
-
-                    if (customerVehicleMarker) {
-                        customerVehicleMarker.setLatLng([lat, lng]);
-                        customerVehicleMarker.setIcon(createGoogleCarIcon(vNo, heading));
-                        if (customerVehicleMarker.getPopup()) {
-                            customerVehicleMarker.getPopup().setContent(popupContent);
-                        }
-                    } else {
-                        customerVehicleMarker = L.marker([lat, lng], { icon: createGoogleCarIcon(vNo, heading) }).addTo(customerMap);
-                        customerVehicleMarker.bindPopup(popupContent);
-                    }
-
-                    customerMap.panTo([lat, lng]);
-                    const routeText = document.getElementById('customer-map-route-text');
-                    if (routeText) {
-                        routeText.innerText = `गाडी ${vNo} रस्त्यावर चालू आहे (Live)`;
-                    }
-                }
-            });
-
-            if (!activeTripFound && customerVehicleMarker) {
-                customerMap.removeLayer(customerVehicleMarker);
-                customerVehicleMarker = null;
-                const routeText = document.getElementById('customer-map-route-text');
-                if (routeText) routeText.innerText = "सध्या कोणतीही गाडी चालू नाही";
-            }
-        });
-    }
 
     function initOwnerMap() {
         const mapContainer = document.getElementById('owner-live-map');
@@ -1518,6 +1391,7 @@
                     vehiclePolylines[vNo].addLatLng([lat, lng]);
 
                     const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+
                     const popupContent = `
                         <div style="text-align: center; padding: 4px; min-width: 140px;">
                             <b style="font-size: 13px; color: #d84e55;">🚘 ${vNo}</b><br>
@@ -1535,6 +1409,7 @@
                                 font-weight: bold;
                                 text-decoration: none;
                                 border-radius: 6px;
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
                             ">
                                 📍 Google Maps मध्ये रस्ता पहा
                             </a>
@@ -1680,6 +1555,9 @@
             select.value = currentValue;  
         }  
     }  
+
+    const nashikPoints = ["ठक्कर बाजार", "द्वारका सर्कल", "मुंबई नाका", "गोविंद नगर", "टनेल (Tunnel)", "पवन हॉटेल"];  
+    const punePoints = ["चाकण", "मोशी", "भोसरी", "नाशिक फाटा", "वाकडेवाडी"];  
 
     function getTodayString() {  
         const today = new Date();  
@@ -1926,15 +1804,13 @@
     function applyUserSession(userObj) {  
         document.body.classList.add('logged-in');  
         document.getElementById('screen-login').classList.add('hidden');  
-        document.getElementById('cust-display-name').innerText = userObj.name;  
-        document.getElementById('cust-display-phone').innerText = userObj.phone;  
-        document.getElementById('welcome-user-heading').innerText = `Welcome Back, ${userObj.name}!`;  
+        document.getElementById('user-name-display').innerText = userObj.name;  
+        document.getElementById('user-role-display').innerText = `(${userObj.role.toUpperCase()})`;  
 
         if (userObj.role === 'customer') {  
             document.getElementById('screen-customer').classList.remove('hidden');  
-            setTimeout(() => {  
-                initCustomerMap();  
-            }, 400);  
+            document.getElementById('cust-display-name').innerText = userObj.name;  
+            document.getElementById('cust-display-phone').innerText = userObj.phone;  
         } else if (userObj.role === 'owner') {  
             document.getElementById('screen-owner').classList.remove('hidden');  
             setTimeout(() => {  
@@ -1959,24 +1835,6 @@
         document.getElementById('screen-owner').classList.add('hidden');  
         document.getElementById('screen-driver').classList.add('hidden');  
     };  
-
-    window.navigateBottomTab = function(tabKey) {
-        document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
-        event.currentTarget.classList.add('active');
-
-        if (tabKey === 'home') {
-            showTab('sharing');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else if (tabKey === 'rides') {
-            showTab('oneway');
-        } else if (tabKey === 'bookings') {
-            showTab('bus');
-        } else if (tabKey === 'packages') {
-            showTab('packages');
-        } else if (tabKey === 'profile') {
-            alert(`नाव: ${window.currentUser ? window.currentUser.name : 'Guest'}\nरोल: ${window.currentUser ? window.currentUser.role : 'Customer'}`);
-        }
-    };
 
     window.showTab = function(tabName) {  
         window.activeTab = tabName;  
@@ -2056,7 +1914,9 @@
         } else {  
             lblPickup.innerText = 'पुणे पिकअप पॉईंट *';  
             lblDrop.innerText = 'नाशिक ड्रॉप पॉईंट *';  
+            // पुणे ते नाशिक पिकअप: वाकडेवाडी वरती आणि चाकण खाली
             pList = ["वाकडेवाडी", "नाशिक फाटा", "भोसरी", "मोशी", "चाकण"];  
+            // पुणे ते नाशिक ड्रॉप: पवन हॉटेल वरती आणि ठक्कर बाजार सर्वात खाली
             dList = ["पवन हॉटेल", "टनेल (Tunnel)", "गोविंद नगर", "मुंबई नाका", "द्वारका सर्कल", "ठक्कर बाजार"];  
         }  
 
@@ -2258,7 +2118,7 @@
             createdAt: new Date().toLocaleString('mr-IN')  
         };  
 
-        let whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - नवीन बुकिंग (Since 1991)*\n`;  
+        let whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - नवीन बुकिंग*\n`;  
         whatsappText += `ग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\n`;  
 
         if (window.activeTab === 'sharing') {  
@@ -2384,7 +2244,7 @@
             createdAt: new Date().toLocaleString('mr-IN')  
         };  
 
-        const whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - मोठी बस इन्क्वायरी (Since 1991)*\nग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\nबस प्रकार: ${busCap}\nपिकअप: ${busPickup}\n${viaStops.length > 0 ? `वाटेतील स्टॉप्स: ${viaStops.join(' -> ')}\n` : ''}ड्रॉप: ${busDrop}\nअंदाजे KM: ${busKm}\nतारीख: ${busDate}\nवेळ: ${busTime}\nमाहिती: ${busMsg}`;  
+        const whatsappText = `*गुरुकृपा टूर अँड ट्रॅव्हल्स - मोठी बस इन्क्वायरी*\nग्राहक: ${window.currentUser.name} (${window.currentUser.phone})\nबस प्रकार: ${busCap}\nपिकअप: ${busPickup}\n${viaStops.length > 0 ? `वाटेतील स्टॉप्स: ${viaStops.join(' -> ')}\n` : ''}ड्रॉप: ${busDrop}\nअंदाजे KM: ${busKm}\nतारीख: ${busDate}\nवेळ: ${busTime}\nमाहिती: ${busMsg}`;  
 
         push(ref(database, 'bookings/'), bookingData)  
             .then(() => {  
@@ -2435,7 +2295,7 @@
             date: getTodayString()  
         };  
 
-        const msg = `*दैनिक हिशोब व ड्रायव्हर रिपोर्ट (Since 1991)*\nड्रायव्हर: ${logData.driverName} (${logData.driverPhone})\n🚘 गाडी नंबर: ${vehicleNo}\n📅 जाण्याची तारीख: ${startDate}\n📅 येण्याची तारीख: ${endDate}\n✅ प्रेझेंटी स्टेटस: ${dutyStatus}\n------------------\nकलेक्शन: ₹${col}\nटोल: ₹${toll}\nइंधन: ₹${fuel}\nइतर: ₹${other}\n------------------\n*शिल्लक कॅश: ₹${bal}*`;  
+        const msg = `*दैनिक हिशोब व ड्रायव्हर रिपोर्ट*\nड्रायव्हर: ${logData.driverName} (${logData.driverPhone})\n🚘 गाडी नंबर: ${vehicleNo}\n📅 जाण्याची तारीख: ${startDate}\n📅 येण्याची तारीख: ${endDate}\n✅ प्रेझेंटी स्टेटस: ${dutyStatus}\n------------------\nकलेक्शन: ₹${col}\nटोल: ₹${toll}\nइंधन: ₹${fuel}\nइतर: ₹${other}\n------------------\n*शिल्लक कॅश: ₹${bal}*`;  
         const encodedMsg = encodeURIComponent(msg);  
 
         push(ref(database, 'driver_logs/'), logData)  
@@ -2452,6 +2312,7 @@
             });  
     };  
 
+    // ड्रायव्हर हजेरी व हिशोब एक्सेल डाऊनलोड फंक्शन
     window.downloadAndShareExcelFile = function() {
         const logsRef = ref(database, 'driver_logs/');
         onValue(logsRef, async (snapshot) => {
@@ -2607,19 +2468,19 @@
 
                 let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">  
                     <span>📅 महिनानिहाय ड्रायव्हर हजेरी व हिशोब रिपोर्ट</span>  
-                    <button onclick="downloadAndShareExcelFile()" class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-xl shadow hover:bg-emerald-700 flex items-center gap-1">  
+                    <button onclick="downloadAndShareExcelFile()" class="bg-emerald-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow hover:bg-emerald-700 flex items-center gap-1">  
                         <i class="fa-solid fa-file-excel"></i> Download Excel  
                     </button>  
                 </h3>`;  
 
                 Object.keys(monthlySummary).forEach(month => {  
-                    html += `<div class="mb-4"><h4 class="font-black text-xs text-redbus uppercase bg-red-50 p-2.5 rounded-xl mb-2 border border-red-200">🗓️ महिना: ${month}</h4>`;  
+                    html += `<div class="mb-4"><h4 class="font-black text-xs text-redbus uppercase bg-red-50 p-2 rounded mb-2 border border-red-200">🗓️ महिना: ${month}</h4>`;  
                     
                     const drivers = monthlySummary[month];  
                     Object.keys(drivers).forEach(drvName => {  
                         const drv = drivers[drvName];  
                         html += `  
-                            <div class="mb-3 bg-teal-50/50 border border-teal-200 rounded-2xl p-3 shadow-sm">  
+                            <div class="mb-3 bg-teal-50/50 border border-teal-200 rounded-xl p-3 shadow-sm">  
                                 <div class="flex justify-between items-center border-b border-teal-200 pb-2 mb-2">  
                                     <span class="font-black text-sm text-teal-900"><i class="fa-solid fa-user-gear text-teal-700"></i> ${drvName}</span>  
                                     <div class="flex gap-1 flex-wrap justify-end">  
@@ -2642,7 +2503,7 @@
 
                         drv.trips.forEach(t => {  
                             html += `  
-                                <div class="flex justify-between items-center bg-white p-2 rounded-xl border border-gray-200 text-[11px]">  
+                                <div class="flex justify-between items-center bg-white p-2 rounded border border-gray-200 text-[11px]">  
                                     <div>  
                                         <span class="font-bold text-gray-900">🚘 ${t.vehicle}</span>   
                                         <span class="text-gray-500 text-[10px]">(${t.start})</span>  
@@ -2677,24 +2538,24 @@
 
                 let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">  
                     <span>📋 ड्रायव्हर दैनिक हिशोब नोंदी</span>  
-                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2.5 py-0.5 rounded-full font-extrabold">एकूण: ${Object.keys(data).length}</span>  
+                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded font-extrabold">एकूण: ${Object.keys(data).length}</span>  
                 </h3><div class="space-y-3">`;  
 
                 Object.keys(data).reverse().forEach(key => {  
                     const log = data[key];  
                     html += `  
-                        <div class="bg-gray-50 p-3.5 rounded-2xl border border-gray-300 shadow-sm relative">  
+                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-300 shadow-sm relative">  
                             <button onclick="deleteRecord('${key}', 'driver')" class="absolute top-2 right-2 text-red-600 hover:text-red-800 p-1 font-bold text-xs">  
                                 <i class="fa-solid fa-trash"></i>  
                             </button>  
                             <div class="flex justify-between items-center mb-1 pr-6">  
                                 <span class="font-bold text-gray-900 text-xs">${log.driverName || 'Driver'} (${log.driverPhone || 'N/A'})</span>  
-                                <span class="text-[10px] bg-gray-200 px-2 py-0.5 rounded-full text-gray-700 font-semibold">${log.date || ''}</span>  
+                                <span class="text-[10px] bg-gray-200 px-1.5 py-0.5 rounded text-gray-700 font-semibold">${log.date || ''}</span>  
                             </div>  
                             <div class="text-[11px] text-gray-700 font-medium mb-1">  
                                 🚘 <b>गाडी नंबर:</b> ${log.vehicleNo || 'N/A'} | 📅 <b>कालावधी:</b> ${log.startDate || log.date} ते ${log.endDate || log.date}  
                             </div>  
-                            <div class="grid grid-cols-4 gap-1 text-[11px] my-2 bg-white p-2.5 rounded-xl border text-center">  
+                            <div class="grid grid-cols-4 gap-1 text-[11px] my-2 bg-white p-2 rounded border text-center">  
                                 <div><span class="text-gray-500 block text-[9px]">कलेक्शन</span><b class="text-green-600">₹${log.collection || 0}</b></div>  
                                 <div><span class="text-gray-500 block text-[9px]">टोल</span><b class="text-red-500">₹${log.toll || 0}</b></div>  
                                 <div><span class="text-gray-500 block text-[9px]">CNG</span><b class="text-red-500">₹${log.fuel || 0}</b></div>  
@@ -2749,12 +2610,12 @@
 
             let html = `<h3 class="font-bold text-gray-800 text-sm mb-3 border-b pb-2 flex justify-between items-center">  
                 <span>📋 बुकिंग इन्क्वायरी नोंदी</span>  
-                <span class="text-xs bg-red-100 text-redbus px-2.5 py-0.5 rounded-full font-extrabold">एकूण: ${filteredList.length}</span>  
+                <span class="text-xs bg-red-100 text-redbus px-2 py-0.5 rounded font-extrabold">एकूण: ${filteredList.length}</span>  
             </h3><div class="space-y-3">`;  
 
             filteredList.reverse().forEach(item => {  
                 html += `  
-                    <div class="bg-red-50/40 p-3.5 rounded-2xl border border-red-200 shadow-sm relative text-xs">  
+                    <div class="bg-red-50/40 p-3 rounded-lg border border-red-200 shadow-sm relative text-xs">  
                         <button onclick="deleteRecord('${item._key}', 'booking')" class="absolute top-2 right-2 text-red-600 hover:text-red-800 p-1 font-bold">  
                             <i class="fa-solid fa-trash"></i>  
                         </button>  
@@ -2773,7 +2634,7 @@
                         </div>  
                         <div class="mt-2 pt-1 border-t border-red-100 flex justify-between items-center text-[10px] text-gray-400">  
                             <span>नोंद वेळ: ${item.createdAt || 'N/A'}</span>  
-                            <a href="https://wa.me/91${item.customerPhone}" target="_blank" class="bg-green-600 text-white font-bold px-2.5 py-1 rounded-xl flex items-center gap-1">  
+                            <a href="https://wa.me/91${item.customerPhone}" target="_blank" class="bg-green-600 text-white font-bold px-2 py-0.5 rounded flex items-center gap-1">  
                                 <i class="fa-brands fa-whatsapp"></i> संपर्क  
                             </a>  
                         </div>  
