@@ -40,10 +40,10 @@
         .seat.selected .price-tag { color: white !important; }  
           
         /* फोटोमधील डिझाइनसारखे 3D न्यूमॉर्फिक रेड सर्व्हिस बटन्स */
-        .sticky-customer-nav .tab-btn {
+        .service-grid-card {
             background: linear-gradient(145deg, #e65c63, #bf3f46) !important;
             border: none !important;
-            border-radius: 18px !important;
+            border-radius: 20px !important;
             transition: all 0.3s ease !important;
             box-shadow: 0 8px 16px rgba(216, 78, 85, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.3) !important;
             color: white !important;
@@ -51,37 +51,27 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 12px 6px !important;
-            min-height: 85px !important;
+            padding: 14px 8px !important;
+            min-height: 105px !important;
+            cursor: pointer;
+            text-align: center;
         }
 
-        .sticky-customer-nav .tab-btn:hover {
+        .service-grid-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(216, 78, 85, 0.4), inset 0 2px 3px rgba(255, 255, 255, 0.4) !important;
         }
 
-        .sticky-customer-nav .tab-btn.active {  
-            background: linear-gradient(145deg, #b83238, #96252c) !important;  
-            box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3) !important;
-        }
-
-        .sticky-customer-nav .tab-btn .tab-icon {
-            font-size: 26px !important;
-            margin-bottom: 6px;
+        .service-grid-card .service-icon {
+            font-size: 32px !important;
+            margin-bottom: 8px;
             color: #ffffff !important;
         }
 
-        .sticky-customer-nav .tab-btn span:not(.tab-icon) {
+        .service-grid-card span {
             font-size: 11px !important;
             font-weight: 800 !important;
             letter-spacing: 0.3px;
-        }
-
-        #tab-buses {
-            grid-column: span 2 / span 2 !important;
-            min-height: 65px !important;
-            flex-direction: row !important;
-            gap: 10px !important;
         }
 
         .time-btn.selected {  
@@ -192,13 +182,6 @@
             cursor: pointer;
         }
 
-        .sticky-customer-nav { width: 100% !important; margin-top: 12px !important; }
-        .sticky-customer-nav > .grid {
-            display: grid !important;
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 12px !important;
-        }
-
         #customer-live-map, #owner-live-map {
             height: 220px;
             width: 100%;
@@ -236,7 +219,7 @@
             margin-top: -2px;
         }
 
-        /* बॉटम नॅव्हिगेशन बार (फोटोप्रमाणे) */
+        /* बॉटम नॅव्हिगेशन बार */
         .app-bottom-nav {
             position: fixed;
             bottom: 0;
@@ -289,7 +272,7 @@
     <option value="Mumbai Airport Terminal 2"></option>
 </datalist>
 
-<!-- टॉप हेडर (फोटोमधील डिझाइननुसार) -->  
+<!-- टॉप हेडर -->  
 <header id="app-header" class="gk-app-header">  
     <div class="gk-header-inner">  
         <div class="gk-header-brand">  
@@ -391,73 +374,58 @@
     <!-- कस्टमर पोर्टल स्क्रीन -->  
     <div id="screen-customer" class="hidden pt-1">  
 
-        <!-- Welcome & Search Bar (फोटोमधील डिझाईननुसार) -->
-        <div class="mb-4 mt-2">
-            <h2 class="text-xl font-black text-gray-900" id="welcome-user-heading">Welcome Back!</h2>
-            <div class="flex items-center gap-1 text-xs font-bold text-gray-500 mt-0.5">
-                <i class="fa-solid fa-location-dot text-redbus"></i>
-                <span>Nashik, Maharashtra</span>
-                <i class="fa-solid fa-chevron-down text-[10px]"></i>
+        <!-- Welcome Section -->
+        <div class="mb-4 mt-2 flex justify-between items-center">
+            <div>
+                <h2 class="text-xl font-black text-gray-900" id="welcome-user-heading">Welcome Back!</h2>
+                <div class="flex items-center gap-1 text-xs font-bold text-gray-500 mt-0.5">
+                    <i class="fa-solid fa-location-dot text-redbus"></i>
+                    <span>Nashik, Maharashtra</span>
+                </div>
+            </div>
+            <div class="text-right">
+                <span class="text-[10px] font-extrabold bg-red-100 text-red-600 px-2.5 py-1 rounded-full">SINCE 1991</span>
             </div>
         </div>
 
-        <div class="relative mb-5">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-redbus">
-                <i class="fa-solid fa-magnifying-glass text-sm"></i>
-            </span>
-            <input type="text" placeholder="Where to travel today?" class="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-2xl text-xs font-bold text-gray-700 shadow-sm outline-none focus:border-redbus">
-            <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-redbus cursor-pointer">
-                <i class="fa-solid fa-microphone text-sm"></i>
-            </span>
-        </div>
-
-        <div class="flex justify-between items-center mb-3">
+        <!-- मुख्य पानावर वरती सरकवलेले Our Services ग्रिड (प्रत्येक क्लिकवर नवीन पेज उघडेल) -->
+        <div class="flex justify-between items-center mb-3 mt-4">
             <h3 class="text-base font-black text-gray-900">Our Services</h3>
             <span class="text-xs font-extrabold text-redbus cursor-pointer">See All</span>
         </div>
 
-        <!-- 3D न्यूमॉर्फिक सर्व्हिस बटन्स (फोटोप्रमाणे ग्रिड) -->
-        <div class="sticky-customer-nav mb-6">  
-            <div class="grid grid-cols-2 gap-3 text-xs font-semibold">  
-                <button onclick="showTab('sharing')" id="tab-sharing" class="tab-btn active">
-                    <span class="tab-icon"><i class="fa-solid fa-car-side"></i></span>
-                    <span>1. Sharing</span>
-                </button>  
-                <button onclick="showTab('oneway')" id="tab-oneway" class="tab-btn">
-                    <span class="tab-icon"><i class="fa-solid fa-route"></i></span>
-                    <span>2. One Way</span>
-                </button>  
-                <button onclick="showTab('airport')" id="tab-airport" class="tab-btn">
-                    <span class="tab-icon"><i class="fa-solid fa-plane"></i></span>
-                    <span>3. Airport Drop</span>
-                </button>  
-                <button onclick="showTab('fleet')" id="tab-fleet" class="tab-btn">
-                    <span class="tab-icon"><i class="fa-solid fa-car"></i></span>
-                    <span>4. Fleet (Per KM)</span>
-                </button>  
-                <button onclick="showTab('darshan')" id="tab-darshan" class="tab-btn">
-                    <span class="tab-icon"><i class="fa-solid fa-landmark"></i></span>
-                    <span>5. नाशिक दर्शन</span>
-                </button>  
-                <button onclick="showTab('packages')" id="tab-packages" class="tab-btn">
-                    <span class="tab-icon"><i class="fa-solid fa-cube"></i></span>
-                    <span>6. Packages</span>
-                </button>  
-                <button onclick="showTab('buses')" id="tab-buses" class="tab-btn col-span-2 font-bold">
-                    <span class="tab-icon"><i class="fa-solid fa-bus"></i></span>
-                    <span>7. Buses Inquiry</span>
-                </button>  
+        <div class="grid grid-cols-2 gap-3 mb-6">  
+            <div onclick="openServicePage('sharing')" class="service-grid-card">
+                <i class="fa-solid fa-car-side service-icon"></i>
+                <span>1. Sharing</span>
             </div>  
-
-            <div class="mt-3 flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-gray-100">  
-                <div class="text-xs">  
-                    <span class="font-bold text-gray-700">ग्राहक:</span> <span id="cust-display-name" class="font-bold text-redbus"></span>   
-                    (<span id="cust-display-phone" class="text-gray-500"></span>)  
-                </div>  
+            <div onclick="openServicePage('oneway')" class="service-grid-card">
+                <i class="fa-solid fa-route service-icon"></i>
+                <span>2. One Way</span>
             </div>  
-        </div>  
+            <div onclick="openServicePage('airport')" class="service-grid-card">
+                <i class="fa-solid fa-plane service-icon"></i>
+                <span>3. Airport Drop</span>
+            </div>  
+            <div onclick="openServicePage('fleet')" class="service-grid-card">
+                <i class="fa-solid fa-car service-icon"></i>
+                <span>4. Fleet (Per KM)</span>
+            </div>  
+            <div onclick="openServicePage('darshan')" class="service-grid-card">
+                <i class="fa-solid fa-landmark service-icon"></i>
+                <span>5. नाशिक दर्शन</span>
+            </div>  
+            <div onclick="openServicePage('packages')" class="service-grid-card">
+                <i class="fa-solid fa-cube service-icon"></i>
+                <span>6. Packages</span>
+            </div>  
+            <div onclick="openServicePage('buses')" class="service-grid-card col-span-2 flex-row gap-3 min-height-[70px]!">
+                <i class="fa-solid fa-bus service-icon mb-0!"></i>
+                <span class="text-sm!">7. Buses Inquiry</span>
+            </div>  
+        </div>
 
-        <!-- कस्टमरसाठी लाईव्ह मॅप ट्रॅकिंग सेक्शन (फोटोप्रमाणे) -->
+        <!-- कस्टमरसाठी लाईव्ह मॅप ट्रॅकिंग सेक्शन -->
         <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100 mb-6">
             <div class="flex justify-between items-center mb-2">
                 <h3 class="text-base font-black text-gray-900">Live Tracking Map</h3>
@@ -483,9 +451,21 @@
             </div>
         </div>
 
-        <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 mt-2">  
+    </div>  
+
+    <!-- ** नवीन बुक पेज / सर्व्हिस डिटेल्स पेज (जेव्हा युजर कोणत्याही सर्व्हिसवर क्लिक करेल तेव्हा हे पेज दिसेल) ** -->
+    <div id="screen-service-detail" class="hidden pt-1">
+        <div class="flex items-center justify-between mb-4 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
+            <button onclick="backToHomeDashboard()" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-1">
+                <i class="fa-solid fa-arrow-left"></i> होम पेज
+            </button>
+            <h2 id="service-page-title" class="text-sm font-black text-redbus uppercase">बुकिंग पेज</h2>
+            <div class="w-16"></div>
+        </div>
+
+        <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100">
             <!-- 1. Sharing Section -->  
-            <div id="sharing-content" class="tab-content booking-section">  
+            <div id="sharing-content" class="tab-content booking-section hidden">  
                 <div class="flex gap-2 mb-3">  
                     <button type="button" id="btn-route-np" onclick="selectRoute('nashik-pune')" class="route-btn active flex-1 p-2.5 text-xs font-bold border rounded-xl shadow-sm border-redbus text-center">  
                         नाशिक ते पुणे (Nashik to Pune)  
@@ -618,7 +598,7 @@
             </div>  
 
             <!-- 2. One Way Section -->  
-            <div id="oneway-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
+            <div id="oneway-content" class="tab-content booking-section hidden space-y-3">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">वन-वे टॅक्सी (Toll Included in All Trips)</h3>  
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>  
@@ -664,7 +644,7 @@
             </div>  
 
             <!-- 3. Airport Section -->  
-            <div id="airport-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
+            <div id="airport-content" class="tab-content booking-section hidden space-y-3">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">एअरपोर्ट पिकअप & ड्रॉप (Airport Services)</h3>  
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">रूट निवडा *</label>  
@@ -708,7 +688,7 @@
             </div>  
 
             <!-- 4. Fleet Section -->  
-            <div id="fleet-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
+            <div id="fleet-content" class="tab-content booking-section hidden space-y-3">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">किलोमीटर प्रमाणे दर (Our Fleet Per KM Rate)</h3>  
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">गाडी निवडा *</label>  
@@ -774,7 +754,7 @@
             </div>  
 
             <!-- 5. Darshan Section -->  
-            <div id="darshan-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
+            <div id="darshan-content" class="tab-content booking-section hidden space-y-3">  
                 <h3 class="font-bold text-redbus text-xs border-b pb-1">नाशिक दर्शन सिटी पॉईंट प्रेक्षणीय स्थळे</h3>  
                 <div class="bg-red-50 p-3 rounded-2xl border border-red-200 text-[11px] text-gray-700 leading-relaxed">  
                     <p class="font-bold text-redbus mb-1">समाविष्ट स्थळे:</p>  
@@ -801,7 +781,7 @@
             </div>  
 
             <!-- 6. Packages Section -->  
-            <div id="packages-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
+            <div id="packages-content" class="tab-content booking-section hidden space-y-3">  
                 <h3 class="font-bold text-gray-800 text-xs border-b pb-1">खास टुरिझम पॅकेजेस (Special Tour Packages)</h3>  
                 <div>  
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">पॅकेज रूट निवडा *</label>  
@@ -830,7 +810,7 @@
             </div>  
 
             <!-- 7. Buses Section -->  
-            <div id="buses-content" class="tab-content booking-section hidden space-y-3" style="display: none;">  
+            <div id="buses-content" class="tab-content booking-section hidden space-y-3">  
                 <h3 class="font-bold text-redbus text-xs border-b pb-1 flex items-center gap-1">  
                     <i class="fa-solid fa-bus"></i> मोठ्या बसेस इन्क्वायरी (Big Buses Inquiry)  
                 </h3>  
@@ -924,56 +904,8 @@
             <button id="main-submit-btn" onclick="submitBooking()" class="w-full bg-green-600 hover:bg-green-700 text-white font-extrabold py-3.5 rounded-2xl shadow-lg flex justify-center items-center gap-2 mt-4 text-xs uppercase tracking-wider">  
                 <i class="fa-brands fa-whatsapp text-base"></i> बुकिंग व्हॉट्सॲपवर पाठवा  
             </button>  
-
-            <!-- ट्रॅव्हल्सची वैशिष्ट्ये -->  
-            <div class="mt-6 bg-red-50/50 border border-red-100 p-4 rounded-3xl shadow-sm">  
-                <div class="text-center mb-4">  
-                    <img src="icon-192.png" alt="GK Logo" class="w-16 h-16 rounded-full border-2 border-yellow-500 mx-auto shadow-md object-cover">  
-                    <h3 class="text-red-600 font-black text-xs mt-2 uppercase">Gurukrupa Tours & Travels (Since 1991)</h3>  
-                </div>  
-                  
-                <div class="grid grid-cols-2 gap-2 text-[11px] text-gray-700 font-semibold">  
-                    <div class="space-y-2">  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
-                            <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
-                            <span>1. १०+ वर्षे अनुभवी ड्रायव्हर्स</span>  
-                        </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
-                            <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
-                            <span>2. रस्त्याची संपूर्ण माहिती</span>  
-                        </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
-                            <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
-                            <span>3. स्वच्छ व अपग्रेड AC वाहने</span>  
-                        </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
-                            <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
-                            <span>4. १० मिनिटे आधी हजर</span>  
-                        </div>  
-                    </div>  
-
-                    <div class="space-y-2">  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
-                            <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
-                            <span>5. GPS ट्रॅकींग सुविधा</span>  
-                        </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
-                            <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
-                            <span>6. महिला स्पेशल शेरींग कॅब</span>  
-                        </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
-                            <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
-                            <span>7. जलद पार्सल सुविधा</span>  
-                        </div>  
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-red-100 shadow-2xs">  
-                            <i class="fa-solid fa-circle-check text-red-500 mt-0.5 shrink-0"></i>  
-                            <span>8. गेली दोन पिढ्या सेवेत</span>  
-                        </div>  
-                    </div>  
-                </div>  
-            </div>  
-        </div>  
-    </div>  
+        </div>
+    </div>
 
     <!-- ओनर पोर्टल स्क्रीन -->  
     <div id="screen-owner" class="hidden space-y-4 pt-2">  
@@ -1197,7 +1129,7 @@
 
 </div>  
 
-<!-- फोटोमधील डिझाईननुसार बॉटम नॅव्हिगेशन बार -->
+<!-- बॉटम नॅव्हिगेशन बार -->
 <div class="app-bottom-nav">
     <button class="bottom-nav-item active" onclick="navigateBottomTab('home')">
         <i class="fa-solid fa-house"></i>
@@ -1412,7 +1344,6 @@
         });
     };
 
-    // कस्टमरसाठी लाईव्ह मॅप ट्रॅकिंग इनिशाईल करणे
     function initCustomerMap() {
         const mapContainer = document.getElementById('customer-live-map');
         if (!mapContainer) return;
@@ -1429,7 +1360,6 @@
             const allData = snapshot.val();
             if (!allData) return;
 
-            // कोणतीही चालू ट्रىप शोधा
             let activeTripFound = false;
             Object.keys(allData).forEach((vNo) => {
                 const item = allData[vNo];
@@ -1733,7 +1663,6 @@
         updatePackageCars();  
         listenTodaysDriverBalance();  
         listenOwnerCounts();   
-        showTab('sharing');  
     });  
 
     let headerClickCount = 0;  
@@ -1926,8 +1855,6 @@
     function applyUserSession(userObj) {  
         document.body.classList.add('logged-in');  
         document.getElementById('screen-login').classList.add('hidden');  
-        document.getElementById('cust-display-name').innerText = userObj.name;  
-        document.getElementById('cust-display-phone').innerText = userObj.phone;  
         document.getElementById('welcome-user-heading').innerText = `Welcome Back, ${userObj.name}!`;  
 
         if (userObj.role === 'customer') {  
@@ -1956,6 +1883,7 @@
         document.body.classList.remove('logged-in');  
         document.getElementById('screen-login').classList.remove('hidden');  
         document.getElementById('screen-customer').classList.add('hidden');  
+        document.getElementById('screen-service-detail').classList.add('hidden');  
         document.getElementById('screen-owner').classList.add('hidden');  
         document.getElementById('screen-driver').classList.add('hidden');  
     };  
@@ -1965,45 +1893,57 @@
         event.currentTarget.classList.add('active');
 
         if (tabKey === 'home') {
-            showTab('sharing');
+            backToHomeDashboard();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else if (tabKey === 'rides') {
-            showTab('oneway');
+            openServicePage('oneway');
         } else if (tabKey === 'bookings') {
-            showTab('bus');
+            openServicePage('buses');
         } else if (tabKey === 'packages') {
-            showTab('packages');
+            openServicePage('packages');
         } else if (tabKey === 'profile') {
             alert(`नाव: ${window.currentUser ? window.currentUser.name : 'Guest'}\nरोल: ${window.currentUser ? window.currentUser.role : 'Customer'}`);
         }
     };
 
-    window.showTab = function(tabName) {  
-        window.activeTab = tabName;  
-          
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));  
-        const activeBtn = document.getElementById(`tab-${tabName}`);  
-        if (activeBtn) activeBtn.classList.add('active');  
+    // ** नवीन पेजवर जाण्याचे फंक्शन **
+    window.openServicePage = function(serviceName) {
+        window.activeTab = serviceName;
+        document.getElementById('screen-customer').classList.add('hidden');
+        document.getElementById('screen-service-detail').classList.remove('hidden');
 
-        const tabs = document.querySelectorAll('.tab-content');  
-        tabs.forEach(tab => tab.style.display = 'none');  
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        const targetTab = document.getElementById(serviceName + '-content');
+        if (targetTab) targetTab.classList.remove('hidden');
 
-        const activeTab = document.getElementById(tabName + '-content');  
-        if (activeTab) {  
-            activeTab.style.display = 'block';  
-        }  
+        const titleMap = {
+            'sharing': '1. Sharing Booking',
+            'oneway': '2. One Way Taxi',
+            'airport': '3. Airport Drop',
+            'fleet': '4. Fleet Per KM',
+            'darshan': '5. नाशिक दर्शन',
+            'packages': '6. Tour Packages',
+            'buses': '7. Buses Inquiry'
+        };
+        document.getElementById('service-page-title').innerText = titleMap[serviceName] || 'Booking';
 
         const submitBtn = document.getElementById('main-submit-btn');  
         const paymentSection = document.getElementById('payment-section');  
-          
-        if (tabName === 'buses') {  
+        if (serviceName === 'buses') {  
             submitBtn.classList.add('hidden');  
             paymentSection.classList.add('hidden');  
         } else {  
             submitBtn.classList.remove('hidden');  
             paymentSection.classList.remove('hidden');  
         }  
-    };  
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.backToHomeDashboard = function() {
+        document.getElementById('screen-service-detail').classList.add('hidden');
+        document.getElementById('screen-customer').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     window.selectRoute = function(route) {  
         const btnNP = document.getElementById('btn-route-np');  
