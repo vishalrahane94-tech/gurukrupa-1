@@ -39,37 +39,39 @@
         }  
         .seat.selected .price-tag { color: white !important; }  
           
-        /* फोटोमधील डिझाइनसारखे 3D न्यूमॉर्फिक रेड सर्व्हिस बटन्स */
-        .service-grid-card {
-            background: linear-gradient(145deg, #e65c63, #bf3f46) !important;
+        /* 2 नंबर फोटोसारखे हुबेहूब 3D इलस्ट्रेशन कार्ड्स डिझाइन */
+        .service-3d-card {
+            background: linear-gradient(145deg, #e04a52, #bd353d) !important;
             border: none !important;
-            border-radius: 20px !important;
+            border-radius: 22px !important;
             transition: all 0.3s ease !important;
-            box-shadow: 0 8px 16px rgba(216, 78, 85, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.3) !important;
+            box-shadow: 0 10px 20px rgba(216, 78, 85, 0.25), inset 0 2px 3px rgba(255, 255, 255, 0.35) !important;
             color: white !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 14px 8px !important;
-            min-height: 105px !important;
+            padding: 16px 10px !important;
+            min-height: 125px !important;
             cursor: pointer;
             text-align: center;
         }
 
-        .service-grid-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(216, 78, 85, 0.4), inset 0 2px 3px rgba(255, 255, 255, 0.4) !important;
+        .service-3d-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 24px rgba(216, 78, 85, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.4) !important;
         }
 
-        .service-grid-card .service-icon {
-            font-size: 32px !important;
+        .service-3d-card img.card-3d-img {
+            width: 58px !important;
+            height: 50px !important;
+            object-fit: contain !important;
             margin-bottom: 8px;
-            color: #ffffff !important;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
         }
 
-        .service-grid-card span {
-            font-size: 11px !important;
+        .service-3d-card span {
+            font-size: 12px !important;
             font-weight: 800 !important;
             letter-spacing: 0.3px;
         }
@@ -371,7 +373,7 @@
         </div>  
     </div>  
 
-    <!-- कस्टमर पोर्टल स्क्रीन -->  
+    <!-- कस्टमर पोर्टल होम डॅशबोर्ड -->  
     <div id="screen-customer" class="hidden pt-1">  
 
         <!-- Welcome Section -->
@@ -384,44 +386,51 @@
                 </div>
             </div>
             <div class="text-right">
-                <span class="text-[10px] font-extrabold bg-red-100 text-red-600 px-2.5 py-1 rounded-full">SINCE 1991</span>
+                <span class="text-[10px] font-extrabold bg-red-100 text-red-600 px-3 py-1 rounded-full shadow-sm">SINCE 1991</span>
             </div>
         </div>
 
-        <!-- मुख्य पानावर वरती सरकवलेले Our Services ग्रिड (प्रत्येक क्लिकवर नवीन पेज उघडेल) -->
+        <!-- 2 नंबर फोटोसारखे हुबेहूब 3D इलस्ट्रेशन ग्राफिक्ससह 'Our Services' ग्रिड -->
         <div class="flex justify-between items-center mb-3 mt-4">
             <h3 class="text-base font-black text-gray-900">Our Services</h3>
             <span class="text-xs font-extrabold text-redbus cursor-pointer">See All</span>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 mb-6">  
-            <div onclick="openServicePage('sharing')" class="service-grid-card">
-                <i class="fa-solid fa-car-side service-icon"></i>
+        <div class="grid grid-cols-2 gap-3.5 mb-6">  
+            <!-- 1. Sharing -->
+            <div onclick="openServicePage('sharing')" class="service-3d-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3202/3202926.png" alt="Sharing" class="card-3d-img">
                 <span>1. Sharing</span>
             </div>  
-            <div onclick="openServicePage('oneway')" class="service-grid-card">
-                <i class="fa-solid fa-route service-icon"></i>
+            <!-- 2. One Way -->
+            <div onclick="openServicePage('oneway')" class="service-3d-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3063/3063823.png" alt="One Way" class="card-3d-img">
                 <span>2. One Way</span>
             </div>  
-            <div onclick="openServicePage('airport')" class="service-grid-card">
-                <i class="fa-solid fa-plane service-icon"></i>
+            <!-- 3. Airport Drop -->
+            <div onclick="openServicePage('airport')" class="service-3d-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3125/3125713.png" alt="Airport Drop" class="card-3d-img">
                 <span>3. Airport Drop</span>
             </div>  
-            <div onclick="openServicePage('fleet')" class="service-grid-card">
-                <i class="fa-solid fa-car service-icon"></i>
+            <!-- 4. Fleet (Per KM) -->
+            <div onclick="openServicePage('fleet')" class="service-3d-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/2722/2722987.png" alt="Fleet" class="card-3d-img">
                 <span>4. Fleet (Per KM)</span>
             </div>  
-            <div onclick="openServicePage('darshan')" class="service-grid-card">
-                <i class="fa-solid fa-landmark service-icon"></i>
+            <!-- 5. Nashik Darshan -->
+            <div onclick="openServicePage('darshan')" class="service-3d-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Darshan" class="card-3d-img">
                 <span>5. नाशिक दर्शन</span>
             </div>  
-            <div onclick="openServicePage('packages')" class="service-grid-card">
-                <i class="fa-solid fa-cube service-icon"></i>
+            <!-- 6. Packages -->
+            <div onclick="openServicePage('packages')" class="service-3d-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3014/3014318.png" alt="Packages" class="card-3d-img">
                 <span>6. Packages</span>
             </div>  
-            <div onclick="openServicePage('buses')" class="service-grid-card col-span-2 flex-row gap-3 min-height-[70px]!">
-                <i class="fa-solid fa-bus service-icon mb-0!"></i>
-                <span class="text-sm!">7. Buses Inquiry</span>
+            <!-- 7. Buses Inquiry -->
+            <div onclick="openServicePage('buses')" class="service-3d-card col-span-2 flex-row gap-4 min-h-[85px]!">
+                <img src="https://cdn-icons-png.flaticon.com/512/3448/3448600.png" alt="Buses" class="card-3d-img mb-0! w-12! h-12!">
+                <span class="text-sm! font-black!">7. Buses Inquiry</span>
             </div>  
         </div>
 
@@ -453,7 +462,7 @@
 
     </div>  
 
-    <!-- ** नवीन बुक पेज / सर्व्हिस डिटेल्स पेज (जेव्हा युजर कोणत्याही सर्व्हिसवर क्लिक करेल तेव्हा हे पेज दिसेल) ** -->
+    <!-- ** सर्व्हिस डिटेल्स / बुकिंग नवीन पेज ** -->
     <div id="screen-service-detail" class="hidden pt-1">
         <div class="flex items-center justify-between mb-4 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
             <button onclick="backToHomeDashboard()" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-1">
@@ -1906,7 +1915,6 @@
         }
     };
 
-    // ** नवीन पेजवर जाण्याचे फंक्शन **
     window.openServicePage = function(serviceName) {
         window.activeTab = serviceName;
         document.getElementById('screen-customer').classList.add('hidden');
