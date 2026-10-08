@@ -1,23 +1,17 @@
-const CACHE_NAME = 'gurukrupa-v3';
-const urlsToCache = ['/', '/index.html', '/icon-192x192.png', '/icon-512x512.png', '/manifest.json'];
-
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
-  );
+const CACHE_NAME = "gurukrupa-v4";
+self.addEventListener("install", (e) => {
   self.skipWaiting();
 });
-
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.map(key => { if(key !== CACHE_NAME) return caches.delete(key); })
-    ))
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) => Promise.all(keys.map((k) => { if (k !== CACHE_NAME) return caches.delete(k); })))
+    .then(() => self.clients.claim())
   );
 });
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(res => res || fetch(event.request))
-  );
+self.addEventListener("fetch", (e) => {
+  if (e.request.mode === "navigate") {
+    e.respondWith(fetch(e.request).catch(() => caches.match("./")));
+    return;
+  }
+  e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
 });
