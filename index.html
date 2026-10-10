@@ -2196,7 +2196,27 @@
                 if (document.getElementById('paymentConfirmCheckbox')) {  
                     document.getElementById('paymentConfirmCheckbox').checked = false;  
                 }  
-                const encodedMsg = encodeURIComponent(whatsappText);  
+
+                // तुम्ही सांगितलेला ऑटो-मेसेज आणि फोटो लिंकसह तयार केला आहे
+                const autoMessage = `🙏 *GURUKRUPA TOURS AND TRAVELS* 🙏\n\n` +
+                    `*धन्यवाद / THANK YOU*\n` +
+                    `✅ *तुमची बुकिंग CONFIRM झाली आहे / Your Booking is CONFIRMED*\n\n` +
+                    `━━━━━━━━━━━━━\n` +
+                    `*Gurukrupa Tours and Travels मध्ये गाडी बुक केल्याबद्दल धन्यवाद.*\n\n` +
+                    `लवकरच Gurukrupa Tours and Travels तुम्हाला गाडीचे डिटेल्स आणि ड्रायव्हरचे डिटेल्स शेअर करतील.\n\n` +
+                    `धन्यवाद — Gurukrupa Tours and Travels Team\n` +
+                    `📞 Helpline: *9890896040*\n\n` +
+                    `━━━━━━━━━━━━━\n\n` +
+                    `*Thank you for booking your car with Gurukrupa Tours and Travels.*\n\n` +
+                    `*Your booking is confirmed.*\n` +
+                    `Soon Gurukrupa Tours and Travels will share car details and driver details.\n\n` +
+                    `Thank you — Gurukrupa Tours and Travels Team\n` +
+                    `📞 Helpline: *9890896040*\n\n` +
+                    `━━━━━━━━━━━━━\n` +
+                    `Safe & Reliable Travel 🧳\n\n` +
+                    `*(तुमची मूळ बुकिंग माहिती:)*\n` + whatsappText;
+
+                const encodedMsg = encodeURIComponent(autoMessage);  
                 window.open(`https://wa.me/919890896040?text=${encodedMsg}`, '_blank');  
             })  
             .catch(err => {  
