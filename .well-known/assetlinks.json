@@ -4,13 +4,7 @@
     "target": {
       "namespace": "android_app",
       "package_name": "io.github.vishalrahane94_tech.twa",
-      "sha256_cert_fingerprints": [
-        "ED:9C:92:9A:4B:2C:29:6C:20:80:B3:D4:7F:0A:A9:36:4B:0A:74:97",
-        "C5:AC:50:4E:A6:65:63:17:82:6B:54:72:DA:35:F6:33:01:DC:E9:91:0A:C3:6D:ED:7F:C7:10:B9:3C:56:9A:C6",
-        "E1:BC:F3:9E:38:9A:18:C9:BA:65:24:D3:B7:9F:37:52:4C:A5:1E:54",
-        "E8:AA:90:05:9D:4D:4F:CE:84:B3:2E:99:85:AB:37:64:21:A2:66:8F:CA:93:C7:25:77:E2:1D:50:93:F1:E2:72",
-        "A6:2A:DF:58:4C:9D:80:80:9D:2A:55:2F:D8:07:B1:E4"
-      ]
+      "sha256_cert_fingerprints": ["A6:2A:DF:58:4C:9B:80:80:9D:2A:55:2F:DB:07:B1:E4:D6:4C:E1:51:F0:92:C1:01:B2:2E:AA:38:E4:CC:88:26"]
     }
   }
 ]
