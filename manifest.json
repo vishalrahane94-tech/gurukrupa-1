@@ -2,11 +2,11 @@
   "name": "Gurukrupa Tours & Travels",
   "short_name": "Gurukrupa",
   "description": "Gurukrupa Tours & Travels official application.",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "https://gurukrupatravelsnashik.in/",
+  "scope": "https://gurukrupatravelsnashik.in/",
   "display": "standalone",
   "background_color": "#f3f4f6",
-  "theme_color": "#8d4e55",
+  "theme_color": "#8d4e35",
   "icons": [
     {
       "src": "./icon-192.png",
