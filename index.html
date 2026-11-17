@@ -156,8 +156,6 @@
             border: 2px solid #facc15 !important;
             object-fit: cover !important;
             flex-shrink: 0 !important;
-            background: transparent !important;
-            box-shadow: none !important;
         }
 
         .brand-title {
@@ -309,15 +307,6 @@
             margin-top: -2px;
         }
 
-        /* लॉगिन स्क्रीनवरील लोगोवरील पांढरी चौकट आणि बॉर्डर काढून टाकण्यासाठी आणि फोटो 2 प्रमाणे सेट करण्यासाठी */
-        #secret-logo-trigger img {
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            border-radius: 50% !important;
-            object-fit: cover !important;
-        }
-
         @media (max-width: 370px) {
             .brand-title h1 { font-size: 13px !important; }
             .brand-title span { font-size: 8px !important; }
@@ -374,7 +363,7 @@
     <!-- लॉगिन स्क्रीन -->  
     <div id="screen-login" class="flex flex-col items-center justify-center pt-4 pb-4">  
         <div id="secret-logo-trigger" class="text-center cursor-pointer select-none mb-6">  
-            <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 object-cover">  
+            <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-2 border-yellow-500">  
             <h1 class="text-2xl font-black tracking-wider text-gray-900 uppercase">GURUKRUPA</h1>  
             <p class="text-xs font-extrabold tracking-[0.2em] text-yellow-600 uppercase mt-0.5">TOURS AND TRAVELS</p>  
         </div>  
@@ -1925,7 +1914,9 @@
         } else {  
             lblPickup.innerText = 'पुणे पिकअप पॉईंट *';  
             lblDrop.innerText = 'नाशिक ड्रॉप पॉईंट *';  
+            // पुणे ते नाशिक पिकअप: वाकडेवाडी वरती आणि चाकण खाली
             pList = ["वाकडेवाडी", "नाशिक फाटा", "भोसरी", "मोशी", "चाकण"];  
+            // पुणे ते नाशिक ड्रॉप: पवन हॉटेल वरती आणि ठक्कर बाजार सर्वात खाली
             dList = ["पवन हॉटेल", "टनेल (Tunnel)", "गोविंद नगर", "मुंबई नाका", "द्वारका सर्कल", "ठक्कर बाजार"];  
         }  
 
