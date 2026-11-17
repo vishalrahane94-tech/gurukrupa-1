@@ -1914,9 +1914,7 @@
         } else {  
             lblPickup.innerText = 'पुणे पिकअप पॉईंट *';  
             lblDrop.innerText = 'नाशिक ड्रॉप पॉईंट *';  
-            // पुणे ते नाशिक पिकअप: वाकडेवाडी वरती आणि चाकण खाली
             pList = ["वाकडेवाडी", "नाशिक फाटा", "भोसरी", "मोशी", "चाकण"];  
-            // पुणे ते नाशिक ड्रॉप: पवन हॉटेल वरती आणि ठक्कर बाजार सर्वात खाली
             dList = ["पवन हॉटेल", "टनेल (Tunnel)", "गोविंद नगर", "मुंबई नाका", "द्वारका सर्कल", "ठक्कर बाजार"];  
         }  
 
@@ -2312,7 +2310,6 @@
             });  
     };  
 
-    // ड्रायव्हर हजेरी व हिशोब एक्सेल डाऊनलोड फंक्शन
     window.downloadAndShareExcelFile = function() {
         const logsRef = ref(database, 'driver_logs/');
         onValue(logsRef, async (snapshot) => {
@@ -2624,7 +2621,7 @@
                         </div>  
                         <div class="text-gray-700 space-y-0.5">  
                             <div><b>प्रकार:</b> <span class="uppercase font-semibold text-redbus">${item.type || 'N/A'}</span> ${item.direction ? `(${item.direction})` : ''}</div>  
-                            ${item.pickup ? `<div><b>पिकअप:</b> ${item.pickup} | <b>ड्रॉप:</b> ${item.drop}</div>` : ''}  
+                            ${item.pickup ? `<div><b>पिकअप:</b> ${item.pickup} \vert{} <b>ड्रॉप:</b> ${item.drop}</div>` : ''}  
                             ${item.location ? `<div><b>वर्तमान स्थान (Location):</b> ${item.location}</div>` : ''}  
                             ${item.route ? `<div><b>रूट:</b> ${item.route}</div>` : ''}  
                             ${item.car ? `<div><b>गाडी:</b> ${item.car}</div>` : ''}  
