@@ -5,9 +5,15 @@
   "start_url": "https://gurukrupatravelsnashik.in/",
   "scope": "https://gurukrupatravelsnashik.in/",
   "display": "standalone",
-  "background_color": "#f3f4f6",
+  "background_color": "#ffffff",
   "theme_color": "#8d4e35",
   "icons": [
+    {
+      "src": "./splash.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "./icon-192.png",
       "sizes": "192x192",
@@ -19,12 +25,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "./icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
     }
   ]
 }
