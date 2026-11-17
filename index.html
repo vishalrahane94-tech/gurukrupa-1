@@ -147,13 +147,15 @@
             flex: 1 1 auto !important;
         }
 
+        /* टॉप हेडरमधील लोगोची चौकोनी बॉर्डर व पांढरा बॅकग्राउंड पूर्णपणे काढून टाकला आहे */
         .gk-header-logo-img {
             width: 40px !important;
             height: 40px !important;
             min-width: 40px !important;
             max-width: 40px !important;
             border-radius: 50% !important;
-            border: 2px solid #facc15 !important;
+            border: none !important;
+            background: transparent !important;
             object-fit: cover !important;
             flex-shrink: 0 !important;
         }
@@ -362,8 +364,9 @@
 
     <!-- लॉगिन स्क्रीन -->  
     <div id="screen-login" class="flex flex-col items-center justify-center pt-4 pb-4">  
+        <!-- लॉगिनवरील लोगोभोवतीची चौकोनी बॉर्डर आणि पांढरा बॅकग्राउंड काढून टाकला आहे, आता फोटो २ प्रमाणे दिसेल -->
         <div id="secret-logo-trigger" class="text-center cursor-pointer select-none mb-6">  
-            <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-2 border-yellow-500">  
+            <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-none bg-transparent">  
             <h1 class="text-2xl font-black tracking-wider text-gray-900 uppercase">GURUKRUPA</h1>  
             <p class="text-xs font-extrabold tracking-[0.2em] text-yellow-600 uppercase mt-0.5">TOURS AND TRAVELS</p>  
         </div>  
@@ -903,7 +906,8 @@
             <!-- ट्रॅव्हल्सची वैशिष्ट्ये -->  
             <div class="mt-6 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm">  
                 <div class="text-center mb-4">  
-                    <img src="icon-192.png" alt="GK Logo" class="w-20 h-20 rounded-full border-2 border-yellow-500 mx-auto shadow-md object-cover">  
+                    <!-- ट्रॅव्हल्सच्या वैशिष्ट्यांमधील लोगोही स्वच्छ केला आहे -->
+                    <img src="icon-192.png" alt="GK Logo" class="w-20 h-20 rounded-full border-none bg-transparent mx-auto shadow-md object-cover">  
                     <h3 class="text-red-600 font-bold text-sm mt-2">आमच्या ट्रॅव्हल्सची वैशिष्ट्ये</h3>  
                 </div>  
                   
@@ -1914,9 +1918,7 @@
         } else {  
             lblPickup.innerText = 'पुणे पिकअप पॉईंट *';  
             lblDrop.innerText = 'नाशिक ड्रॉप पॉईंट *';  
-            // पुणे ते नाशिक पिकअप: वाकडेवाडी वरती आणि चाकण खाली
             pList = ["वाकडेवाडी", "नाशिक फाटा", "भोसरी", "मोशी", "चाकण"];  
-            // पुणे ते नाशिक ड्रॉप: पवन हॉटेल वरती आणि ठक्कर बाजार सर्वात खाली
             dList = ["पवन हॉटेल", "टनेल (Tunnel)", "गोविंद नगर", "मुंबई नाका", "द्वारका सर्कल", "ठक्कर बाजार"];  
         }  
 
@@ -2312,7 +2314,6 @@
             });  
     };  
 
-    // ड्रायव्हर हजेरी व हिशोब एक्सेल डाऊनलोड फंक्शन
     window.downloadAndShareExcelFile = function() {
         const logsRef = ref(database, 'driver_logs/');
         onValue(logsRef, async (snapshot) => {
