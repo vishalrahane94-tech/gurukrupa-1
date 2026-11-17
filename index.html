@@ -31,25 +31,6 @@
         }  
     </script>  
     <style>  
-        /* कस्टम स्प्लॅश स्क्रीन स्टाइल (पांढरा चौकोन पूर्णपणे काढण्यासाठी) */
-        #custom-splash {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 999999;
-        }
-        #custom-splash img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         .seat { transition: all 0.2s ease; position: relative; cursor: pointer; background-color: #ffffff !important; }  
         .seat.selected {  
             background-color: #d84e55 !important;  
@@ -337,25 +318,6 @@
 
 </head>  
 <body class="bg-gray-100 font-sans pb-10">  
-
-<!-- कस्टम स्प्लॅश स्क्रीन (ॲप चालू होताना दिसणार्या लोगोसाठी) -->
-<div id="custom-splash">
-    <img src="splash.png" alt="Gurukrupa Splash">
-</div>
-
-<script>
-    // ॲप लोड झाल्यानंतर २ सेकंदांनी स्प्लॅश स्क्रीन हळूच गायब होईल
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            const splash = document.getElementById('custom-splash');
-            if (splash) {
-                splash.style.transition = 'opacity 0.5s ease';
-                splash.style.opacity = '0';
-                setTimeout(() => splash.remove(), 500);
-            }
-        }, 2000);
-    });
-</script>
 
 <!-- ऑटो-सजेस्ट ऑप्शन्स लिस्ट -->
 <datalist id="location-suggestions">
@@ -1952,7 +1914,9 @@
         } else {  
             lblPickup.innerText = 'पुणे पिकअप पॉईंट *';  
             lblDrop.innerText = 'नाशिक ड्रॉप पॉईंट *';  
+            // पुणे ते नाशिक पिकअप: वाकडेवाडी वरती आणि चाकण खाली
             pList = ["वाकडेवाडी", "नाशिक फाटा", "भोसरी", "मोशी", "चाकण"];  
+            // पुणे ते नाशिक ड्रॉप: पवन हॉटेल वरती आणि ठक्कर बाजार सर्वात खाली
             dList = ["पवन हॉटेल", "टनेल (Tunnel)", "गोविंद नगर", "मुंबई नाका", "द्वारका सर्कल", "ठक्कर बाजार"];  
         }  
 
@@ -2348,6 +2312,7 @@
             });  
     };  
 
+    // ड्रायव्हर हजेरी व हिशोब एक्सेल डाऊनलोड फंक्शन
     window.downloadAndShareExcelFile = function() {
         const logsRef = ref(database, 'driver_logs/');
         onValue(logsRef, async (snapshot) => {
@@ -2659,7 +2624,7 @@
                         </div>  
                         <div class="text-gray-700 space-y-0.5">  
                             <div><b>प्रकार:</b> <span class="uppercase font-semibold text-redbus">${item.type || 'N/A'}</span> ${item.direction ? `(${item.direction})` : ''}</div>  
-                            ${item.pickup ? `<div><b>पिकअप:</b> ${item.pickup} \vert{} <b>ड्रॉप:</b> ${item.drop}</div>` : ''}  
+                            ${item.pickup ? `<div><b>पिकअप:</b> ${item.pickup} | <b>ड्रॉप:</b> ${item.drop}</div>` : ''}  
                             ${item.location ? `<div><b>वर्तमान स्थान (Location):</b> ${item.location}</div>` : ''}  
                             ${item.route ? `<div><b>रूट:</b> ${item.route}</div>` : ''}  
                             ${item.car ? `<div><b>गाडी:</b> ${item.car}</div>` : ''}  
