@@ -147,17 +147,17 @@
             flex: 1 1 auto !important;
         }
 
-        /* टॉप हेडरमधील लोगोची चौकोनी बॉर्डर व पांढरा बॅकग्राउंड पूर्णपणे काढून टाकला आहे */
         .gk-header-logo-img {
             width: 40px !important;
             height: 40px !important;
             min-width: 40px !important;
             max-width: 40px !important;
             border-radius: 50% !important;
-            border: none !important;
-            background: transparent !important;
+            border: 2px solid #facc15 !important;
             object-fit: cover !important;
             flex-shrink: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
         }
 
         .brand-title {
@@ -309,6 +309,15 @@
             margin-top: -2px;
         }
 
+        /* लॉगिन स्क्रीनवरील लोगोवरील पांढरी चौकट आणि बॉर्डर काढून टाकण्यासाठी आणि फोटो 2 प्रमाणे सेट करण्यासाठी */
+        #secret-logo-trigger img {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+        }
+
         @media (max-width: 370px) {
             .brand-title h1 { font-size: 13px !important; }
             .brand-title span { font-size: 8px !important; }
@@ -364,9 +373,8 @@
 
     <!-- लॉगिन स्क्रीन -->  
     <div id="screen-login" class="flex flex-col items-center justify-center pt-4 pb-4">  
-        <!-- लॉगिनवरील लोगोभोवतीची चौकोनी बॉर्डर आणि पांढरा बॅकग्राउंड काढून टाकला आहे, आता फोटो २ प्रमाणे दिसेल -->
         <div id="secret-logo-trigger" class="text-center cursor-pointer select-none mb-6">  
-            <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 rounded-full object-cover shadow-lg border-none bg-transparent">  
+            <img src="icon-192.png" alt="Gurukrupa Logo" class="w-36 h-36 mx-auto mb-3 object-cover">  
             <h1 class="text-2xl font-black tracking-wider text-gray-900 uppercase">GURUKRUPA</h1>  
             <p class="text-xs font-extrabold tracking-[0.2em] text-yellow-600 uppercase mt-0.5">TOURS AND TRAVELS</p>  
         </div>  
@@ -906,8 +914,7 @@
             <!-- ट्रॅव्हल्सची वैशिष्ट्ये -->  
             <div class="mt-6 bg-red-50 border border-red-100 p-4 rounded-xl shadow-sm">  
                 <div class="text-center mb-4">  
-                    <!-- ट्रॅव्हल्सच्या वैशिष्ट्यांमधील लोगोही स्वच्छ केला आहे -->
-                    <img src="icon-192.png" alt="GK Logo" class="w-20 h-20 rounded-full border-none bg-transparent mx-auto shadow-md object-cover">  
+                    <img src="icon-192.png" alt="GK Logo" class="w-20 h-20 rounded-full border-2 border-yellow-500 mx-auto shadow-md object-cover">  
                     <h3 class="text-red-600 font-bold text-sm mt-2">आमच्या ट्रॅव्हल्सची वैशिष्ट्ये</h3>  
                 </div>  
                   
@@ -2314,6 +2321,7 @@
             });  
     };  
 
+    // ड्रायव्हर हजेरी व हिशोब एक्सेल डाऊनलोड फंक्शन
     window.downloadAndShareExcelFile = function() {
         const logsRef = ref(database, 'driver_logs/');
         onValue(logsRef, async (snapshot) => {
@@ -2625,7 +2633,7 @@
                         </div>  
                         <div class="text-gray-700 space-y-0.5">  
                             <div><b>प्रकार:</b> <span class="uppercase font-semibold text-redbus">${item.type || 'N/A'}</span> ${item.direction ? `(${item.direction})` : ''}</div>  
-                            ${item.pickup ? `<div><b>पिकअप:</b> ${item.pickup} \vert{} <b>ड्रॉप:</b> ${item.drop}</div>` : ''}  
+                            ${item.pickup ? `<div><b>पिकअप:</b> ${item.pickup} | <b>ड्रॉप:</b> ${item.drop}</div>` : ''}  
                             ${item.location ? `<div><b>वर्तमान स्थान (Location):</b> ${item.location}</div>` : ''}  
                             ${item.route ? `<div><b>रूट:</b> ${item.route}</div>` : ''}  
                             ${item.car ? `<div><b>गाडी:</b> ${item.car}</div>` : ''}  
